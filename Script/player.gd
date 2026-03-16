@@ -1,26 +1,52 @@
 extends Node2D
 
-@onready var health_bar = $"../CanvasLayer/PlayerHealthBar"
-@onready var health_label = $"../CanvasLayer/PlayerHealthBar/HealthLabel"
+@onready var health_bar = $"../Battle UI/PlayerHealthBar"
+@onready var health_label = $"../Battle UI/PlayerHealthBar/HealthLabel"
 
-var health = 10
-var max_health = 10
+#PLAYER STATS
+var max_coin = 100 #Max Coin Capacity
+var coin = 100:
+	set(value):
+		coin = clamp(value,0,max_coin)
+var max_flip: = 18 #Max Flips Per Turn
+var current_flip: = 0: #Current Flip Count
+	set(value):
+		current_flip = clamp(value,0,max_flip)
+var max_re_flip = 7 #Max Re-Flips Per Turn
+var current_re_flip = 2: #Current Re-Flip Count
+	set(value):
+		current_re_flip = clamp(value,0,max_re_flip)
+var silver_flip_rate = 0.1: #Chance to Flip a Silver Coin
+	set(value): 
+		silver_flip_rate = clamp(value,0.0,100.0) 
+var gold_flip_rate = 0.05: #Chance to Flip a Gold Coin
+	set(value): 
+		gold_flip_rate = clamp(value,0.0,100.0) 
+
+#STATUS EFFECTS
+
+var gain = 0 #Coin to be gained next turn
+var debt = 0 #Damage to be receieved
 
 func take_damage(amount):
-	health -= amount
-	health = max(health, 0)
-	
-	update_health()
-	print("Player HP: ", health)
-	
-func update_health():
-	health_bar.value = health
-	health_label.text = str(health) + " / " + str(max_health)
+	coin -= amount
+	update_coin()
+	print("Player HP: ", coin)
+
+func gain_coin():
+	coin += gain
+	gain = 0
+	update_coin()
+	print("Player HP: ", coin)
+
+func update_coin():
+	health_bar.value = coin
+	health_label.text = "Coins: " + str(coin)
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	health_bar.max_value = max_health
-	update_health()
+	health_bar.max_value = max_coin
+	update_coin()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

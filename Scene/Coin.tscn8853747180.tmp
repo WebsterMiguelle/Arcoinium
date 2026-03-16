@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://ddet242jm5v23"]
+
+[ext_resource type="Script" uid="uid://ctvgpe532fo2k" path="res://Scene/coin.gd" id="1_jea4o"]
+[ext_resource type="Texture2D" uid="uid://cl4b1uckq3lan" path="res://Assets/temp_coin.png" id="1_y73c7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jea4o"]
+atlas = ExtResource("1_y73c7")
+region = Rect2(0, 0, 159, 158)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_byqvs"]
+atlas = ExtResource("1_y73c7")
+region = Rect2(159, 0, 159, 158)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hncfd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jea4o")
+}],
+"loop": true,
+"name": &"head",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_byqvs")
+}],
+"loop": true,
+"name": &"tail",
+"speed": 5.0
+}]
+
+[node name="Coin" type="Node2D" unique_id=1898979683]
+script = ExtResource("1_jea4o")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1217145718]
+texture_filter = 1
+position = Vector2(40, 39)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_hncfd")
+animation = &"head"

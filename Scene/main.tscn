@@ -1,8 +1,19 @@
 [gd_scene format=3 uid="uid://memld2b4qk28"]
 
-[ext_resource type="Script" uid="uid://qxyeds7oh4s7" path="res://main.gd" id="1_h2yge"]
-[ext_resource type="Script" uid="uid://bunbms60cogmi" path="res://player.gd" id="2_1bvp3"]
-[ext_resource type="Script" uid="uid://dedsjnmo4366e" path="res://enemy.gd" id="3_lquwl"]
+[ext_resource type="Script" uid="uid://qxyeds7oh4s7" path="res://Script/main.gd" id="1_h2yge"]
+[ext_resource type="Script" uid="uid://bunbms60cogmi" path="res://Script/player.gd" id="2_1bvp3"]
+[ext_resource type="Script" uid="uid://dedsjnmo4366e" path="res://Script/enemy.gd" id="3_lquwl"]
+[ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2wwxx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3amdw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1xcnr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ow1sv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_75buv"]
 
 [node name="Main" type="ColorRect" unique_id=926660681]
 anchors_preset = 15
@@ -58,21 +69,9 @@ offset_bottom = 86.0
 theme_override_font_sizes/font_size = 35
 text = "Enemy"
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1048849936]
+[node name="Battle UI" type="CanvasLayer" parent="." unique_id=1048849936]
 
-[node name="Endturn" type="Button" parent="CanvasLayer" unique_id=37098888]
-custom_minimum_size = Vector2(150, 40)
-anchors_preset = -1
-anchor_right = 0.033
-anchor_bottom = 0.048
-offset_left = 939.0
-offset_top = 556.0
-offset_right = 1055.984
-offset_bottom = 581.896
-theme_override_font_sizes/font_size = 35
-text = "End turn"
-
-[node name="EndturnLabel" type="Label" parent="CanvasLayer" unique_id=698695009]
+[node name="Turn" type="Label" parent="Battle UI" unique_id=698695009]
 custom_minimum_size = Vector2(150, 40)
 offset_left = 36.0
 offset_top = 23.0
@@ -83,40 +82,49 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 35
 text = "Turn"
 
-[node name="Flip" type="Button" parent="CanvasLayer" unique_id=1788355213]
-custom_minimum_size = Vector2(150, 40)
-offset_left = 473.0
-offset_top = 414.0
-offset_right = 623.0
-offset_bottom = 477.0
-theme_override_font_sizes/font_size = 40
-text = "FLIP"
-
-[node name="PlayerHealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=367744439]
-offset_left = 356.0
-offset_top = 580.0
-offset_right = 756.0
-offset_bottom = 630.0
+[node name="PlayerHealthBar" type="ProgressBar" parent="Battle UI" unique_id=367744439]
+z_index = -6
+offset_left = 184.0
+offset_top = 573.0
+offset_right = 590.36145
+offset_bottom = 623.0
 scale = Vector2(1.0015713, 0.8430614)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 max_value = 10.0
 value = 10.0
 show_percentage = false
 
-[node name="HealthLabel" type="Label" parent="CanvasLayer/PlayerHealthBar" unique_id=1574205912]
+[node name="HealthLabel" type="Label" parent="Battle UI/PlayerHealthBar" unique_id=1574205912]
 layout_mode = 0
-offset_left = 177.72075
-offset_top = 14.233838
-offset_right = 217.72075
-offset_bottom = 42.233837
+offset_left = 5.9905853
+offset_top = -40.32921
+offset_right = 45.990585
+offset_bottom = -12.329208
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 
-[node name="EnemyHealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=2134660899]
-offset_left = 440.0
-offset_top = 20.0
-offset_right = 640.0
-offset_bottom = 52.0
+[node name="Flip" type="Button" parent="Battle UI/PlayerHealthBar" unique_id=1788355213]
+z_index = 4
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxEmpty_2wwxx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3amdw")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1xcnr")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ow1sv")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_75buv")
+text = "FLIP"
+
+[node name="EnemyHealthBar" type="ProgressBar" parent="Battle UI" unique_id=2134660899]
+offset_left = 558.0
+offset_top = 23.0
+offset_right = 758.0
+offset_bottom = 55.0
 scale = Vector2(2.052499, 1.1636436)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
@@ -124,13 +132,53 @@ max_value = 10.0
 value = 10.0
 show_percentage = false
 
-[node name="EnemyHealthLabel" type="Label" parent="CanvasLayer/EnemyHealthBar" unique_id=21616945]
+[node name="EnemyHealthLabel" type="Label" parent="Battle UI/EnemyHealthBar" unique_id=21616945]
 layout_mode = 0
-offset_left = 78.92817
-offset_top = 4.2968483
-offset_right = 118.92817
-offset_bottom = 27.296848
+offset_left = 157.85634
+offset_top = 39.531002
+offset_right = 197.85634
+offset_bottom = 62.531002
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 
-[connection signal="pressed" from="CanvasLayer/Endturn" to="." method="_on_endturn_pressed"]
-[connection signal="pressed" from="CanvasLayer/Flip" to="." method="_on_flip_pressed"]
+[node name="Endturn" type="Button" parent="Battle UI" unique_id=37098888]
+custom_minimum_size = Vector2(150, 40)
+anchors_preset = -1
+anchor_right = 0.033
+anchor_bottom = 0.048
+offset_left = 612.0
+offset_top = 572.0
+offset_right = 723.984
+offset_bottom = 580.896
+theme_override_font_sizes/font_size = 20
+text = "End turn"
+
+[node name="Re-Flip" type="Button" parent="Battle UI" unique_id=318505030]
+custom_minimum_size = Vector2(150, 40)
+anchors_preset = -1
+anchor_right = 0.033
+anchor_bottom = 0.048
+offset_left = 877.0
+offset_top = 300.0
+offset_right = 988.984
+offset_bottom = 308.896
+theme_override_font_sizes/font_size = 20
+text = "Re-Flip
+"
+
+[node name="Turn Calculation" type="Label" parent="Battle UI" unique_id=1869934299]
+custom_minimum_size = Vector2(150, 40)
+offset_left = 476.0
+offset_top = 120.0
+offset_right = 626.0
+offset_bottom = 169.0
+scale = Vector2(1.2137691, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 35
+text = "Turn"
+
+[node name="CoinDeck" parent="." unique_id=955153148 instance=ExtResource("4_2wwxx")]
+position = Vector2(574, 310)
+
+[connection signal="pressed" from="Battle UI/PlayerHealthBar/Flip" to="." method="_on_flip_pressed"]
+[connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]
+[connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]

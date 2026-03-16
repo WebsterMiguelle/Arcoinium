@@ -1,11 +1,12 @@
 #Enemy
 extends Node
 	
-@onready var health_bar = $"../CanvasLayer/EnemyHealthBar"
-@onready var health_label = $"../CanvasLayer/EnemyHealthBar/EnemyHealthLabel"
+@onready var health_bar = $"../Battle UI/EnemyHealthBar"
+@onready var health_label = $"../Battle UI/EnemyHealthBar/EnemyHealthLabel"
 
-var health = 10
-var max_health = 10
+
+var health = 200
+var max_health = 200
 	
 	
 func take_damage(amount):

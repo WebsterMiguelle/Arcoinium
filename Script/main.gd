@@ -10,10 +10,14 @@ enum Turn {
 @onready var endTurn_button = $CanvasLayer/Endturn
 @onready var infoLabel = $CanvasLayer/EndturnLabel
 @onready var flip_button = $CanvasLayer/Flip
+@onready var playerFlipLabel = $CanvasLayer/PlayerRecord
+@onready var enemyFlipLabel = $CanvasLayer/EnemyRecord
 
 
 
+var current_flips = []
 var current_turn = Turn.PLAYER
+var turn_counter = 0
 
 
 # Called when the node enters the scene tree for the first time.
@@ -55,40 +59,80 @@ func _process(delta: float) -> void:
 
 
 func _on_endturn_pressed():
-	if current_turn == Turn.PLAYER:
+	if current_turn == Turn.PLAYER:	
+		turn_counter += 1
+		if current_flips.size() == 1:
+			playerFlipLabel.text += current_flips[0] + "\n"
+		
+		current_flips.clear()
+		
+		if turn_counter >= 4:
+			reset_records()
+			turn_counter = 0
+			
 		start_enemy_turn()
-
+		
+func reset_records():
+	playerFlipLabel.text = ""
+	enemyFlipLabel.text = ""
+	
 
 func _on_flip_pressed():
 	if current_turn != Turn.PLAYER:
 		return
-		
-	var coin = randi() % 2
 	
+	# Flip one coin
+	var coin = randi() % 2
 	if coin == 0:
-		infoLabel.text = "Player got Heads! Player loses 1 HP"
-		player.take_damage(1)
+		current_flips.append("H")
 	else:
-		infoLabel.text = "Player got Tails! Enemy loses 1 HP"
-		enemy.take_damage(1)
+		current_flips.append("T")
+			
 		
+		player.take_damage(1)
+	
+	if current_flips.size() == 2:
+		playerFlipLabel.text += current_flips[0] + current_flips[1] + "\n"
+		infoLabel.text = evaluate_combo(current_flips, true)
+		current_flips.clear()
+		
+	
 	check_defeat()
 	
+	#if coin == 0:
+		#playerFlipLabel.text += "H"
+		#infoLabel.text = "Player got Heads!"
+	#else:
+		#playerFlipLabel.text += "T"
+		#infoLabel.text = "Player got Tails!"
 		
 	
 func enemy_flip():
 	
-	var coin = randi() % 2
+	var num_flips = 2
+	var flips = []
+	for i in range(num_flips):
+		var coin = randi() % 2
 	
-	if coin == 0:
-		infoLabel.text = "Enemy got Heads! Player loses 1 HP"
-		player.take_damage(1)
-	else:
-		infoLabel.text = "Enemy got Tails! Enemy loses 1 HP"
+		
+	
+		if coin == 0:
+			flips.append("H")
+		else:
+			flips.append("T")
+			
+		enemyFlipLabel.text += flips[-1]
 		enemy.take_damage(1)
-	
+		await get_tree().create_timer(1.0).timeout
+		
+	if num_flips == 2:
+		infoLabel.text = evaluate_combo(flips, false)
+	else:
+		infoLabel.text = "Enemy flipped: " + flips[0]
+		
+		
+	enemyFlipLabel.text += "\n"
 	check_defeat()
-	await get_tree().create_timer(1.0).timeout
 	start_player_turn()
 	
 
@@ -98,3 +142,28 @@ func check_defeat():
 		
 	if enemy.health <= 0:
 		infoLabel.text = "Enemy Defeated"
+		
+func evaluate_combo(flips: Array, is_player: bool) -> String:
+	if flips[0] == "H" and flips[1] == "H":
+		if is_player:
+			enemy.take_damage(4)
+			return "Player Combo HH! Enemy takes 4 damage"
+		else:
+			player.take_damage(4)
+			return "Enemy Combo HH! Player takes 4 damage"
+	elif flips[0] == "T" and flips[1] == "T":
+		if is_player:
+			player.gain_health(4)
+			return "Player Combo TT! Player gains 4 HP"
+		else:
+			enemy.gain_health(4)
+			return "Enemy Combo TT! Enemy gains 4 HP"
+	else:
+		if is_player:
+			enemy.take_damage(1)
+			player.gain_health(1)
+			return "Player Combo HT/TH! 1 Damage & 1 HP Gain"
+		else:
+			player.take_damage(1)
+			enemy.gain_health(1)
+			return "Enemy Combo HT/TH! 1 Damage & 1 HP Gain"

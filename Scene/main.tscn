@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://qxyeds7oh4s7" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="Script" uid="uid://bunbms60cogmi" path="res://player.gd" id="2_1bvp3"]
 [ext_resource type="Script" uid="uid://dedsjnmo4366e" path="res://enemy.gd" id="3_lquwl"]
+[ext_resource type="Script" uid="uid://cudatm0cbsuei" path="res://coin_health.gd" id="4_1bvp3"]
+[ext_resource type="Script" uid="uid://da5oetp5bcmla" path="res://enemy_coin_health.gd" id="4_lquwl"]
 
 [node name="Main" type="ColorRect" unique_id=926660681]
 anchors_preset = 15
@@ -65,19 +67,19 @@ custom_minimum_size = Vector2(150, 40)
 anchors_preset = -1
 anchor_right = 0.033
 anchor_bottom = 0.048
-offset_left = 939.0
-offset_top = 556.0
-offset_right = 1055.984
-offset_bottom = 581.896
+offset_left = 475.0
+offset_top = 560.0
+offset_right = 591.984
+offset_bottom = 585.896
 theme_override_font_sizes/font_size = 35
 text = "End turn"
 
 [node name="EndturnLabel" type="Label" parent="CanvasLayer" unique_id=698695009]
 custom_minimum_size = Vector2(150, 40)
-offset_left = 36.0
-offset_top = 23.0
-offset_right = 186.0
-offset_bottom = 72.0
+offset_left = 22.0
+offset_top = 382.0
+offset_right = 172.0
+offset_bottom = 431.0
 scale = Vector2(1.2137691, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 35
@@ -85,52 +87,72 @@ text = "Turn"
 
 [node name="Flip" type="Button" parent="CanvasLayer" unique_id=1788355213]
 custom_minimum_size = Vector2(150, 40)
-offset_left = 473.0
-offset_top = 414.0
-offset_right = 623.0
-offset_bottom = 477.0
+offset_left = 478.0
+offset_top = 469.0
+offset_right = 628.0
+offset_bottom = 532.0
 theme_override_font_sizes/font_size = 40
 text = "FLIP"
 
-[node name="PlayerHealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=367744439]
-offset_left = 356.0
-offset_top = 580.0
-offset_right = 756.0
-offset_bottom = 630.0
-scale = Vector2(1.0015713, 0.8430614)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-max_value = 10.0
-value = 10.0
-show_percentage = false
+[node name="EnemyCoinHealth" type="Node2D" parent="CanvasLayer" unique_id=488537487]
+script = ExtResource("4_lquwl")
 
-[node name="HealthLabel" type="Label" parent="CanvasLayer/PlayerHealthBar" unique_id=1574205912]
-layout_mode = 0
-offset_left = 177.72075
-offset_top = 14.233838
-offset_right = 217.72075
-offset_bottom = 42.233837
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
+[node name="EnemyCointainer" type="Node2D" parent="CanvasLayer/EnemyCoinHealth" unique_id=718756003]
 
-[node name="EnemyHealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=2134660899]
-offset_left = 440.0
-offset_top = 20.0
-offset_right = 640.0
-offset_bottom = 52.0
-scale = Vector2(2.052499, 1.1636436)
+[node name="EnemyCoinLabel" type="Label" parent="CanvasLayer/EnemyCoinHealth" unique_id=461283387]
+offset_left = 788.0
+offset_top = 26.0
+offset_right = 846.0
+offset_bottom = 60.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-max_value = 10.0
-value = 10.0
-show_percentage = false
+theme_override_font_sizes/font_size = 24
+text = "Coin:"
 
-[node name="EnemyHealthLabel" type="Label" parent="CanvasLayer/EnemyHealthBar" unique_id=21616945]
-layout_mode = 0
-offset_left = 78.92817
-offset_top = 4.2968483
-offset_right = 118.92817
-offset_bottom = 27.296848
+[node name="PlayerCoinHealth" type="Node2D" parent="CanvasLayer" unique_id=883487999]
+script = ExtResource("4_1bvp3")
+
+[node name="CoinLabel" type="Label" parent="CanvasLayer/PlayerCoinHealth" unique_id=641854820]
+offset_left = 202.0
+offset_top = 520.0
+offset_right = 260.0
+offset_bottom = 554.0
+scale = Vector2(1.2077506, 1.1533748)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "Coin:"
+
+[node name="Player_Coin" type="Node2D" parent="CanvasLayer/PlayerCoinHealth" unique_id=1589909971]
+scale = Vector2(1.0148451, 1.005295)
+
+[node name="PlayerRecord" type="Label" parent="CanvasLayer" unique_id=91148632]
+custom_minimum_size = Vector2(200, 200)
+offset_left = 917.0
+offset_top = 432.0
+offset_right = 1117.0
+offset_bottom = 632.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "Player Record
+"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="EnemyRecord" type="Label" parent="CanvasLayer" unique_id=189332330]
+custom_minimum_size = Vector2(200, 200)
+offset_left = 15.0
+offset_top = 15.0
+offset_right = 215.0
+offset_bottom = 215.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "Enemy Record
+"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Combo" type="Label" parent="CanvasLayer" unique_id=886155139]
+offset_right = 40.0
+offset_bottom = 23.0
 
 [connection signal="pressed" from="CanvasLayer/Endturn" to="." method="_on_endturn_pressed"]
 [connection signal="pressed" from="CanvasLayer/Flip" to="." method="_on_flip_pressed"]

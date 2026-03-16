@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dxixf4lilrfl5"]
+
+[ext_resource type="Texture2D" uid="uid://bywnw87fxwy3d" path="res://coin.png" id="1_6hxpi"]
+
+[node name="EnemyCointainer" type="Node2D" unique_id=260575115]
+
+[node name="coin" type="TextureRect" parent="." unique_id=1688786149]
+custom_minimum_size = Vector2(24, 24)
+offset_left = 599.0
+offset_top = 12.000001
+offset_right = 1191.0
+offset_bottom = 604.0
+scale = Vector2(0.14335163, 0.123661205)
+texture = ExtResource("1_6hxpi")

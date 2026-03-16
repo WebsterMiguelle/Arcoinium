@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://ca4vctq5bonqi"]
+
+[ext_resource type="Texture2D" uid="uid://bywnw87fxwy3d" path="res://coin.png" id="1_0riy5"]
+
+[node name="Player_Coin" type="Node2D" unique_id=1221798848]
+
+[node name="Coin" type="TextureRect" parent="." unique_id=1237612056]
+offset_left = 194.0
+offset_top = 564.0
+offset_right = 786.0
+offset_bottom = 1156.0
+scale = Vector2(0.14188424, 0.11984834)
+texture = ExtResource("1_0riy5")

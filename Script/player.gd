@@ -1,8 +1,5 @@
 extends Node2D
 
-@onready var health_bar = $"../Battle UI/PlayerHealthBar"
-@onready var health_label = $"../Battle UI/PlayerHealthBar/HealthLabel"
-
 #PLAYER STATS
 var max_coin = 100 #Max Coin Capacity
 var coin = 100:
@@ -30,23 +27,17 @@ var debt = 0 #Damage to be receieved
 
 func take_damage(amount):
 	coin -= amount
-	update_coin()
 	print("Player HP: ", coin)
 
 func gain_coin():
 	coin += gain
 	gain = 0
-	update_coin()
 	print("Player HP: ", coin)
 
-func update_coin():
-	health_bar.value = coin
-	health_label.text = "Coins: " + str(coin)
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	health_bar.max_value = max_coin
-	update_coin()
+	pass
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

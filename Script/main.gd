@@ -14,6 +14,12 @@ enum Turn {
 @onready var re_flip_button: Button = $"Battle UI/Re-Flip"
 @onready var turn_calculation: Label = $"Battle UI/Turn Calculation"
 
+@onready var player_health_bar = $"Battle UI/PlayerHealthBar"
+@onready var player_health_label = $"Battle UI/PlayerHealthBar/HealthLabel"
+
+@onready var enemy_health_bar = $"Battle UI/EnemyHealthBar"
+@onready var enemy_health_label = $"Battle UI/EnemyHealthBar/EnemyHealthLabel"
+
 #COIN DECK 
 @onready var coin_deck: Node2D = $CoinDeck
 
@@ -31,11 +37,10 @@ var current_turn = Turn.PLAYER
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	start_player_turn()
 	randomize()
 	flip_button.pressed.connect(_on_flip_pressed)
 	endTurn_button.pressed.connect(_on_endturn_pressed)
-	
+	start_player_turn()
 
 func start_player_turn():
 	
@@ -92,6 +97,7 @@ func start_enemy_turn():
 	
 func enemy_attack():
 	player.take_damage(1)
+	update_player_coin()
 	infoLabel.text = "Enemy attacks!"
 	
 	
@@ -103,6 +109,7 @@ func _process(delta: float) -> void:
 func _on_endturn_pressed():
 	
 	enemy.take_damage(damage)
+	update_enemy_coin()
 	player.gain += gain
 	reserve_left_over_coin()
 	if current_turn == Turn.PLAYER:
@@ -154,7 +161,7 @@ func check_defeat():
 	if player.coin <= 0:
 		infoLabel.text = "Player Defeated"
 		
-	if enemy.health <= 0:
+	if enemy.coin <= 0:
 		infoLabel.text = "Enemy Defeated"
 
 
@@ -225,3 +232,11 @@ func reserve_left_over_coin():
 		left_coin.reserved = true
 		left_coin.global_position = coin_deck.get_reserve_slot()
 		reserved_coin = left_coin
+
+func update_player_coin():
+	player_health_bar.value = player.coin
+	player_health_label.text = "Coins: " + str(player.coin)
+	
+func update_enemy_coin():
+	enemy_health_bar.value = enemy.coin
+	enemy_health_label.text = "Coins: " + str(player.coin)

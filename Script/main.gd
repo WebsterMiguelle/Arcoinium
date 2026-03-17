@@ -5,6 +5,10 @@ enum Turn {
 	ENEMY
 }
 
+enum Enemy{
+	MAGE,
+	DWARF
+}
 #USER INTERFACE
 @onready var player = $Player
 @onready var enemy = $Enemy
@@ -40,10 +44,22 @@ func _ready():
 	randomize()
 	flip_button.pressed.connect(_on_flip_pressed)
 	endTurn_button.pressed.connect(_on_endturn_pressed)
+	var enemy_id = randi() % 2
+	match enemy_id:
+		0: enemy.setup(Enemy.MAGE)
+		1: enemy.setup(Enemy.DWARF)
+	
+	update_enemy_coin()
+	update_player_coin()
 	start_player_turn()
 
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	update_player_coin()
+	update_enemy_coin()
+
+
 func start_player_turn():
-	
 	
 	#Initialize Global Stats
 	damage = 0
@@ -62,7 +78,7 @@ func start_player_turn():
 	if reserved_coin != null:
 		var coin = COIN.instantiate()
 		player.current_flip += 1
-		coin.setup(reserved_coin.base_value,reserved_coin.state,coin_deck.get_vacant_slot(player.current_flip))
+		coin.setup(reserved_coin.state,coin_deck.get_vacant_slot(player.current_flip))
 		coin.add_to_group("coins")
 		add_child(coin);
 		reserved_coin.queue_free()
@@ -70,7 +86,7 @@ func start_player_turn():
 	current_turn = Turn.PLAYER
 	infoLabel.text = "Player Turn"
 	flip_button.disabled = false
-	re_flip_button.disabled = false
+	re_flip_button.disabled = true
 	endTurn_button.disabled = false
 	turn_calculation.text = ""
 	
@@ -82,6 +98,12 @@ func start_enemy_turn():
 	gain = 0
 	debt = 0
 	
+	#Coin Gain Triggers
+	enemy.gain_coin()
+
+	#Reset Enemy Stats
+	enemy.current_flip = 0
+	
 	current_turn = Turn.ENEMY
 	infoLabel.text = "Enemy Turn"
 	turn_calculation.text = ""
@@ -90,26 +112,28 @@ func start_enemy_turn():
 	re_flip_button.disabled = true
 	endTurn_button.disabled = true
 	
+	#FLIP COINS
+	
+	while enemy.current_flip != enemy.max_flip:
+		enemy_flip()
+		await get_tree().create_timer(1.0).timeout
 	await get_tree().create_timer(1.0).timeout
 	
-	enemy_flip()
+	end_enemy_turn()
 
-	
-func enemy_attack():
-	player.take_damage(1)
-	update_player_coin()
-	infoLabel.text = "Enemy attacks!"
-	
-	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
+func end_enemy_turn():
+	player.take_damage(damage)
+	enemy.gain += gain
+	var coins = get_tree().get_nodes_in_group("enemy_coins")
+	for coin in coins:
+		coin.queue_free()
+	await get_tree().create_timer(1.0).timeout
+	check_defeat()
+	start_player_turn()
 
 func _on_endturn_pressed():
 	
 	enemy.take_damage(damage)
-	update_enemy_coin()
 	player.gain += gain
 	reserve_left_over_coin()
 	if current_turn == Turn.PLAYER:
@@ -121,6 +145,7 @@ func _on_endturn_pressed():
 
 
 func _on_flip_pressed():
+	re_flip_button.disabled = false
 	if current_turn != Turn.PLAYER:
 		return
 		
@@ -128,10 +153,19 @@ func _on_flip_pressed():
 	player.current_flip += 1
 	player.take_damage(1)
 	var coin = COIN.instantiate()
-	coin.setup(2,state,coin_deck.get_vacant_slot(player.current_flip))
+	coin.setup(state,coin_deck.get_vacant_slot(player.current_flip))
+	
+	#Silver/Gold Flip Rate
+	
+	var upgrade_chance = randf()
+	
+	if upgrade_chance <= player.silver_flip_rate:
+		coin.upgrade_to_silver()
+	if upgrade_chance <= player.gold_flip_rate:
+		coin.upgrade_to_gold()
+	
 	coin.add_to_group("coins")
 	add_child(coin);
-	
 	
 	print(player.current_flip)
 	if player.current_flip == player.max_flip or player.coin == 1:
@@ -140,21 +174,29 @@ func _on_flip_pressed():
 	check_defeat()
 	
 
-
 func enemy_flip():
 	
-	var coin = randi() % 2
+	var state = randi() % 2
 	
-	if coin == 0:
-		infoLabel.text = "Enemy got Heads! Player loses 1 HP"
-		player.take_damage(1)
-	else:
-		infoLabel.text = "Enemy got Tails! Enemy loses 1 HP"
-		enemy.take_damage(1)
+	enemy.current_flip += 1
+	enemy.take_damage(1)
+	var coin = COIN.instantiate()
+	coin.setup(state,coin_deck.get_vacant_slot(enemy.current_flip))
 	
+	#Silver/Gold Flip Rate
+	
+	var upgrade_chance = randf()
+	
+	if upgrade_chance <= enemy.silver_flip_rate:
+		coin.upgrade_to_silver()
+	if upgrade_chance <= enemy.gold_flip_rate:
+		coin.upgrade_to_gold()
+	
+	coin.add_to_group("enemy_coins")
+	add_child(coin);
+
+	enemy_coin_calculation()
 	check_defeat()
-	await get_tree().create_timer(1.0).timeout
-	start_player_turn()
 	
 
 func check_defeat():
@@ -210,6 +252,7 @@ func coin_calculation():
 	if damage != 0 or gain != 0:
 		var text = "DMG: " + str(damage) + " GAIN: " + str(gain)
 		turn_calculation.text = text
+		turn_calculation.add_theme_color_override("font_color", Color.BLACK)
 
 func reserve_left_over_coin():
 	var is_left = true # true - Left Coin, false - Right Coin
@@ -239,4 +282,26 @@ func update_player_coin():
 	
 func update_enemy_coin():
 	enemy_health_bar.value = enemy.coin
-	enemy_health_label.text = "Coins: " + str(player.coin)
+	enemy_health_label.text = "Coins: " + str(enemy.coin)
+
+func enemy_coin_calculation():
+	print("Calculating DMG and Gain of Enemy")
+	damage = 0
+	gain = 0
+	var type = enemy.type
+	var coins = get_tree().get_nodes_in_group("enemy_coins")
+	match type:
+		Enemy.MAGE:
+			for coin in coins:
+				if coin.state == 0: damage += 2
+		Enemy.DWARF:
+			var can_attack = true
+			var coin_count = 0
+			for coin in coins:
+				coin_count += 1
+				if coin.state == 1: can_attack = false
+			if can_attack and coin_count == 2: damage += 4
+	if damage != 0 or gain != 0:
+		var text = "DMG: " + str(damage) + " GAIN: " + str(gain)
+		turn_calculation.text = text
+		turn_calculation.add_theme_color_override("font_color", Color.DARK_RED)

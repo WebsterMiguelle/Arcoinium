@@ -1,4 +1,4 @@
-extends ColorRect
+extends TextureRect
 
 enum Turn {
 	PLAYER,

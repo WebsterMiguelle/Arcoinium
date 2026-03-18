@@ -23,6 +23,7 @@ var max_capacity: int = 18
 @onready var _16: ColorRect = $"Deck/Row 3/16"
 @onready var _17: ColorRect = $"Deck/Row 3/17"
 @onready var _18: ColorRect = $"Deck/Row 3/18"
+@onready var texture_rect: TextureRect = $Deck/TextureRect
 
 @onready var coin_reserve: ColorRect = $CoinReserve
 

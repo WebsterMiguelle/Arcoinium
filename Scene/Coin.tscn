@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://ddet242jm5v23"]
 
 [ext_resource type="Script" uid="uid://ctvgpe532fo2k" path="res://Scene/coin.gd" id="1_jea4o"]
-[ext_resource type="Texture2D" uid="uid://cl4b1uckq3lan" path="res://Assets/temp_coin.png" id="1_y73c7"]
+[ext_resource type="Texture2D" uid="uid://b26gbj0tgcnn" path="res://Assets/16bitcoins.png" id="2_jea4o"]
 [ext_resource type="Texture2D" uid="uid://vpn1ujp2hwiv" path="res://Assets/temp_gold_coin.png" id="3_hncfd"]
 [ext_resource type="Texture2D" uid="uid://cw7n1iex1t2b1" path="res://Assets/temp_silver_coin.png" id="4_36o68"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_jea4o"]
-atlas = ExtResource("1_y73c7")
-region = Rect2(0, 0, 159, 158)
+[sub_resource type="AtlasTexture" id="AtlasTexture_hncfd"]
+atlas = ExtResource("2_jea4o")
+region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yekfk"]
 atlas = ExtResource("3_hncfd")
@@ -17,9 +17,9 @@ region = Rect2(0, 0, 159, 159)
 atlas = ExtResource("4_36o68")
 region = Rect2(0, 0, 159, 159)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_byqvs"]
-atlas = ExtResource("1_y73c7")
-region = Rect2(159, 0, 159, 158)
+[sub_resource type="AtlasTexture" id="AtlasTexture_36o68"]
+atlas = ExtResource("2_jea4o")
+region = Rect2(16, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1owa6"]
 atlas = ExtResource("3_hncfd")
@@ -33,7 +33,7 @@ region = Rect2(159, 0, 159, 159)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_jea4o")
+"texture": SubResource("AtlasTexture_hncfd")
 }],
 "loop": true,
 "name": &"head",
@@ -57,7 +57,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_byqvs")
+"texture": SubResource("AtlasTexture_36o68")
 }],
 "loop": true,
 "name": &"tail",
@@ -85,7 +85,7 @@ script = ExtResource("1_jea4o")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1217145718]
 texture_filter = 1
-position = Vector2(40, 39)
-scale = Vector2(0.5, 0.5)
+position = Vector2(40, 40.000004)
+scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_hncfd")
-animation = &"head"
+animation = &"tail"

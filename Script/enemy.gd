@@ -52,16 +52,16 @@ func setup(enemy):
 	print("Hello" + str(enemy))
 	match enemy:
 		Enemy.MAGE:
-			max_coin = 15
-			coin = 15
+			max_coin = 100
+			coin = 100
 			max_flip = 1
 			silver_flip_rate = 0.0
 			gold_flip_rate = 0.0
 			bounty = 10
 			type = Enemy.MAGE
 		Enemy.DWARF:
-			max_coin = 20
-			coin = 20
+			max_coin = 100
+			coin = 100
 			max_flip = 2
 			silver_flip_rate = 0.0
 			gold_flip_rate = 0.0

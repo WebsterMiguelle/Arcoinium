@@ -1,0 +1,151 @@
+[gd_scene format=3 uid="uid://cjumn24wf84ma"]
+
+[ext_resource type="Script" uid="uid://oxp47e0yu1fa" path="res://Scene/coin_deck.gd" id="1_3w86l"]
+
+[node name="CoinDeck" type="Node2D" unique_id=955153148]
+script = ExtResource("1_3w86l")
+
+[node name="Deck" type="ColorRect" parent="." unique_id=1507739441]
+offset_left = -289.0
+offset_top = -127.0
+offset_right = 289.0
+offset_bottom = 173.0
+color = Color(0.46666667, 0.19215687, 0, 0.46666667)
+
+[node name="Row 1" type="Node2D" parent="Deck" unique_id=262539302]
+
+[node name="1" type="ColorRect" parent="Deck/Row 1" unique_id=1352874866]
+offset_left = 22.0
+offset_top = 19.0
+offset_right = 98.0
+offset_bottom = 95.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
+
+[node name="2" type="ColorRect" parent="Deck/Row 1" unique_id=1575373938]
+offset_left = 115.0
+offset_top = 19.0
+offset_right = 191.0
+offset_bottom = 95.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
+
+[node name="3" type="ColorRect" parent="Deck/Row 1" unique_id=108555166]
+offset_left = 206.0
+offset_top = 19.0
+offset_right = 282.0
+offset_bottom = 95.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
+
+[node name="4" type="ColorRect" parent="Deck/Row 1" unique_id=2034372317]
+offset_left = 297.0
+offset_top = 18.0
+offset_right = 373.0
+offset_bottom = 94.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
+
+[node name="5" type="ColorRect" parent="Deck/Row 1" unique_id=1633818957]
+offset_left = 390.0
+offset_top = 18.0
+offset_right = 466.0
+offset_bottom = 94.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
+
+[node name="6" type="ColorRect" parent="Deck/Row 1" unique_id=252150300]
+offset_left = 481.0
+offset_top = 18.0
+offset_right = 557.0
+offset_bottom = 94.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
+
+[node name="Row 2" type="Node2D" parent="Deck" unique_id=2080428165]
+
+[node name="7" type="ColorRect" parent="Deck/Row 2" unique_id=1629982485]
+offset_left = 23.0
+offset_top = 113.0
+offset_right = 99.0
+offset_bottom = 189.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
+
+[node name="8" type="ColorRect" parent="Deck/Row 2" unique_id=1673070020]
+offset_left = 116.0
+offset_top = 113.0
+offset_right = 192.0
+offset_bottom = 189.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
+
+[node name="9" type="ColorRect" parent="Deck/Row 2" unique_id=488802419]
+offset_left = 207.0
+offset_top = 113.0
+offset_right = 283.0
+offset_bottom = 189.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
+
+[node name="10" type="ColorRect" parent="Deck/Row 2" unique_id=355124109]
+offset_left = 298.0
+offset_top = 112.0
+offset_right = 374.0
+offset_bottom = 188.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
+
+[node name="11" type="ColorRect" parent="Deck/Row 2" unique_id=827670685]
+offset_left = 391.0
+offset_top = 112.0
+offset_right = 467.0
+offset_bottom = 188.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
+
+[node name="12" type="ColorRect" parent="Deck/Row 2" unique_id=2040889469]
+offset_left = 482.0
+offset_top = 112.0
+offset_right = 558.0
+offset_bottom = 188.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
+
+[node name="Row 3" type="Node2D" parent="Deck" unique_id=548289232]
+
+[node name="13" type="ColorRect" parent="Deck/Row 3" unique_id=1143932550]
+offset_left = 24.0
+offset_top = 207.0
+offset_right = 100.0
+offset_bottom = 283.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
+
+[node name="14" type="ColorRect" parent="Deck/Row 3" unique_id=144990765]
+offset_left = 117.0
+offset_top = 207.0
+offset_right = 193.0
+offset_bottom = 283.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
+
+[node name="15" type="ColorRect" parent="Deck/Row 3" unique_id=312138748]
+offset_left = 208.0
+offset_top = 207.0
+offset_right = 284.0
+offset_bottom = 283.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
+
+[node name="16" type="ColorRect" parent="Deck/Row 3" unique_id=36128810]
+offset_left = 299.0
+offset_top = 206.0
+offset_right = 375.0
+offset_bottom = 282.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
+
+[node name="17" type="ColorRect" parent="Deck/Row 3" unique_id=1555958709]
+offset_left = 392.0
+offset_top = 206.0
+offset_right = 468.0
+offset_bottom = 282.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
+
+[node name="18" type="ColorRect" parent="Deck/Row 3" unique_id=1511609577]
+offset_left = 483.0
+offset_top = 206.0
+offset_right = 559.0
+offset_bottom = 282.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
+
+[node name="CoinReserve" type="ColorRect" parent="." unique_id=264404005]
+offset_left = 310.0
+offset_top = 78.0
+offset_right = 387.0
+offset_bottom = 154.0

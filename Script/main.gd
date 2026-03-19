@@ -58,6 +58,9 @@ var latest_pair_left_coin = null
 var latest_pair_right_coin = null
 var payback_used = false
 var payback_coins = 10
+var passive_income_used = false
+var pocket_money_coins = 6
+var previous_player_gain = 0
 
 #GENERAL PASSIVES
 
@@ -89,6 +92,13 @@ var payback_coins = 10
 @export var has_refund = false
 @export var has_coin_snipe = false
 
+#INVESTOR PASSIVES
+
+@export var has_active_income = false
+@export var has_pocket_money = false
+@export var has_passive_income = false
+@export var has_simple_interest = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	game_over_ui.visible = false
@@ -96,12 +106,46 @@ func _ready():
 	battle_start()
 
 func activate_pre_battle_passives():
-
+	passive_income_used = false
 	payback_used = false
 	payback_coins = 12
+	pocket_money_coins = 6
+	if has_simple_interest:
+		show_floating_label(player,0,LabelType.SIMPLE_INTEREST)
+		enemy.bounty *= 1.3
 	if has_wishbone: show_floating_label(player,0,LabelType.WISH_BONE) 
 	if has_golden_clover: show_floating_label(player,0,LabelType.GOLDEN_CLOVER) 
 	if has_sleight_of_hand: show_floating_label(player,0,LabelType.SLEIGHT_OF_HAND) 
+	if has_pocket_money:
+		show_floating_label(player,0,LabelType.POCKET_MONEY) 
+		while pocket_money_coins != -1:
+			if player.current_re_flip != player.max_re_flip: 
+				re_flip_button.disabled = false
+			if current_turn != Turn.PLAYER:
+				return
+				
+			var state = 1
+			player.current_flip += 1
+			var coin = COIN.instantiate()
+			coin.setup(state,coin_deck.get_vacant_slot(player.current_flip))
+			
+			#Guaranteed Silver Flips
+			
+			coin.upgrade_to_silver()
+			coin.add_to_group("coins")
+			
+			add_child(coin);
+			latest_coin = coin
+			coin_count += 1
+			
+			print(player.current_flip)
+			if player.current_flip == player.max_flip or player.coin == 1:
+				flip_button.disabled = true
+			coin_calculation()
+			pocket_money_coins -= 1
+			await get_tree().create_timer(0.1).timeout
+		endTurn_button.disabled = false
+		re_flip_button.disabled = false
 
 func activate_player_turn_start_passives():
 	
@@ -162,6 +206,15 @@ func activate_player_turn_start_passives():
 	
 	latest_pair_left_coin = null
 	latest_pair_right_coin = null
+	
+	if has_active_income and previous_player_gain >= 25:
+		var gain_damage = previous_player_gain / 2
+		enemy.take_damage(gain_damage)
+		show_floating_label(enemy,gain_damage,LabelType.DAMAGE)
+		show_floating_label(player,gain_damage,LabelType.ACTIVE_INCOME)
+		check_defeat()
+		previous_player_gain = 0
+		
 
 func activate_player_turn_end_passives():
 	endTurn_button.disabled = true
@@ -174,7 +227,7 @@ func activate_player_turn_end_passives():
 		coin_calculation()
 		await get_tree().create_timer(1.0).timeout
 
-	if has_magic_trick and coin_count >= 4:
+	if has_magic_trick and coin_count >= 6:
 		show_floating_label(player,0,LabelType.MAGIC_TRICK)
 		var coins = get_tree().get_nodes_in_group("coins")
 		var index = 0
@@ -185,11 +238,11 @@ func activate_player_turn_end_passives():
 			print("Checking Coin: " + str(index))
 			if index == 1: first_coin = coin
 			if index == 2: second_coin = coin
-			if index == 3:
+			if index == 3 or index == 5:
 				coin.copy_coin(first_coin)
 				coin_calculation()
 				await get_tree().create_timer(0.1).timeout
-			if index == 4:
+			if index == 4 or index == 6:
 				coin.copy_coin(second_coin)
 				coin_calculation()
 				await get_tree().create_timer(0.1).timeout
@@ -213,8 +266,10 @@ func battle_start():
 	#Battle Start Passives
 	activate_pre_battle_passives()
 	start_player_turn()
+	
 
 func show_turn_ui(text):
+	endTurn_button.disabled = true
 	turn_ui.visible = true
 	turn_ui_label.text = text
 	turn_ui.modulate = Color("ffffff00")
@@ -231,6 +286,10 @@ func show_turn_ui(text):
 	tween = create_tween()
 	tween.parallel().tween_property(turn_ui,"modulate",Color("ffffff00"),0.2)
 	tween.parallel().tween_property(turn_ui, "position:y",target_position - 30,0.2)
+	if current_turn == Turn.PLAYER:
+		if has_pocket_money:
+			await get_tree().create_timer(1.0).timeout
+			endTurn_button.disabled = false
 	await get_tree().create_timer(1.0).timeout
 	turn_ui.visible = false
 
@@ -241,7 +300,7 @@ func _process(delta: float) -> void:
 
 
 func start_player_turn():
-	
+
 	#Initialize Global Stats
 	damage = 0
 	gain = 0
@@ -255,13 +314,16 @@ func start_player_turn():
 	player.gain_coin()
 
 	#Reset Player Stats
-	player.current_flip = 0
+	
+	if has_pocket_money and pocket_money_coins == 0:
+		player.current_flip = 0
+	else:
+		player.current_flip = 0
 	player.current_re_flip = 0
 
 	current_turn = Turn.PLAYER
 	flip_button.disabled = false
 	re_flip_button.disabled = true
-	endTurn_button.disabled = false
 	turn_calculation.text = ""
 	
 	#Activate Turn Start Passives
@@ -304,7 +366,6 @@ func start_enemy_turn():
 	
 	flip_button.disabled = true
 	re_flip_button.disabled = true
-	endTurn_button.disabled = true
 	
 	#FLIP COINS
 	await get_tree().create_timer(1.0).timeout
@@ -316,8 +377,15 @@ func start_enemy_turn():
 	end_enemy_turn()
 
 func end_enemy_turn():
-	player.take_damage(damage)
-	if damage != 0: show_floating_label(player,damage,LabelType.DAMAGE)
+	if damage != 0: 
+		if has_passive_income and !passive_income_used:
+			passive_income_used = true
+			show_floating_label(player,damage,LabelType.PASSIVE_INCOME)
+			player.coin += damage
+			update_player_coin()
+		else:
+			player.take_damage(damage)
+			show_floating_label(player,damage,LabelType.DAMAGE)
 	enemy.gain += gain
 	if gain != 0: show_floating_label(enemy,gain,LabelType.TO_GAIN)
 	var defeat = check_defeat()
@@ -341,8 +409,8 @@ func _on_endturn_pressed():
 	
 	#Activate End Turn Passives
 	await activate_player_turn_end_passives()
-
 	enemy.take_damage(damage)
+	previous_player_gain = gain
 	if damage != 0: show_floating_label(enemy,damage,LabelType.DAMAGE)
 	player.gain += gain
 	if gain != 0: show_floating_label(player,gain,LabelType.TO_GAIN)
@@ -410,7 +478,7 @@ func _on_flip_pressed():
 	if flip_clicks <= 3 and has_triple_nickel:
 		coin.upgrade_to_silver()
 		show_floating_label(player,0,LabelType.TRIPLE_NICKEL)
-	if coin.base_value > 2:
+	if coin.base_value > 2 and has_coin_snipe:
 		enemy.take_damage(1)
 		show_floating_label(player,0,LabelType.COIN_SNIPE)
 		show_floating_label(enemy,1,LabelType.DAMAGE)
@@ -426,11 +494,11 @@ func _on_flip_pressed():
 	var refund_chance = randf()
 	if has_refund and latest_coin != null:
 		if latest_coin.state == coin.state and refund_chance <= 0.2:
+			player.coin += (latest_coin.base_value / 2) + (coin.base_value / 2)
+			player.current_flip -= 2
 			show_floating_label(player,0,LabelType.REFUND)
 			latest_coin.queue_free()
 			coin.queue_free()
-			player.coin +=2
-			player.current_flip -= 2
 			show_floating_label(player,2,LabelType.GAIN)
 			coin_calculation()
 	
@@ -498,7 +566,7 @@ func _on_re_flip_pressed():
 	var coins = get_tree().get_nodes_in_group("coins")
 	var loyalty_chance = randf()
 	var loyalty_success = false
-	if loyalty_chance <= 0.2:
+	if loyalty_chance <= 0.2 and has_loyalty_contract:
 		loyalty_success = true
 		show_floating_label(player,0,LabelType.LOYALTY_CONTRACT)
 	for coin in coins:
@@ -513,9 +581,9 @@ func _on_re_flip_pressed():
 					show_floating_label(player,0,LabelType.INFLATION)
 					coin.upgrade()
 			if has_loyalty_contract and loyalty_success:
+				player.coin += coin.base_value / 2
 				coin.remove_from_group("coins")
 				coin.queue_free()
-				player.coin += 1
 				player.current_flip -= 1
 				flip_button.disabled = false
 				re_flip_button.disabled = true
@@ -643,7 +711,11 @@ enum LabelType{
 	LOYALTY_CONTRACT,
 	TRIPLE_NICKEL,
 	REFUND,
-	COIN_SNIPE
+	COIN_SNIPE,
+	ACTIVE_INCOME,
+	POCKET_MONEY,
+	PASSIVE_INCOME,
+	SIMPLE_INTEREST
 }
 func show_floating_label(entity, value, type):
 	var label = Label.new()
@@ -721,7 +793,7 @@ func show_floating_label(entity, value, type):
 			label.add_theme_color_override("font_color",Color.DARK_GOLDENROD)
 			label.add_theme_font_size_override("font_size",22)
 		LabelType.COIN_SNIPE:
-			label.text = "COIN SNIPE: 1 Richochet Damage"
+			label.text = "COIN SNIPE: 1 DMG"
 			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
 			label.add_theme_font_size_override("font_size",22)
 		LabelType.REFUND:
@@ -735,6 +807,22 @@ func show_floating_label(entity, value, type):
 		LabelType.LOYALTY_CONTRACT:
 			label.text = "LOYALTY CONTRACT: All Coins Retrieved" 
 			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
+			label.add_theme_font_size_override("font_size",22)
+		LabelType.SIMPLE_INTEREST:
+			label.text = "SIMPLE INTEREST: Enemy Bounty +50%"
+			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
+			label.add_theme_font_size_override("font_size",22)
+		LabelType.POCKET_MONEY:
+			label.text = "POCKET MONEY: +8 Silver Moon Coins" 
+			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
+			label.add_theme_font_size_override("font_size",22)
+		LabelType.PASSIVE_INCOME:
+			label.text = "PASSIVE INCOME: +" + str(value) + " COINS"
+			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
+			label.add_theme_font_size_override("font_size",22)
+		LabelType.ACTIVE_INCOME:
+			label.text = "ACTIVE INCOME: " + str(value) + " DMG"
+			label.add_theme_color_override("font_color",Color.DARK_GOLDENROD)
 			label.add_theme_font_size_override("font_size",22)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -757,11 +845,11 @@ func show_floating_label(entity, value, type):
 	#FURTHER OFFSET
 	match type:
 		LabelType.DAMAGE:
-			label.global_position.x -= 70
+			label.global_position.x -= 10
 		LabelType.GAIN:
-			label.global_position.x -= 70
+			label.global_position.x -= 10
 		LabelType.TO_GAIN:
-			label.global_position.x -= 70
+			label.global_position.x -= 10
 		LabelType.SILVER_FLIP:
 			label.global_position.x -= 70
 			label.global_position.y -= 70

@@ -31,8 +31,8 @@ enum Enemy{
 @onready var turn_ui: ColorRect = $"Battle UI/Turn UI"
 @onready var turn_ui_label: Label = $"Battle UI/Turn UI/Turn UI Label"
 
-
 @onready var game_over_ui: CanvasLayer = $"Game Over UI"
+
 
 #COIN DECK 
 @onready var coin_deck: Node2D = $CoinDeck
@@ -54,7 +54,13 @@ var current_turn = Turn.PLAYER
 var flip_clicks = 0
 var latest_coin = null
 var coin_count = 0
+var latest_pair_left_coin = null
+var latest_pair_right_coin = null
+var payback_used = false
+var payback_coins = 8
+
 #GENERAL PASSIVES
+
 #B-Rank
 @export var has_wishbone = false
 @export var has_golden_clover = false
@@ -63,8 +69,18 @@ var coin_count = 0
 @export var has_merchant_scroll = false
 @export var has_impromptu_flip = false
 @export var has_advanced_planning = false
+
+#A-Rank
 @export var has_magic_trick = false
 @export var has_sleight_of_hand = false
+@export var has_piggy = false
+
+#INNOVATOR PASSIVES
+
+@export var has_inflation = false
+@export var has_payback = false
+@export var has_lucky_pair = false
+@export var has_value_increase = false
 
 
 # Called when the node enters the scene tree for the first time.
@@ -72,6 +88,105 @@ func _ready():
 	game_over_ui.visible = false
 	turn_ui.visible = false
 	battle_start()
+
+func activate_pre_battle_passives():
+	payback_used = false
+	payback_coins = 12
+	if has_wishbone: show_floating_label(player,0,LabelType.WISH_BONE) 
+	if has_golden_clover: show_floating_label(player,0,LabelType.GOLDEN_CLOVER) 
+	if has_sleight_of_hand: show_floating_label(player,0,LabelType.SLEIGHT_OF_HAND) 
+
+func activate_player_turn_start_passives():
+	
+	if payback_used:
+		endTurn_button.disabled = true
+		re_flip_button.disabled = true
+		while payback_coins != 0:
+			if player.current_re_flip != player.max_re_flip: 
+				re_flip_button.disabled = false
+			if current_turn != Turn.PLAYER:
+				return
+				
+			var state = randi() % 2
+			player.current_flip += 1
+			var coin = COIN.instantiate()
+			coin.setup(state,coin_deck.get_vacant_slot(player.current_flip))
+			
+			#Guaranteed Silver Flips
+			
+			coin.upgrade_to_gold()
+			coin.add_to_group("coins")
+			
+			add_child(coin);
+			latest_coin = coin
+			coin_count += 1
+			
+			print(player.current_flip)
+			if player.current_flip == player.max_flip or player.coin == 1:
+				flip_button.disabled = true
+			coin_calculation()
+			payback_coins -= 1
+			await get_tree().create_timer(0.2).timeout
+		endTurn_button.disabled = false
+		re_flip_button.disabled = false
+
+	#Piggy Passive
+	if latest_pair_left_coin != null and latest_pair_right_coin != null:
+		show_floating_label(player,0,LabelType.PIGGY)
+		var left_coin = COIN.instantiate()
+		player.current_flip += 1
+		re_flip_button.disabled = false
+		left_coin.setup(latest_pair_left_coin.state,coin_deck.get_vacant_slot(player.current_flip))
+		left_coin.copy_coin(latest_pair_left_coin)
+		left_coin.reserved = false
+		left_coin.add_to_group("coins")
+		add_child(left_coin);
+		coin_count += 1
+		
+		var right_coin = COIN.instantiate()
+		player.current_flip += 1
+		re_flip_button.disabled = false
+		right_coin.setup(latest_pair_right_coin.state,coin_deck.get_vacant_slot(player.current_flip))
+		right_coin.copy_coin(latest_pair_right_coin)
+		right_coin.reserved = false
+		right_coin.add_to_group("coins")
+		add_child(right_coin);
+		coin_count += 1
+	
+	latest_pair_left_coin = null
+	latest_pair_right_coin = null
+
+func activate_player_turn_end_passives():
+	if has_impromptu_flip:
+		show_floating_label(player,0,LabelType.IMPROMPTU_FLIP)
+		if latest_coin.state == 0:
+			latest_coin.state = 1
+		else:
+			latest_coin.state = 0
+		coin_calculation()
+		await get_tree().create_timer(1.0).timeout
+
+	if has_magic_trick and coin_count >= 4:
+		show_floating_label(player,0,LabelType.MAGIC_TRICK)
+		var coins = get_tree().get_nodes_in_group("coins")
+		var index = 0
+		var first_coin = null
+		var second_coin = null
+		for coin in coins:
+			index += 1
+			print("Checking Coin: " + str(index))
+			if index == 1: first_coin = coin
+			if index == 2: second_coin = coin
+			if index == 3:
+				coin.copy_coin(first_coin)
+				coin_calculation()
+				await get_tree().create_timer(0.1).timeout
+			if index == 4:
+				coin.copy_coin(second_coin)
+				coin_calculation()
+				await get_tree().create_timer(0.1).timeout
+		coin_calculation()
+		await get_tree().create_timer(1.0).timeout
 	
 func battle_start():
 	randomize()
@@ -88,10 +203,7 @@ func battle_start():
 	show_turn_ui("BATTLE START")
 	
 	#Battle Start Passives
-	
-	if has_wishbone: show_floating_label(player,0,LabelType.WISH_BONE) 
-	if has_golden_clover: show_floating_label(player,0,LabelType.GOLDEN_CLOVER) 
-	if has_sleight_of_hand: show_floating_label(player,0,LabelType.SLEIGHT_OF_HAND) 
+	activate_pre_battle_passives()
 	start_player_turn()
 
 func show_turn_ui(text):
@@ -144,8 +256,10 @@ func start_player_turn():
 	endTurn_button.disabled = false
 	turn_calculation.text = ""
 	
+	#Activate Turn Start Passives
+	await activate_player_turn_start_passives()
+	
 	#Check Coin Reserve
-
 	if reserved_coin != null:
 		var coin = COIN.instantiate()
 		player.current_flip += 1
@@ -154,11 +268,12 @@ func start_player_turn():
 		coin.copy_coin(reserved_coin)
 		coin.reserved = false
 		coin.add_to_group("coins")
+		if has_value_increase:
+			coin.upgrade()
+			show_floating_label(player,0,LabelType.VALUE_INCREASE)
 		add_child(coin);
 		coin_count += 1
 		reserved_coin.queue_free()
-	
-	
 	
 func start_enemy_turn():
 	
@@ -193,6 +308,7 @@ func start_enemy_turn():
 	end_enemy_turn()
 
 func end_enemy_turn():
+	damage += 50
 	player.take_damage(damage)
 	if damage != 0: show_floating_label(player,damage,LabelType.DAMAGE)
 	enemy.gain += gain
@@ -201,6 +317,14 @@ func end_enemy_turn():
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
 	for coin in coins:
 		coin.queue_free()
+	
+	#ACTIVATE PAYBACK
+	if has_payback and !payback_used and defeat: 
+		show_floating_label(player,0,LabelType.PAYBACK)
+		defeat = null
+		player.coin = 1
+		payback_used = true
+		
 	if defeat == null:
 		await get_tree().create_timer(0.4).timeout
 		show_turn_ui("Player Turn")
@@ -209,33 +333,7 @@ func end_enemy_turn():
 func _on_endturn_pressed():
 	
 	#Activate End Turn Passives
-	if has_impromptu_flip:
-		show_floating_label(player,0,LabelType.IMPROMPTU_FLIP)
-		latest_coin.re_flip()
-		coin_calculation()
-		await get_tree().create_timer(1.0).timeout
-	
-	if has_magic_trick and coin_count >= 6:
-		show_floating_label(player,0,LabelType.MAGIC_TRICK)
-		var coins = get_tree().get_nodes_in_group("coins")
-		var index = 0
-		var first_coin = null
-		var second_coin = null
-		for coin in coins:
-			index += 1
-			print("Checking Coin: " + str(index))
-			if index == 1: first_coin = coin
-			if index == 2: second_coin = coin
-			if index == 3 or index == 5:
-				coin.copy_coin(first_coin)
-				coin_calculation()
-				await get_tree().create_timer(0.1).timeout
-			if index == 4 or index == 6:
-				coin.copy_coin(second_coin)
-				coin_calculation()
-				await get_tree().create_timer(0.1).timeout
-		coin_calculation()
-		await get_tree().create_timer(1.0).timeout
+	await activate_player_turn_end_passives()
 
 	enemy.take_damage(damage)
 	if damage != 0: show_floating_label(enemy,damage,LabelType.DAMAGE)
@@ -247,7 +345,20 @@ func _on_endturn_pressed():
 		if current_turn == Turn.PLAYER:
 			start_enemy_turn()
 	var coins = get_tree().get_nodes_in_group("coins")
+	var is_left = true
+	
+	if has_piggy:
+		latest_pair_left_coin = COIN.instantiate()
+		latest_pair_right_coin = COIN.instantiate()
 	for coin in coins:
+		if has_piggy and is_left and !coin.reserved:
+			latest_pair_left_coin.copy_coin(coin)
+			is_left = false
+			print("Piggy Copying 1")
+		elif has_piggy and !is_left and !coin.reserved:
+			latest_pair_right_coin.copy_coin(coin)
+			is_left = true
+			print("Piggy Copying 2")
 		if coin.reserved == false:
 			coin.queue_free()
 
@@ -267,6 +378,7 @@ func _on_flip_pressed():
 	if flip_clicks == 2 and has_lunar_coin:
 		state = 1;
 		show_floating_label(player,0,LabelType.LUNAR_COIN)
+	
 	player.current_flip += 1
 	player.take_damage(1)
 	show_floating_label(player,1,LabelType.DAMAGE)
@@ -286,6 +398,9 @@ func _on_flip_pressed():
 		coin.upgrade_to_gold()
 		show_floating_label(player,0,LabelType.GOLD_FLIP) 
 	
+	if has_lucky_pair and (flip_clicks == 7 or flip_clicks == 8):
+		coin.upgrade()
+		show_floating_label(player,0,LabelType.LUCKY_PAIR)
 	coin.add_to_group("coins")
 	add_child(coin);
 	latest_coin = coin
@@ -301,7 +416,6 @@ func _on_flip_pressed():
 func enemy_flip():
 	
 	var state = randi() % 2
-	
 	enemy.current_flip += 1
 	enemy.take_damage(1)
 	show_floating_label(enemy,1,LabelType.DAMAGE)
@@ -331,7 +445,11 @@ func enemy_flip():
 
 func check_defeat():
 	if player.coin <= 0:
-		game_over_ui.visible = true
+		if has_payback:
+			if payback_used:
+				game_over_ui.visible = true
+		else:
+			game_over_ui.visible = true
 		return true
 		
 	if enemy.coin <= 0:
@@ -349,10 +467,17 @@ func _on_re_flip_pressed():
 	var coins = get_tree().get_nodes_in_group("coins")
 	for coin in coins:
 		index += 1
-		if index <= 3 and has_advanced_planning:
+		if index <= 2 and has_advanced_planning:
 			pass
 		else:
-			coin.re_flip()
+			if has_inflation:
+				coin.re_flip()
+				var upgrade_chance = randf()
+				if upgrade_chance <= 0.1:
+					show_floating_label(player,0,LabelType.INFLATION)
+					coin.upgrade()
+			else:
+				coin.re_flip()
 	
 	if player.current_re_flip == player.max_re_flip:
 		re_flip_button.disabled = true
@@ -463,7 +588,12 @@ enum LabelType{
 	IMPROMPTU_FLIP,
 	ADVANCED_PLANNING,
 	MAGIC_TRICK,
-	SLEIGHT_OF_HAND
+	SLEIGHT_OF_HAND,
+	PIGGY,
+	INFLATION,
+	PAYBACK,
+	LUCKY_PAIR,
+	VALUE_INCREASE
 }
 func show_floating_label(entity, value, type):
 	var label = Label.new()
@@ -475,7 +605,7 @@ func show_floating_label(entity, value, type):
 			label.add_theme_color_override("font_color",Color.RED)
 			label.add_theme_font_size_override("font_size",18)
 		LabelType.GAIN:
-			label.text = "+" + str(value) + " GAIN"
+			label.text = "+" + str(value) + " COINS"
 			label.add_theme_color_override("font_color",Color.GOLD)
 			label.add_theme_font_size_override("font_size",18)
 		LabelType.TO_GAIN:
@@ -490,35 +620,55 @@ func show_floating_label(entity, value, type):
 			label.add_theme_color_override("font_color",Color.GOLDENROD)
 		LabelType.WISH_BONE:
 			label.text = "WISH BONE: +10% Silver Flip Rate"
-			label.add_theme_color_override("font_color",Color.SILVER)
+			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
 			label.add_theme_font_size_override("font_size",22)
 		LabelType.GOLDEN_CLOVER:
 			label.text = "GOLDEN CLOVER: +5% Gold Flip Rate"
-			label.add_theme_color_override("font_color",Color.DARK_GOLDENROD)
+			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
 			label.add_theme_font_size_override("font_size",22)
 		LabelType.SLEIGHT_OF_HAND:
 			label.text = "SLEIGHT OF HAND: +6 Re-Flips"
-			label.add_theme_color_override("font_color",Color.DARK_CYAN)
+			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
 			label.add_theme_font_size_override("font_size",22)
 		LabelType.SOLAR_COIN:
 			label.text = "SOLAR COIN: Guaranteed Sun"
-			label.add_theme_color_override("font_color",Color.ORANGE_RED)
+			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
 			label.add_theme_font_size_override("font_size",22)
 		LabelType.LUNAR_COIN:
 			label.text = "LUNAR COIN: Guaranteed Moon"
-			label.add_theme_color_override("font_color",Color.NAVY_BLUE)
+			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
 			label.add_theme_font_size_override("font_size",22)
 		LabelType.IMPROMPTU_FLIP:
 			label.text = "IMPROMPTU FLIP: Last Coin Re-Flipped"
-			label.add_theme_color_override("font_color",Color.CHOCOLATE)
+			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
 			label.add_theme_font_size_override("font_size",22)
 		LabelType.MAGIC_TRICK:
 			label.text = "MAGIC TRICK: 1st Pair Duplicated"
-			label.add_theme_color_override("font_color",Color.REBECCA_PURPLE)
+			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
 			label.add_theme_font_size_override("font_size",22)
 		LabelType.ADVANCED_PLANNING:
-			label.text = "ADVANCED PLANNING: No Re-Flip to First 3 Coins" 
-			label.add_theme_color_override("font_color",Color.MEDIUM_PURPLE)
+			label.text = "ADVANCED PLANNING: No Re-Flip to First 2 Coins" 
+			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
+			label.add_theme_font_size_override("font_size",22)
+		LabelType.PIGGY:
+			label.text = "PIGGY: Generated 1st Pair" 
+			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
+			label.add_theme_font_size_override("font_size",22)
+		LabelType.VALUE_INCREASE:
+			label.text = "VALUE INCREASE: Reserved Coin Upgrade" 
+			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
+			label.add_theme_font_size_override("font_size",22)
+		LabelType.LUCKY_PAIR:
+			label.text = "LUCKY PAIR: Guaranteed Coin Upgrade" 
+			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
+			label.add_theme_font_size_override("font_size",22)
+		LabelType.PAYBACK:
+			label.text = "PAYBACK: +12 Gold Coins Next Turn" 
+			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
+			label.add_theme_font_size_override("font_size",30)
+		LabelType.INFLATION:
+			label.text = "INFLATION: Coin Upgraded" 
+			label.add_theme_color_override("font_color",Color.DARK_GOLDENROD)
 			label.add_theme_font_size_override("font_size",22)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -534,53 +684,44 @@ func show_floating_label(entity, value, type):
 	elif entity == enemy:
 		var portrait = enemy_portrait
 		label.global_position = portrait.global_position
-		label.global_position.x -= 20
+		label.global_position.x += 70
 		label.global_position.y += 120
 		target_pos = label.global_position.y + 100
 
 	#FURTHER OFFSET
 	match type:
+		LabelType.DAMAGE:
+			label.global_position.x -= 70
+		LabelType.GAIN:
+			label.global_position.x -= 70
 		LabelType.TO_GAIN:
 			label.global_position.x -= 70
 		LabelType.SILVER_FLIP:
 			label.global_position.x -= 70
 			label.global_position.y -= 70
-			target_pos = label.global_position.y - 100
 		LabelType.GOLD_FLIP:
 			label.global_position.x -= 70
 			label.global_position.y -= 100
-			target_pos = label.global_position.y - 100
 		LabelType.WISH_BONE:
 			label.global_position.x -= 100
 			label.global_position.y -= 10
-			target_pos = label.global_position.y - 100
 		LabelType.GOLDEN_CLOVER:
 			label.global_position.x -= 100
 			label.global_position.y += 20
 		LabelType.SLEIGHT_OF_HAND:
 			label.global_position.x -= 100
 			label.global_position.y -= 50
-		LabelType.SOLAR_COIN:
+		_:
 			label.global_position.x -= 100
-			label.global_position.y -= 100
-			target_pos = label.global_position.y - 50
-		LabelType.LUNAR_COIN:
-			label.global_position.x -= 100
-			label.global_position.y -= 80
-			target_pos = label.global_position.y - 50
-		LabelType.IMPROMPTU_FLIP:
-			label.global_position.x -= 100
-			label.global_position.y -= 10
-			target_pos = label.global_position.y - 50
-		LabelType.MAGIC_TRICK:
-			label.global_position.x -= 100
-			label.global_position.y -= 10
-			target_pos = label.global_position.y - 50
-		LabelType.ADVANCED_PLANNING:
-			label.global_position.x -= 100
-			label.global_position.y -= 10
-			target_pos = label.global_position.y - 50
+			label.global_position.y -= 50
 	
+	#Random Offset
+	label.global_position.x += randi_range(-20,20)
+	label.global_position.y += randi_range(-40,40)
+	if entity == player:
+		target_pos = label.global_position.y - randi_range(70,200)
+	else: 
+		target_pos = label.global_position.y + randi_range(70,200)
 	add_child(label)
 	var tween = create_tween()
 	tween.parallel().tween_property(label,"position:y",target_pos,2.0)

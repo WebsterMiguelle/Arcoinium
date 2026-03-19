@@ -53,7 +53,7 @@ func setup(enemy):
 	match enemy:
 		Enemy.MAGE:
 			max_coin = 100
-			coin = 100
+			coin = 10
 			max_flip = 1
 			silver_flip_rate = 0.0
 			gold_flip_rate = 0.0
@@ -61,7 +61,7 @@ func setup(enemy):
 			type = Enemy.MAGE
 		Enemy.DWARF:
 			max_coin = 100
-			coin = 100
+			coin = 10
 			max_flip = 2
 			silver_flip_rate = 0.0
 			gold_flip_rate = 0.0

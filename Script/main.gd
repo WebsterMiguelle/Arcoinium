@@ -36,6 +36,7 @@ enum Enemy{
 
 #COIN DECK 
 @onready var coin_deck: Node2D = $CoinDeck
+@onready var reward_manager = $CardManager
 
 #COIN
 const COIN = preload("uid://ddet242jm5v23")
@@ -47,6 +48,15 @@ var debt = 0
 var reserved_coin = null
 var current_turn = Turn.PLAYER
 
+
+var current_enemy_type
+
+#Random Events Selection Scene
+var event_maps = [
+   # preload("res://Events/###.tscn"),
+   # preload("res://Events/###.tscn"),
+   # preload("res://Events/###.tscn")
+]
 
 #PASSIVES
 
@@ -72,6 +82,9 @@ func _ready():
 	game_over_ui.visible = false
 	turn_ui.visible = false
 	battle_start()
+	print(reward_manager)
+	
+	
 	
 func battle_start():
 	randomize()
@@ -80,8 +93,12 @@ func battle_start():
 	re_flip_button.pressed.connect(_on_re_flip_pressed)
 	var enemy_id = randi() % 2
 	match enemy_id:
-		0: enemy.setup(Enemy.MAGE)
-		1: enemy.setup(Enemy.DWARF)
+		0: 
+			enemy.setup(Enemy.MAGE)
+			current_enemy_type = Enemy.MAGE
+		1: 
+			enemy.setup(Enemy.DWARF)
+			current_enemy_type = Enemy.DWARF
 	
 	update_enemy_coin()
 	update_player_coin()
@@ -211,8 +228,8 @@ func _on_endturn_pressed():
 	#Activate End Turn Passives
 	if has_impromptu_flip:
 		show_floating_label(player,0,LabelType.IMPROMPTU_FLIP)
-		latest_coin.re_flip()
-		coin_calculation()
+		if has_impromptu_flip and latest_coin != null:
+			coin_calculation()
 		await get_tree().create_timer(1.0).timeout
 	
 	if has_magic_trick and coin_count >= 6:
@@ -328,14 +345,57 @@ func enemy_flip():
 	enemy_coin_calculation()
 	check_defeat()
 	
+func trigger_game_over(player_won: bool):
+	
+	if player_won:
+		reward_manager.show_rewards()
+	
+	game_over_ui.visible = true
+	
+	flip_button.disabled = true
+	re_flip_button.disabled = true
+	endTurn_button.disabled = true
+	
+	
+	set_process(false)
+	
+	var result_label = game_over_ui.get_node("ColorRect/Gameover")
+	var enemy_label = game_over_ui.get_node("ColorRect/EnemyLabel")
+	
+	
+	match current_enemy_type:
+		Enemy.MAGE:
+			if player_won:
+				result_label.text = "ARCANE FALLEN"
+				enemy_label.text = "Mage has been slain"
+			else:
+				result_label.text = "CONSUMED BY MAGIC"
+				enemy_label.text = "Mage Wins"
+			
+			
+		Enemy.DWARF:
+			if player_won:
+				result_label.text = "THE FORGE BREAKS"
+				enemy_label.text = "Dwarf has been slain"
+			else:
+				result_label.text = "CRUSHED BY THE FORGE"
+				enemy_label.text = "Dwarf Wins"
+				
+	enemy_label.modulate.a = 0.0
+	
+	await get_tree().create_timer(1.0).timeout
+	
+			
+	var tween = create_tween()
+	tween.tween_property(enemy_label, "modulate:a", 1.0, 1.0)
 
 func check_defeat():
 	if player.coin <= 0:
-		game_over_ui.visible = true
+		trigger_game_over(false)
 		return true
 		
 	if enemy.coin <= 0:
-		game_over_ui.visible = true
+		trigger_game_over(true)
 		return false
 	
 	return null
@@ -586,3 +646,29 @@ func show_floating_label(entity, value, type):
 	tween.parallel().tween_property(label,"position:y",target_pos,2.0)
 	tween.parallel().tween_property(label,"modulate",Color("ffffff00"),2.0)
 	tween.tween_callback(label.queue_free)
+
+
+func _on_restart_pressed():
+	await get_tree().create_timer(0.2).timeout
+	get_tree().reload_current_scene()
+	
+	
+#func trigger_random_event():
+	#if event_maps.empty():
+	   #print("No maps to load!")
+	   #return
+
+	#Pick a random index
+	#var index = randi() % event_maps.size()
+	#var map_scene = event_maps[index]
+
+	#Instantiate the map
+	#var map_instance = map_scene.instantiate()
+	#get_tree().current_scene.add_child(map_instance)
+
+	#print("Random Event Triggered:", map_scene.resource_path)
+	
+
+
+func _on_refresh_pressed() -> void:
+	pass # Replace with function body.

@@ -26,6 +26,7 @@ offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h2yge")
+has_refund = true
 
 [node name="Player" type="Node2D" parent="." unique_id=1514396733]
 script = ExtResource("2_1bvp3")

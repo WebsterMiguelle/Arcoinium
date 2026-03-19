@@ -57,7 +57,7 @@ var coin_count = 0
 var latest_pair_left_coin = null
 var latest_pair_right_coin = null
 var payback_used = false
-var payback_coins = 8
+var payback_coins = 10
 
 #GENERAL PASSIVES
 
@@ -82,6 +82,12 @@ var payback_coins = 8
 @export var has_lucky_pair = false
 @export var has_value_increase = false
 
+#SHOOTER PASSIVES
+
+@export var has_loyalty_contract = false
+@export var has_triple_nickel = false
+@export var has_refund = false
+@export var has_coin_snipe = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -90,6 +96,7 @@ func _ready():
 	battle_start()
 
 func activate_pre_battle_passives():
+
 	payback_used = false
 	payback_coins = 12
 	if has_wishbone: show_floating_label(player,0,LabelType.WISH_BONE) 
@@ -157,6 +164,7 @@ func activate_player_turn_start_passives():
 	latest_pair_right_coin = null
 
 func activate_player_turn_end_passives():
+	endTurn_button.disabled = true
 	if has_impromptu_flip:
 		show_floating_label(player,0,LabelType.IMPROMPTU_FLIP)
 		if latest_coin.state == 0:
@@ -308,7 +316,6 @@ func start_enemy_turn():
 	end_enemy_turn()
 
 func end_enemy_turn():
-	damage += 50
 	player.take_damage(damage)
 	if damage != 0: show_floating_label(player,damage,LabelType.DAMAGE)
 	enemy.gain += gain
@@ -380,8 +387,6 @@ func _on_flip_pressed():
 		show_floating_label(player,0,LabelType.LUNAR_COIN)
 	
 	player.current_flip += 1
-	player.take_damage(1)
-	show_floating_label(player,1,LabelType.DAMAGE)
 	var coin = COIN.instantiate()
 	coin.setup(state,coin_deck.get_vacant_slot(player.current_flip))
 	
@@ -401,8 +406,34 @@ func _on_flip_pressed():
 	if has_lucky_pair and (flip_clicks == 7 or flip_clicks == 8):
 		coin.upgrade()
 		show_floating_label(player,0,LabelType.LUCKY_PAIR)
+	
+	if flip_clicks <= 3 and has_triple_nickel:
+		coin.upgrade_to_silver()
+		show_floating_label(player,0,LabelType.TRIPLE_NICKEL)
+	if coin.base_value > 2:
+		enemy.take_damage(1)
+		show_floating_label(player,0,LabelType.COIN_SNIPE)
+		show_floating_label(enemy,1,LabelType.DAMAGE)
+		check_defeat()
+
+	player.take_damage(coin.base_value / 2)
+	show_floating_label(player,coin.base_value / 2,LabelType.DAMAGE)
 	coin.add_to_group("coins")
+	
+	
 	add_child(coin);
+	
+	var refund_chance = randf()
+	if has_refund and latest_coin != null:
+		if latest_coin.state == coin.state and refund_chance <= 0.2:
+			show_floating_label(player,0,LabelType.REFUND)
+			latest_coin.queue_free()
+			coin.queue_free()
+			player.coin +=2
+			player.current_flip -= 2
+			show_floating_label(player,2,LabelType.GAIN)
+			coin_calculation()
+	
 	latest_coin = coin
 	coin_count += 1
 	
@@ -465,6 +496,11 @@ func _on_re_flip_pressed():
 	player.current_re_flip += 1
 	var index = 0
 	var coins = get_tree().get_nodes_in_group("coins")
+	var loyalty_chance = randf()
+	var loyalty_success = false
+	if loyalty_chance <= 0.2:
+		loyalty_success = true
+		show_floating_label(player,0,LabelType.LOYALTY_CONTRACT)
 	for coin in coins:
 		index += 1
 		if index <= 2 and has_advanced_planning:
@@ -476,6 +512,15 @@ func _on_re_flip_pressed():
 				if upgrade_chance <= 0.1:
 					show_floating_label(player,0,LabelType.INFLATION)
 					coin.upgrade()
+			if has_loyalty_contract and loyalty_success:
+				coin.remove_from_group("coins")
+				coin.queue_free()
+				player.coin += 1
+				player.current_flip -= 1
+				flip_button.disabled = false
+				re_flip_button.disabled = true
+				coin_calculation()
+				
 			else:
 				coin.re_flip()
 	
@@ -515,11 +560,12 @@ func coin_calculation():
 		else:
 			pass
 		is_left = !is_left
-	if damage != 0 or gain != 0:
+	if (damage != 0 or gain != 0) and coins != null:
 		var text = "DMG: " + str(damage) + " GAIN: " + str(gain)
 		turn_calculation.text = text
 		turn_calculation.add_theme_color_override("font_color", Color.BLACK)
-
+	else: 
+		turn_calculation.text = ""
 func reserve_left_over_coin():
 	var is_left = true # true - Left Coin, false - Right Coin
 	var left_coin
@@ -593,7 +639,11 @@ enum LabelType{
 	INFLATION,
 	PAYBACK,
 	LUCKY_PAIR,
-	VALUE_INCREASE
+	VALUE_INCREASE,
+	LOYALTY_CONTRACT,
+	TRIPLE_NICKEL,
+	REFUND,
+	COIN_SNIPE
 }
 func show_floating_label(entity, value, type):
 	var label = Label.new()
@@ -669,6 +719,22 @@ func show_floating_label(entity, value, type):
 		LabelType.INFLATION:
 			label.text = "INFLATION: Coin Upgraded" 
 			label.add_theme_color_override("font_color",Color.DARK_GOLDENROD)
+			label.add_theme_font_size_override("font_size",22)
+		LabelType.COIN_SNIPE:
+			label.text = "COIN SNIPE: 1 Richochet Damage"
+			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
+			label.add_theme_font_size_override("font_size",22)
+		LabelType.REFUND:
+			label.text = "REFUND: Retrieved 2 Coins" 
+			label.add_theme_color_override("font_color",Color.DARK_GOLDENROD)
+			label.add_theme_font_size_override("font_size",22)
+		LabelType.TRIPLE_NICKEL:
+			label.text = "TRIPLE NICKEL: Guaranteed Silver" 
+			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
+			label.add_theme_font_size_override("font_size",22)
+		LabelType.LOYALTY_CONTRACT:
+			label.text = "LOYALTY CONTRACT: All Coins Retrieved" 
+			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
 			label.add_theme_font_size_override("font_size",22)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER

@@ -5,16 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://bmkxblxwtg47d" path="res://Assets/Rug.png" id="2_3amdw"]
 [ext_resource type="Script" uid="uid://dedsjnmo4366e" path="res://Script/enemy.gd" id="3_lquwl"]
 [ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2wwxx"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3amdw"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1xcnr"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ow1sv"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_75buv"]
+[ext_resource type="PackedScene" uid="uid://b01fk6f1pan7q" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
 
 [node name="Main" type="TextureRect" unique_id=1891652298]
 anchors_preset = 15
@@ -73,43 +64,28 @@ text = "Enemy"
 
 [node name="Battle UI" type="CanvasLayer" parent="." unique_id=1048849936]
 
-[node name="PlayerHealthBar" type="ProgressBar" parent="Battle UI" unique_id=367744439]
-z_index = -6
-offset_left = 184.0
-offset_top = 573.0
-offset_right = 590.36145
-offset_bottom = 623.0
-scale = Vector2(1.0015713, 0.8430614)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-max_value = 10.0
-value = 10.0
-show_percentage = false
-
-[node name="HealthLabel" type="Label" parent="Battle UI/PlayerHealthBar" unique_id=1574205912]
-layout_mode = 0
-offset_left = 5.9905853
-offset_top = -40.32921
-offset_right = 45.990585
-offset_bottom = -12.329208
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-
-[node name="Flip" type="Button" parent="Battle UI/PlayerHealthBar" unique_id=1788355213]
-z_index = 4
-custom_minimum_size = Vector2(150, 40)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
+[node name="PlayerHealthBar2" parent="Battle UI" unique_id=2054393168 instance=ExtResource("5_1xcnr")]
+anchors_preset = 2
+anchor_top = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
+offset_left = 159.0
+offset_top = -121.99994
+offset_right = 241.6
+offset_bottom = -105.99994
+grow_vertical = 0
+scale = Vector2(5, 5)
+
+[node name="HealthLabel" type="Label" parent="Battle UI/PlayerHealthBar2" unique_id=1574205912]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -10.5
+offset_right = 1.0
+offset_bottom = 10.5
 grow_vertical = 2
-theme_override_font_sizes/font_size = 28
-theme_override_styles/normal = SubResource("StyleBoxEmpty_2wwxx")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_3amdw")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_1xcnr")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_ow1sv")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_75buv")
-text = "FLIP"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
 
 [node name="EnemyHealthBar" type="ProgressBar" parent="Battle UI" unique_id=2134660899]
 offset_left = 558.0
@@ -187,6 +163,7 @@ vertical_alignment = 1
 position = Vector2(574, 310)
 
 [node name="Game Over UI" type="CanvasLayer" parent="." unique_id=994626979]
+visible = false
 
 [node name="ColorRect" type="ColorRect" parent="Game Over UI" unique_id=656304766]
 offset_left = -17.0
@@ -195,6 +172,6 @@ offset_right = 1176.0
 offset_bottom = 656.0
 color = Color(0, 0, 0, 0.7607843)
 
-[connection signal="pressed" from="Battle UI/PlayerHealthBar/Flip" to="." method="_on_flip_pressed"]
+[connection signal="pressed" from="Battle UI/PlayerHealthBar2" to="." method="_on_flip_pressed"]
 [connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]
 [connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]

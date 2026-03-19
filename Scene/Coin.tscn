@@ -2,32 +2,30 @@
 
 [ext_resource type="Script" uid="uid://ctvgpe532fo2k" path="res://Scene/coin.gd" id="1_jea4o"]
 [ext_resource type="Texture2D" uid="uid://b26gbj0tgcnn" path="res://Assets/16bitcoins.png" id="2_jea4o"]
-[ext_resource type="Texture2D" uid="uid://vpn1ujp2hwiv" path="res://Assets/temp_gold_coin.png" id="3_hncfd"]
-[ext_resource type="Texture2D" uid="uid://cw7n1iex1t2b1" path="res://Assets/temp_silver_coin.png" id="4_36o68"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hncfd"]
 atlas = ExtResource("2_jea4o")
 region = Rect2(0, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_yekfk"]
-atlas = ExtResource("3_hncfd")
-region = Rect2(0, 0, 159, 159)
+[sub_resource type="AtlasTexture" id="AtlasTexture_jea4o"]
+atlas = ExtResource("2_jea4o")
+region = Rect2(0, 16, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_4l3rx"]
-atlas = ExtResource("4_36o68")
-region = Rect2(0, 0, 159, 159)
+[sub_resource type="AtlasTexture" id="AtlasTexture_byqvs"]
+atlas = ExtResource("2_jea4o")
+region = Rect2(0, 32, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_36o68"]
 atlas = ExtResource("2_jea4o")
 region = Rect2(16, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_1owa6"]
-atlas = ExtResource("3_hncfd")
-region = Rect2(159, 0, 159, 159)
+[sub_resource type="AtlasTexture" id="AtlasTexture_yekfk"]
+atlas = ExtResource("2_jea4o")
+region = Rect2(16, 16, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_dsh50"]
-atlas = ExtResource("4_36o68")
-region = Rect2(159, 0, 159, 159)
+[sub_resource type="AtlasTexture" id="AtlasTexture_4l3rx"]
+atlas = ExtResource("2_jea4o")
+region = Rect2(16, 32, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_hncfd"]
 animations = [{
@@ -41,7 +39,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_yekfk")
+"texture": SubResource("AtlasTexture_jea4o")
 }],
 "loop": true,
 "name": &"head_gold",
@@ -49,7 +47,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_4l3rx")
+"texture": SubResource("AtlasTexture_byqvs")
 }],
 "loop": true,
 "name": &"head_silver",
@@ -65,7 +63,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_1owa6")
+"texture": SubResource("AtlasTexture_yekfk")
 }],
 "loop": true,
 "name": &"tail_gold",
@@ -73,7 +71,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_dsh50")
+"texture": SubResource("AtlasTexture_4l3rx")
 }],
 "loop": true,
 "name": &"tail_silver",
@@ -85,7 +83,7 @@ script = ExtResource("1_jea4o")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1217145718]
 texture_filter = 1
-position = Vector2(40, 40.000004)
+position = Vector2(40, 40)
 scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_hncfd")
-animation = &"tail"
+animation = &"head_silver"

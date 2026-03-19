@@ -17,12 +17,11 @@ enum Enemy{
 @onready var enemy_portrait: ColorRect = $Enemy/Enemy_Portrait
 
 @onready var endTurn_button = $"Battle UI/Endturn"
-@onready var flip_button = $"Battle UI/PlayerHealthBar/Flip"
+@onready var flip_button = $"Battle UI/PlayerHealthBar2"
 @onready var re_flip_button: Button = $"Battle UI/Re-Flip"
 @onready var turn_calculation: Label = $"Battle UI/Turn Calculation"
 
-@onready var player_health_bar = $"Battle UI/PlayerHealthBar"
-@onready var player_health_label = $"Battle UI/PlayerHealthBar/HealthLabel"
+@onready var player_health_label = $"Battle UI/PlayerHealthBar2/HealthLabel"
 
 @onready var enemy_health_bar = $"Battle UI/EnemyHealthBar"
 @onready var enemy_health_label = $"Battle UI/EnemyHealthBar/EnemyHealthLabel"
@@ -56,6 +55,7 @@ func _ready():
 	
 func battle_start():
 	randomize()
+	
 	flip_button.pressed.connect(_on_flip_pressed)
 	endTurn_button.pressed.connect(_on_endturn_pressed)
 	re_flip_button.pressed.connect(_on_re_flip_pressed)
@@ -96,7 +96,7 @@ func _process(delta: float) -> void:
 
 
 func start_player_turn():
-	
+	coin_deck.reset_sigils()
 	#Initialize Global Stats
 	damage = 0
 	gain = 0
@@ -130,6 +130,7 @@ func start_player_turn():
 	
 	
 func start_enemy_turn():
+	coin_deck.reset_sigils()
 	
 	show_turn_ui("Enemy Turn")
 	#Initialize Stats
@@ -191,7 +192,6 @@ func _on_endturn_pressed():
 		if coin.reserved == false:
 			coin.queue_free()
 
-
 func _on_flip_pressed():
 	re_flip_button.disabled = false
 	if current_turn != Turn.PLAYER:
@@ -223,7 +223,6 @@ func _on_flip_pressed():
 		flip_button.disabled = true
 	coin_calculation()
 	check_defeat()
-	
 
 func enemy_flip():
 	
@@ -337,7 +336,6 @@ func reserve_left_over_coin():
 		reserved_coin = left_coin
 
 func update_player_coin():
-	player_health_bar.value = player.coin
 	player_health_label.text = "Coins: " + str(player.coin)
 	
 func update_enemy_coin():

@@ -21,9 +21,26 @@ var max_capacity: int = 18
 @onready var _14: ColorRect = $"Deck/Row 3/14"
 @onready var _15: ColorRect = $"Deck/Row 3/15"
 @onready var _16: ColorRect = $"Deck/Row 3/16"
-@onready var _17: ColorRect = $"Deck/Row 3/17"
-@onready var _18: ColorRect = $"Deck/Row 3/18"
-@onready var texture_rect: TextureRect = $Deck/TextureRect
+#@onready var texture_rect: TextureRect = $Deck/TextureRect
+
+@onready var a1: TextureRect = $"Deck/Wheels/LightLayer1/1"
+@onready var a2: TextureRect = $"Deck/Wheels/LightLayer1/2"
+@onready var a3: TextureRect = $"Deck/Wheels/LightLayer1/3"
+@onready var a4: TextureRect = $"Deck/Wheels/LightLayer1/4"
+@onready var a5: TextureRect = $"Deck/Wheels/LightLayer1/5"
+@onready var a6: TextureRect = $"Deck/Wheels/LightLayer1/6"
+@onready var a7: TextureRect = $"Deck/Wheels/LightLayer1/7"
+@onready var a8: TextureRect = $"Deck/Wheels/LightLayer1/8"
+@onready var a9: TextureRect = $"Deck/Wheels/LightLayer2/9"
+@onready var a10: TextureRect = $"Deck/Wheels/LightLayer2/10"
+@onready var a11: TextureRect = $"Deck/Wheels/LightLayer2/11"
+@onready var a12: TextureRect = $"Deck/Wheels/LightLayer2/12"
+@onready var a13: TextureRect = $"Deck/Wheels/LightLayer2/13"
+@onready var a14: TextureRect = $"Deck/Wheels/LightLayer2/14"
+@onready var a15: TextureRect = $"Deck/Wheels/LightLayer2/15"
+@onready var a16: TextureRect = $"Deck/Wheels/LightLayer2/16"
+
+@onready var sigil_textures: Array = [a1, a2, a3, a4,a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16]
 
 @onready var coin_reserve: ColorRect = $CoinReserve
 
@@ -38,7 +55,12 @@ func _process(delta: float) -> void:
 
 func get_vacant_slot(current_flip):
 	var slot = get("_" + str(current_flip))
+	sigil_textures[current_flip - 1].visible = true
 	return slot.global_position
 
 func get_reserve_slot():
 	return coin_reserve.global_position
+	
+func reset_sigils():
+	for sigil in sigil_textures:
+		sigil.visible = false

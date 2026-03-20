@@ -55,9 +55,9 @@ func _process(delta: float) -> void:
 func get_vacant_slot(current_flip):
 	var slot = get("_" + str(current_flip))
 	sigil_textures[current_flip - 1].visible = true
-	slot.global_position.x -= 16
-	slot.global_position.y += 20
-	return slot.global_position
+	var pos_x = slot.global_position.x - 16
+	var pos_y = slot.global_position.y + 20
+	return [pos_x,pos_y]
 
 func get_reserve_slot():
 	return coin_reserve.global_position

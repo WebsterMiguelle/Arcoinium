@@ -4,7 +4,7 @@ signal hp_changed(new_hp)
 
 #PLAYER STATS
 var max_coin = 100 #Max Coin Capacity
-var coin = 80:
+var coin = 100:
 	set(value):
 		coin = clamp(value,0,max_coin)
 		hp_changed.emit(coin)

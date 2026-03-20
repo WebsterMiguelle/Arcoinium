@@ -18,7 +18,8 @@ func _ready() -> void:
 
 func setup(s,pos):
 	state = s
-	global_position = pos
+	global_position.x = pos[0]
+	global_position.y = pos[1]
 	reserved = false
 	type = CoinType.COPPER
 	base_value = 2
@@ -36,14 +37,18 @@ func upgrade():
 	match type:
 		CoinType.COPPER:
 			type = CoinType.SILVER
+			base_value = 4
 		CoinType.SILVER:
 			type = CoinType.GOLD
+			base_value = 6
 
 func upgrade_to_silver():
 	type = CoinType.SILVER
+	base_value = 4
 
 func upgrade_to_gold():
 	type = CoinType.GOLD
+	base_value = 6
 
 func copy_coin(coin):
 	base_value = coin.base_value

@@ -25,11 +25,9 @@ enum Enemy{
 @onready var turn_calculation: Label = $"Battle UI/Turn Calculation"
 
 @onready var player_health_bar = $"Battle UI/PlayerHealthBar"
-@onready var player_health_label = $"Battle UI/PlayerHealthBar/HealthLabel"
 @onready var player_gain: Label = $"Player/Player Gain"
 @onready var player_debt: Label = $"Player/Player Debt"
-@onready var player_health_label = $"Battle UI/PlayerHealthBar2/HealthLabel"
-
+@onready var player_health_label = $"Battle UI/HealthLabel"
 
 @onready var enemy_health_bar = $"Battle UI/EnemyHealthBar"
 @onready var enemy_health_label = $"Battle UI/EnemyHealthBar/EnemyHealthLabel"
@@ -67,25 +65,6 @@ var event_maps = [
    # preload("res://Events/###.tscn")
 ]
 
-#PASSIVES
-
-#Passive Specific Variables
-var flip_clicks = 0
-var latest_coin = null
-var coin_count = 0
-#GENERAL PASSIVES
-#B-Rank
-@export var has_wishbone = false
-@export var has_golden_clover = false
-@export var has_solar_coin = false
-@export var has_lunar_coin = false
-@export var has_merchant_scroll = false
-@export var has_impromptu_flip = false
-@export var has_advanced_planning = false
-@export var has_magic_trick = false
-@export var has_sleight_of_hand = false
-var current_turn = Turn.PLAYER
-var player_turn_count = 0
 
 #PASSIVES
 
@@ -102,6 +81,7 @@ var pocket_money_coins = 6
 var previous_player_gain = 0
 
 var previous_player_flips = 0
+var player_turn_count = 0
 
 #GENERAL PASSIVES
 
@@ -328,6 +308,7 @@ func activate_player_turn_end_passives():
 			latest_coin.state = 1
 		else:
 			latest_coin.state = 0
+		latest_coin.refresh_sprite()
 		coin_calculation()
 		await get_tree().create_timer(1.0).timeout
 
@@ -344,10 +325,12 @@ func activate_player_turn_end_passives():
 			if index == 2: second_coin = coin
 			if index == 3 or index == 5:
 				coin.copy_coin(first_coin)
+				coin.refresh_sprite()
 				coin_calculation()
 				await get_tree().create_timer(0.1).timeout
 			if index == 4 or index == 6:
 				coin.copy_coin(second_coin)
+				coin.refresh_sprite()
 				coin_calculation()
 				await get_tree().create_timer(0.1).timeout
 		coin_calculation()
@@ -384,7 +367,6 @@ func show_turn_ui(text):
 func start_player_turn():
 	
 	player_turn_count += 1
-	coin_deck.reset_sigils()
 	#Initialize Global Stats
 	damage = 0
 	gain = 0
@@ -406,6 +388,7 @@ func start_player_turn():
 		player.current_flip = 0
 		player.current_re_flip = 0
 		latest_coin = null
+		coin_deck.reset_sigils()
 
 	#Activate Turn Start Passives
 	await activate_player_turn_start_passives()
@@ -552,6 +535,7 @@ func _on_endturn_pressed():
 		
 
 func _on_flip_pressed():
+	print("FLIP")
 	flip_clicks += 1
 	if player.current_re_flip != player.max_re_flip: 
 		re_flip_button.disabled = false
@@ -598,13 +582,12 @@ func _on_flip_pressed():
 		check_defeat()
 
 	player.take_damage(coin.base_value / 2)
+	print("Player Took: " + str(coin.base_value / 2))
 	show_floating_label(player,coin.base_value / 2,LabelType.DAMAGE)
 	coin.add_to_group("coins")
 	
 	
 	add_child(coin);
-	latest_coin = coin
-	coin_count += 1
 	
 	var refund_chance = randf()
 	if has_refund and latest_coin != null:
@@ -710,9 +693,10 @@ func check_defeat():
 		if has_payback:
 			if payback_used:
 				game_over_ui.visible = true
+				trigger_game_over(false)
 		else:
 			game_over_ui.visible = true
-		trigger_game_over(false)
+			trigger_game_over(false)
 		return true
 		
 	if enemy.coin <= 0:
@@ -736,11 +720,11 @@ func _on_re_flip_pressed():
 			pass
 		else:
 			if has_inflation:
-				coin.re_flip()
 				var upgrade_chance = randf()
 				if upgrade_chance <= 0.3:
 					show_floating_label(player,0,LabelType.INFLATION)
 					coin.upgrade()
+				coin.re_flip()
 			if has_spare_change:
 				if index == coin_count-1:
 					second_latest_coin = coin
@@ -805,11 +789,11 @@ func coin_calculation():
 	if has_reimbursement and head_tail_count == coin_count / 2:
 		debt *= 2
 	if (damage != 0 or gain != 0) and coins != null:
-		var text = "DMG: " + str(damage) + " GAIN: " + str(gain)
+		var text = "DMG: " + str(damage) + "\nGAIN: " + str(gain)
 		if debt != 0:
-			text = "DMG: " + str(damage) + " GAIN: " + str(gain) + " DEBT: " + str(debt)
+			text = "DMG: " + str(damage) + "\nGAIN: " + str(gain) + "\nDEBT: " + str(debt)
 		turn_calculation.text = text
-		turn_calculation.add_theme_color_override("font_color", Color.BLACK)
+		turn_calculation.add_theme_color_override("font_color", Color.WHITE)
 	else: 
 		turn_calculation.text = ""
 func reserve_left_over_coin():
@@ -898,9 +882,9 @@ func enemy_coin_calculation():
 				if coin.state == 0: damage += coin.base_value / 2
 			
 	if damage != 0 or gain != 0:
-		var text = "DMG: " + str(damage) + " GAIN: " + str(gain)
+		var text = "DMG: " + str(damage) + " \nGAIN: " + str(gain)
 		turn_calculation.text = text
-		turn_calculation.add_theme_color_override("font_color", Color.DARK_RED)
+		turn_calculation.add_theme_color_override("font_color", Color.INDIAN_RED)
 
 
 enum LabelType{

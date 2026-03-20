@@ -6,8 +6,8 @@
 [ext_resource type="Script" uid="uid://dedsjnmo4366e" path="res://Script/enemy.gd" id="3_lquwl"]
 [ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
 [ext_resource type="PackedScene" uid="uid://b01fk6f1pan7q" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
-[ext_resource type="Script" uid="uid://oxp47e0yu1fa" path="res://Script/coin_deck.gd" id="7_ow1sv"]
 [ext_resource type="Script" uid="uid://deakh0hwd6qoh" path="res://Scene/CardManager.gd" id="5_3amdw"]
+[ext_resource type="Script" uid="uid://byrcn8pelxayw" path="res://Script/coin_deck.gd" id="7_ow1sv"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2wwxx"]
 
@@ -33,25 +33,6 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_3amdw")
 script = ExtResource("1_h2yge")
-has_wishbone = true
-has_golden_clover = true
-has_solar_coin = true
-has_lunar_coin = true
-has_impromptu_flip = true
-has_advanced_planning = true
-has_magic_trick = true
-has_sleight_of_hand = true
-has_solar_coin = true
-has_lunar_coin = true
-has_impromptu_flip = true
-has_advanced_planning = true
-has_magic_trick = true
-has_payback = true
-has_lucky_pair = true
-has_pay_down = true
-has_reimbursement = true
-has_loan_shark = true
-has_lending_charge = true
 
 [node name="Player" type="Node2D" parent="." unique_id=1514396733]
 script = ExtResource("2_1bvp3")
@@ -136,42 +117,24 @@ vertical_alignment = 1
 
 [node name="Battle UI" type="CanvasLayer" parent="." unique_id=1048849936]
 
+[node name="HealthLabel" type="Label" parent="Battle UI" unique_id=1574205912]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 180.0
+offset_top = 167.0
+offset_right = 303.0
+offset_bottom = 199.0
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.8500227, 0.484913, 1)
+theme_override_font_sizes/font_size = 22
+
 [node name="PlayerHealthBar2" parent="Battle UI" unique_id=2054393168 instance=ExtResource("5_1xcnr")]
 offset_left = 157.99998
 offset_top = 525.99994
 offset_right = 249.99998
 offset_bottom = 541.99994
 scale = Vector2(5, 5)
-
-[node name="HealthLabel" type="Label" parent="Battle UI/PlayerHealthBar2" unique_id=1574205912]
-visible = false
-layout_mode = 0
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 1.6000004
-offset_top = -30.000008
-offset_right = 2.6000004
-offset_bottom = -9.000008
-grow_vertical = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-
-[node name="Flip" type="Button" parent="Battle UI/PlayerHealthBar" unique_id=1788355213]
-z_index = 4
-custom_minimum_size = Vector2(150, 40)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 28
-theme_override_styles/normal = SubResource("StyleBoxEmpty_2wwxx")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_3amdw")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_1xcnr")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_ow1sv")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_75buv")
-text = "FLIP"
 
 [node name="EnemyHealthBar" type="ProgressBar" parent="Battle UI" unique_id=2134660899]
 offset_left = 558.0
@@ -220,10 +183,10 @@ text = "Re-Flip
 
 [node name="Turn Calculation" type="Label" parent="Battle UI" unique_id=1869934299]
 custom_minimum_size = Vector2(150, 40)
-offset_left = 290.0
-offset_top = 122.0
-offset_right = 748.0772
-offset_bottom = 171.0
+offset_left = 88.0
+offset_top = 196.0
+offset_right = 238.0
+offset_bottom = 435.0
 scale = Vector2(1.2137691, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 35
@@ -245,6 +208,23 @@ theme_override_font_sizes/font_size = 30
 text = "BATTLE START"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Battle UI_PlayerHealthBar#Flip" type="Button" parent="." unique_id=1788355213]
+z_index = 4
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxEmpty_2wwxx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3amdw")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1xcnr")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ow1sv")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_75buv")
+text = "FLIP"
 
 [node name="CoinDeck" parent="." unique_id=955153148 instance=ExtResource("4_2wwxx")]
 position = Vector2(574, 310)
@@ -354,7 +334,6 @@ theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_3amdw")
 text = "Refresh"
 
-[connection signal="pressed" from="Battle UI/PlayerHealthBar2/Flip" to="." method="_on_flip_pressed"]
 [connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]
 [connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]
 [connection signal="pressed" from="Game Over UI/ColorRect/Restart" to="." method="_on_restart_pressed"]

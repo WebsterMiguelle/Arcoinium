@@ -1,0 +1,222 @@
+[gd_scene format=3 uid="uid://memld2b4qk28"]
+
+[ext_resource type="Script" uid="uid://qxyeds7oh4s7" path="res://Script/main.gd" id="1_h2yge"]
+[ext_resource type="Script" uid="uid://bunbms60cogmi" path="res://Script/player.gd" id="2_1bvp3"]
+[ext_resource type="Script" uid="uid://dedsjnmo4366e" path="res://Script/enemy.gd" id="3_lquwl"]
+[ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2wwxx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3amdw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1xcnr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ow1sv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_75buv"]
+
+[node name="Main" type="ColorRect" unique_id=926660681]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -3.0
+offset_right = -4.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_h2yge")
+has_wishbone = true
+has_golden_clover = true
+has_solar_coin = true
+has_lunar_coin = true
+has_merchant_scroll = true
+has_impromptu_flip = true
+has_advanced_planning = true
+has_magic_trick = true
+has_sleight_of_hand = true
+has_piggy = true
+has_inflation = true
+has_payback = true
+has_lucky_pair = true
+has_value_increase = true
+has_loyalty_contract = true
+has_triple_nickel = true
+has_refund = true
+has_coin_snipe = true
+has_active_income = true
+has_pocket_money = true
+has_passive_income = true
+has_simple_interest = true
+has_value_added_tax = true
+has_mimic = true
+
+[node name="Player" type="Node2D" parent="." unique_id=1514396733]
+script = ExtResource("2_1bvp3")
+
+[node name="Player_Portrait" type="ColorRect" parent="Player" unique_id=1237814787]
+custom_minimum_size = Vector2(120, 120)
+offset_left = 43.0
+offset_top = 504.0
+offset_right = 163.0
+offset_bottom = 624.0
+color = Color(0.19215687, 0.043137256, 1, 1)
+
+[node name="Label" type="Label" parent="Player/Player_Portrait" unique_id=366838884]
+custom_minimum_size = Vector2(40, 20)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 35.0
+offset_right = 127.0
+offset_bottom = 90.0
+theme_override_font_sizes/font_size = 35
+text = "Player"
+
+[node name="Enemy" type="Node2D" parent="." unique_id=313281892]
+script = ExtResource("3_lquwl")
+
+[node name="Enemy_Portrait" type="ColorRect" parent="Enemy" unique_id=2090213488]
+custom_minimum_size = Vector2(120, 120)
+offset_left = 995.0
+offset_top = 25.0
+offset_right = 1115.0
+offset_bottom = 145.0
+color = Color(1, 0.007843138, 0, 1)
+
+[node name="Label" type="Label" parent="Enemy/Enemy_Portrait" unique_id=1647136577]
+custom_minimum_size = Vector2(40, 20)
+layout_mode = 0
+offset_left = 3.0
+offset_top = 37.0
+offset_right = 117.0
+offset_bottom = 86.0
+theme_override_font_sizes/font_size = 35
+text = "Enemy"
+
+[node name="Battle UI" type="CanvasLayer" parent="." unique_id=1048849936]
+
+[node name="PlayerHealthBar" type="ProgressBar" parent="Battle UI" unique_id=367744439]
+z_index = -6
+offset_left = 184.0
+offset_top = 573.0
+offset_right = 590.36145
+offset_bottom = 623.0
+scale = Vector2(1.0015713, 0.8430614)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+max_value = 10.0
+value = 10.0
+show_percentage = false
+
+[node name="HealthLabel" type="Label" parent="Battle UI/PlayerHealthBar" unique_id=1574205912]
+layout_mode = 0
+offset_left = 5.9905853
+offset_top = -40.32921
+offset_right = 45.990585
+offset_bottom = -12.329208
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+
+[node name="Flip" type="Button" parent="Battle UI/PlayerHealthBar" unique_id=1788355213]
+z_index = 4
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxEmpty_2wwxx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3amdw")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1xcnr")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ow1sv")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_75buv")
+text = "FLIP"
+
+[node name="EnemyHealthBar" type="ProgressBar" parent="Battle UI" unique_id=2134660899]
+offset_left = 558.0
+offset_top = 23.0
+offset_right = 758.0
+offset_bottom = 55.0
+scale = Vector2(2.052499, 1.1636436)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+max_value = 10.0
+value = 10.0
+show_percentage = false
+
+[node name="EnemyHealthLabel" type="Label" parent="Battle UI/EnemyHealthBar" unique_id=21616945]
+layout_mode = 0
+offset_left = 157.85634
+offset_top = 39.531002
+offset_right = 197.85634
+offset_bottom = 62.531002
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+
+[node name="Endturn" type="Button" parent="Battle UI" unique_id=37098888]
+custom_minimum_size = Vector2(150, 40)
+anchors_preset = -1
+anchor_right = 0.033
+anchor_bottom = 0.048
+offset_left = 612.0
+offset_top = 572.0
+offset_right = 723.984
+offset_bottom = 580.896
+theme_override_font_sizes/font_size = 20
+text = "End turn"
+
+[node name="Re-Flip" type="Button" parent="Battle UI" unique_id=318505030]
+custom_minimum_size = Vector2(150, 40)
+anchors_preset = -1
+anchor_right = 0.033
+anchor_bottom = 0.048
+offset_left = 877.0
+offset_top = 300.0
+offset_right = 988.984
+offset_bottom = 308.896
+theme_override_font_sizes/font_size = 20
+text = "Re-Flip
+"
+
+[node name="Turn Calculation" type="Label" parent="Battle UI" unique_id=1869934299]
+custom_minimum_size = Vector2(150, 40)
+offset_left = 476.0
+offset_top = 120.0
+offset_right = 626.0
+offset_bottom = 169.0
+scale = Vector2(1.2137691, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 35
+text = "Turn"
+
+[node name="Turn UI" type="ColorRect" parent="Battle UI" unique_id=447076957]
+offset_left = -64.0
+offset_top = 276.0
+offset_right = 1232.0
+offset_bottom = 359.0
+color = Color(0, 0, 0, 0.5803922)
+
+[node name="Turn UI Label" type="Label" parent="Battle UI/Turn UI" unique_id=1908920983]
+layout_mode = 0
+offset_right = 1165.0
+offset_bottom = 85.0
+theme_override_font_sizes/font_size = 30
+text = "BATTLE START"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CoinDeck" parent="." unique_id=955153148 instance=ExtResource("4_2wwxx")]
+position = Vector2(574, 310)
+
+[node name="Game Over UI" type="CanvasLayer" parent="." unique_id=994626979]
+
+[node name="ColorRect" type="ColorRect" parent="Game Over UI" unique_id=656304766]
+offset_left = -17.0
+offset_top = -16.0
+offset_right = 1176.0
+offset_bottom = 656.0
+color = Color(0, 0, 0, 0.7607843)
+
+[connection signal="pressed" from="Battle UI/PlayerHealthBar/Flip" to="." method="_on_flip_pressed"]
+[connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]
+[connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]

@@ -41,27 +41,57 @@ has_impromptu_flip = true
 has_advanced_planning = true
 has_magic_trick = true
 has_sleight_of_hand = true
+has_solar_coin = true
+has_lunar_coin = true
+has_impromptu_flip = true
+has_advanced_planning = true
+has_magic_trick = true
+has_payback = true
+has_lucky_pair = true
+has_pay_down = true
+has_reimbursement = true
+has_loan_shark = true
+has_lending_charge = true
 
 [node name="Player" type="Node2D" parent="." unique_id=1514396733]
 script = ExtResource("2_1bvp3")
 
 [node name="Player_Portrait" type="ColorRect" parent="Player" unique_id=1237814787]
 custom_minimum_size = Vector2(120, 120)
-offset_left = 43.0
+offset_left = 20.0
 offset_top = 504.0
 offset_right = 163.0
-offset_bottom = 624.0
+offset_bottom = 625.0
 color = Color(0.19215687, 0.043137256, 1, 1)
 
 [node name="Label" type="Label" parent="Player/Player_Portrait" unique_id=366838884]
 custom_minimum_size = Vector2(40, 20)
 layout_mode = 0
-offset_left = 6.0
+offset_left = 23.0
 offset_top = 35.0
-offset_right = 127.0
+offset_right = 144.0
 offset_bottom = 90.0
 theme_override_font_sizes/font_size = 35
 text = "Player"
+
+[node name="Player Gain" type="Label" parent="Player" unique_id=1444016875]
+offset_left = 25.0
+offset_top = 482.0
+offset_right = 85.0
+offset_bottom = 501.0
+theme_override_colors/font_color = Color(0.8862745, 0.59607846, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = "GAIN: 37"
+
+[node name="Player Debt" type="Label" parent="Player" unique_id=1411423172]
+offset_left = 96.0
+offset_top = 482.0
+offset_right = 162.0
+offset_bottom = 501.0
+theme_override_colors/font_color = Color(0.54901963, 0, 0.42745098, 1)
+theme_override_font_sizes/font_size = 18
+text = "DEBT: 67"
+vertical_alignment = 1
 
 [node name="Enemy" type="Node2D" parent="." unique_id=313281892]
 script = ExtResource("3_lquwl")
@@ -69,20 +99,40 @@ script = ExtResource("3_lquwl")
 [node name="Enemy_Portrait" type="ColorRect" parent="Enemy" unique_id=2090213488]
 custom_minimum_size = Vector2(120, 120)
 offset_left = 995.0
-offset_top = 25.0
-offset_right = 1115.0
+offset_top = 18.0
+offset_right = 1129.0
 offset_bottom = 145.0
 color = Color(1, 0.007843138, 0, 1)
 
 [node name="Label" type="Label" parent="Enemy/Enemy_Portrait" unique_id=1647136577]
 custom_minimum_size = Vector2(40, 20)
 layout_mode = 0
-offset_left = 3.0
+offset_left = 25.0
 offset_top = 37.0
-offset_right = 117.0
+offset_right = 139.0
 offset_bottom = 86.0
 theme_override_font_sizes/font_size = 35
 text = "Enemy"
+
+[node name="Enemy Gain" type="Label" parent="Enemy" unique_id=652842868]
+offset_left = 993.0
+offset_top = 148.0
+offset_right = 1053.0
+offset_bottom = 167.0
+theme_override_colors/font_color = Color(0.8881403, 0.5978696, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = "GAIN: 30"
+vertical_alignment = 1
+
+[node name="Enemy Debt" type="Label" parent="Enemy" unique_id=2019195153]
+offset_left = 1062.0
+offset_top = 148.0
+offset_right = 1128.0
+offset_bottom = 167.0
+theme_override_colors/font_color = Color(0.55085, 2.892658e-05, 0.42899314, 1)
+theme_override_font_sizes/font_size = 18
+text = "DEBT: 30"
+vertical_alignment = 1
 
 [node name="Battle UI" type="CanvasLayer" parent="." unique_id=1048849936]
 
@@ -170,14 +220,15 @@ text = "Re-Flip
 
 [node name="Turn Calculation" type="Label" parent="Battle UI" unique_id=1869934299]
 custom_minimum_size = Vector2(150, 40)
-offset_left = 476.0
-offset_top = 120.0
-offset_right = 626.0
-offset_bottom = 169.0
+offset_left = 290.0
+offset_top = 122.0
+offset_right = 748.0772
+offset_bottom = 171.0
 scale = Vector2(1.2137691, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 35
 text = "Turn"
+horizontal_alignment = 1
 
 [node name="Turn UI" type="ColorRect" parent="Battle UI" unique_id=447076957]
 offset_left = -64.0
@@ -203,10 +254,10 @@ script = ExtResource("7_ow1sv")
 visible = false
 
 [node name="ColorRect" type="ColorRect" parent="Game Over UI" unique_id=656304766]
-offset_left = -17.0
-offset_top = -16.0
-offset_right = 1176.0
-offset_bottom = 656.0
+offset_left = -25.0
+offset_top = -10.0
+offset_right = 1168.0
+offset_bottom = 662.0
 color = Color(0, 0, 0, 0.7607843)
 
 [node name="Restart" type="Button" parent="Game Over UI/ColorRect" unique_id=469997266]

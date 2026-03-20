@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://2r2t7sy2wycb"]
+
+[node name="CardManager" type="CanvasLayer" unique_id=1348034588]
+
+[node name="Background" type="ColorRect" parent="." unique_id=1063573006]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.02745098)
+
+[node name="CenterContainer" type="CenterContainer" parent="Background" unique_id=232661550]
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 0
+offset_left = 219.0
+offset_top = 180.0
+offset_right = 419.0
+offset_bottom = 480.0
+
+[node name="CardContainer" type="HBoxContainer" parent="Background/CenterContainer" unique_id=24325418]
+layout_mode = 2

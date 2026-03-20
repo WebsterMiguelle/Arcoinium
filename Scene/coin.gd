@@ -26,19 +26,16 @@ func setup(s,pos):
 func _process(delta: float) -> void:
 	match type:
 		CoinType.COPPER:
-			base_value = 2
 			if state == 0:
 				animated_sprite_2d.play("head")
 			else:
 				animated_sprite_2d.play("tail")
 		CoinType.SILVER:
-			base_value = 4
 			if state == 0:
 				animated_sprite_2d.play("head_silver")
 			else:
 				animated_sprite_2d.play("tail_silver")
 		CoinType.GOLD:
-			base_value = 6
 			if state == 0:
 				animated_sprite_2d.play("head_gold")
 			else:
@@ -52,11 +49,21 @@ func upgrade():
 	match type:
 		CoinType.COPPER:
 			type = CoinType.SILVER
+			base_value = 4
 		CoinType.SILVER:
+			base_value = 6
 			type = CoinType.GOLD
 
 func upgrade_to_silver():
+	base_value = 4
 	type = CoinType.SILVER
 
 func upgrade_to_gold():
+	base_value = 6
 	type = CoinType.GOLD
+	
+func copy_coin(coin):
+	base_value = coin.base_value
+	state = coin.state
+	reserved = coin.reserved
+	type = coin.type

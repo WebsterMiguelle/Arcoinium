@@ -1,122 +1,314 @@
 [gd_scene format=3 uid="uid://b01fk6f1pan7q"]
 
-[ext_resource type="Texture2D" uid="uid://dfxpsusewco7g" path="res://Assets/Coins/healthmodecoinbronze.png" id="1_evjip"]
 [ext_resource type="Script" uid="uid://deiq0ju8easi5" path="res://Script/PlayerHealthBarScript.gd" id="1_y2g15"]
+[ext_resource type="Texture2D" uid="uid://brn3ihcjo08pk" path="res://Assets/Coins/sun_to_moon_coin-Sheet.png" id="2_y2g15"]
 
-[node name="PlayerHealthBar" type="Button" unique_id=2054393168]
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -332.0
-offset_right = 84.0
-offset_bottom = -316.0
-grow_vertical = 2
-theme_override_constants/outline_size = 5
+[sub_resource type="AtlasTexture" id="AtlasTexture_yapa2"]
+atlas = ExtResource("2_y2g15")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h7tr3"]
+atlas = ExtResource("2_y2g15")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_penru"]
+atlas = ExtResource("2_y2g15")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ml2w"]
+atlas = ExtResource("2_y2g15")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dbvq4"]
+atlas = ExtResource("2_y2g15")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cok4r"]
+atlas = ExtResource("2_y2g15")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qunya"]
+atlas = ExtResource("2_y2g15")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6fhws"]
+atlas = ExtResource("2_y2g15")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xjjx0"]
+atlas = ExtResource("2_y2g15")
+region = Rect2(112, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y2g15"]
+atlas = ExtResource("2_y2g15")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yw3x7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yapa2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h7tr3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_penru")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ml2w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dbvq4")
+}],
+"loop": false,
+"name": &"Flipped Sun to Moon",
+"speed": 16.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cok4r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qunya")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6fhws")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xjjx0")
+}],
+"loop": false,
+"name": &"Flipped Sun to Sun",
+"speed": 16.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y2g15")
+}],
+"loop": true,
+"name": &"Sun_Static",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"new_animation",
+"speed": 5.0
+}]
+
+[node name="PlayerHealthBar" type="Button" unique_id=2050842484]
+self_modulate = Color(1, 1, 1, 0)
+offset_top = -8.0
+offset_right = 92.0
+offset_bottom = 8.0
+size_flags_vertical = 0
 script = ExtResource("1_y2g15")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=644932713]
 layout_mode = 0
-offset_right = 40.0
+offset_right = 92.0
 offset_bottom = 16.0
 mouse_filter = 2
-theme_override_constants/separation = -4
+theme_override_constants/separation = -12
 
-[node name="1" type="TextureRect" parent="HBoxContainer" unique_id=704995424]
+[node name="Slot1" type="Control" parent="HBoxContainer" unique_id=425099618]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="2" type="TextureRect" parent="HBoxContainer" unique_id=1777604843]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot1" unique_id=911160314]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[node name="Slot2" type="Control" parent="HBoxContainer" unique_id=1052271985]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="3" type="TextureRect" parent="HBoxContainer" unique_id=1919857916]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot2" unique_id=1744018112]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[node name="Slot3" type="Control" parent="HBoxContainer" unique_id=959540246]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="4" type="TextureRect" parent="HBoxContainer" unique_id=1238832254]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot3" unique_id=1593533759]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[node name="Slot4" type="Control" parent="HBoxContainer" unique_id=547163507]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="5" type="TextureRect" parent="HBoxContainer" unique_id=732889448]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot4" unique_id=1232511975]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[node name="Slot5" type="Control" parent="HBoxContainer" unique_id=1260275905]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="6" type="TextureRect" parent="HBoxContainer" unique_id=134232035]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot5" unique_id=489077431]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[node name="Slot6" type="Control" parent="HBoxContainer" unique_id=1022316030]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="7" type="TextureRect" parent="HBoxContainer" unique_id=1231787888]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot6" unique_id=177010727]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Flipped Sun to Sun"
+
+[node name="Slot7" type="Control" parent="HBoxContainer" unique_id=1292102368]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="8" type="TextureRect" parent="HBoxContainer" unique_id=921864550]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot7" unique_id=1384381802]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[node name="Slot8" type="Control" parent="HBoxContainer" unique_id=1956126263]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="9" type="TextureRect" parent="HBoxContainer" unique_id=1781607757]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot8" unique_id=1672688827]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[node name="Slot9" type="Control" parent="HBoxContainer" unique_id=1904858607]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="10" type="TextureRect" parent="HBoxContainer" unique_id=581613557]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot9" unique_id=489804780]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[node name="Slot10" type="Control" parent="HBoxContainer" unique_id=1000415349]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="11" type="TextureRect" parent="HBoxContainer" unique_id=2048922575]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot10" unique_id=150204698]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[node name="Slot11" type="Control" parent="HBoxContainer" unique_id=537327546]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="12" type="TextureRect" parent="HBoxContainer" unique_id=881421845]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot11" unique_id=89776474]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[node name="Slot12" type="Control" parent="HBoxContainer" unique_id=688955482]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="13" type="TextureRect" parent="HBoxContainer" unique_id=734855539]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot12" unique_id=515198146]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[node name="Slot13" type="Control" parent="HBoxContainer" unique_id=764619665]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="14" type="TextureRect" parent="HBoxContainer" unique_id=30256957]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot13" unique_id=2117367845]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[node name="Slot14" type="Control" parent="HBoxContainer" unique_id=65505518]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="15" type="TextureRect" parent="HBoxContainer" unique_id=1821140386]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot14" unique_id=124576285]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[node name="Slot15" type="Control" parent="HBoxContainer" unique_id=1803633935]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="16" type="TextureRect" parent="HBoxContainer" unique_id=771037422]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot15" unique_id=998664408]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[node name="Slot16" type="Control" parent="HBoxContainer" unique_id=1754754945]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="17" type="TextureRect" parent="HBoxContainer" unique_id=897448199]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot16" unique_id=1584675509]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[node name="Slot17" type="Control" parent="HBoxContainer" unique_id=1392198149]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="18" type="TextureRect" parent="HBoxContainer" unique_id=2099151711]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot17" unique_id=439033506]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[node name="Slot18" type="Control" parent="HBoxContainer" unique_id=1516732217]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="19" type="TextureRect" parent="HBoxContainer" unique_id=2138064180]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot18" unique_id=1310515113]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[node name="Slot19" type="Control" parent="HBoxContainer" unique_id=2094926167]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
 
-[node name="20" type="TextureRect" parent="HBoxContainer" unique_id=1185303516]
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot19" unique_id=1917710068]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[node name="Slot20" type="Control" parent="HBoxContainer" unique_id=743485480]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_evjip")
+
+[node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot20" unique_id=253088747]
+position = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_yw3x7")
+animation = &"Sun_Static"
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

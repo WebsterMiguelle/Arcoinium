@@ -30,6 +30,7 @@ func _process(delta: float) -> void:
 
 func re_flip():
 	state = randi() % 2
+	refresh_sprite()
 	
 func upgrade():
 	match type:
@@ -43,7 +44,13 @@ func upgrade_to_silver():
 
 func upgrade_to_gold():
 	type = CoinType.GOLD
-	
+
+func copy_coin(coin):
+	base_value = coin.base_value
+	reserved = coin.reserved
+	type = coin.type
+	state = coin.state
+
 func refresh_sprite():
 	var appear_tween = create_tween()
 	

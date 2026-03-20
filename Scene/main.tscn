@@ -21,7 +21,6 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3amdw"]
 
-[node name="Main" type="ColorRect" unique_id=926660681]
 [node name="Main" type="TextureRect" unique_id=1891652298]
 anchors_preset = 15
 anchor_right = 1.0
@@ -304,7 +303,7 @@ theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_3amdw")
 text = "Refresh"
 
-[connection signal="pressed" from="Battle UI/PlayerHealthBar/Flip" to="." method="_on_flip_pressed"]
+[connection signal="pressed" from="Battle UI/PlayerHealthBar2/Flip" to="." method="_on_flip_pressed"]
 [connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]
 [connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]
 [connection signal="pressed" from="Game Over UI/ColorRect/Restart" to="." method="_on_restart_pressed"]

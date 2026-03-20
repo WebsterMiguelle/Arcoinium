@@ -4,7 +4,7 @@ signal hp_changed(new_hp)
 
 #PLAYER STATS
 var max_coin = 100 #Max Coin Capacity
-var coin = 20:
+var coin = 16:
 	set(value):
 		coin = clamp(value,0,max_coin)
 		hp_changed.emit(coin)
@@ -40,9 +40,4 @@ func gain_coin():
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
 	pass

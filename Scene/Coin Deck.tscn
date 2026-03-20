@@ -1,12 +1,61 @@
 [gd_scene format=3 uid="uid://cjumn24wf84ma"]
 
-[ext_resource type="Script" uid="uid://oxp47e0yu1fa" path="res://Scene/coin_deck.gd" id="1_3w86l"]
 [ext_resource type="Texture2D" uid="uid://cna4umj0n4yt" path="res://Assets/Blocking coin deck1.png" id="2_oxihs"]
-[ext_resource type="Script" uid="uid://b7n81w4dk1tys" path="res://Scene/light_layer_1.gd" id="3_qv6dw"]
-[ext_resource type="Texture2D" uid="uid://cji0fgl8c11rd" path="res://Assets/Light Layer1.png" id="4_arh45"]
-[ext_resource type="Script" uid="uid://cutjir0v8efw4" path="res://Scene/light_layer_2.gd" id="5_f8d1n"]
+[ext_resource type="Script" uid="uid://b7n81w4dk1tys" path="res://Script/Rune_Rotators/rune_layer_1.gd" id="3_qv6dw"]
+[ext_resource type="Script" uid="uid://cutjir0v8efw4" path="res://Script/Rune_Rotators/rune_layer_2.gd" id="5_f8d1n"]
 [ext_resource type="Texture2D" uid="uid://bf3hv0qyt1kio" path="res://Assets/8-bitrunes.png" id="5_jc2jt"]
-[ext_resource type="Texture2D" uid="uid://b5f1wqxf60xlc" path="res://Assets/Light Layer2.png" id="5_vtt01"]
+[ext_resource type="Script" uid="uid://bth1fhktd4aow" path="res://Script/Rune_Rotators/rune_layer_3.gd" id="5_qv6dw"]
+[ext_resource type="Script" uid="uid://dxco52nevv8wc" path="res://Script/Rune_Rotators/rune_layer_4.gd" id="6_f8d1n"]
+
+[sub_resource type="GDScript" id="GDScript_arh45"]
+script/source = "extends Node2D
+
+var current_coins: int
+var max_capacity: int = 18
+#@onready var texture_rect: TextureRect = $Deck/TextureRect
+
+@onready var a1: TextureRect = $\"Deck/Wheels/Rune_Layer1/1\"
+@onready var a2: TextureRect = $\"Deck/Wheels/Rune_Layer1/2\"
+@onready var a3: TextureRect = $\"Deck/Wheels/Rune_Layer1/3\"
+@onready var a4: TextureRect = $\"Deck/Wheels/Rune_Layer1/4\"
+@onready var a5: TextureRect = $\"Deck/Wheels/Rune_Layer1/5\"
+@onready var a6: TextureRect = $\"Deck/Wheels/Rune_Layer1/6\"
+@onready var a7: TextureRect = $\"Deck/Wheels/Rune_Layer1/7\"
+@onready var a8: TextureRect = $\"Deck/Wheels/Rune_Layer1/8\"
+@onready var a9: TextureRect = $\"Deck/Wheels/Rune_Layer2/9\"
+@onready var a10: TextureRect = $\"Deck/Wheels/Rune_Layer2/10\"
+@onready var a11: TextureRect = $\"Deck/Wheels/Rune_Layer2/11\"
+@onready var a12: TextureRect = $\"Deck/Wheels/Rune_Layer2/12\"
+@onready var a13: TextureRect = $\"Deck/Wheels/Rune_Layer2/13\"
+@onready var a14: TextureRect = $\"Deck/Wheels/Rune_Layer2/14\"
+@onready var a15: TextureRect = $\"Deck/Wheels/Rune_Layer2/15\"
+@onready var a16: TextureRect = $\"Deck/Wheels/Rune_Layer2/16\"
+
+@onready var sigil_textures: Array = [a1, a2, a3, a4,a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16]
+
+@onready var coin_reserve: ColorRect = $CoinReserve
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	current_coins = 0;
+	pass # Replace with function body.
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+func get_vacant_slot(current_flip):
+	var slot = get(\"_\" + str(current_flip))
+	sigil_textures[current_flip - 1].visible = true
+	return slot.global_position
+
+func get_reserve_slot():
+	return coin_reserve.global_position
+	
+func reset_sigils():
+	for sigil in sigil_textures:
+		sigil.visible = false
+"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dhtfp"]
 atlas = ExtResource("5_jc2jt")
@@ -73,7 +122,7 @@ atlas = ExtResource("5_jc2jt")
 region = Rect2(56, 8, 8, 8)
 
 [node name="CoinDeck" type="Node2D" unique_id=955153148]
-script = ExtResource("1_3w86l")
+script = SubResource("GDScript_arh45")
 
 [node name="Deck" type="TextureRect" parent="." unique_id=258019195]
 anchors_preset = 8
@@ -215,34 +264,10 @@ color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 [node name="Wheels" type="Node2D" parent="Deck" unique_id=112166558]
 position = Vector2(40, 40)
 
-[node name="LightLayer1" type="Node2D" parent="Deck/Wheels" unique_id=1120539103]
+[node name="Rune_Layer1" type="Node2D" parent="Deck/Wheels" unique_id=1120539103]
 script = ExtResource("3_qv6dw")
 
-[node name="TextureRect" type="TextureRect" parent="Deck/Wheels/LightLayer1" unique_id=1521167560]
-visible = false
-offset_left = -56.999996
-offset_top = -54.799995
-offset_right = 55.000004
-offset_bottom = 57.200005
-texture = ExtResource("4_arh45")
-
-[node name="TextureRect2" type="TextureRect" parent="Deck/Wheels/LightLayer1" unique_id=687786797]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 55.600006
-offset_top = 54.800003
-offset_right = 167.6
-offset_bottom = 166.8
-grow_horizontal = 2
-grow_vertical = 2
-rotation = 3.1415927
-texture = ExtResource("4_arh45")
-
-[node name="1" type="TextureRect" parent="Deck/Wheels/LightLayer1" unique_id=704171750]
+[node name="1" type="TextureRect" parent="Deck/Wheels/Rune_Layer1" unique_id=704171750]
 visible = false
 offset_left = -4.199994
 offset_top = -48.399994
@@ -250,7 +275,7 @@ offset_right = 3.800006
 offset_bottom = -40.399994
 texture = SubResource("AtlasTexture_dhtfp")
 
-[node name="2" type="TextureRect" parent="Deck/Wheels/LightLayer1" unique_id=1224853526]
+[node name="2" type="TextureRect" parent="Deck/Wheels/Rune_Layer1" unique_id=1224853526]
 visible = false
 offset_left = 12.600006
 offset_top = -43.199997
@@ -259,88 +284,74 @@ offset_bottom = -35.199997
 rotation = -0.39618975
 texture = SubResource("AtlasTexture_j8io3")
 
-[node name="3" type="TextureRect" parent="Deck/Wheels/LightLayer1" unique_id=885421974]
+[node name="3" type="TextureRect" parent="Deck/Wheels/Rune_Layer1" unique_id=885421974]
 visible = false
-offset_left = -4.199994
-offset_top = 40.800007
-offset_right = 3.800006
-offset_bottom = 48.800007
+offset_left = -4.1999874
+offset_top = 40.800003
+offset_right = 3.8000126
+offset_bottom = 48.800003
 texture = SubResource("AtlasTexture_f8d1n")
 
-[node name="4" type="TextureRect" parent="Deck/Wheels/LightLayer1" unique_id=2117499938]
+[node name="4" type="TextureRect" parent="Deck/Wheels/Rune_Layer1" unique_id=2117499938]
 visible = false
-offset_left = -19.999994
-offset_top = 36.20001
-offset_right = -11.999994
-offset_bottom = 44.20001
+offset_left = -19.999985
+offset_top = 36.200005
+offset_right = -11.999985
+offset_bottom = 44.200005
 rotation = 0.39618975
 texture = SubResource("AtlasTexture_jc2jt")
 
-[node name="5" type="TextureRect" parent="Deck/Wheels/LightLayer1" unique_id=683120810]
+[node name="Rune_Layer2" type="Node2D" parent="Deck/Wheels" unique_id=387618379]
+script = ExtResource("5_f8d1n")
+
+[node name="5" type="TextureRect" parent="Deck/Wheels/Rune_Layer2" unique_id=683120810]
 visible = false
 offset_left = 48.00001
-offset_top = -4.0
+offset_top = -3.999999
 offset_right = 56.00001
-offset_bottom = 4.0
+offset_bottom = 4.000001
 rotation = 1.5707964
 texture = SubResource("AtlasTexture_3uffv")
 
-[node name="6" type="TextureRect" parent="Deck/Wheels/LightLayer1" unique_id=249775967]
+[node name="6" type="TextureRect" parent="Deck/Wheels/Rune_Layer2" unique_id=249775967]
 visible = false
 offset_left = 40.0
-offset_top = 12.400007
+offset_top = 12.400005
 offset_right = 48.0
-offset_bottom = 20.400007
+offset_bottom = 20.400005
 rotation = 0.55850536
 texture = SubResource("AtlasTexture_saeqv")
 
-[node name="7" type="TextureRect" parent="Deck/Wheels/LightLayer1" unique_id=397879147]
+[node name="7" type="TextureRect" parent="Deck/Wheels/Rune_Layer2" unique_id=397879147]
 visible = false
-offset_left = -48.79999
-offset_top = -3.799994
-offset_right = -40.79999
-offset_bottom = 4.200006
+offset_left = -48.799988
+offset_top = -3.7999935
+offset_right = -40.799988
+offset_bottom = 4.2000065
 texture = SubResource("AtlasTexture_q2smi")
 
-[node name="8" type="TextureRect" parent="Deck/Wheels/LightLayer1" unique_id=1812347212]
+[node name="8" type="TextureRect" parent="Deck/Wheels/Rune_Layer2" unique_id=1812347212]
 visible = false
-offset_left = -43.39999
+offset_left = -43.399986
 offset_top = -13.7999935
-offset_right = -35.39999
+offset_right = -35.399986
 offset_bottom = -5.7999935
 rotation = -1.8360864
 texture = SubResource("AtlasTexture_mm7w1")
 
-[node name="LightLayer2" type="Node2D" parent="Deck/Wheels" unique_id=387618379]
-script = ExtResource("5_f8d1n")
+[node name="Rune_Layer3" type="Node2D" parent="Deck/Wheels" unique_id=604838836]
+script = ExtResource("5_qv6dw")
 
-[node name="TextureRect" type="TextureRect" parent="Deck/Wheels/LightLayer2" unique_id=863971511]
-visible = false
-offset_left = -55.999992
-offset_top = -55.799995
-offset_right = 56.000008
-offset_bottom = 56.200005
-texture = ExtResource("5_vtt01")
-
-[node name="TextureRect2" type="TextureRect" parent="Deck/Wheels/LightLayer2" unique_id=1274727647]
-visible = false
-offset_left = 55.8
-offset_top = 56.000015
-offset_right = 167.8
-offset_bottom = 168.00002
-rotation = 3.1415927
-texture = ExtResource("5_vtt01")
-
-[node name="9" type="TextureRect" parent="Deck/Wheels/LightLayer2" unique_id=67070274]
+[node name="9" type="TextureRect" parent="Deck/Wheels/Rune_Layer3" unique_id=67070274]
 visible = false
 offset_left = 32.400005
-offset_top = -36.599995
+offset_top = -36.599987
 offset_right = 40.400005
-offset_bottom = -28.599995
+offset_bottom = -28.599987
 rotation = 0.7641218
 texture = SubResource("AtlasTexture_1vi82")
 
-[node name="10" type="TextureRect" parent="Deck/Wheels/LightLayer2" unique_id=1278926381]
+[node name="10" type="TextureRect" parent="Deck/Wheels/Rune_Layer3" unique_id=1278926381]
 visible = false
 offset_left = 37.600006
 offset_top = -20.199993
@@ -349,7 +360,7 @@ offset_bottom = -12.199993
 rotation = -0.34902036
 texture = SubResource("AtlasTexture_cdfun")
 
-[node name="11" type="TextureRect" parent="Deck/Wheels/LightLayer2" unique_id=988544712]
+[node name="11" type="TextureRect" parent="Deck/Wheels/Rune_Layer3" unique_id=988544712]
 visible = false
 offset_left = -26.999992
 offset_top = 32.40001
@@ -358,25 +369,28 @@ offset_bottom = 40.40001
 rotation = 2.3039367
 texture = SubResource("AtlasTexture_m6aly")
 
-[node name="12" type="TextureRect" parent="Deck/Wheels/LightLayer2" unique_id=1895254827]
+[node name="12" type="TextureRect" parent="Deck/Wheels/Rune_Layer3" unique_id=1895254827]
 visible = false
-offset_left = -44.799988
-offset_top = 11.600003
-offset_right = -36.799988
-offset_bottom = 19.600004
+offset_left = -44.79998
+offset_top = 11.599998
+offset_right = -36.79998
+offset_bottom = 19.6
 rotation = 0.43645737
 texture = SubResource("AtlasTexture_hvypl")
 
-[node name="13" type="TextureRect" parent="Deck/Wheels/LightLayer2" unique_id=1233844782]
+[node name="Rune_Layer4" type="Node2D" parent="Deck/Wheels" unique_id=1544561539]
+script = ExtResource("6_f8d1n")
+
+[node name="13" type="TextureRect" parent="Deck/Wheels/Rune_Layer4" unique_id=1233844782]
 visible = false
-offset_left = 30.200006
-offset_top = 26.000004
+offset_left = 30.200005
+offset_top = 26.000002
 offset_right = 38.200005
-offset_bottom = 34.000004
+offset_bottom = 34.0
 rotation = 0.20953165
 texture = SubResource("AtlasTexture_vxl6k")
 
-[node name="14" type="TextureRect" parent="Deck/Wheels/LightLayer2" unique_id=2015630569]
+[node name="14" type="TextureRect" parent="Deck/Wheels/Rune_Layer4" unique_id=2015630569]
 visible = false
 offset_left = 25.200005
 offset_top = 42.40001
@@ -385,21 +399,21 @@ offset_bottom = 50.40001
 rotation = 2.558871
 texture = SubResource("AtlasTexture_4dx1a")
 
-[node name="15" type="TextureRect" parent="Deck/Wheels/LightLayer2" unique_id=1238687901]
+[node name="15" type="TextureRect" parent="Deck/Wheels/Rune_Layer4" unique_id=1238687901]
 visible = false
-offset_left = -23.199997
-offset_top = -43.800003
-offset_right = -15.199997
-offset_bottom = -35.800003
+offset_left = -23.199987
+offset_top = -43.799984
+offset_right = -15.199987
+offset_bottom = -35.799984
 rotation = -0.36549103
 texture = SubResource("AtlasTexture_l8jbo")
 
-[node name="16" type="TextureRect" parent="Deck/Wheels/LightLayer2" unique_id=1316138375]
+[node name="16" type="TextureRect" parent="Deck/Wheels/Rune_Layer4" unique_id=1316138375]
 visible = false
-offset_left = -36.599995
-offset_top = -35.399998
-offset_right = -28.599995
-offset_bottom = -27.399998
+offset_left = -36.599976
+offset_top = -35.39998
+offset_right = -28.599976
+offset_bottom = -27.399979
 rotation = -0.20010142
 texture = SubResource("AtlasTexture_vhuvq")
 

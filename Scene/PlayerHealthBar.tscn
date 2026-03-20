@@ -77,6 +77,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xjjx0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cok4r")
 }],
 "loop": false,
 "name": &"Flipped Sun to Sun",
@@ -119,7 +122,7 @@ mouse_filter = 2
 [node name="Coin" type="AnimatedSprite2D" parent="HBoxContainer/Slot1" unique_id=911160314]
 position = Vector2(8, 8)
 sprite_frames = SubResource("SpriteFrames_yw3x7")
-animation = &"Sun_Static"
+animation = &"Flipped Sun to Sun"
 
 [node name="Slot2" type="Control" parent="HBoxContainer" unique_id=1052271985]
 custom_minimum_size = Vector2(16, 16)

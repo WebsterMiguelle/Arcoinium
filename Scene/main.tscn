@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://dedsjnmo4366e" path="res://Script/enemy.gd" id="3_lquwl"]
 [ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
 [ext_resource type="PackedScene" uid="uid://b01fk6f1pan7q" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
+[ext_resource type="Script" uid="uid://oxp47e0yu1fa" path="res://Script/coin_deck.gd" id="7_ow1sv"]
 
 [node name="Main" type="TextureRect" unique_id=1891652298]
 anchors_preset = 15
@@ -158,6 +159,7 @@ vertical_alignment = 1
 
 [node name="CoinDeck" parent="." unique_id=955153148 instance=ExtResource("4_2wwxx")]
 position = Vector2(574, 310)
+script = ExtResource("7_ow1sv")
 
 [node name="Game Over UI" type="CanvasLayer" parent="." unique_id=994626979]
 visible = false

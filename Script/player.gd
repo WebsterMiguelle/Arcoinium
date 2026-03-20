@@ -1,11 +1,14 @@
 extends Node2D
 
+signal hp_changed(new_hp)
+
 #PLAYER STATS
 var max_coin = 100 #Max Coin Capacity
 var coin = 100:
 	set(value):
 		coin = clamp(value,0,max_coin)
-var max_flip: = 18 #Max Flips Per Turn
+		hp_changed.emit(coin)
+var max_flip: = 16 #Max Flips Per Turn
 var current_flip: = 0: #Current Flip Count
 	set(value):
 		current_flip = clamp(value,0,max_flip)
@@ -37,9 +40,4 @@ func gain_coin():
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
 	pass

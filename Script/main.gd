@@ -445,6 +445,7 @@ func start_player_turn():
 			coin.upgrade()
 			show_floating_label(player,0,LabelType.VALUE_INCREASE)
 		add_child(coin);
+		coin.refresh_sprite()
 		coin_count += 1
 		latest_coin = COIN.instantiate()
 		latest_coin.copy_coin(coin)
@@ -886,7 +887,10 @@ func reserve_left_over_coin():
 
 	if left_coin != null and right_coin == null:
 		left_coin.reserved = true
-		left_coin.global_position = coin_deck.get_reserve_slot()
+		left_coin.refresh_sprite()
+		var target_pos = coin_deck.get_reserve_slot()
+		var tween = create_tween()
+		tween.tween_property(left_coin,"position",target_pos,0.2)
 		reserved_coin = left_coin
 
 func update_player_coin():

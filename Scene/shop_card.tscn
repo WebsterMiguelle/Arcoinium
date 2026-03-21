@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://d327fu0pjg8bq"]
+
+[ext_resource type="Script" uid="uid://v856cqe4ouly" path="res://Scene/shop_card.gd" id="1_dvf4x"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_08wl6"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+
+[node name="ShopCard" type="Button" unique_id=1944982988]
+custom_minimum_size = Vector2(200, 300)
+offset_left = 185.0
+offset_top = 152.0
+offset_right = 385.0
+offset_bottom = 452.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_08wl6")
+text = "CARD"
+script = ExtResource("1_dvf4x")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

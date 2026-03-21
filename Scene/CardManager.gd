@@ -70,6 +70,7 @@ func create_card(data):
 
 func clear_cards():
 	for child in card_container.get_children():
+		card_container.remove_child(child)
 		child.queue_free()
 
 # Called when the node enters the scene tree for the first time.
@@ -114,9 +115,10 @@ func _process(_delta: float) -> void:
 
 
 func _on_refresh_pressed():
+	show_rewards()
 	if refresh_count <= 0:
 		refresh_button.disabled = true
 		return
 	
 	refresh_count -= 1
-	show_rewards()
+	

@@ -5,7 +5,12 @@ enum Enemy{
 	MAGE,
 	DWARF,
 	COLLECTOR,
-	TRADER
+	TRADER,
+	THRIFTER,
+	ARISTOCRAT,
+	SUN_CASTER,
+	MOON_CASTER,
+	TWILIGHT_SAGE
 }
 
 #ENEMY STATS
@@ -63,7 +68,7 @@ func setup(enemy):
 	print("Hello" + str(enemy))
 	match enemy:
 		Enemy.MAGE:
-			max_coin = 100
+			max_coin = 200
 			coin = 10
 			max_flip = 1
 			silver_flip_rate = 0.0
@@ -71,7 +76,7 @@ func setup(enemy):
 			bounty = 15
 			type = Enemy.MAGE
 		Enemy.DWARF:
-			max_coin = 100
+			max_coin = 200
 			coin = 14
 			max_flip = 2
 			silver_flip_rate = 0.0
@@ -80,17 +85,50 @@ func setup(enemy):
 			type = Enemy.DWARF
 		Enemy.COLLECTOR:
 			max_coin = 200
-			coin = 200
-			max_flip = 8
-			silver_flip_rate = 0.7
-			gold_flip_rate = 0.3
+			coin = 24
+			max_flip = 6
+			silver_flip_rate = 0.05
+			gold_flip_rate = 0.0
 			bounty = 30
 			type = Enemy.COLLECTOR
 		Enemy.TRADER:
-			max_coin = 100
+			max_coin = 200
 			coin = 28
 			max_flip = 2
 			silver_flip_rate = 0.05
 			gold_flip_rate = 0.0
 			bounty = 30
 			type = Enemy.TRADER
+		Enemy.THRIFTER:
+			max_coin = 200
+			coin = 36
+			max_flip = 8
+			silver_flip_rate = 0.1
+			gold_flip_rate = 0
+			bounty = 45
+			type = Enemy.THRIFTER
+		Enemy.ARISTOCRAT:
+			max_coin = 200
+			coin = 120
+			max_flip = 16
+			silver_flip_rate = 1
+			gold_flip_rate = 0
+			bounty = 45
+			type = Enemy.ARISTOCRAT
+		Enemy.SUN_CASTER:
+			max_coin = 200
+			coin = 100
+			max_flip = 12
+			silver_flip_rate = 0.5
+			gold_flip_rate = 0
+			bounty = 60
+			type = Enemy.SUN_CASTER
+		Enemy.MOON_CASTER:
+			max_coin = 200
+			coin = 100
+			max_flip = 12
+			silver_flip_rate = 0.5
+			gold_flip_rate = 0
+			bounty = 60
+			type = Enemy.MOON_CASTER
+			

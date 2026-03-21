@@ -9,7 +9,11 @@ enum Enemy{
 	MAGE,
 	DWARF,
 	COLLECTOR,
-	TRADER
+	TRADER,
+	THRIFTER,
+	ARISTOCRAT,
+	SUN_CASTER,
+	MOON_CASTER
 }
 
 #USER INTERFACE
@@ -82,6 +86,8 @@ var previous_player_gain = 0
 
 var previous_player_flips = 0
 var player_turn_count = 0
+var sun_count = 0
+var moon_count = 0
 
 #GENERAL PASSIVES
 
@@ -129,8 +135,12 @@ var player_turn_count = 0
 
 #ENEMY PASSIVES
 
-@export var has_value_added_tax = false
-@export var has_fair_trade = false
+var has_value_added_tax = false
+var has_fair_trade = false
+var has_learn_to_save = false
+var has_fully_paid = false
+var has_sunlit_curse = false
+var has_midnight_curse = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -153,7 +163,7 @@ func battle_start():
 	flip_button.pressed.connect(_on_flip_pressed)
 	endTurn_button.pressed.connect(_on_endturn_pressed)
 	re_flip_button.pressed.connect(_on_re_flip_pressed)
-	var enemy_id = 1
+	var enemy_id = 6
 	match enemy_id:
 		0: enemy.setup(Enemy.MAGE)
 		1: enemy.setup(Enemy.DWARF)
@@ -163,6 +173,19 @@ func battle_start():
 		3: 
 			enemy.setup(Enemy.TRADER)
 			has_fair_trade = true
+		4: 
+			enemy.setup(Enemy.THRIFTER)
+			has_learn_to_save = true
+		5:
+			enemy.setup(Enemy.ARISTOCRAT)
+			has_fully_paid = true
+			enemy.debt = 100
+		6: 
+			enemy.setup(Enemy.SUN_CASTER)
+			has_sunlit_curse = true
+		7: 
+			enemy.setup(Enemy.MOON_CASTER)
+			has_midnight_curse = true
 	
 	update_enemy_coin()
 	update_player_coin()
@@ -188,15 +211,12 @@ func activate_pre_battle_passives():
 	passive_income_used = false
 	payback_used = false
 	payback_coins = 12
-	pocket_money_coins = 6
+	pocket_money_coins = 8
 	coin_count = 0
 	player.current_flip = 0
 	
 	if has_lending_charge: show_floating_label(player,0,LabelType.LENDING_CHARGE)
 	if has_reimbursement: show_floating_label(player,0,LabelType.REIMBURSEMENT)
-	if has_simple_interest:
-		show_floating_label(player,0,LabelType.SIMPLE_INTEREST)
-		enemy.bounty *= 1.3
 	if has_wishbone: show_floating_label(player,0,LabelType.WISH_BONE) 
 	if has_golden_clover: show_floating_label(player,0,LabelType.GOLDEN_CLOVER) 
 	if has_sleight_of_hand: show_floating_label(player,0,LabelType.SLEIGHT_OF_HAND) 
@@ -233,7 +253,12 @@ func activate_pre_battle_passives():
 func activate_player_turn_start_passives():
 	previous_player_flips = 0
 	if payback_used:
-		payback_coins = 12
+		if has_learn_to_save and coin_count >= 8:
+			payback_coins = 8
+			if has_piggy:
+				payback_coins = 6
+		else:
+			payback_coins = 12
 		endTurn_button.disabled = true
 		re_flip_button.disabled = true
 		print("PAYBACK: " + str(payback_coins))
@@ -366,7 +391,9 @@ func show_turn_ui(text):
 
 func start_player_turn():
 	
+	
 	player_turn_count += 1
+		
 	#Initialize Global Stats
 	damage = 0
 	gain = 0
@@ -379,6 +406,11 @@ func start_player_turn():
 	if player.gain != 0 and player.gain > player.debt: show_floating_label(player,player.gain-player.debt,LabelType.GAIN)
 	player.gain_coin()
 
+	if has_simple_interest:
+		var interest = int(previous_player_gain * 0.2)
+		player.gain += interest
+		gain += interest
+		if interest != 0: show_floating_label(player,int(previous_player_gain * 0.2),LabelType.SIMPLE_INTEREST)
 
 	#Reset Player Stats
 	if has_pocket_money and player_turn_count == 1:
@@ -418,8 +450,24 @@ func start_player_turn():
 		latest_coin.copy_coin(coin)
 		reserved_coin.queue_free()
 	
+		if has_learn_to_save and coin_count >= 8:
+			flip_button.disabled = true
+			show_floating_label(player,0,LabelType.LEARN_TO_SAVE)
+			
 func start_enemy_turn():
 	coin_deck.reset_sigils()
+	
+	if enemy.type == Enemy.SUN_CASTER:
+		if sun_count >= 9:
+			enemy.gold_flip_rate = 1
+		else:
+			enemy.gold_flip_rate = 0
+
+	if enemy.type == Enemy.MOON_CASTER:
+		if moon_count >= 9:
+			enemy.gold_flip_rate = 1
+		else:
+			enemy.gold_flip_rate = 0
 	
 	show_turn_ui("Enemy Turn")
 	#Initialize Stats
@@ -430,11 +478,15 @@ func start_enemy_turn():
 	#Coin Gain Triggers
 	if enemy.gain != 0 and enemy.gain > enemy.debt: show_floating_label(enemy,enemy.gain,LabelType.GAIN)
 	enemy.gain_coin()
+	if has_fully_paid and enemy.debt == 0:
+		player.take_damage(100)
+		show_floating_label(player,100,LabelType.FULLY_PAID)
+		check_defeat()
 	if has_loan_shark and enemy.debt > 1:
 		var loan_damage = enemy.debt / 2
 		enemy.take_damage(loan_damage)
-		enemy.debt /= 2
 		show_floating_label(enemy,loan_damage,LabelType.LOAN_SHARK)
+
 
 	#Reset Enemy Stats
 	enemy.current_flip = 0
@@ -447,9 +499,10 @@ func start_enemy_turn():
 	current_turn = Turn.ENEMY
 	turn_calculation.text = ""
 	
+
 	flip_button.disabled = true
 	re_flip_button.disabled = true
-	
+
 	#FLIP COINS
 	await get_tree().create_timer(1.0).timeout
 	while enemy.current_flip != enemy.max_flip:
@@ -468,10 +521,16 @@ func end_enemy_turn():
 		else:
 			player.take_damage(damage)
 			show_floating_label(player,damage,LabelType.DAMAGE)
+	if debt != 0:
+			player.debt += debt
+			show_floating_label(player,debt,LabelType.DEBT)
 	enemy.gain += gain
 	if gain != 0: show_floating_label(enemy,gain,LabelType.TO_GAIN)
 	
-	
+	if has_pay_down and enemy.debt > enemy.coin:
+		enemy.coin = 0
+		show_floating_label(enemy,0,LabelType.PAY_DOWN)
+		
 	var defeat = check_defeat()
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
 	for coin in coins:
@@ -497,7 +556,7 @@ func _on_endturn_pressed():
 	#Activate End Turn Passives
 	await activate_player_turn_end_passives()
 	enemy.take_damage(damage)
-	previous_player_gain = gain
+	previous_player_gain += gain
 	if damage != 0: show_floating_label(enemy,damage,LabelType.DAMAGE)
 	player.gain += gain
 	if gain != 0: show_floating_label(player,gain,LabelType.TO_GAIN)
@@ -505,9 +564,6 @@ func _on_endturn_pressed():
 		show_floating_label(enemy,debt,LabelType.DEBT)
 		enemy.debt += debt
 
-	if has_pay_down and enemy.coin < enemy.debt:
-		enemy.coin = 0
-		show_floating_label(enemy,0,LabelType.PAY_DOWN)
 	reserve_left_over_coin()
 	var coins = get_tree().get_nodes_in_group("coins")
 	var is_left = true
@@ -544,6 +600,11 @@ func _on_flip_pressed():
 		
 	var state = randi() % 2
 	
+	if has_sunlit_curse:
+		state = 0
+	if has_midnight_curse:
+		state = 1
+		
 	if flip_clicks == 1 and has_solar_coin:
 		state = 0;
 		show_floating_label(player,0,LabelType.SOLAR_COIN)
@@ -587,9 +648,7 @@ func _on_flip_pressed():
 	coin.add_to_group("coins")
 	
 	
-	add_child(coin);
-	
-	var refund_chance = randf()
+	add_child(coin)
 	if has_refund and latest_coin != null:
 		if latest_coin.state == coin.state:
 			player.coin += (latest_coin.base_value / 2) + (coin.base_value / 2)
@@ -600,23 +659,32 @@ func _on_flip_pressed():
 			coin.queue_free()
 			show_floating_label(player,2,LabelType.GAIN)
 			coin_calculation()
-	
 	latest_coin = coin
 	coin_count += 1
 	
 	print(coin_count)
 	if player.current_flip == player.max_flip or player.coin == 1:
 		flip_button.disabled = true
+	if has_learn_to_save and coin_count >= 8:
+		flip_button.disabled = true
+		show_floating_label(player,0,LabelType.LEARN_TO_SAVE)
 	coin_calculation()
 	check_defeat()
 
 func enemy_flip():
 	
 	var state = randi() % 2
+	
+	if enemy.type == Enemy.SUN_CASTER and sun_count >= 9:
+		state = 0
+	if enemy.type == Enemy.MOON_CASTER and moon_count >= 9:
+		state = 1
+		
 	enemy.current_flip += 1
 	show_floating_label(enemy,1,LabelType.DAMAGE)
 	var coin = COIN.instantiate()
 	coin.setup(state,coin_deck.get_vacant_slot(enemy.current_flip))
+	
 	
 	#Silver/Gold Flip Rate
 	
@@ -637,10 +705,6 @@ func enemy_flip():
 	
 	enemy.take_damage(coin.base_value / 2)
 	
-	if has_pay_down and enemy.coin < enemy.debt:
-		enemy.coin = 0
-		show_floating_label(enemy,0,LabelType.PAY_DOWN)
-		
 	enemy_coin_calculation()
 	check_defeat()
 	
@@ -738,6 +802,7 @@ func _on_re_flip_pressed():
 					flip_button.disabled = false
 					coin_count -= 1
 					show_floating_label(player,0,LabelType.SPARE_CHANGE)
+				coin.re_flip()
 				coin_calculation()
 				
 			else:
@@ -755,6 +820,8 @@ func coin_calculation():
 	damage = 0
 	gain = 0
 	debt = 0
+	sun_count = 0
+	moon_count = 0
 	var head_tail_count = 0
 	var coins = get_tree().get_nodes_in_group("coins")
 	for coin in coins:
@@ -762,7 +829,10 @@ func coin_calculation():
 			left_coin = coin
 		if is_left == false:
 			right_coin = coin
-		
+		if coin.state == 0:
+			sun_count += 1
+		else:
+			moon_count +=1
 		if left_coin != null and right_coin != null:
 			# 1. HEAD-HEAD PAIR
 			if left_coin.state == 0 and right_coin.state == 0:
@@ -796,6 +866,7 @@ func coin_calculation():
 		turn_calculation.add_theme_color_override("font_color", Color.WHITE)
 	else: 
 		turn_calculation.text = ""
+
 func reserve_left_over_coin():
 	var is_left = true # true - Left Coin, false - Right Coin
 	var left_coin
@@ -846,6 +917,7 @@ func enemy_coin_calculation():
 	print("Calculating DMG and Gain of Enemy")
 	damage = 0
 	gain = 0
+	debt = 0
 	var type = enemy.type
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
 	match type:
@@ -880,9 +952,68 @@ func enemy_coin_calculation():
 		Enemy.TRADER:
 			for coin in coins:
 				if coin.state == 0: damage += coin.base_value / 2
-			
-	if damage != 0 or gain != 0:
-		var text = "DMG: " + str(damage) + " \nGAIN: " + str(gain)
+		Enemy.THRIFTER:
+			var is_left = true # true - Left Coin, false - Right Coin
+			var left_coin
+			var right_coin
+			for coin in coins:
+				if is_left == true:
+					left_coin = coin
+				if is_left == false:
+					right_coin = coin			
+				if left_coin != null and right_coin != null:
+					if left_coin.state == 1 and right_coin.state == 1:
+						gain += (left_coin.base_value) + (right_coin.base_value)
+					if left_coin.state == 0 and right_coin.state == 0:
+						damage += (left_coin.base_value) + (right_coin.base_value)
+					left_coin = null
+					right_coin = null
+				else:
+					pass
+				is_left = !is_left
+		Enemy.ARISTOCRAT:
+			for coin in coins:
+				if coin.state == 1: gain += coin.base_value
+		Enemy.SUN_CASTER:
+			var is_left = true # true - Left Coin, false - Right Coin
+			var left_coin
+			var right_coin
+			for coin in coins:
+				if coin.state == 0:
+					gain += coin.base_value / 2
+				if is_left == true:
+					left_coin = coin
+				if is_left == false:
+					right_coin = coin			
+				if left_coin != null and right_coin != null:
+					if left_coin.state == 0 and right_coin.state == 0:
+						damage += (left_coin.base_value) + (right_coin.base_value)
+					left_coin = null
+					right_coin = null
+				else:
+					pass
+				is_left = !is_left
+		Enemy.MOON_CASTER:
+			var is_left = true # true - Left Coin, false - Right Coin
+			var left_coin
+			var right_coin
+			for coin in coins:
+				if coin.state == 1:
+					debt += coin.base_value / 2
+				if is_left == true:
+					left_coin = coin
+				if is_left == false:
+					right_coin = coin			
+				if left_coin != null and right_coin != null:
+					if left_coin.state == 1 and right_coin.state == 1:
+						damage += 1
+					left_coin = null
+					right_coin = null
+				else:
+					pass
+				is_left = !is_left
+	if damage != 0 or debt != 0:
+		var text = "DMG: " + str(damage) + "\nGAIN: " + str(gain) + "\nDEBT: " + str(debt)
 		turn_calculation.text = text
 		turn_calculation.add_theme_color_override("font_color", Color.INDIAN_RED)
 
@@ -922,7 +1053,9 @@ enum LabelType{
 	LENDING_CHARGE,
 	
 	VALUE_ADDED_TAX,
-	FAIR_TRADE
+	FAIR_TRADE,
+	LEARN_TO_SAVE,
+	FULLY_PAID
 }
 func show_floating_label(entity, value, type):
 	var label = Label.new()
@@ -1020,7 +1153,7 @@ func show_floating_label(entity, value, type):
 			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
 			label.add_theme_font_size_override("font_size",22)
 		LabelType.SIMPLE_INTEREST:
-			label.text = "SIMPLE INTEREST: Enemy Bounty +50%"
+			label.text = "SIMPLE INTEREST: +" + str(value) + " GAIN"
 			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
 			label.add_theme_font_size_override("font_size",22)
 		LabelType.POCKET_MONEY:
@@ -1058,6 +1191,14 @@ func show_floating_label(entity, value, type):
 			label.add_theme_font_size_override("font_size",16)
 		LabelType.FAIR_TRADE:
 			label.text = "FAIR TRADE: Coin Count Copied"
+			label.add_theme_color_override("font_color",Color.WEB_MAROON)
+			label.add_theme_font_size_override("font_size",16)
+		LabelType.LEARN_TO_SAVE:
+			label.text = "LEARN TO SAVE: Only 8 Coins Allowed"
+			label.add_theme_color_override("font_color",Color.WEB_MAROON)
+			label.add_theme_font_size_override("font_size",16)
+		LabelType.FULLY_PAID:
+			label.text = "FULLY PAID: -" + str(value) + " DMG"
 			label.add_theme_color_override("font_color",Color.WEB_MAROON)
 			label.add_theme_font_size_override("font_size",16)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT

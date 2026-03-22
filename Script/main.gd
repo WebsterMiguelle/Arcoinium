@@ -20,8 +20,10 @@ enum Enemy{
 @onready var player = $Player
 @onready var enemy = $Enemy
 
-@onready var player_portrait: ColorRect = $Player/Player_Portrait
-@onready var enemy_portrait: ColorRect = $Enemy/Enemy_Portrait
+#@onready var player_portrait: ColorRect = $Player/Player_Portrait
+#@onready var enemy_portrait: ColorRect = $Enemy/Enemy_Portrait
+@onready var enemy_portrait: TextureRect = $Enemy/Enemy_Portrait
+@onready var player_portrait: TextureRect = $Player/Player_Portrait
 
 @onready var endTurn_button = $"Battle UI/Endturn"
 @onready var flip_button = $"Battle UI/PlayerHealthBar2"
@@ -34,7 +36,7 @@ enum Enemy{
 @onready var player_health_label = $"Battle UI/HealthLabel"
 
 @onready var enemy_health_bar = $"Battle UI/EnemyHealthBar"
-@onready var enemy_health_label = $"Battle UI/EnemyHealthLabel"
+@onready var enemy_health_label: Label = $"Battle UI/EnemyHealthLabel"
 @onready var enemy_gain: Label = $"Enemy/Enemy Gain"
 @onready var enemy_debt: Label = $"Enemy/Enemy Debt"
 
@@ -893,7 +895,6 @@ func update_player_coin():
 	player_health_label.text = "Coins: " + str(player.coin)
 	
 func update_enemy_coin():
-	enemy_health_bar.value = enemy.coin
 	enemy_health_label.text = "Coins: " + str(enemy.coin)
 	
 func update_player_gain_debt():

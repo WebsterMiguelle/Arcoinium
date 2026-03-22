@@ -34,7 +34,7 @@ enum Enemy{
 @onready var player_health_label = $"Battle UI/HealthLabel"
 
 @onready var enemy_health_bar = $"Battle UI/EnemyHealthBar"
-@onready var enemy_health_label = $"Battle UI/EnemyHealthBar/EnemyHealthLabel"
+@onready var enemy_health_label = $"Battle UI/EnemyHealthLabel"
 @onready var enemy_gain: Label = $"Enemy/Enemy Gain"
 @onready var enemy_debt: Label = $"Enemy/Enemy Debt"
 
@@ -163,7 +163,7 @@ func battle_start():
 	flip_button.pressed.connect(_on_flip_pressed)
 	endTurn_button.pressed.connect(_on_endturn_pressed)
 	re_flip_button.pressed.connect(_on_re_flip_pressed)
-	var enemy_id = 6
+	var enemy_id = 4
 	match enemy_id:
 		0: enemy.setup(Enemy.MAGE)
 		1: enemy.setup(Enemy.DWARF)

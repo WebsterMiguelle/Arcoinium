@@ -285,4 +285,4 @@ texture_filter = 1
 position = Vector2(40, 40)
 scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_hncfd")
-animation = &"silver_to_tail"
+animation = &"copper_head"

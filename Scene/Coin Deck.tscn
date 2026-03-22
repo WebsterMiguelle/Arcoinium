@@ -32,8 +32,10 @@ var max_capacity: int = 18
 @onready var a16: TextureRect = $\"Deck/Wheels/Rune_Layer2/16\"
 
 @onready var sigil_textures: Array = [a1, a2, a3, a4,a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16]
+@onready var glow_aura: TextureRect = $\"Glow Aura\"
 
 @onready var coin_reserve: ColorRect = $CoinReserve
+var coin_opacity : int
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -56,6 +58,19 @@ func reset_sigils():
 	for sigil in sigil_textures:
 		sigil.visible = false
 "
+
+[sub_resource type="Gradient" id="Gradient_qv6dw"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.6626506, 1)
+colors = PackedColorArray(1, 1, 1, 1, 3.2379272, 3.2379272, 3.2379272, 0, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_f8d1n"]
+gradient = SubResource("Gradient_qv6dw")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dhtfp"]
 atlas = ExtResource("5_jc2jt")
@@ -123,6 +138,16 @@ region = Rect2(56, 8, 8, 8)
 
 [node name="CoinDeck" type="Node2D" unique_id=955153148]
 script = SubResource("GDScript_arh45")
+
+[node name="Glow Aura" type="TextureRect" parent="." unique_id=494783141]
+modulate = Color(1, 1, 0.7585879, 0.50600004)
+offset_left = -348.0
+offset_top = -349.00003
+offset_right = -248.0
+offset_bottom = -249.00003
+scale = Vector2(7, 7)
+texture = SubResource("GradientTexture2D_f8d1n")
+expand_mode = 1
 
 [node name="Deck" type="TextureRect" parent="." unique_id=258019195]
 anchors_preset = 8
@@ -418,6 +443,7 @@ rotation = -0.20010142
 texture = SubResource("AtlasTexture_vhuvq")
 
 [node name="CoinReserve" type="ColorRect" parent="." unique_id=264404005]
+visible = false
 offset_left = -25.0
 offset_top = -25.0
 offset_right = 26.0

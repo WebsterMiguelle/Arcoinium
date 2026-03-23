@@ -5,12 +5,12 @@
 [ext_resource type="Texture2D" uid="uid://bmkxblxwtg47d" path="res://Assets/Rug.png" id="2_3amdw"]
 [ext_resource type="Script" uid="uid://dedsjnmo4366e" path="res://Script/enemy.gd" id="3_lquwl"]
 [ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
-[ext_resource type="PackedScene" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
+[ext_resource type="PackedScene" uid="uid://b01fk6f1pan7q" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
 [ext_resource type="Script" uid="uid://deakh0hwd6qoh" path="res://Scene/CardManager.gd" id="5_3amdw"]
-[ext_resource type="PackedScene" uid="uid://dbj4jt3y4yqdx" path="res://Scene/EnemyHealthBar.tscn" id="6_c2iwn"]
+[ext_resource type="PackedScene" path="res://Scene/EnemyHealthBar.tscn" id="6_c2iwn"]
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="6_mxd2g"]
 [ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="7_3pt4j"]
-[ext_resource type="Script" path="res://Script/coin_deck.gd" id="7_ow1sv"]
+[ext_resource type="Script" uid="uid://byrcn8pelxayw" path="res://Script/coin_deck.gd" id="7_ow1sv"]
 [ext_resource type="Texture2D" uid="uid://c4wd4jo1dquma" path="res://Assets/Sun_caster.png" id="8_0sxm5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3amdw"]
@@ -322,13 +322,11 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_3amdw")
 text = "Refresh"
 
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=981605822]
-visible = false
 position = Vector2(594, 324)
 scale = Vector2(17.921875, 10.046875)
 texture = SubResource("GradientTexture2D_c2iwn")
 
 [node name="Vignette" type="CanvasModulate" parent="." unique_id=332093695]
-visible = false
 color = Color(0, 0, 0, 1)
 
 [connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]

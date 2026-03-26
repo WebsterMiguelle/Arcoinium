@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://ka64sstswrwl" path="res://Scene/game_over_ui.gd" id="5_75buv"]
 [ext_resource type="Script" uid="uid://bh8ned1dqg5l3" path="res://Script/Shop_manager.gd" id="6_1xcnr"]
 [ext_resource type="Script" uid="uid://cbrncrbtg7emf" path="res://Script/pause_menu.gd" id="7_ow1sv"]
+[ext_resource type="Script" uid="uid://c4nmeg7fuu34n" path="res://Script/passive_manager.gd" id="9_c2iwn"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2wwxx"]
 
@@ -195,7 +196,7 @@ vertical_alignment = 1
 
 [node name="PassiveNotification" type="Label" parent="Battle UI" unique_id=1456377952]
 custom_minimum_size = Vector2(200, 150)
-offset_left = 931.0
+offset_left = 896.0
 offset_top = 469.0
 offset_right = 1131.0
 offset_bottom = 619.0
@@ -450,6 +451,9 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_c2iwn")
 text = "End Run"
+
+[node name="PassiveManager" type="Node" parent="." unique_id=897309216]
+script = ExtResource("9_c2iwn")
 
 [connection signal="pressed" from="Battle UI/PlayerHealthBar/Flip" to="." method="_on_flip_pressed"]
 [connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]

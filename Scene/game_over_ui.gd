@@ -6,8 +6,8 @@ func show_stats(stats: Dictionary):
 	
 	label.text = \
 	"Remaining Coins: " + str(stats["remaining_coins"]) + "\n" + \
-	"Overall DMG: " + str(stats["total_damage"]) + "\n" + \
-	"Highest DMG: " + str(stats["highest_damage"]) + "\n" + \
+	"Overall DMG: " + str(stats["total_damage_dealt"]) + "\n" + \
+	"Highest DMG: " + str(stats["highest_damage_dealt"]) + "\n" + \
 	"Overall GAIN: " + str(stats["total_gain"]) + "\n" + \
 	"Highest GAIN: " + str(stats["highest_gain"]) + "\n" + \
 	#"Overall DEBT: " + str(stats["total_debt"]) + "\n" + \

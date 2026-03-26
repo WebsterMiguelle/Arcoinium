@@ -58,7 +58,10 @@ func get_vacant_slot(current_flip):
 	return [pos_x,pos_y]
 
 func get_reserve_slot():
-	return coin_reserve.global_position
+	var slot = coin_reserve
+	var pos_x = slot.global_position.x + randi_range(-50,50)
+	var pos_y = slot.global_position.y + randi_range(-50,50)
+	return [pos_x,pos_y]
 	
 func reset_sigils():
 	for sigil in sigil_textures:

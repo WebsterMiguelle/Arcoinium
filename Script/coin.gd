@@ -31,7 +31,8 @@ func _process(delta: float) -> void:
 
 func re_flip():
 	state = randi() % 2
-	refresh_sprite()
+	if !reserved:
+		refresh_sprite()
 	
 func upgrade():
 	match type:

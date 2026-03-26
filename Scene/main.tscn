@@ -37,6 +37,20 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_mxd2g")
 script = ExtResource("1_h2yge")
+has_wishbone = true
+has_golden_clover = true
+has_impromptu_flip = true
+has_advanced_planning = true
+has_magic_trick = true
+has_sleight_of_hand = true
+has_piggy = true
+has_pocket_money = true
+has_passive_income = true
+has_simple_interest = true
+has_pay_down = true
+has_reimbursement = true
+has_loan_shark = true
+has_lending_charge = true
 
 [node name="CoinDeck" parent="." unique_id=955153148 instance=ExtResource("4_2wwxx")]
 position = Vector2(576, 324)

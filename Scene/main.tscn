@@ -33,12 +33,20 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_3amdw")
 script = ExtResource("1_h2yge")
-has_solar_coin = true
+has_wishbone = true
+has_golden_clover = true
 has_impromptu_flip = true
 has_advanced_planning = true
-has_lucky_pair = true
-has_value_increase = true
-has_coin_snipe = true
+has_magic_trick = true
+has_sleight_of_hand = true
+has_piggy = true
+has_pocket_money = true
+has_passive_income = true
+has_simple_interest = true
+has_pay_down = true
+has_reimbursement = true
+has_loan_shark = true
+has_lending_charge = true
 
 [node name="Player" type="Node2D" parent="." unique_id=1514396733]
 script = ExtResource("2_1bvp3")

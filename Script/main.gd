@@ -13,7 +13,8 @@ enum Enemy{
 	THRIFTER,
 	ARISTOCRAT,
 	SUN_CASTER,
-	MOON_CASTER
+	MOON_CASTER,
+	TWILIGHT_SAGE
 }
 
 #USER INTERFACE
@@ -141,6 +142,7 @@ var has_learn_to_save = false
 var has_fully_paid = false
 var has_sunlit_curse = false
 var has_midnight_curse = false
+var has_dusk_stance = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -163,7 +165,7 @@ func battle_start():
 	flip_button.pressed.connect(_on_flip_pressed)
 	endTurn_button.pressed.connect(_on_endturn_pressed)
 	re_flip_button.pressed.connect(_on_re_flip_pressed)
-	var enemy_id = 6
+	var enemy_id = 8
 	match enemy_id:
 		0: enemy.setup(Enemy.MAGE)
 		1: enemy.setup(Enemy.DWARF)
@@ -186,6 +188,9 @@ func battle_start():
 		7: 
 			enemy.setup(Enemy.MOON_CASTER)
 			has_midnight_curse = true
+		8:
+			enemy.setup(Enemy.TWILIGHT_SAGE)
+			has_dusk_stance = true
 	
 	update_enemy_coin()
 	update_player_coin()
@@ -214,7 +219,8 @@ func activate_pre_battle_passives():
 	pocket_money_coins = 8
 	coin_count = 0
 	player.current_flip = 0
-	
+	if has_passive_income:
+		player.gain += 12
 	if has_lending_charge: show_floating_label(player,0,LabelType.LENDING_CHARGE)
 	if has_reimbursement: show_floating_label(player,0,LabelType.REIMBURSEMENT)
 	if has_wishbone: show_floating_label(player,0,LabelType.WISH_BONE) 
@@ -252,7 +258,7 @@ func activate_pre_battle_passives():
 
 func activate_player_turn_start_passives():
 	previous_player_flips = 0
-	if payback_used:
+	if payback_used and payback_coins != 0:
 		if has_learn_to_save and coin_count >= 8:
 			payback_coins = 8
 			if has_piggy:
@@ -279,8 +285,7 @@ func activate_player_turn_start_passives():
 			add_child(coin);
 			latest_coin = coin
 			coin_count += 1
-			
-			print(player.current_flip)
+
 			if player.current_flip == player.max_flip or player.coin == 1:
 				flip_button.disabled = true
 			coin_calculation()
@@ -294,35 +299,46 @@ func activate_player_turn_start_passives():
 	if latest_pair_left_coin != null and latest_pair_right_coin != null:
 		show_floating_label(player,0,LabelType.PIGGY)
 		var left_coin = COIN.instantiate()
+		var pos
 		player.current_flip += 1
+		if coin_count >= player.max_flip:
+			pos = coin_deck.get_reserve_slot()
+			left_coin.reserved = true
+			player.current_reserve += 1
+		else:
+			pos = coin_deck.get_vacant_slot(player.current_flip)
+			coin_count += 1
+			left_coin.reserved = false
 		re_flip_button.disabled = false
-		left_coin.setup(latest_pair_left_coin.state,coin_deck.get_vacant_slot(player.current_flip))
+		left_coin.setup(latest_pair_left_coin.state,pos)
 		left_coin.copy_coin(latest_pair_left_coin)
 		left_coin.reserved = false
 		left_coin.add_to_group("coins")
 		add_child(left_coin);
-		coin_count += 1
+		
+
 		
 		var right_coin = COIN.instantiate()
 		player.current_flip += 1
+		if coin_count >= player.max_flip:
+			pos = coin_deck.get_reserve_slot()
+			right_coin.reserved = true
+			player.current_reserve += 1
+		else:
+			pos = coin_deck.get_vacant_slot(player.current_flip)
+			coin_count += 1
+			right_coin.reserved = false
 		re_flip_button.disabled = false
-		right_coin.setup(latest_pair_right_coin.state,coin_deck.get_vacant_slot(player.current_flip))
+		right_coin.setup(latest_pair_right_coin.state,pos)
 		right_coin.copy_coin(latest_pair_right_coin)
 		right_coin.reserved = false
 		right_coin.add_to_group("coins")
 		add_child(right_coin);
-		coin_count += 1
+		latest_coin = right_coin
 	
 	latest_pair_left_coin = null
 	latest_pair_right_coin = null
-	
-	if has_active_income and previous_player_gain >= 30:
-		var gain_damage = previous_player_gain / 2
-		enemy.take_damage(gain_damage)
-		show_floating_label(enemy,gain_damage,LabelType.DAMAGE)
-		show_floating_label(player,gain_damage,LabelType.ACTIVE_INCOME)
-		check_defeat()
-		previous_player_gain = 0
+	print(coin_count)
 		
 
 func activate_player_turn_end_passives():
@@ -391,7 +407,6 @@ func show_turn_ui(text):
 
 func start_player_turn():
 	
-	
 	player_turn_count += 1
 		
 	#Initialize Global Stats
@@ -400,11 +415,22 @@ func start_player_turn():
 	debt = 0
 	flip_clicks = 0
 	latest_coin = null
-	coin_count = 0
+	
+	#ACTIVE INCOME
+	if has_active_income and player.gain >= 30:
+		var gain_damage = player.gain
+		enemy.take_damage(gain_damage)
+		show_floating_label(enemy,gain_damage,LabelType.DAMAGE)
+		show_floating_label(player,gain_damage,LabelType.ACTIVE_INCOME)
+		check_defeat()
+		previous_player_gain = 0
+		player.debt = 0
 	
 	#Coin Gain Triggers
-	if player.gain != 0 and player.gain > player.debt: show_floating_label(player,player.gain-player.debt,LabelType.GAIN)
-	player.gain_coin()
+	if player.gain != 0 and player.gain > player.debt: 
+		show_floating_label(player,player.gain-player.debt,LabelType.GAIN)
+	if player_turn_count != 1:
+		player.gain_coin()
 
 	if has_simple_interest:
 		var interest = int(previous_player_gain * 0.2)
@@ -422,8 +448,6 @@ func start_player_turn():
 		latest_coin = null
 		coin_deck.reset_sigils()
 
-	#Activate Turn Start Passives
-	await activate_player_turn_start_passives()
 	
 	current_turn = Turn.PLAYER
 	flip_button.disabled = false
@@ -431,29 +455,40 @@ func start_player_turn():
 		re_flip_button.disabled = true
 		turn_calculation.text = ""
 	
+	#Activate Turn Start Passives
+	await activate_player_turn_start_passives()
 	
+	player.current_reserve = 0
 	#Check Coin Reserve
-	if reserved_coin != null:
-		var coin = COIN.instantiate()
-		player.current_flip += 1
-		re_flip_button.disabled = false
-		coin.setup(reserved_coin.state,coin_deck.get_vacant_slot(player.current_flip))
-		coin.copy_coin(reserved_coin)
-		coin.reserved = false
-		coin.add_to_group("coins")
-		if has_value_increase:
-			coin.upgrade()
-			show_floating_label(player,0,LabelType.VALUE_INCREASE)
-		add_child(coin);
-		coin.refresh_sprite()
-		coin_count += 1
-		latest_coin = COIN.instantiate()
-		latest_coin.copy_coin(coin)
-		reserved_coin.queue_free()
-	
-		if has_learn_to_save and coin_count >= 8:
-			flip_button.disabled = true
-			show_floating_label(player,0,LabelType.LEARN_TO_SAVE)
+	var coins = get_tree().get_nodes_in_group("reserved coins")
+	for coin in coins:
+		if coin.reserved:
+			re_flip_button.disabled = false
+			var pos
+			if coin_count >= player.max_flip:
+				pos = coin_deck.get_reserve_slot()
+				player.current_reserve += 1
+			else:
+				player.current_flip += 1
+				pos = coin_deck.get_vacant_slot(player.current_flip)
+				coin.global_position.x = pos[0]
+				coin.global_position.y = pos[1]
+				coin_count += 1
+				coin.reserved = false
+			if has_value_increase:
+				coin.upgrade()
+				show_floating_label(player,0,LabelType.VALUE_INCREASE)
+			latest_coin = COIN.instantiate()
+			latest_coin.setup(coin.state,pos)
+			latest_coin.copy_coin(coin)
+			coin.queue_free()
+			latest_coin.add_to_group("coins")
+			add_child(latest_coin)
+			latest_coin.refresh_sprite()
+			#reserved_coin.queue_free()
+	if has_learn_to_save and coin_count >= 8 or player.coin == 1:
+		flip_button.disabled = true
+		show_floating_label(player,0,LabelType.LEARN_TO_SAVE)
 			
 func start_enemy_turn():
 	coin_deck.reset_sigils()
@@ -484,7 +519,7 @@ func start_enemy_turn():
 		show_floating_label(player,100,LabelType.FULLY_PAID)
 		check_defeat()
 	if has_loan_shark and enemy.debt > 1:
-		var loan_damage = enemy.debt / 2
+		var loan_damage = enemy.debt
 		enemy.take_damage(loan_damage)
 		show_floating_label(enemy,loan_damage,LabelType.LOAN_SHARK)
 
@@ -517,8 +552,10 @@ func end_enemy_turn():
 	if damage != 0: 
 		if has_passive_income and !passive_income_used:
 			passive_income_used = true
-			show_floating_label(player,damage,LabelType.PASSIVE_INCOME)
+			if damage >= 30:
+				damage = 30
 			player.coin += damage
+			show_floating_label(player,damage,LabelType.PASSIVE_INCOME)
 		else:
 			player.take_damage(damage)
 			show_floating_label(player,damage,LabelType.DAMAGE)
@@ -528,9 +565,12 @@ func end_enemy_turn():
 	enemy.gain += gain
 	if gain != 0: show_floating_label(enemy,gain,LabelType.TO_GAIN)
 	
-	if has_pay_down and enemy.debt > enemy.coin:
-		enemy.coin = 0
-		show_floating_label(enemy,0,LabelType.PAY_DOWN)
+	if has_pay_down:
+		if enemy.debt > enemy.coin:
+			enemy.coin = 0
+			show_floating_label(enemy,0,LabelType.PAY_DOWN)
+		else:
+			enemy.debt += 10
 		
 	var defeat = check_defeat()
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
@@ -548,6 +588,9 @@ func end_enemy_turn():
 	if defeat == null:
 		await get_tree().create_timer(1.0).timeout
 		show_turn_ui("Player Turn")
+		if enemy.type == Enemy.TWILIGHT_SAGE:
+			has_dusk_stance = !has_dusk_stance
+			enemy.max_flip += 4
 		start_player_turn()
 
 func _on_endturn_pressed():
@@ -565,6 +608,13 @@ func _on_endturn_pressed():
 		show_floating_label(enemy,debt,LabelType.DEBT)
 		enemy.debt += debt
 
+	if enemy.type == Enemy.TWILIGHT_SAGE:
+		if has_dusk_stance:
+			enemy.gain += moon_count * 3
+			update_enemy_gain_debt()
+		else:
+			player.debt += sun_count * 3
+			update_player_gain_debt()
 	reserve_left_over_coin()
 	var coins = get_tree().get_nodes_in_group("coins")
 	var is_left = true
@@ -582,6 +632,8 @@ func _on_endturn_pressed():
 			print("Piggy Copying 2")
 		if coin.reserved == false:
 			coin.queue_free()
+	
+
 	var defeat = check_defeat()
 	if defeat == null:
 		if current_turn == Turn.PLAYER:
@@ -615,8 +667,14 @@ func _on_flip_pressed():
 	
 	player.current_flip += 1
 	var coin = COIN.instantiate()
-	coin.setup(state,coin_deck.get_vacant_slot(player.current_flip))
-	
+	if coin_count >= player.max_flip:
+		coin.setup(state,coin_deck.get_reserve_slot())
+		coin.reserved = true
+		player.current_reserve += 1
+		coin.add_to_group("reserved coins")
+	else:
+		coin.setup(state,coin_deck.get_vacant_slot(player.current_flip))
+		coin.add_to_group("coins")
 	#Silver/Gold Flip Rate
 	
 	var upgrade_chance = randf()
@@ -637,34 +695,22 @@ func _on_flip_pressed():
 	if flip_clicks <= 3 and has_triple_nickel:
 		coin.upgrade_to_silver()
 		show_floating_label(player,0,LabelType.TRIPLE_NICKEL)
-	if coin.base_value > 2 and has_coin_snipe:
+	if has_coin_snipe and coin.base_value > 2:
 		enemy.take_damage(1)
 		show_floating_label(player,1,LabelType.COIN_SNIPE)
 		show_floating_label(enemy,1,LabelType.DAMAGE)
 		check_defeat()
 
-	player.take_damage(coin.base_value / 2)
-	print("Player Took: " + str(coin.base_value / 2))
-	show_floating_label(player,coin.base_value / 2,LabelType.DAMAGE)
-	coin.add_to_group("coins")
-	
-	
+	player.take_damage(1)
+	show_floating_label(player,1,LabelType.DAMAGE)
 	add_child(coin)
-	if has_refund and latest_coin != null:
-		if latest_coin.state == coin.state:
-			player.coin += (latest_coin.base_value / 2) + (coin.base_value / 2)
-			player.current_flip -= 2
-			coin_count -= 2
-			show_floating_label(player,0,LabelType.REFUND)
-			latest_coin.queue_free()
-			coin.queue_free()
-			show_floating_label(player,2,LabelType.GAIN)
-			coin_calculation()
-	latest_coin = coin
-	coin_count += 1
+	
+	if coin.reserved == false:
+		latest_coin = coin
+		coin_count += 1
 	
 	print(coin_count)
-	if player.current_flip == player.max_flip or player.coin == 1:
+	if coin_count == player.max_flip and (player.current_reserve == player.max_reserve or player.coin == 1):
 		flip_button.disabled = true
 	if has_learn_to_save and coin_count >= 8:
 		flip_button.disabled = true
@@ -704,8 +750,8 @@ func enemy_flip():
 	coin.add_to_group("enemy_coins")
 	add_child(coin);
 	
-	enemy.take_damage(coin.base_value / 2)
-	
+	enemy.take_damage(1)
+	show_floating_label(enemy,1,LabelType.DAMAGE) 
 	enemy_coin_calculation()
 	check_defeat()
 	
@@ -776,11 +822,12 @@ func _on_re_flip_pressed():
 	print(coin_count)
 	if has_advanced_planning: show_floating_label(player,0,LabelType.ADVANCED_PLANNING)
 	player.current_re_flip += 1
-	var index = 0
 	var coins = get_tree().get_nodes_in_group("coins")
-	var second_latest_coin = null
+	var index = 0
+	var refund_chance = randf()
 	for coin in coins:
-		index += 1
+		if !coin.reserved:
+			index += 1
 		if index <= 2 and has_advanced_planning:
 			pass
 		else:
@@ -790,24 +837,25 @@ func _on_re_flip_pressed():
 					show_floating_label(player,0,LabelType.INFLATION)
 					coin.upgrade()
 				coin.re_flip()
-			if has_spare_change:
-				if index == coin_count-1:
-					second_latest_coin = coin
-				if index == coin_count:
-					print("HERE")
-					player.coin += latest_coin.base_value / 2
-					latest_coin.remove_from_group("coins")
-					latest_coin.queue_free()
-					latest_coin = second_latest_coin
-					player.current_flip -= 1
-					flip_button.disabled = false
-					coin_count -= 1
-					show_floating_label(player,0,LabelType.SPARE_CHANGE)
-				coin.re_flip()
+			if has_refund and refund_chance <= 0.1:
+				player.coin += 1
+				coin_count -= 1
+				player.current_flip -= 1
+				coin.queue_free()
+				flip_button.disabled = false
 				coin_calculation()
+				show_floating_label(player,0,LabelType.REFUND)
 				
 			else:
 				coin.re_flip()
+	if has_spare_change:
+		var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
+		for coin in reserved_coins:
+			player.coin += 1
+			coin.queue_free()
+			flip_button.disabled = false
+			player.current_reserve -= 1
+			show_floating_label(player,0,LabelType.SPARE_CHANGE)
 	
 	if player.current_re_flip == player.max_re_flip or coin_count == 0:
 		re_flip_button.disabled = true
@@ -830,11 +878,11 @@ func coin_calculation():
 			left_coin = coin
 		if is_left == false:
 			right_coin = coin
-		if coin.state == 0:
+		if coin.state == 0 and !coin.reserved:
 			sun_count += 1
 		else:
 			moon_count +=1
-		if left_coin != null and right_coin != null:
+		if left_coin != null and right_coin != null and left_coin.reserved == false and right_coin.reserved == false:
 			# 1. HEAD-HEAD PAIR
 			if left_coin.state == 0 and right_coin.state == 0:
 				damage += (left_coin.base_value + right_coin.base_value)
@@ -887,11 +935,12 @@ func reserve_left_over_coin():
 
 	if left_coin != null and right_coin == null:
 		left_coin.reserved = true
-		left_coin.refresh_sprite()
 		var target_pos = coin_deck.get_reserve_slot()
 		var tween = create_tween()
-		tween.tween_property(left_coin,"position",target_pos,0.2)
-		reserved_coin = left_coin
+		left_coin.refresh_sprite()
+		tween.tween_property(left_coin,"position:x",target_pos[0],0.2)
+		tween.tween_property(left_coin,"position:y",target_pos[1],0.2)
+		left_coin.add_to_group("reserved coins")
 
 func update_player_coin():
 	player_health_label.text = "Coins: " + str(player.coin)
@@ -964,7 +1013,7 @@ func enemy_coin_calculation():
 				if is_left == true:
 					left_coin = coin
 				if is_left == false:
-					right_coin = coin			
+					right_coin = coin
 				if left_coin != null and right_coin != null:
 					if left_coin.state == 1 and right_coin.state == 1:
 						gain += (left_coin.base_value) + (right_coin.base_value)
@@ -1010,13 +1059,41 @@ func enemy_coin_calculation():
 					right_coin = coin			
 				if left_coin != null and right_coin != null:
 					if left_coin.state == 1 and right_coin.state == 1:
-						damage += 1
+						damage += left_coin.base_value / 2 + right_coin.base_value / 2 
 					left_coin = null
 					right_coin = null
 				else:
 					pass
 				is_left = !is_left
-	if damage != 0 or debt != 0:
+		Enemy.TWILIGHT_SAGE:
+			var is_left = true # true - Left Coin, false - Right Coin
+			var left_coin
+			var right_coin
+			for coin in coins:
+				if is_left == true:
+					left_coin = coin
+				if is_left == false:
+					right_coin = coin
+				if left_coin != null and right_coin != null and left_coin.reserved == false and right_coin.reserved == false:
+					# 1. HEAD-HEAD PAIR
+					if left_coin.state == 0 and right_coin.state == 0:
+						damage += (left_coin.base_value + right_coin.base_value)
+					# 2. TAIL-TAIL PAIR
+					elif left_coin.state == 1 and right_coin.state == 1:
+						gain += (left_coin.base_value + right_coin.base_value)
+					# 3. HEAD-TAIL PAIR
+					elif left_coin.state == 0 and right_coin.state == 1:
+						damage += (left_coin.base_value / 2)
+						gain += (right_coin.base_value / 2)
+					else:
+						damage += (right_coin.base_value / 2)
+						gain += (left_coin.base_value / 2)
+					left_coin = null
+					right_coin = null
+				else:
+					pass
+				is_left = !is_left
+	if damage != 0 or debt != 0 or gain != 0:
 		var text = "DMG: " + str(damage) + "\nGAIN: " + str(gain) + "\nDEBT: " + str(debt)
 		turn_calculation.text = text
 		turn_calculation.add_theme_color_override("font_color", Color.INDIAN_RED)

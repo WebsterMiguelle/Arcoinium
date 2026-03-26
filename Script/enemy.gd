@@ -73,39 +73,39 @@ func setup(enemy):
 			max_flip = 1
 			silver_flip_rate = 0.0
 			gold_flip_rate = 0.0
-			bounty = 15
+			bounty = 20
 			type = Enemy.MAGE
 		Enemy.DWARF:
 			max_coin = 200
-			coin = 14
+			coin = 12
 			max_flip = 2
 			silver_flip_rate = 0.0
 			gold_flip_rate = 0.0
-			bounty = 10
+			bounty = 20
 			type = Enemy.DWARF
 		Enemy.COLLECTOR:
 			max_coin = 200
-			coin = 24
+			coin = 30
 			max_flip = 6
-			silver_flip_rate = 0.05
+			silver_flip_rate = 0.1
 			gold_flip_rate = 0.0
-			bounty = 30
+			bounty = 40
 			type = Enemy.COLLECTOR
 		Enemy.TRADER:
 			max_coin = 200
-			coin = 28
+			coin = 36
 			max_flip = 2
 			silver_flip_rate = 0.05
 			gold_flip_rate = 0.0
-			bounty = 30
+			bounty = 40
 			type = Enemy.TRADER
 		Enemy.THRIFTER:
 			max_coin = 200
-			coin = 36
+			coin = 60
 			max_flip = 8
-			silver_flip_rate = 0.1
+			silver_flip_rate = 0.3
 			gold_flip_rate = 0
-			bounty = 45
+			bounty = 60
 			type = Enemy.THRIFTER
 		Enemy.ARISTOCRAT:
 			max_coin = 200
@@ -113,22 +113,29 @@ func setup(enemy):
 			max_flip = 16
 			silver_flip_rate = 1
 			gold_flip_rate = 0
-			bounty = 45
+			bounty = 60
 			type = Enemy.ARISTOCRAT
 		Enemy.SUN_CASTER:
 			max_coin = 200
 			coin = 100
 			max_flip = 12
-			silver_flip_rate = 0.5
+			silver_flip_rate = 1
 			gold_flip_rate = 0
-			bounty = 60
+			bounty = 80
 			type = Enemy.SUN_CASTER
 		Enemy.MOON_CASTER:
 			max_coin = 200
-			coin = 100
+			coin = 80
 			max_flip = 12
-			silver_flip_rate = 0.5
+			silver_flip_rate = 1
 			gold_flip_rate = 0
-			bounty = 60
+			bounty = 80
 			type = Enemy.MOON_CASTER
-			
+		Enemy.TWILIGHT_SAGE:
+			max_coin = 250
+			coin = 250
+			max_flip = 4
+			silver_flip_rate = 0
+			gold_flip_rate = 1
+			bounty = 200
+			type = Enemy.TWILIGHT_SAGE

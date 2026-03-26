@@ -4,7 +4,9 @@ signal hp_changed(new_hp)
 
 #PLAYER STATS
 var max_coin = 500 #Max Coin Capacity
-var coin = 59:
+var max_reserve = 6
+var current_reserve = 0
+var coin = 95:
 	set(value):
 		coin = clamp(value,0,max_coin)
 		hp_changed.emit(coin)
@@ -12,14 +14,14 @@ var max_flip: = 16 #Max Flips Per Turn
 var current_flip: = 0: #Current Flip Count
 	set(value):
 		current_flip = clamp(value,0,max_flip)
-var max_re_flip = 9 #Max Re-Flips Per Turn
+var max_re_flip = 6 #Max Re-Flips Per Turn
 var current_re_flip = 0: #Current Re-Flip Count
 	set(value):
 		current_re_flip = clamp(value,0,max_re_flip)
-var silver_flip_rate = 0.1: #Chance to Flip a Silver Coin
+var silver_flip_rate = 0.4: #Chance to Flip a Silver Coin
 	set(value): 
 		silver_flip_rate = clamp(value,0.0,100.0) 
-var gold_flip_rate = 0.05: #Chance to Flip a Gold Coin
+var gold_flip_rate = 0.2: #Chance to Flip a Gold Coin
 	set(value): 
 		gold_flip_rate = clamp(value,0.0,100.0) 
 

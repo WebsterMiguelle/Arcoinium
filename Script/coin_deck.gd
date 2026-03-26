@@ -20,7 +20,6 @@ var max_capacity: int = 18
 @onready var _15: ColorRect = $"Deck/Row 3/15"
 @onready var _16: ColorRect = $"Deck/Row 3/16"
 
-
 @onready var a1: TextureRect = $"Deck/Wheels/Rune_Layer1/1"
 @onready var a2: TextureRect = $"Deck/Wheels/Rune_Layer1/2"
 @onready var a3: TextureRect = $"Deck/Wheels/Rune_Layer1/3"
@@ -37,7 +36,6 @@ var max_capacity: int = 18
 @onready var a14: TextureRect = $"Deck/Wheels/Rune_Layer4/14"
 @onready var a15: TextureRect = $"Deck/Wheels/Rune_Layer4/15"
 @onready var a16: TextureRect = $"Deck/Wheels/Rune_Layer4/16"
-
 
 @onready var sigil_textures: Array = [a1, a2, a3, a4,a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16]
 
@@ -64,4 +62,20 @@ func get_reserve_slot():
 	
 func reset_sigils():
 	for sigil in sigil_textures:
+		sigil.modulate = Color(1,1,1,1)
 		sigil.visible = false
+		
+func sigil_light_up():
+	for sigil in sigil_textures:
+		sigil.self_modulate = Color(18.892, 18.892, 18.892)
+	
+func sigil_unlight_():
+	for sigil in sigil_textures:
+		sigil.self_modulate = Color(1,1,1)
+		
+func sigil_pressed():
+	var tween = create_tween()
+	for sigil in sigil_textures:
+		sigil.self_modulate = Color(0.624,0.347,1,1)
+		tween.tween_property(sigil, "modulate:a", 0.0, 0.05)
+		

@@ -20,8 +20,10 @@ enum Enemy{
 @onready var player = $Player
 @onready var enemy = $Enemy
 
-@onready var player_portrait: ColorRect = $Player/Player_Portrait
-@onready var enemy_portrait: ColorRect = $Enemy/Enemy_Portrait
+#@onready var player_portrait: ColorRect = $Player/Player_Portrait
+#@onready var enemy_portrait: ColorRect = $Enemy/Enemy_Portrait
+@onready var enemy_portrait: TextureRect = $Enemy/Enemy_Portrait
+@onready var player_portrait: TextureRect = $Player/Player_Portrait
 
 @onready var endTurn_button = $"Battle UI/Endturn"
 @onready var flip_button = $"Battle UI/PlayerHealthBar2"
@@ -34,7 +36,7 @@ enum Enemy{
 @onready var player_health_label = $"Battle UI/HealthLabel"
 
 @onready var enemy_health_bar = $"Battle UI/EnemyHealthBar"
-@onready var enemy_health_label = $"Battle UI/EnemyHealthBar/EnemyHealthLabel"
+@onready var enemy_health_label: Label = $"Battle UI/EnemyHealthLabel"
 @onready var enemy_gain: Label = $"Enemy/Enemy Gain"
 @onready var enemy_debt: Label = $"Enemy/Enemy Debt"
 
@@ -163,7 +165,7 @@ func battle_start():
 	flip_button.pressed.connect(_on_flip_pressed)
 	endTurn_button.pressed.connect(_on_endturn_pressed)
 	re_flip_button.pressed.connect(_on_re_flip_pressed)
-	var enemy_id = 6
+	var enemy_id = 3
 	match enemy_id:
 		0: enemy.setup(Enemy.MAGE)
 		1: enemy.setup(Enemy.DWARF)
@@ -361,7 +363,6 @@ func activate_player_turn_end_passives():
 		coin_calculation()
 		await get_tree().create_timer(1.0).timeout
 
-
 func show_turn_ui(text):
 	endTurn_button.disabled = true
 	turn_ui.visible = true
@@ -387,10 +388,7 @@ func show_turn_ui(text):
 	await get_tree().create_timer(1.0).timeout
 	turn_ui.visible = false
 
-
-
 func start_player_turn():
-	
 	
 	player_turn_count += 1
 		
@@ -457,6 +455,7 @@ func start_player_turn():
 			
 func start_enemy_turn():
 	coin_deck.reset_sigils()
+	endTurn_button.disabled = true
 	
 	if enemy.type == Enemy.SUN_CASTER:
 		if sun_count >= 9:
@@ -514,6 +513,9 @@ func start_enemy_turn():
 	end_enemy_turn()
 
 func end_enemy_turn():
+	coin_deck.sigil_pressed()
+	endTurn_button.disabled = false
+	
 	if damage != 0: 
 		if has_passive_income and !passive_income_used:
 			passive_income_used = true
@@ -549,9 +551,11 @@ func end_enemy_turn():
 		await get_tree().create_timer(1.0).timeout
 		show_turn_ui("Player Turn")
 		start_player_turn()
+	
+	coin_deck.sigil_unlight_()
 
 func _on_endturn_pressed():
-	
+	coin_deck.sigil_pressed();
 	previous_player_flips = flip_clicks
 	
 	#Activate End Turn Passives
@@ -587,9 +591,6 @@ func _on_endturn_pressed():
 		if current_turn == Turn.PLAYER:
 			await get_tree().create_timer(1.0).timeout
 			start_enemy_turn()
-
-	
-		
 
 func _on_flip_pressed():
 	print("FLIP")
@@ -770,7 +771,6 @@ func check_defeat():
 	
 	return null
 
-
 func _on_re_flip_pressed():
 	print("REFLIP")
 	print(coin_count)
@@ -897,7 +897,6 @@ func update_player_coin():
 	player_health_label.text = "Coins: " + str(player.coin)
 	
 func update_enemy_coin():
-	enemy_health_bar.value = enemy.coin
 	enemy_health_label.text = "Coins: " + str(enemy.coin)
 	
 func update_player_gain_debt():
@@ -1288,3 +1287,11 @@ func _on_restart_pressed():
 
 func _on_refresh_pressed() -> void:
 	pass # Replace with function body.
+
+
+func _on_endturn_mouse_entered() -> void:
+	coin_deck.sigil_light_up()
+
+
+func _on_endturn_mouse_exited() -> void:
+	coin_deck.sigil_unlight_()

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ddet242jm5v23"]
 
-[ext_resource type="Script" uid="uid://ctvgpe532fo2k" path="res://Script/coin.gd" id="1_jea4o"]
+[ext_resource type="Script" path="res://Script/coin.gd" id="1_byqvs"]
 [ext_resource type="Texture2D" uid="uid://brn3ihcjo08pk" path="res://Assets/Coins/sun_to_moon_coin-Sheet.png" id="2_byqvs"]
 [ext_resource type="Texture2D" uid="uid://b26gbj0tgcnn" path="res://Assets/16bitcoins.png" id="2_jea4o"]
 
@@ -278,11 +278,11 @@ animations = [{
 }]
 
 [node name="Coin" type="Node2D" unique_id=1898979683]
-script = ExtResource("1_jea4o")
+script = ExtResource("1_byqvs")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1217145718]
 texture_filter = 1
 position = Vector2(40, 40)
 scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_hncfd")
-animation = &"silver_to_tail"
+animation = &"copper_head"

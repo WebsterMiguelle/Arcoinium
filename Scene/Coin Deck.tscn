@@ -421,7 +421,7 @@ texture = SubResource("AtlasTexture_vhuvq")
 
 [node name="CoinReserve" type="ColorRect" parent="." unique_id=264404005]
 visible = false
-offset_left = -25.0
-offset_top = -25.0
-offset_right = 26.0
-offset_bottom = 25.0
+offset_left = -632.0
+offset_top = 150.0
+offset_right = -551.0
+offset_bottom = 219.0

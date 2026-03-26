@@ -11,6 +11,7 @@ var player_ref
 var shop_done := false
 
 signal item_purchased(card_id, price)
+signal shop_closed
 
 func show_shop_async(player):
 	shop_done = false
@@ -79,6 +80,7 @@ func close_shop():
 	visible = false
 	get_parent().reward_manager.set_cards_enabled(true)
 	shop_done = true
+	emit_signal("shop_closed")
 	
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

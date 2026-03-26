@@ -68,6 +68,11 @@ var total_flips = 0
 var total_reflips = 0
 var total_passives = 0
 
+var overall_total_damage: int = 0
+var overall_highest_damage: int = 0
+var overall_total_gain: int = 0
+var overall_highest_gain: int = 0
+
 var current_enemy_type
 
 #Random Events Selection Scene
@@ -84,7 +89,7 @@ var flip_clicks = 0
 var latest_coin = null
 var coin_count = 0
 
-
+var coins_array: Array = []
 
 func _on_item_purchased(card_id,price):
 	update_player_coin()
@@ -103,8 +108,6 @@ func _ready():
 	shop_manager.item_purchased.connect(_on_item_purchased)
 	pause_menu.end_run_pressed.connect(_on_end_run_pressed)
 		
-	if not flip_button.pressed.is_connected(_on_flip_pressed):
-		flip_button.pressed.connect(_on_flip_pressed)
 	if not endTurn_button.pressed.is_connected(_on_endturn_pressed):
 		endTurn_button.pressed.connect(_on_endturn_pressed)
 	if not re_flip_button.pressed.is_connected(_on_re_flip_pressed):
@@ -250,7 +253,7 @@ func end_enemy_turn():
 	if damage != 0: show_floating_label(player,damage,LabelType.DAMAGE)
 	enemy.gain += gain
 	if gain != 0: show_floating_label(enemy,gain,LabelType.TO_GAIN)
-	var defeat = check_defeat()
+	var defeat = await check_defeat()
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
 	for coin in coins:
 		coin.queue_free()
@@ -282,7 +285,7 @@ func _on_endturn_pressed():
 	player.gain += gain
 	if gain != 0: show_floating_label(player,gain,LabelType.TO_GAIN)
 	reserve_left_over_coin()
-	var defeat = check_defeat()
+	var defeat = await check_defeat()
 	if defeat == null:
 		if current_turn == Turn.PLAYER:
 			start_enemy_turn()
@@ -291,7 +294,7 @@ func _on_endturn_pressed():
 	for coin in coins_array:
 		if is_instance_valid(coin) and coin.reserved == false:
 			coin.queue_free()
-	clean_coins_array()
+	#clean_coins_array()
 			
 	total_damage_dealt += damage
 	if damage > highest_damage_dealt:
@@ -314,7 +317,6 @@ func show_passive_notification(text: String, duration: float = 1.5) -> void:
 	tween.tween_property(label, "modulate:a", 0.0, 0.5).set_delay(duration)
 	tween.tween_callback(label.queue_free)
 	
-var coins_array: Array = []
 func realign_coins():
 	clean_coins_array()
 	var coins = get_tree().get_nodes_in_group("coins")
@@ -342,7 +344,7 @@ func _on_flip_pressed():
 	else:
 		total_tails += 1
 	
-	passive_manager.handle_coin_flip(flip_clicks, state)
+	state = passive_manager.handle_coin_flip(flip_clicks, state)
 	
 	player.current_flip += 1
 	player.take_damage(1)
@@ -367,7 +369,7 @@ func _on_flip_pressed():
 		show_floating_label(player,0,LabelType.GOLD_FLIP) 
 	
 	coin.add_to_group("coins")
-	add_child(coin);
+	add_child(coin)
 	latest_coin = coin
 	coin_count += 1
 	coins_array.append(coin)
@@ -418,6 +420,10 @@ func trigger_game_over(player_won: bool, is_surrender: bool = false):
 	"highest_damage_dealt": highest_damage_dealt,
 	"total_gain": total_gain,
 	"highest_gain": highest_gain,
+	"overall_total_damage": overall_total_damage,
+	"overall_highest_damage": overall_highest_damage,
+	"overall_total_gain": overall_total_gain,
+	"overall_highest_gain": overall_highest_gain,
 	"enemies_defeated": enemies_defeated,
 	"heads": total_heads,
 	"tails": total_tails,
@@ -477,12 +483,45 @@ func check_defeat():
 		
 	if enemy.coin <= 0:
 		enemies_defeated += 1
-		trigger_game_over(true)
-		return false
+		await handle_victory_flow()
 	
-	return null
+	
+func handle_victory_flow():
+	show_turn_ui("VICTORY")
+	await get_tree().create_timer(1.0).timeout
+	
+	# Disable gameplay buttons
+	flip_button.disabled = true
+	re_flip_button.disabled = true
+	endTurn_button.disabled = true
+	
+	
+	overall_total_damage += total_damage_dealt
+	if total_damage_dealt > overall_highest_damage:
+		overall_highest_damage = total_damage_dealt
+		
+	overall_total_gain += total_gain
+	if total_gain > overall_highest_gain:
+		overall_highest_gain = total_gain
+	
+	await shop_manager.show_shop_async(player)
+	await reward_manager.show_card_selection_async()
+	
+	start_next_battle()
 
-
+func start_next_battle():
+		
+	var enemy_coins = get_tree().get_nodes_in_group("enemy_coins")
+	for coin in enemy_coins:
+		coin.queue_free()
+	
+	# Reset UI
+	turn_calculation.text = ""
+	
+	# Start new battle
+	battle_start()
+	
+	
 func _on_re_flip_pressed():
 	print("REFLIP")
 	total_reflips += 1

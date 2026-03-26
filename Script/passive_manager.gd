@@ -85,9 +85,7 @@ func handle_coin_flip(flip_clicks: int, state: int) -> int:
 		print("Lunar Coin TRIGGERED")
 		state = 1;
 		main.show_floating_label(main.player,0,main.LabelType.LUNAR_COIN)
-	main.player.current_flip += 1
-	main.player.take_damage(1)
-	main.show_floating_label(main.player,1,main.LabelType.DAMAGE)
+		main.show_floating_label(main.player,1,main.LabelType.DAMAGE)
 	
 	
 	return state

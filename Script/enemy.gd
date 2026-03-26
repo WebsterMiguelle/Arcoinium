@@ -3,14 +3,7 @@ extends Node
 
 enum Enemy{
 	MAGE,
-	DWARF,
-	COLLECTOR,
-	TRADER,
-	THRIFTER,
-	ARISTOCRAT,
-	SUN_CASTER,
-	MOON_CASTER,
-	TWILIGHT_SAGE
+	DWARF
 }
 
 #ENEMY STATS
@@ -20,9 +13,7 @@ var max_coin = 0 #Max Coin Capacity
 var coin = 0:
 	set(value):
 		coin = clamp(value,0,max_coin)
-var max_flip: = 0: #Max Flips Per Turn
-	set(value):
-		max_flip = clamp(value,0,16)
+var max_flip: = 0 #Max Flips Per Turn
 var current_flip: = 0: #Current Flip Count
 	set(value):
 		current_flip = clamp(value,0,max_flip)
@@ -35,12 +26,8 @@ var gold_flip_rate = 0.00: #Chance to Flip a Gold Coin
 
 #STATUS EFFECTS
 
-var gain = 0: #Coin to be gained next turn
-	set(value):
-		gain = clamp(value,0,1000) 
-var debt = 0: #Gain Blocked
-	set(value):
-		debt = clamp(value,0,1000) 
+var gain = 0 #Coin to be gained next turn
+var debt = 0 #Damage to be receieved
 
 func take_damage(amount):
 	coin-= amount
@@ -57,78 +44,26 @@ func _process(delta: float) -> void:
 	pass
 
 func gain_coin():
-	var temp = gain
-	gain -= debt
-	debt -= temp
 	coin += gain
 	gain = 0
-	print("Player HP: ", coin)
+	print("Enemy HP: ", coin)
 
 func setup(enemy):
 	print("Hello" + str(enemy))
 	match enemy:
 		Enemy.MAGE:
-			max_coin = 200
+			max_coin = 100
 			coin = 10
 			max_flip = 1
 			silver_flip_rate = 0.0
 			gold_flip_rate = 0.0
-			bounty = 15
+			bounty = 10
 			type = Enemy.MAGE
 		Enemy.DWARF:
-			max_coin = 200
-			coin = 14
+			max_coin = 100
+			coin = 10
 			max_flip = 2
 			silver_flip_rate = 0.0
 			gold_flip_rate = 0.0
 			bounty = 10
 			type = Enemy.DWARF
-		Enemy.COLLECTOR:
-			max_coin = 200
-			coin = 24
-			max_flip = 6
-			silver_flip_rate = 0.05
-			gold_flip_rate = 0.0
-			bounty = 30
-			type = Enemy.COLLECTOR
-		Enemy.TRADER:
-			max_coin = 200
-			coin = 28
-			max_flip = 2
-			silver_flip_rate = 0.05
-			gold_flip_rate = 0.0
-			bounty = 30
-			type = Enemy.TRADER
-		Enemy.THRIFTER:
-			max_coin = 200
-			coin = 36
-			max_flip = 8
-			silver_flip_rate = 0.1
-			gold_flip_rate = 0
-			bounty = 45
-			type = Enemy.THRIFTER
-		Enemy.ARISTOCRAT:
-			max_coin = 200
-			coin = 120
-			max_flip = 16
-			silver_flip_rate = 1
-			gold_flip_rate = 0
-			bounty = 45
-			type = Enemy.ARISTOCRAT
-		Enemy.SUN_CASTER:
-			max_coin = 200
-			coin = 100
-			max_flip = 12
-			silver_flip_rate = 0.5
-			gold_flip_rate = 0
-			bounty = 60
-			type = Enemy.SUN_CASTER
-		Enemy.MOON_CASTER:
-			max_coin = 200
-			coin = 100
-			max_flip = 12
-			silver_flip_rate = 0.5
-			gold_flip_rate = 0
-			bounty = 60
-			type = Enemy.MOON_CASTER
-			

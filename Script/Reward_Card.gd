@@ -9,12 +9,13 @@ signal card_selected(card_id)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	text = card_name + " (" + card_tier + ")"
-	self.pressed.connect(_on_pressed)
+	text = "%s (%s)" % [card_name, card_tier]
+	if not pressed.is_connected(_on_pressed):
+		pressed.connect(_on_pressed)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 
 

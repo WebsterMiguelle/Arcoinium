@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="6_mxd2g"]
 [ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="7_0sxm5"]
 [ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="7_3pt4j"]
-[ext_resource type="Script" path="res://Script/coin_deck.gd" id="7_ow1sv"]
+[ext_resource type="Script" uid="uid://byrcn8pelxayw" path="res://Script/coin_deck.gd" id="7_ow1sv"]
 [ext_resource type="Texture2D" uid="uid://c4wd4jo1dquma" path="res://Assets/Sun_caster.png" id="8_0sxm5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3amdw"]
@@ -40,6 +40,7 @@ script = ExtResource("1_h2yge")
 
 [node name="CoinDeck" parent="." unique_id=955153148 instance=ExtResource("4_2wwxx")]
 position = Vector2(576, 324)
+scale = Vector2(0.555, 0.555)
 script = ExtResource("7_ow1sv")
 
 [node name="Player" type="Node2D" parent="." unique_id=1514396733]
@@ -94,10 +95,10 @@ script = ExtResource("3_lquwl")
 
 [node name="Enemy_Portrait" type="TextureRect" parent="Enemy" unique_id=1802771891]
 custom_minimum_size = Vector2(120, 120)
-offset_left = 1011.0
-offset_top = 19.0
-offset_right = 1131.0
-offset_bottom = 139.0
+offset_left = 1016.325
+offset_top = 17.97
+offset_right = 1136.3256
+offset_bottom = 137.97021
 texture = ExtResource("8_0sxm5")
 
 [node name="Label" type="Label" parent="Enemy/Enemy_Portrait" unique_id=1647136577]
@@ -132,9 +133,9 @@ text = "DEBT: 30"
 vertical_alignment = 1
 
 [node name="Frame" type="TextureRect" parent="Enemy" unique_id=393947561]
-offset_left = 994.0
+offset_left = 998.0
 offset_top = 1.0
-offset_right = 1148.0
+offset_right = 1152.0
 offset_bottom = 156.0
 texture = ExtResource("7_0sxm5")
 
@@ -168,7 +169,6 @@ offset_bottom = -528.0
 scale = Vector2(4, 4)
 
 [node name="EnemyHealthLabel" type="Label" parent="Battle UI" unique_id=21616945]
-modulate = Color(1, 1, 0, 1)
 offset_left = 868.0
 offset_top = 5.0
 offset_right = 991.0
@@ -176,18 +176,6 @@ offset_bottom = 37.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("7_3pt4j")
 theme_override_font_sizes/font_size = 22
-
-[node name="Endturn" type="Button" parent="Battle UI" unique_id=37098888]
-custom_minimum_size = Vector2(150, 40)
-anchors_preset = -1
-anchor_right = 0.033
-anchor_bottom = 0.048
-offset_left = 502.0
-offset_top = 304.0
-offset_right = 613.984
-offset_bottom = 312.896
-theme_override_font_sizes/font_size = 20
-text = "End turn"
 
 [node name="Re-Flip" type="Button" parent="Battle UI" unique_id=318505030]
 custom_minimum_size = Vector2(150, 40)
@@ -230,6 +218,13 @@ theme_override_font_sizes/font_size = 30
 text = "BATTLE START"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Endturn" type="Button" parent="Battle UI" unique_id=170966572]
+self_modulate = Color(1, 1, 1, 0)
+offset_left = 453.0
+offset_top = 201.0
+offset_right = 697.0
+offset_bottom = 445.0
 
 [node name="Game Over UI" type="CanvasLayer" parent="." unique_id=994626979]
 visible = false
@@ -346,7 +341,9 @@ texture = SubResource("GradientTexture2D_c2iwn")
 visible = false
 color = Color(0, 0, 0, 1)
 
-[connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]
 [connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]
+[connection signal="mouse_entered" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_entered"]
+[connection signal="mouse_exited" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_exited"]
+[connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]
 [connection signal="pressed" from="Game Over UI/ColorRect/Restart" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="CardManager/Background/CenterContainer/VBoxContainer/Refresh" to="CardManager" method="_on_refresh_pressed"]

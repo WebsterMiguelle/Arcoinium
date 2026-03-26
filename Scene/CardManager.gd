@@ -40,7 +40,7 @@ var max_picks = 2
 var refresh_count = 2
 var player_progress = 0
 var previous_cards = []
-
+signal selection_done
 
 func show_rewards():
 	visible = true
@@ -76,7 +76,15 @@ func show_rewards():
 	previous_cards.clear()
 	for c in card_container.get_children():
 		previous_cards.append(c.card_id)
-
+		
+func show_card_selection_async():
+	picked_cards.clear()
+	show_rewards()
+	visible = true
+	
+	# Wait until selection_done signal
+	await self.selection_done
+	visible = false
 	
 func create_card(data):
 	var card = CARD_SCENE.instantiate()
@@ -108,7 +116,9 @@ func _on_card_selected(card_id):
 	
 	if picked_cards.size() >= max_picks:
 		visible = false
+		emit_signal("selection_done")
 		picked_cards.clear()
+		
 		
 func apply_reward(card_id):
 	match card_id:

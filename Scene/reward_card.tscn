@@ -1,16 +1,65 @@
 [gd_scene format=3 uid="uid://cwallu4gxlxlx"]
 
 [ext_resource type="Script" uid="uid://cracpv72uw5xa" path="res://Script/Reward_Card.gd" id="1_08wl6"]
+[ext_resource type="Texture2D" uid="uid://ctr0wbykggnh2" path="res://Assets/Detailed_Scroll_1-Sheet.png" id="2_fkjsa"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_08wl6"]
-bg_color = Color(1, 1, 1, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(0, 0, 0, 1)
+[sub_resource type="AtlasTexture" id="AtlasTexture_dp7vf"]
+atlas = ExtResource("2_fkjsa")
+region = Rect2(192, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fkjsa"]
+atlas = ExtResource("2_fkjsa")
+region = Rect2(0, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wnubr"]
+atlas = ExtResource("2_fkjsa")
+region = Rect2(48, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mpi7h"]
+atlas = ExtResource("2_fkjsa")
+region = Rect2(96, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1vm1v"]
+atlas = ExtResource("2_fkjsa")
+region = Rect2(144, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0d0kv"]
+atlas = ExtResource("2_fkjsa")
+region = Rect2(192, 0, 48, 80)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wnubr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dp7vf")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fkjsa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wnubr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mpi7h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1vm1v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0d0kv")
+}],
+"loop": false,
+"name": &"unfurl_down",
+"speed": 10.0
+}]
 
 [node name="RewardCard" type="Button" unique_id=1944982988]
+self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(200, 300)
 offset_left = 185.0
 offset_top = 152.0
@@ -18,9 +67,21 @@ offset_right = 385.0
 offset_bottom = 452.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_08wl6")
 text = "CARD"
 script = ExtResource("1_08wl6")
+
+[node name="Copper" type="Label" parent="." unique_id=275640038]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 317.0
+offset_right = 127.0
+offset_bottom = 340.0
+text = "COPPER"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1084261089]
+position = Vector2(99.99999, 143.99998)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_wnubr")
+animation = &"unfurl_down"
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]

@@ -1,8 +1,8 @@
 extends Node2D
 
 #PLAYER STATS
-var max_coin = 100 #Max Coin Capacity
-var coin = 100:
+var max_coin = 500 #Max Coin Capacity
+var coin = 20:
 	set(value):
 		coin = clamp(value,0,max_coin)
 var max_flip: = 18 #Max Flips Per Turn

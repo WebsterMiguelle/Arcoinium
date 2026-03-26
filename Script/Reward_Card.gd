@@ -13,8 +13,8 @@ func _ready():
 	# 1. Play your existing animation
 	sprite.play("unfurl_down")
 	text = card_name + " (" + card_tier + ")"
-	self.pressed.connect(_on_pressed)
-	
+	if not self.pressed.is_connected(_on_pressed):
+		self.pressed.connect(_on_pressed)
 	_animate_entrance()
 
 func _animate_entrance():

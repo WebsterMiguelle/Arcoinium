@@ -137,7 +137,7 @@ atlas = ExtResource("5_jc2jt")
 region = Rect2(56, 8, 8, 8)
 
 [node name="CoinDeck" type="Node2D" unique_id=955153148]
-script = SubResource("GDScript_arh45")
+script = ExtResource("1_3w86l")
 
 [node name="Glow Aura" type="TextureRect" parent="." unique_id=494783141]
 modulate = Color(1, 1, 0.7585879, 0.50600004)
@@ -165,7 +165,6 @@ scale = Vector2(5, 5)
 texture = ExtResource("1_qv6dw")
 
 [node name="Row 1" type="Node2D" parent="Deck" unique_id=262539302]
-visible = false
 
 [node name="1" type="ColorRect" parent="Deck/Row 1" unique_id=1352874866]
 offset_left = 88.2
@@ -210,7 +209,6 @@ offset_bottom = 79.8
 color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
 [node name="Row 2" type="Node2D" parent="Deck" unique_id=2080428165]
-visible = false
 
 [node name="7" type="ColorRect" parent="Deck/Row 2" unique_id=1629982485]
 offset_left = 149.6
@@ -255,7 +253,6 @@ offset_bottom = 128.0
 color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
 [node name="Row 3" type="Node2D" parent="Deck" unique_id=548289232]
-visible = false
 
 [node name="13" type="ColorRect" parent="Deck/Row 3" unique_id=1143932550]
 offset_left = 133.2

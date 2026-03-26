@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://bunbms60cogmi" path="res://Script/player.gd" id="2_1bvp3"]
 [ext_resource type="Script" uid="uid://dedsjnmo4366e" path="res://Script/enemy.gd" id="3_lquwl"]
 [ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
-[ext_resource type="PackedScene" uid="uid://b01fk6f1pan7q" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
 [ext_resource type="Script" uid="uid://deakh0hwd6qoh" path="res://Scene/CardManager.gd" id="5_3amdw"]
 [ext_resource type="PackedScene" path="res://Scene/EnemyHealthBar.tscn" id="6_c2iwn"]
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="6_mxd2g"]
@@ -13,6 +12,10 @@
 [ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="7_3pt4j"]
 [ext_resource type="Script" uid="uid://byrcn8pelxayw" path="res://Script/coin_deck.gd" id="7_ow1sv"]
 [ext_resource type="Texture2D" uid="uid://c4wd4jo1dquma" path="res://Assets/Sun_caster.png" id="8_0sxm5"]
+[ext_resource type="Script" uid="uid://ka64sstswrwl" path="res://Scene/game_over_ui.gd" id="5_75buv"]
+[ext_resource type="Script" uid="uid://bh8ned1dqg5l3" path="res://Script/Shop_manager.gd" id="6_1xcnr"]
+[ext_resource type="Script" uid="uid://cbrncrbtg7emf" path="res://Script/pause_menu.gd" id="7_ow1sv"]
+[ext_resource type="Script" uid="uid://c4nmeg7fuu34n" path="res://Script/passive_manager.gd" id="9_c2iwn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3amdw"]
 
@@ -29,6 +32,19 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 metadata/_snap_enabled = true
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ow1sv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_75buv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3amdw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ow1sv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_75buv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c2iwn"]
+
+[node name="Main" type="ColorRect" unique_id=926660681]
 [node name="Main" type="TextureRect" unique_id=1891652298]
 anchors_preset = 15
 anchor_right = 1.0
@@ -72,9 +88,9 @@ texture = ExtResource("6_mxd2g")
 visible = false
 custom_minimum_size = Vector2(40, 20)
 layout_mode = 0
-offset_left = 23.0
+offset_left = 6.0
 offset_top = 35.0
-offset_right = 144.0
+offset_right = 127.0
 offset_bottom = 90.0
 theme_override_font_sizes/font_size = 35
 text = "Player"
@@ -119,9 +135,9 @@ texture = ExtResource("8_0sxm5")
 visible = false
 custom_minimum_size = Vector2(40, 20)
 layout_mode = 0
-offset_left = 25.0
+offset_left = 3.0
 offset_top = 37.0
-offset_right = 139.0
+offset_right = 117.0
 offset_bottom = 86.0
 theme_override_font_sizes/font_size = 35
 text = "Enemy"
@@ -155,6 +171,14 @@ texture = ExtResource("7_0sxm5")
 
 [node name="Battle UI" type="CanvasLayer" parent="." unique_id=1048849936]
 
+[node name="Flip" type="Button" parent="Battle UI/PlayerHealthBar" unique_id=1788355213]
+z_index = 4
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
 [node name="PlayerHealthBar2" parent="Battle UI" unique_id=2054393168 instance=ExtResource("5_1xcnr")]
 offset_left = 146.0
 offset_top = 548.0
@@ -171,6 +195,25 @@ offset_top = 290.0
 offset_right = 281.0
 offset_bottom = 322.0
 grow_vertical = 2
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxEmpty_2wwxx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3amdw")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1xcnr")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ow1sv")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_75buv")
+text = "FLIP"
+
+[node name="EnemyHealthBar" type="ProgressBar" parent="Battle UI" unique_id=2134660899]
+offset_left = 558.0
+offset_top = 23.0
+offset_right = 758.0
+offset_bottom = 55.0
+scale = Vector2(2.052499, 1.1636436)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+max_value = 10.0
+value = 10.0
+show_percentage = false
 theme_override_colors/font_color = Color(1, 0.8500227, 0.484913, 1)
 theme_override_font_sizes/font_size = 22
 text = "Coins:"
@@ -181,6 +224,8 @@ offset_top = 104.0
 offset_right = -55.000244
 offset_bottom = -528.0
 scale = Vector2(4, 4)
+value = 10.0
+show_percentage = false
 
 [node name="EnemyHealthLabel" type="Label" parent="Battle UI" unique_id=21616945]
 offset_left = 868.0
@@ -204,17 +249,16 @@ theme_override_font_sizes/font_size = 20
 text = "Re-Flip
 "
 
-[node name="Turn Calculation" type="Label" parent="Battle UI" unique_id=1869934299]
-custom_minimum_size = Vector2(150, 40)
 offset_left = 87.0
 offset_top = 169.0
 offset_right = 237.0
 offset_bottom = 408.0
+offset_right = 238.0
+offset_bottom = 435.0
 scale = Vector2(1.2137691, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 35
 text = "Turn"
-horizontal_alignment = 1
 
 [node name="Turn UI" type="ColorRect" parent="Battle UI" unique_id=447076957]
 visible = false
@@ -231,23 +275,35 @@ offset_bottom = 85.0
 theme_override_font_sizes/font_size = 30
 text = "BATTLE START"
 horizontal_alignment = 1
-vertical_alignment = 1
+[node name="PassiveNotification" type="Label" parent="Battle UI" unique_id=1456377952]
+custom_minimum_size = Vector2(200, 150)
+offset_left = 896.0
+offset_top = 469.0
+offset_right = 1131.0
+offset_bottom = 619.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "Notifications:"
 
+[node name="CoinDeck" parent="." unique_id=955153148 instance=ExtResource("4_2wwxx")]
+position = Vector2(574, 310)
 [node name="Endturn" type="Button" parent="Battle UI" unique_id=170966572]
 self_modulate = Color(1, 1, 1, 0)
 offset_left = 453.0
 offset_top = 201.0
 offset_right = 697.0
 offset_bottom = 445.0
+position = Vector2(574, 310)
+script = ExtResource("7_ow1sv")
 
 [node name="Game Over UI" type="CanvasLayer" parent="." unique_id=994626979]
-visible = false
+script = ExtResource("5_75buv")
 
 [node name="ColorRect" type="ColorRect" parent="Game Over UI" unique_id=656304766]
-offset_left = -25.0
-offset_top = -10.0
-offset_right = 1168.0
-offset_bottom = 662.0
+offset_left = -17.0
+offset_top = -16.0
+offset_right = 1176.0
+offset_bottom = 656.0
 color = Color(0, 0, 0, 0.7607843)
 
 [node name="Restart" type="Button" parent="Game Over UI/ColorRect" unique_id=469997266]
@@ -258,10 +314,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -113.5
-offset_top = 53.0
-offset_right = 86.5
-offset_bottom = 113.0
+offset_left = 126.5
+offset_top = 81.0
+offset_right = 326.5
+offset_bottom = 141.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Restart"
@@ -273,10 +329,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -149.5
-offset_top = -41.5
-offset_right = 149.5
-offset_bottom = 41.5
+offset_left = 69.5
+offset_top = -161.0
+offset_right = 368.5
+offset_bottom = -78.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 60
@@ -290,14 +346,33 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -214.5
-offset_top = -133.0
-offset_right = 185.5
-offset_bottom = -50.0
+offset_left = 20.5
+offset_top = -60.0
+offset_right = 420.5
+offset_bottom = 23.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 60
 text = "Slain"
+
+[node name="StatsLabel" type="Label" parent="Game Over UI/ColorRect" unique_id=1811702045]
+custom_minimum_size = Vector2(300, 350)
+layout_mode = 0
+offset_left = 125.0
+offset_top = 205.0
+offset_right = 525.0
+offset_bottom = 555.0
+theme_override_font_sizes/font_size = 25
+text = "Game Statistics"
+
+[node name="GameStatLabel" type="Label" parent="Game Over UI/ColorRect" unique_id=1825468654]
+layout_mode = 0
+offset_left = 93.0
+offset_top = 149.0
+offset_right = 370.0
+offset_bottom = 190.0
+theme_override_font_sizes/font_size = 40
+text = "Game Statistics"
 
 [node name="CardManager" type="CanvasLayer" parent="." unique_id=806531365]
 visible = false
@@ -343,8 +418,131 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_3amdw")
-text = "Refresh"
+[node name="ShopManager" type="CanvasLayer" parent="." unique_id=53617287]
+script = ExtResource("6_1xcnr")
 
+[node name="Background" type="ColorRect" parent="ShopManager" unique_id=1033153289]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.024309421, 0.0016646577, 0, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="ShopManager/Background" unique_id=971088682]
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -171.0
+offset_right = 100.0
+offset_bottom = 239.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ShopManager/Background/CenterContainer" unique_id=185690368]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CardContainer" type="GridContainer" parent="ShopManager/Background/CenterContainer/VBoxContainer" unique_id=804722424]
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 2
+mouse_filter = 0
+columns = 3
+
+[node name="Back" type="Button" parent="ShopManager/Background" unique_id=63318441]
+layout_mode = 0
+offset_left = 986.0
+offset_top = 573.0
+offset_right = 1131.0
+offset_bottom = 622.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 40
+text = "Proceed"
+
+[node name="Shop" type="Label" parent="ShopManager/Background" unique_id=862358462]
+layout_mode = 0
+offset_left = 526.0
+offset_top = 65.0
+offset_right = 606.0
+offset_bottom = 106.0
+theme_override_font_sizes/font_size = 40
+text = "SHOP"
+
+[node name="CoinLabel" type="Label" parent="ShopManager/Background" unique_id=665425804]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 0
+offset_left = 927.0
+offset_top = 21.0
+offset_right = 1127.0
+offset_bottom = 121.0
+theme_override_colors/font_color = Color(0.96474224, 0.96474224, 0.9647421, 1)
+theme_override_font_sizes/font_size = 30
+
+[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=1213105943]
+process_mode = 3
+visible = false
+script = ExtResource("7_ow1sv")
+
+[node name="Panel" type="Panel" parent="PauseMenu" unique_id=1004919858]
+custom_minimum_size = Vector2(600, 500)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Resume" type="Button" parent="PauseMenu/Panel" unique_id=1243037876]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 0
+offset_left = -2.0
+offset_top = 58.0
+offset_right = 598.0
+offset_bottom = 158.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 0.5019608)
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_ow1sv")
+text = "Resume"
+
+[node name="Quit" type="Button" parent="PauseMenu/Panel" unique_id=1970212589]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 0
+offset_top = 307.0
+offset_right = 600.0
+offset_bottom = 407.0
+theme_override_colors/font_color = Color(0.011702074, 0.011702127, 0.011702087, 1)
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_75buv")
+text = "Quit"
+
+[node name="EndRun" type="Button" parent="PauseMenu/Panel" unique_id=618847336]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 0
+offset_top = 186.0
+offset_right = 600.0
+offset_bottom = 286.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_c2iwn")
+text = "End Run"
+
+[node name="PassiveManager" type="Node" parent="." unique_id=897309216]
+script = ExtResource("9_c2iwn")
+
+[connection signal="pressed" from="Battle UI/PlayerHealthBar/Flip" to="." method="_on_flip_pressed"]
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=981605822]
 position = Vector2(594, 324)
 scale = Vector2(17.921875, 10.046875)
@@ -356,6 +554,12 @@ color = Color(0, 0, 0, 1)
 [connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]
 [connection signal="mouse_entered" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_exited"]
+text = "Refresh"
+
 [connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]
 [connection signal="pressed" from="Game Over UI/ColorRect/Restart" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="CardManager/Background/CenterContainer/VBoxContainer/Refresh" to="CardManager" method="_on_refresh_pressed"]
+[connection signal="pressed" from="ShopManager/Background/Back" to="ShopManager" method="_on_back_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/Resume" to="PauseMenu" method="_on_resume_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/Quit" to="PauseMenu" method="_on_quit_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/EndRun" to="PauseMenu" method="_on_end_run_pressed"]

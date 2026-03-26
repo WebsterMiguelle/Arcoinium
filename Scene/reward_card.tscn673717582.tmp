@@ -23,4 +23,12 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_08wl6")
 text = "CARD"
 script = ExtResource("1_08wl6")
 
+[node name="Copper" type="Label" parent="." unique_id=275640038]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 317.0
+offset_right = 127.0
+offset_bottom = 340.0
+text = "COPPER"
+
 [connection signal="pressed" from="." to="." method="_on_pressed"]

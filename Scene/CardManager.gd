@@ -75,7 +75,8 @@ func clear_cards():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	visible = false
-	refresh_button.pressed.connect(_on_refresh_pressed)
+	if not refresh_button.pressed.is_connected(_on_refresh_pressed):
+		refresh_button.pressed.connect(_on_refresh_pressed)
 
 func _on_card_selected(card_id):
 	
@@ -105,7 +106,11 @@ func apply_reward(card_id):
 			print("Other reward")
 
 
-
+func set_cards_enabled(enabled: bool):
+	for card in card_container.get_children():
+		if card is Button:
+			card.disabled = not enabled
+	refresh_button.disabled = not enabled
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -114,7 +119,7 @@ func _process(_delta: float) -> void:
 
 
 func _on_refresh_pressed():
-	if refresh_count <= 0:
+	if refresh_count <= 1:
 		refresh_button.disabled = true
 		return
 	

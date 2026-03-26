@@ -1,424 +1,151 @@
 [gd_scene format=3 uid="uid://cjumn24wf84ma"]
 
-[ext_resource type="Texture2D" uid="uid://cna4umj0n4yt" path="res://Assets/Blocking coin deck1.png" id="2_oxihs"]
-[ext_resource type="Script" uid="uid://b7n81w4dk1tys" path="res://Script/Rune_Rotators/rune_layer_1.gd" id="3_qv6dw"]
-[ext_resource type="Script" uid="uid://cutjir0v8efw4" path="res://Script/Rune_Rotators/rune_layer_2.gd" id="5_f8d1n"]
-[ext_resource type="Texture2D" uid="uid://bf3hv0qyt1kio" path="res://Assets/8-bitrunes.png" id="5_jc2jt"]
-[ext_resource type="Script" uid="uid://bth1fhktd4aow" path="res://Script/Rune_Rotators/rune_layer_3.gd" id="5_qv6dw"]
-[ext_resource type="Script" uid="uid://dxco52nevv8wc" path="res://Script/Rune_Rotators/rune_layer_4.gd" id="6_f8d1n"]
-
-[sub_resource type="GDScript" id="GDScript_arh45"]
-script/source = "extends Node2D
-
-var current_coins: int
-var max_capacity: int = 18
-#@onready var texture_rect: TextureRect = $Deck/TextureRect
-
-@onready var a1: TextureRect = $\"Deck/Wheels/Rune_Layer1/1\"
-@onready var a2: TextureRect = $\"Deck/Wheels/Rune_Layer1/2\"
-@onready var a3: TextureRect = $\"Deck/Wheels/Rune_Layer1/3\"
-@onready var a4: TextureRect = $\"Deck/Wheels/Rune_Layer1/4\"
-@onready var a5: TextureRect = $\"Deck/Wheels/Rune_Layer1/5\"
-@onready var a6: TextureRect = $\"Deck/Wheels/Rune_Layer1/6\"
-@onready var a7: TextureRect = $\"Deck/Wheels/Rune_Layer1/7\"
-@onready var a8: TextureRect = $\"Deck/Wheels/Rune_Layer1/8\"
-@onready var a9: TextureRect = $\"Deck/Wheels/Rune_Layer2/9\"
-@onready var a10: TextureRect = $\"Deck/Wheels/Rune_Layer2/10\"
-@onready var a11: TextureRect = $\"Deck/Wheels/Rune_Layer2/11\"
-@onready var a12: TextureRect = $\"Deck/Wheels/Rune_Layer2/12\"
-@onready var a13: TextureRect = $\"Deck/Wheels/Rune_Layer2/13\"
-@onready var a14: TextureRect = $\"Deck/Wheels/Rune_Layer2/14\"
-@onready var a15: TextureRect = $\"Deck/Wheels/Rune_Layer2/15\"
-@onready var a16: TextureRect = $\"Deck/Wheels/Rune_Layer2/16\"
-
-@onready var sigil_textures: Array = [a1, a2, a3, a4,a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16]
-
-@onready var coin_reserve: ColorRect = $CoinReserve
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	current_coins = 0;
-	pass # Replace with function body.
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-func get_vacant_slot(current_flip):
-	var slot = get(\"_\" + str(current_flip))
-	sigil_textures[current_flip - 1].visible = true
-	return slot.global_position
-
-func get_reserve_slot():
-	return coin_reserve.global_position
-	
-func reset_sigils():
-	for sigil in sigil_textures:
-		sigil.visible = false
-"
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_dhtfp"]
-atlas = ExtResource("5_jc2jt")
-region = Rect2(0, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_j8io3"]
-atlas = ExtResource("5_jc2jt")
-region = Rect2(8, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_f8d1n"]
-atlas = ExtResource("5_jc2jt")
-region = Rect2(16, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jc2jt"]
-atlas = ExtResource("5_jc2jt")
-region = Rect2(24, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_3uffv"]
-atlas = ExtResource("5_jc2jt")
-region = Rect2(32, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_saeqv"]
-atlas = ExtResource("5_jc2jt")
-region = Rect2(40, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_q2smi"]
-atlas = ExtResource("5_jc2jt")
-region = Rect2(48, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mm7w1"]
-atlas = ExtResource("5_jc2jt")
-region = Rect2(56, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_1vi82"]
-atlas = ExtResource("5_jc2jt")
-region = Rect2(0, 8, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_cdfun"]
-atlas = ExtResource("5_jc2jt")
-region = Rect2(8, 8, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_m6aly"]
-atlas = ExtResource("5_jc2jt")
-region = Rect2(16, 8, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_hvypl"]
-atlas = ExtResource("5_jc2jt")
-region = Rect2(24, 8, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vxl6k"]
-atlas = ExtResource("5_jc2jt")
-region = Rect2(32, 8, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4dx1a"]
-atlas = ExtResource("5_jc2jt")
-region = Rect2(40, 8, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_l8jbo"]
-atlas = ExtResource("5_jc2jt")
-region = Rect2(48, 8, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vhuvq"]
-atlas = ExtResource("5_jc2jt")
-region = Rect2(56, 8, 8, 8)
+[ext_resource type="Script" uid="uid://oxp47e0yu1fa" path="res://Scene/coin_deck.gd" id="1_3w86l"]
 
 [node name="CoinDeck" type="Node2D" unique_id=955153148]
-script = SubResource("GDScript_arh45")
+script = ExtResource("1_3w86l")
 
-[node name="Deck" type="TextureRect" parent="." unique_id=258019195]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -199.00003
-offset_top = -200.00003
-offset_right = -119.00003
-offset_bottom = -120.00003
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(5, 5)
-texture = ExtResource("2_oxihs")
+[node name="Deck" type="ColorRect" parent="." unique_id=1507739441]
+offset_left = -289.0
+offset_top = -127.0
+offset_right = 289.0
+offset_bottom = 173.0
+color = Color(0.46666667, 0.19215687, 0, 0.46666667)
 
 [node name="Row 1" type="Node2D" parent="Deck" unique_id=262539302]
-visible = false
 
 [node name="1" type="ColorRect" parent="Deck/Row 1" unique_id=1352874866]
-offset_left = 36.400005
-offset_top = 3.8000062
-offset_right = 44.400005
-offset_bottom = 11.800006
+offset_left = 22.0
+offset_top = 19.0
+offset_right = 98.0
+offset_bottom = 95.0
 color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
 [node name="2" type="ColorRect" parent="Deck/Row 1" unique_id=1575373938]
-offset_left = 48.0
-offset_top = 8.0
-offset_right = 56.0
-offset_bottom = 16.0
+offset_left = 115.0
+offset_top = 19.0
+offset_right = 191.0
+offset_bottom = 95.0
 color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
 [node name="3" type="ColorRect" parent="Deck/Row 1" unique_id=108555166]
-offset_left = 36.0
-offset_top = 68.0
-offset_right = 44.0
-offset_bottom = 76.0
+offset_left = 206.0
+offset_top = 19.0
+offset_right = 282.0
+offset_bottom = 95.0
 color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
 [node name="4" type="ColorRect" parent="Deck/Row 1" unique_id=2034372317]
-offset_left = 24.0
-offset_top = 64.0
-offset_right = 32.0
-offset_bottom = 72.0
+offset_left = 297.0
+offset_top = 18.0
+offset_right = 373.0
+offset_bottom = 94.0
 color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
 [node name="5" type="ColorRect" parent="Deck/Row 1" unique_id=1633818957]
-offset_left = 68.0
-offset_top = 36.0
-offset_right = 76.0
-offset_bottom = 44.0
+offset_left = 390.0
+offset_top = 18.0
+offset_right = 466.0
+offset_bottom = 94.0
 color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
 [node name="6" type="ColorRect" parent="Deck/Row 1" unique_id=252150300]
-offset_left = 64.0
-offset_top = 48.0
-offset_right = 72.0
-offset_bottom = 56.0
+offset_left = 481.0
+offset_top = 18.0
+offset_right = 557.0
+offset_bottom = 94.0
 color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
 [node name="Row 2" type="Node2D" parent="Deck" unique_id=2080428165]
-visible = false
 
 [node name="7" type="ColorRect" parent="Deck/Row 2" unique_id=1629982485]
-offset_left = 4.0
-offset_top = 36.0
-offset_right = 12.0
-offset_bottom = 44.0
+offset_left = 23.0
+offset_top = 113.0
+offset_right = 99.0
+offset_bottom = 189.0
 color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
 [node name="8" type="ColorRect" parent="Deck/Row 2" unique_id=1673070020]
-offset_left = 8.0
-offset_top = 24.0
-offset_right = 16.0
-offset_bottom = 32.0
+offset_left = 116.0
+offset_top = 113.0
+offset_right = 192.0
+offset_bottom = 189.0
 color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
 [node name="9" type="ColorRect" parent="Deck/Row 2" unique_id=488802419]
-offset_left = 58.0
-offset_top = 14.0
-offset_right = 66.0
-offset_bottom = 22.0
+offset_left = 207.0
+offset_top = 113.0
+offset_right = 283.0
+offset_bottom = 189.0
 color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
 [node name="10" type="ColorRect" parent="Deck/Row 2" unique_id=355124109]
-offset_left = 64.0
-offset_top = 24.0
-offset_right = 72.0
-offset_bottom = 32.0
+offset_left = 298.0
+offset_top = 112.0
+offset_right = 374.0
+offset_bottom = 188.0
 color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
 [node name="11" type="ColorRect" parent="Deck/Row 2" unique_id=827670685]
-offset_left = 14.0
-offset_top = 58.0
-offset_right = 22.0
-offset_bottom = 66.0
+offset_left = 391.0
+offset_top = 112.0
+offset_right = 467.0
+offset_bottom = 188.0
 color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
 [node name="12" type="ColorRect" parent="Deck/Row 2" unique_id=2040889469]
-offset_left = 8.0
-offset_top = 48.0
-offset_right = 16.0
-offset_bottom = 56.0
+offset_left = 482.0
+offset_top = 112.0
+offset_right = 558.0
+offset_bottom = 188.0
 color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
 [node name="Row 3" type="Node2D" parent="Deck" unique_id=548289232]
-visible = false
 
 [node name="13" type="ColorRect" parent="Deck/Row 3" unique_id=1143932550]
-offset_left = 58.0
-offset_top = 58.0
-offset_right = 66.0
-offset_bottom = 66.0
-rotation = -0.003654732
+offset_left = 24.0
+offset_top = 207.0
+offset_right = 100.0
+offset_bottom = 283.0
 color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
 [node name="14" type="ColorRect" parent="Deck/Row 3" unique_id=144990765]
-offset_left = 48.0
-offset_top = 64.0
-offset_right = 56.0
-offset_bottom = 72.0
+offset_left = 117.0
+offset_top = 207.0
+offset_right = 193.0
+offset_bottom = 283.0
 color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
 [node name="15" type="ColorRect" parent="Deck/Row 3" unique_id=312138748]
-offset_left = 14.0
-offset_top = 14.0
-offset_right = 22.0
-offset_bottom = 22.0
+offset_left = 208.0
+offset_top = 207.0
+offset_right = 284.0
+offset_bottom = 283.0
 color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
 [node name="16" type="ColorRect" parent="Deck/Row 3" unique_id=36128810]
-offset_left = 24.0
-offset_top = 8.0
-offset_right = 32.0
-offset_bottom = 16.0
+offset_left = 299.0
+offset_top = 206.0
+offset_right = 375.0
+offset_bottom = 282.0
 color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
-[node name="Wheels" type="Node2D" parent="Deck" unique_id=112166558]
-position = Vector2(40, 40)
+[node name="17" type="ColorRect" parent="Deck/Row 3" unique_id=1555958709]
+offset_left = 392.0
+offset_top = 206.0
+offset_right = 468.0
+offset_bottom = 282.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
-[node name="Rune_Layer1" type="Node2D" parent="Deck/Wheels" unique_id=1120539103]
-script = ExtResource("3_qv6dw")
-
-[node name="1" type="TextureRect" parent="Deck/Wheels/Rune_Layer1" unique_id=704171750]
-visible = false
-offset_left = -4.199994
-offset_top = -48.399994
-offset_right = 3.800006
-offset_bottom = -40.399994
-texture = SubResource("AtlasTexture_dhtfp")
-
-[node name="2" type="TextureRect" parent="Deck/Wheels/Rune_Layer1" unique_id=1224853526]
-visible = false
-offset_left = 12.600006
-offset_top = -43.199997
-offset_right = 20.600006
-offset_bottom = -35.199997
-rotation = -0.39618975
-texture = SubResource("AtlasTexture_j8io3")
-
-[node name="3" type="TextureRect" parent="Deck/Wheels/Rune_Layer1" unique_id=885421974]
-visible = false
-offset_left = -4.1999874
-offset_top = 40.800003
-offset_right = 3.8000126
-offset_bottom = 48.800003
-texture = SubResource("AtlasTexture_f8d1n")
-
-[node name="4" type="TextureRect" parent="Deck/Wheels/Rune_Layer1" unique_id=2117499938]
-visible = false
-offset_left = -19.999985
-offset_top = 36.200005
-offset_right = -11.999985
-offset_bottom = 44.200005
-rotation = 0.39618975
-texture = SubResource("AtlasTexture_jc2jt")
-
-[node name="Rune_Layer2" type="Node2D" parent="Deck/Wheels" unique_id=387618379]
-script = ExtResource("5_f8d1n")
-
-[node name="5" type="TextureRect" parent="Deck/Wheels/Rune_Layer2" unique_id=683120810]
-visible = false
-offset_left = 48.00001
-offset_top = -3.999999
-offset_right = 56.00001
-offset_bottom = 4.000001
-rotation = 1.5707964
-texture = SubResource("AtlasTexture_3uffv")
-
-[node name="6" type="TextureRect" parent="Deck/Wheels/Rune_Layer2" unique_id=249775967]
-visible = false
-offset_left = 40.0
-offset_top = 12.400005
-offset_right = 48.0
-offset_bottom = 20.400005
-rotation = 0.55850536
-texture = SubResource("AtlasTexture_saeqv")
-
-[node name="7" type="TextureRect" parent="Deck/Wheels/Rune_Layer2" unique_id=397879147]
-visible = false
-offset_left = -48.799988
-offset_top = -3.7999935
-offset_right = -40.799988
-offset_bottom = 4.2000065
-texture = SubResource("AtlasTexture_q2smi")
-
-[node name="8" type="TextureRect" parent="Deck/Wheels/Rune_Layer2" unique_id=1812347212]
-visible = false
-offset_left = -43.399986
-offset_top = -13.7999935
-offset_right = -35.399986
-offset_bottom = -5.7999935
-rotation = -1.8360864
-texture = SubResource("AtlasTexture_mm7w1")
-
-[node name="Rune_Layer3" type="Node2D" parent="Deck/Wheels" unique_id=604838836]
-script = ExtResource("5_qv6dw")
-
-[node name="9" type="TextureRect" parent="Deck/Wheels/Rune_Layer3" unique_id=67070274]
-visible = false
-offset_left = 32.400005
-offset_top = -36.599987
-offset_right = 40.400005
-offset_bottom = -28.599987
-rotation = 0.7641218
-texture = SubResource("AtlasTexture_1vi82")
-
-[node name="10" type="TextureRect" parent="Deck/Wheels/Rune_Layer3" unique_id=1278926381]
-visible = false
-offset_left = 37.600006
-offset_top = -20.199993
-offset_right = 45.600006
-offset_bottom = -12.199993
-rotation = -0.34902036
-texture = SubResource("AtlasTexture_cdfun")
-
-[node name="11" type="TextureRect" parent="Deck/Wheels/Rune_Layer3" unique_id=988544712]
-visible = false
-offset_left = -26.999992
-offset_top = 32.40001
-offset_right = -18.999992
-offset_bottom = 40.40001
-rotation = 2.3039367
-texture = SubResource("AtlasTexture_m6aly")
-
-[node name="12" type="TextureRect" parent="Deck/Wheels/Rune_Layer3" unique_id=1895254827]
-visible = false
-offset_left = -44.79998
-offset_top = 11.599998
-offset_right = -36.79998
-offset_bottom = 19.6
-rotation = 0.43645737
-texture = SubResource("AtlasTexture_hvypl")
-
-[node name="Rune_Layer4" type="Node2D" parent="Deck/Wheels" unique_id=1544561539]
-script = ExtResource("6_f8d1n")
-
-[node name="13" type="TextureRect" parent="Deck/Wheels/Rune_Layer4" unique_id=1233844782]
-visible = false
-offset_left = 30.200005
-offset_top = 26.000002
-offset_right = 38.200005
-offset_bottom = 34.0
-rotation = 0.20953165
-texture = SubResource("AtlasTexture_vxl6k")
-
-[node name="14" type="TextureRect" parent="Deck/Wheels/Rune_Layer4" unique_id=2015630569]
-visible = false
-offset_left = 25.200005
-offset_top = 42.40001
-offset_right = 33.200005
-offset_bottom = 50.40001
-rotation = 2.558871
-texture = SubResource("AtlasTexture_4dx1a")
-
-[node name="15" type="TextureRect" parent="Deck/Wheels/Rune_Layer4" unique_id=1238687901]
-visible = false
-offset_left = -23.199987
-offset_top = -43.799984
-offset_right = -15.199987
-offset_bottom = -35.799984
-rotation = -0.36549103
-texture = SubResource("AtlasTexture_l8jbo")
-
-[node name="16" type="TextureRect" parent="Deck/Wheels/Rune_Layer4" unique_id=1316138375]
-visible = false
-offset_left = -36.599976
-offset_top = -35.39998
-offset_right = -28.599976
-offset_bottom = -27.399979
-rotation = -0.20010142
-texture = SubResource("AtlasTexture_vhuvq")
+[node name="18" type="ColorRect" parent="Deck/Row 3" unique_id=1511609577]
+offset_left = 483.0
+offset_top = 206.0
+offset_right = 559.0
+offset_bottom = 282.0
+color = Color(0.31764707, 0.16078432, 0, 0.3764706)
 
 [node name="CoinReserve" type="ColorRect" parent="." unique_id=264404005]
-offset_left = -25.0
-offset_top = -25.0
-offset_right = 26.0
-offset_bottom = 25.0
+offset_left = 310.0
+offset_top = 78.0
+offset_right = 387.0
+offset_bottom = 154.0

@@ -3,7 +3,13 @@ extends Node
 
 enum Enemy{
 	MAGE,
-	DWARF
+	DWARF,
+	COLLECTOR,
+	TRADER,
+	THRIFTER,
+	ARISTOCRAT,
+	SUN_CASTER,
+	MOON_CASTER
 }
 
 #ENEMY STATS

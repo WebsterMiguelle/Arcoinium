@@ -2,7 +2,7 @@ extends Button
 
 @export var card_id : int
 @export var card_name : String
-
+@export var card_tier : String
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 signal card_selected(card_id)

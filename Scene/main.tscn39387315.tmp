@@ -113,5 +113,4 @@ position = Vector2(594, 324)
 texture = SubResource("GradientTexture2D_c2iwn")
 
 [node name="Vignette" type="CanvasModulate" parent="." unique_id=211252321]
-visible = false
 color = Color(0, 0, 0, 1)

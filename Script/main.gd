@@ -1,4 +1,4 @@
-extends ColorRect
+extends TextureRect
 
 enum Turn {
 	PLAYER,
@@ -7,7 +7,13 @@ enum Turn {
 
 enum Enemy{
 	MAGE,
-	DWARF
+	DWARF,
+	COLLECTOR,
+	TRADER,
+	THRIFTER,
+	ARISTOCRAT,
+	SUN_CASTER,
+	MOON_CASTER
 }
 
 #USER INTERFACE
@@ -107,6 +113,15 @@ func _on_item_purchased(card_id,price):
 	if shop_manager.visible:
 		shop_manager.coin_label.text = "Coins: " + str(player.coin)
 
+#B-Rank
+@export var has_wishbone = false
+@export var has_golden_clover = false
+@export var has_solar_coin = false
+@export var has_lunar_coin = false
+@export var has_merchant_scroll = false
+@export var has_impromptu_flip = false
+@export var has_advanced_planning = false
+
 #A-Rank
 @export var has_magic_trick = false
 @export var has_sleight_of_hand = false
@@ -181,8 +196,6 @@ func battle_start():
 	#Refresh Enemy Passives
 	has_value_added_tax = false
 	has_fair_trade = false
-	update_enemy_gain_debt()
-	update_player_gain_debt()
 	
 	randomize()
 	
@@ -226,8 +239,7 @@ func battle_start():
 func _process(delta: float) -> void:
 	update_player_coin()
 	update_enemy_coin()
-	update_player_gain_debt()
-	update_enemy_gain_debt()
+
 
 func activate_pre_battle_passives():
 	
@@ -412,9 +424,7 @@ func show_turn_ui(text):
 	turn_ui.visible = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	update_player_coin()
-	update_enemy_coin()
+
 
 func _on_end_run_pressed():
 	get_tree().paused = false
@@ -644,12 +654,9 @@ func _on_endturn_pressed():
 		if current_turn == Turn.PLAYER:
 			await get_tree().create_timer(1.0).timeout
 			start_enemy_turn()
-	var coins = get_tree().get_nodes_in_group("coins")
-	clean_coins_array()
-	for coin in coins_array:
+	for coin in coins:
 		if is_instance_valid(coin) and coin.reserved == false:
 			coin.queue_free()
-	clean_coins_array()
 			
 	total_damage_dealt += damage
 	if damage > highest_damage_dealt:
@@ -672,18 +679,7 @@ func show_passive_notification(text: String, duration: float = 1.5) -> void:
 	tween.tween_property(label, "modulate:a", 0.0, 0.5).set_delay(duration)
 	tween.tween_callback(label.queue_free)
 	
-var coins_array: Array = []
-func realign_coins():
-	clean_coins_array()
-	var coins = get_tree().get_nodes_in_group("coins")
-	var index = 1
-	
-	for coin in coins_array:
-		var target_pos = coin_deck.get_vacant_slot(index)
-		var tween = create_tween()
-		tween.tween_property(coin, "position", target_pos, 0.2)
-		index += 1
-		
+
 func _on_flip_pressed():
 	flip_clicks += 1
 	if player.current_re_flip != player.max_re_flip: 
@@ -749,8 +745,6 @@ func _on_flip_pressed():
 	add_child(coin);
 	latest_coin = coin
 	coin_count += 1
-	coins_array.append(coin)
-	realign_coins()
 	
 	print(player.current_flip)
 	if player.current_flip == player.max_flip:
@@ -875,7 +869,8 @@ func _on_re_flip_pressed():
 	player.current_re_flip += 1
 	var index = 0
 	var coins = get_tree().get_nodes_in_group("coins")
-	for coin in coins_array:
+	var second_latest_coin
+	for coin in coins:
 		index += 1
 		if index <= 3 and passive_manager.has_advanced_planning:
 			pass
@@ -986,22 +981,6 @@ func update_player_coin():
 	
 func update_enemy_coin():
 	enemy_health_label.text = "Coins: " + str(enemy.coin)
-	
-func update_player_gain_debt():
-	player_gain.text = ""
-	player_debt.text = ""
-	if player.gain != 0:
-		player_gain.text = "GAIN: " + str(player.gain)
-	if player.debt != 0:
-		player_debt.text = "DEBT: " + str(player.debt)
-	
-func update_enemy_gain_debt():
-	enemy_gain.text = ""
-	enemy_debt.text = ""
-	if enemy.gain != 0:
-		enemy_gain.text = "GAIN: " + str(enemy.gain)
-	if enemy.debt != 0:
-		enemy_debt.text = "DEBT: " + str(enemy.debt)
 	
 
 func enemy_coin_calculation():

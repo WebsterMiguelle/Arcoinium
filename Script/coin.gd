@@ -34,6 +34,7 @@ func re_flip():
 	if !reserved:
 		refresh_sprite()
 	
+		
 func upgrade():
 	match type:
 		CoinType.COPPER:

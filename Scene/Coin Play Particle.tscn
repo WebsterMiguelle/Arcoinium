@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://w5jgphq268vx"]
+
+[ext_resource type="Script" uid="uid://b81y1v87st1oc" path="res://Scene/coin_add_particles.gd" id="1_2413c"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2413c"]
+particle_flag_disable_z = true
+velocity_pivot = Vector3(0, -20, 0)
+direction = Vector3(1, -30, 0)
+spread = 0.0
+initial_velocity_min = 553.66
+initial_velocity_max = 641.24
+gravity = Vector3(0, 98, 0)
+scale_min = 0.0
+scale_max = 20.0
+color = Color(1, 1, 0.6117647, 1)
+
+[node name="CoinPlayParticle" type="Node2D" unique_id=257060510]
+
+[node name="Coin Play Particles" type="GPUParticles2D" parent="." unique_id=881501940]
+position = Vector2(30, 35)
+emitting = false
+amount = 12
+lifetime = 1.6300000000000001
+one_shot = true
+explosiveness = 0.53
+process_material = SubResource("ParticleProcessMaterial_2413c")
+script = ExtResource("1_2413c")

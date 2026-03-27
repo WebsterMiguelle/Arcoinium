@@ -21,8 +21,15 @@ enum Enemy{
 @onready var player = $Player
 @onready var enemy = $Enemy
 
+#PARTICLES
+const COIN_ADD_PARTICLE = preload("uid://s6va71jul34t")
+const COIN_PLAY_PARTICLE = preload("uid://w5jgphq268vx")
+const DAMAGE_PARTICLE = preload("uid://q4hytnmn2fbt")
+const SINGLE_DAMAGE_PARTICLE = preload("uid://dgeahqxig4fqa")
+
 #MANAGERS
 @onready var sound_manager: Node2D = $SoundManager
+@onready var particle_manager: Node2D = $ParticleManager
 
 #SFX
 const COIN_ENDTURN = preload("uid://bfruqunt0uyuj")
@@ -274,6 +281,7 @@ func activate_pre_battle_passives():
 			coin.upgrade_to_silver()
 			coin.add_to_group("coins")
 			latest_coin = coin
+			particle_manager.spawn_particle(COIN_ADD_PARTICLE,latest_coin.global_position)
 			add_child(coin);
 			
 			coin_count += 1
@@ -316,9 +324,11 @@ func activate_player_turn_start_passives():
 			coin.add_to_group("coins")
 			
 			add_child(coin);
+			
 			latest_coin = coin
 			coin_count += 1
 			sound_manager.play_sound(COIN_FLIP)
+			particle_manager.spawn_particle(COIN_ADD_PARTICLE,coin.global_position)
 			if player.current_flip == player.max_flip or player.coin == 1:
 				flip_button.disabled = true
 			coin_calculation()
@@ -348,6 +358,7 @@ func activate_player_turn_start_passives():
 		left_coin.reserved = false
 		left_coin.add_to_group("coins")
 		add_child(left_coin);
+		particle_manager.spawn_particle(COIN_ADD_PARTICLE,left_coin.global_position)
 		
 
 		
@@ -369,7 +380,7 @@ func activate_player_turn_start_passives():
 		add_child(right_coin);
 		latest_coin = right_coin
 		sound_manager.play_sound(COIN_FLIP)
-	
+		particle_manager.spawn_particle(COIN_ADD_PARTICLE,right_coin.global_position)
 	latest_pair_left_coin = null
 	latest_pair_right_coin = null
 	print(coin_count)
@@ -455,6 +466,7 @@ func start_player_turn():
 	if has_active_income and player.gain >= 30:
 		var gain_damage = player.gain
 		enemy.take_damage(gain_damage)
+		particle_manager.spawn_particle(DAMAGE_PARTICLE,enemy_portrait.global_position)
 		sound_manager.play_sound(PASSIVE_JAR_O_SAVINGS)
 		show_floating_label(enemy,gain_damage,LabelType.DAMAGE)
 		show_floating_label(player,gain_damage,LabelType.ACTIVE_INCOME)
@@ -558,6 +570,7 @@ func start_enemy_turn():
 	if has_loan_shark and enemy.debt > 1:
 		var loan_damage = enemy.debt
 		enemy.take_damage(loan_damage)
+		particle_manager.spawn_particle(DAMAGE_PARTICLE,enemy_portrait.global_position)
 		sound_manager.play_sound(PASSIVE_LOAN_SHARK)
 		show_floating_label(enemy,loan_damage,LabelType.LOAN_SHARK)
 
@@ -588,7 +601,6 @@ func start_enemy_turn():
 
 func end_enemy_turn():
 	coin_deck.sigil_pressed()
-	endTurn_button.disabled = false
 	
 	if damage != 0: 
 		if has_passive_income and !passive_income_used:
@@ -603,6 +615,7 @@ func end_enemy_turn():
 			elif damage <= 20: sound_manager.play_sound(DAMAGE_MODERATE)
 			else: sound_manager.play_sound(DAMAGE_HEAVY)
 			player.take_damage(damage)
+			particle_manager.spawn_particle(DAMAGE_PARTICLE,player_portrait.global_position)
 			show_floating_label(player,damage,LabelType.DAMAGE)
 	if debt != 0:
 			player.debt += debt
@@ -621,6 +634,7 @@ func end_enemy_turn():
 	var defeat = check_defeat()
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
 	for coin in coins:
+		particle_manager.spawn_particle(COIN_PLAY_PARTICLE,coin.global_position)
 		coin.queue_free()
 	
 	#ACTIVATE PAYBACK
@@ -643,6 +657,8 @@ func end_enemy_turn():
 	coin_deck.sigil_unlight_()
 
 func _on_endturn_pressed():
+	re_flip_button.disabled = true
+	endTurn_button.disabled = true
 	sound_manager.play_sound(COIN_ENDTURN)
 	coin_deck.sigil_pressed();
 	previous_player_flips = flip_clicks
@@ -650,11 +666,14 @@ func _on_endturn_pressed():
 	#Activate End Turn Passives
 	await activate_player_turn_end_passives()
 	enemy.take_damage(damage)
+	
 	if damage <= 10: sound_manager.play_sound(DAMAGE_LIGHT)
 	elif damage <= 20: sound_manager.play_sound(DAMAGE_MODERATE)
 	else: sound_manager.play_sound(DAMAGE_HEAVY)
 	previous_player_gain += gain
-	if damage != 0: show_floating_label(enemy,damage,LabelType.DAMAGE)
+	if damage != 0: 
+		show_floating_label(enemy,damage,LabelType.DAMAGE)
+		particle_manager.spawn_particle(DAMAGE_PARTICLE,enemy_portrait.global_position)
 	player.gain += gain
 	if gain != 0: show_floating_label(player,gain,LabelType.TO_GAIN)
 	if debt != 0: 
@@ -685,7 +704,9 @@ func _on_endturn_pressed():
 			is_left = true
 			print("Piggy Copying 2")
 		if coin.reserved == false:
+			particle_manager.spawn_particle(COIN_PLAY_PARTICLE,coin.global_position)
 			coin.queue_free()
+			
 	var defeat = check_defeat()
 	if defeat == null:
 		if current_turn == Turn.PLAYER:
@@ -748,6 +769,7 @@ func _on_flip_pressed():
 		coin.upgrade_to_silver()
 		show_floating_label(player,0,LabelType.TRIPLE_NICKEL)
 	if has_coin_snipe and coin.base_value > 2:
+		particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,enemy_portrait.global_position)
 		sound_manager.play_sound(PASSIVE_COIN_SNIPE)
 		enemy.take_damage(1)
 		show_floating_label(player,1,LabelType.COIN_SNIPE)
@@ -761,7 +783,8 @@ func _on_flip_pressed():
 	if coin.reserved == false:
 		latest_coin = coin
 		coin_count += 1
-	
+		particle_manager.spawn_particle(COIN_ADD_PARTICLE,latest_coin.global_position)
+
 	print(coin_count)
 	if coin_count == player.max_flip and (player.current_reserve == player.max_reserve or player.coin == 1):
 		flip_button.disabled = true
@@ -789,7 +812,6 @@ func enemy_flip():
 	#Silver/Gold Flip Rate
 	
 	var upgrade_chance = randf()
-	
 	if upgrade_chance <= enemy.silver_flip_rate:
 		coin.upgrade_to_silver()
 		show_floating_label(enemy,0,LabelType.SILVER_FLIP)
@@ -802,6 +824,7 @@ func enemy_flip():
 
 	coin.add_to_group("enemy_coins")
 	add_child(coin);
+	particle_manager.spawn_particle(COIN_ADD_PARTICLE,coin.global_position)
 	
 	enemy.take_damage(1)
 	show_floating_label(enemy,1,LabelType.DAMAGE) 
@@ -811,6 +834,7 @@ func enemy_flip():
 func trigger_game_over(player_won: bool):
 	sound_manager.play_sound(DEATH)
 	if player_won:
+		enemy.max_flip = 0
 		reward_manager.show_rewards()
 	
 	game_over_ui.visible = true
@@ -1424,7 +1448,8 @@ func _on_refresh_pressed() -> void:
 
 
 func _on_endturn_mouse_entered() -> void:
-	coin_deck.sigil_light_up()
+	if current_turn == Turn.PLAYER:
+		coin_deck.sigil_light_up()
 
 
 func _on_endturn_mouse_exited() -> void:

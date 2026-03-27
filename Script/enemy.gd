@@ -132,8 +132,8 @@ func setup(enemy):
 			bounty = 80
 			type = Enemy.MOON_CASTER
 		Enemy.TWILIGHT_SAGE:
-			max_coin = 250
-			coin = 250
+			max_coin = 200
+			coin = 200
 			max_flip = 4
 			silver_flip_rate = 0
 			gold_flip_rate = 1

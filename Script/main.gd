@@ -21,6 +21,35 @@ enum Enemy{
 @onready var player = $Player
 @onready var enemy = $Enemy
 
+#MANAGERS
+@onready var sound_manager: Node2D = $SoundManager
+
+#SFX
+const COIN_ENDTURN = preload("uid://bfruqunt0uyuj")
+const COIN_FLIP = preload("uid://bmscttmxwr782")
+const COIN_GAIN = preload("uid://c3v64vs2uqtik")
+const COIN_REFLIP = preload("uid://qtxsmuntihe3")
+const DAMAGE_HEAVY = preload("uid://b8us2t16pmggo")
+const DAMAGE_LIGHT = preload("uid://ds0jngoq17iij")
+const DAMAGE_MODERATE = preload("uid://b2rf2iy046cx2")
+const TURN_ENEMY = preload("uid://rncriov1quyx")
+const TURN_PLAYER = preload("uid://dk7433d32rg52")
+const TURN_REVEAL = preload("uid://boyjppal62qns")
+
+const PASSIVE_PASSIVE_INCOME = preload("uid://cl4xnombcshkv")
+const PASSIVE_PAYBACK = preload("uid://bbsxs62yhirxa")
+const COIN_UPGRADE = preload("uid://c2sojoo67g7sq")
+const PASSIVE_COIN_SNIPE = preload("uid://b0rkegpstg6g4")
+const PASSIVE_SPARE_CHANGE = preload("uid://dc4ftba55c4w8")
+const PASSIVE_REFUND = preload("uid://bubbbm2g4luge")
+const PASSIVE_JAR_O_SAVINGS = preload("uid://ctageqytkfmgg")
+const DEBT = preload("uid://cuwgygacdm7dj")
+const PASSIVE_LOAN_SHARK = preload("uid://6xxw4avoncr8")
+const PASSIVE_PAYDOWN = preload("uid://djv3lp0l3aftb")
+const DEATH = preload("uid://bx1ttmouolx2q")
+
+
+
 #@onready var player_portrait: ColorRect = $Player/Player_Portrait
 #@onready var enemy_portrait: ColorRect = $Enemy/Enemy_Portrait
 @onready var enemy_portrait: TextureRect = $Enemy/Enemy_Portrait
@@ -254,6 +283,7 @@ func activate_pre_battle_passives():
 				flip_button.disabled = true
 			coin_calculation()
 			pocket_money_coins -= 1
+			sound_manager.play_sound(COIN_FLIP)
 			await get_tree().create_timer(0.1).timeout
 		endTurn_button.disabled = false
 		re_flip_button.disabled = false
@@ -270,6 +300,7 @@ func activate_player_turn_start_passives():
 		endTurn_button.disabled = true
 		re_flip_button.disabled = true
 		print("PAYBACK: " + str(payback_coins))
+		sound_manager.play_sound(PASSIVE_PAYBACK)
 		while payback_coins != 0:
 			if player.current_re_flip != player.max_re_flip: 
 				re_flip_button.disabled = false
@@ -287,7 +318,7 @@ func activate_player_turn_start_passives():
 			add_child(coin);
 			latest_coin = coin
 			coin_count += 1
-
+			sound_manager.play_sound(COIN_FLIP)
 			if player.current_flip == player.max_flip or player.coin == 1:
 				flip_button.disabled = true
 			coin_calculation()
@@ -337,6 +368,7 @@ func activate_player_turn_start_passives():
 		right_coin.add_to_group("coins")
 		add_child(right_coin);
 		latest_coin = right_coin
+		sound_manager.play_sound(COIN_FLIP)
 	
 	latest_pair_left_coin = null
 	latest_pair_right_coin = null
@@ -352,6 +384,7 @@ func activate_player_turn_end_passives():
 		else:
 			latest_coin.state = 0
 		latest_coin.refresh_sprite()
+		sound_manager.play_sound(COIN_FLIP)
 		coin_calculation()
 		await get_tree().create_timer(1.0).timeout
 
@@ -369,17 +402,20 @@ func activate_player_turn_end_passives():
 			if index == 3 or index == 5:
 				coin.copy_coin(first_coin)
 				coin.refresh_sprite()
+				sound_manager.play_sound(COIN_FLIP)
 				coin_calculation()
 				await get_tree().create_timer(0.1).timeout
 			if index == 4 or index == 6:
 				coin.copy_coin(second_coin)
 				coin.refresh_sprite()
+				sound_manager.play_sound(COIN_FLIP)
 				coin_calculation()
 				await get_tree().create_timer(0.1).timeout
 		coin_calculation()
 		await get_tree().create_timer(1.0).timeout
 
 func show_turn_ui(text):
+	sound_manager.play_sound(TURN_REVEAL)
 	endTurn_button.disabled = true
 	turn_ui.visible = true
 	turn_ui_label.text = text
@@ -419,6 +455,7 @@ func start_player_turn():
 	if has_active_income and player.gain >= 30:
 		var gain_damage = player.gain
 		enemy.take_damage(gain_damage)
+		sound_manager.play_sound(PASSIVE_JAR_O_SAVINGS)
 		show_floating_label(enemy,gain_damage,LabelType.DAMAGE)
 		show_floating_label(player,gain_damage,LabelType.ACTIVE_INCOME)
 		check_defeat()
@@ -521,6 +558,7 @@ func start_enemy_turn():
 	if has_loan_shark and enemy.debt > 1:
 		var loan_damage = enemy.debt
 		enemy.take_damage(loan_damage)
+		sound_manager.play_sound(PASSIVE_LOAN_SHARK)
 		show_floating_label(enemy,loan_damage,LabelType.LOAN_SHARK)
 
 
@@ -558,19 +596,24 @@ func end_enemy_turn():
 			if damage >= 30:
 				damage = 30
 			player.coin += damage
+			sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
 			show_floating_label(player,damage,LabelType.PASSIVE_INCOME)
 		else:
+			if damage <= 10: sound_manager.play_sound(DAMAGE_LIGHT)
+			elif damage <= 20: sound_manager.play_sound(DAMAGE_MODERATE)
+			else: sound_manager.play_sound(DAMAGE_HEAVY)
 			player.take_damage(damage)
 			show_floating_label(player,damage,LabelType.DAMAGE)
 	if debt != 0:
 			player.debt += debt
+			sound_manager.play_sound(DEBT)
 			show_floating_label(player,debt,LabelType.DEBT)
 	enemy.gain += gain
 	if gain != 0: show_floating_label(enemy,gain,LabelType.TO_GAIN)
-	
 	if has_pay_down:
 		if enemy.debt > enemy.coin:
 			enemy.coin = 0
+			sound_manager.play_sound(PASSIVE_PAYDOWN)
 			show_floating_label(enemy,0,LabelType.PAY_DOWN)
 		else:
 			enemy.debt += 10
@@ -594,22 +637,28 @@ func end_enemy_turn():
 		if enemy.type == Enemy.TWILIGHT_SAGE:
 			has_dusk_stance = !has_dusk_stance
 			enemy.max_flip += 4
+		sound_manager.play_sound(TURN_PLAYER)
 		start_player_turn()
 	
 	coin_deck.sigil_unlight_()
 
 func _on_endturn_pressed():
+	sound_manager.play_sound(COIN_ENDTURN)
 	coin_deck.sigil_pressed();
 	previous_player_flips = flip_clicks
 	
 	#Activate End Turn Passives
 	await activate_player_turn_end_passives()
 	enemy.take_damage(damage)
+	if damage <= 10: sound_manager.play_sound(DAMAGE_LIGHT)
+	elif damage <= 20: sound_manager.play_sound(DAMAGE_MODERATE)
+	else: sound_manager.play_sound(DAMAGE_HEAVY)
 	previous_player_gain += gain
 	if damage != 0: show_floating_label(enemy,damage,LabelType.DAMAGE)
 	player.gain += gain
 	if gain != 0: show_floating_label(player,gain,LabelType.TO_GAIN)
 	if debt != 0: 
+		sound_manager.play_sound(DEBT)
 		show_floating_label(enemy,debt,LabelType.DEBT)
 		enemy.debt += debt
 
@@ -637,15 +686,15 @@ func _on_endturn_pressed():
 			print("Piggy Copying 2")
 		if coin.reserved == false:
 			coin.queue_free()
-	
-
 	var defeat = check_defeat()
 	if defeat == null:
 		if current_turn == Turn.PLAYER:
 			await get_tree().create_timer(1.0).timeout
+			sound_manager.play_sound(TURN_ENEMY)
 			start_enemy_turn()
 
 func _on_flip_pressed():
+	sound_manager.play_sound(COIN_FLIP)
 	print("FLIP")
 	flip_clicks += 1
 	if player.current_re_flip != player.max_re_flip: 
@@ -692,12 +741,14 @@ func _on_flip_pressed():
 	
 	if has_lucky_pair and (flip_clicks == 7 or flip_clicks == 8):
 		coin.upgrade()
+		sound_manager.play_sound(COIN_UPGRADE)
 		show_floating_label(player,0,LabelType.LUCKY_PAIR)
 	
 	if flip_clicks <= 3 and has_triple_nickel:
 		coin.upgrade_to_silver()
 		show_floating_label(player,0,LabelType.TRIPLE_NICKEL)
 	if has_coin_snipe and coin.base_value > 2:
+		sound_manager.play_sound(PASSIVE_COIN_SNIPE)
 		enemy.take_damage(1)
 		show_floating_label(player,1,LabelType.COIN_SNIPE)
 		show_floating_label(enemy,1,LabelType.DAMAGE)
@@ -721,7 +772,7 @@ func _on_flip_pressed():
 	check_defeat()
 
 func enemy_flip():
-	
+	sound_manager.play_sound(COIN_FLIP)
 	var state = randi() % 2
 	
 	if enemy.type == Enemy.SUN_CASTER and sun_count >= 9:
@@ -758,7 +809,7 @@ func enemy_flip():
 	check_defeat()
 	
 func trigger_game_over(player_won: bool):
-	
+	sound_manager.play_sound(DEATH)
 	if player_won:
 		reward_manager.show_rewards()
 	
@@ -819,6 +870,8 @@ func check_defeat():
 	return null
 
 func _on_re_flip_pressed():
+	sound_manager.play_sound(COIN_REFLIP)
+	sound_manager.play_sound(COIN_FLIP)
 	print("REFLIP")
 	print(coin_count)
 	if has_advanced_planning: show_floating_label(player,0,LabelType.ADVANCED_PLANNING)
@@ -826,6 +879,7 @@ func _on_re_flip_pressed():
 	var coins = get_tree().get_nodes_in_group("coins")
 	var index = 0
 	var refund_chance = randf()
+	if has_refund and refund_chance <= 0.1: sound_manager.play_sound(PASSIVE_REFUND)
 	for coin in coins:
 		if !coin.reserved:
 			index += 1
@@ -850,6 +904,7 @@ func _on_re_flip_pressed():
 			else:
 				coin.re_flip()
 	if has_spare_change:
+		sound_manager.play_sound(PASSIVE_SPARE_CHANGE)
 		var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
 		for coin in reserved_coins:
 			player.coin += 1
@@ -939,6 +994,7 @@ func reserve_left_over_coin():
 		var target_pos = coin_deck.get_reserve_slot()
 		var tween = create_tween()
 		left_coin.refresh_sprite()
+		sound_manager.play_sound(COIN_FLIP)
 		tween.tween_property(left_coin,"position:x",target_pos[0],0.2)
 		tween.tween_property(left_coin,"position:y",target_pos[1],0.2)
 		left_coin.add_to_group("reserved coins")

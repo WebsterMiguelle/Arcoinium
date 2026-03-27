@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
 [ext_resource type="AudioStream" uid="uid://cfv556d3jos2i" path="res://BGM/Twilight Zone (Exploration).wav" id="4_6njx3"]
 [ext_resource type="AudioStream" uid="uid://0ld5vkxyd8pm" path="res://BGM/Twilight Zone (Combat).wav" id="5_0y2cb"]
-[ext_resource type="PackedScene" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
+[ext_resource type="PackedScene" uid="uid://b01fk6f1pan7q" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
 [ext_resource type="Script" uid="uid://deakh0hwd6qoh" path="res://Scene/CardManager.gd" id="5_3amdw"]
 [ext_resource type="PackedScene" uid="uid://dbj4jt3y4yqdx" path="res://Scene/EnemyHealthBar.tscn" id="6_c2iwn"]
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="6_mxd2g"]
@@ -293,7 +293,6 @@ has_payback = true
 has_lucky_pair = true
 has_value_increase = true
 has_spare_change = true
-has_triple_nickel = true
 has_refund = true
 has_coin_snipe = true
 has_active_income = true
@@ -633,7 +632,7 @@ texture = SubResource("GradientTexture2D_c2iwn")
 texture_scale = 0.46
 
 [node name="Vignette" type="CanvasModulate" parent="." unique_id=1590582319]
-color = Color(0.42545944, 0.3517069, 0.4046996, 1)
+color = Color(0.6964535, 0.6192358, 0.67436445, 1)
 
 [node name="ParticleManager" type="Node2D" parent="." unique_id=2081468604]
 script = ExtResource("17_2ix4a")

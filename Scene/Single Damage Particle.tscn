@@ -26,6 +26,7 @@ scale_over_velocity_max = 201.15
 scale_over_velocity_curve = SubResource("CurveTexture_hijrn")
 
 [node name="DamageParticle" type="Node2D" unique_id=257060510]
+top_level = true
 
 [node name="DamageParticle" type="GPUParticles2D" parent="." unique_id=881501940]
 position = Vector2(72, 51)

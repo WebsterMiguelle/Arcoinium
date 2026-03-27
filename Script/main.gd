@@ -206,7 +206,7 @@ func battle_start():
 	flip_button.pressed.connect(_on_flip_pressed)
 	endTurn_button.pressed.connect(_on_endturn_pressed)
 	re_flip_button.pressed.connect(_on_re_flip_pressed)
-	var enemy_id = 4
+	var enemy_id = 8
 	match enemy_id:
 		0: 
 			enemy.setup(Enemy.MAGE)

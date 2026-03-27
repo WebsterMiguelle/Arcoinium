@@ -31,6 +31,8 @@ enum Enemy{
 @onready var turn_ui: ColorRect = $"Battle UI/Turn UI"
 @onready var turn_ui_label: Label = $"Battle UI/Turn UI/Turn UI Label"
 
+@onready var passive_manager = $PassiveManager
+@onready var passive_label = $"Battle UI/PassiveNotification"
 
 @onready var game_over_ui: CanvasLayer = $"Game Over UI"
 
@@ -41,6 +43,12 @@ enum Enemy{
 @onready var reward_manager = $CardManager
 @onready var shop_manager = $ShopManager
 
+#MAPSYSTEM
+const MAP_SCENE = preload("res://Scene/map_system.tscn")
+
+var map_progress = 0
+var max_nodes = 10
+
 #COIN
 const COIN = preload("uid://ddet242jm5v23")
 
@@ -50,8 +58,10 @@ var gain = 0
 var debt = 0
 var reserved_coin = null
 var current_turn = Turn.PLAYER
+var total_damage_dealt = 0
+var highest_damage_dealt = 0
 
-#GameStatistics
+#GameStatistics	
 var total_damage = 0
 var highest_damage = 0
 var total_gain = 0
@@ -64,6 +74,11 @@ var total_tails = 0
 var total_flips = 0
 var total_reflips = 0
 var total_passives = 0
+
+var overall_total_damage: int = 0
+var overall_highest_damage: int = 0
+var overall_total_gain: int = 0
+var overall_highest_gain: int = 0
 
 var current_enemy_type
 
@@ -80,35 +95,26 @@ var event_maps = [
 var flip_clicks = 0
 var latest_coin = null
 var coin_count = 0
-#GENERAL PASSIVES
-#B-Rank
-@export var has_wishbone = false
-@export var has_golden_clover = false
-@export var has_solar_coin = false
-@export var has_lunar_coin = false
-@export var has_merchant_scroll = false
-@export var has_impromptu_flip = false
-@export var has_advanced_planning = false
-@export var has_magic_trick = false
-@export var has_sleight_of_hand = false
 
-func _on_item_purchased(card_id, price):
-	player.coin -= price
-	
-	shop_manager.apply_item(card_id)
+var coins_array: Array = []
+
+func _on_item_purchased(card_id,price):
 	update_player_coin()
+	if shop_manager.visible:
+		shop_manager.coin_label.text = "Coins: " + str(player.coin)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	passive_manager.setup(self)
+	show_passive_notification("PASSIVE APPEAR HERE", 3.0)
 	pause_menu.visible = false
 	game_over_ui.visible = false
 	turn_ui.visible = false
 	print(reward_manager)
+	
 	shop_manager.item_purchased.connect(_on_item_purchased)
 	pause_menu.end_run_pressed.connect(_on_end_run_pressed)
 		
-	if not flip_button.pressed.is_connected(_on_flip_pressed):
-		flip_button.pressed.connect(_on_flip_pressed)
 	if not endTurn_button.pressed.is_connected(_on_endturn_pressed):
 		endTurn_button.pressed.connect(_on_endturn_pressed)
 	if not re_flip_button.pressed.is_connected(_on_re_flip_pressed):
@@ -138,17 +144,7 @@ func battle_start():
 	update_player_coin()
 	show_turn_ui("BATTLE START")
 	
-	#Battle Start Passives
 	
-	if has_wishbone: 
-		show_floating_label(player,0,LabelType.WISH_BONE) 
-		show_passive_notification("Wishbone Active")
-	if has_golden_clover: 
-		show_floating_label(player,0,LabelType.GOLDEN_CLOVER) 
-		show_passive_notification("Golden Clover Active")
-	if has_sleight_of_hand: 
-		show_floating_label(player,0,LabelType.SLEIGHT_OF_HAND) 
-		show_passive_notification("Sleight of Hand Active")
 	start_player_turn()
 
 func show_turn_ui(text):
@@ -211,15 +207,21 @@ func start_player_turn():
 		var coin = COIN.instantiate()
 		player.current_flip += 1
 		re_flip_button.disabled = false
+		
 		coin.setup(reserved_coin.state,coin_deck.get_vacant_slot(player.current_flip))
 		coin.copy_coin(reserved_coin)
 		coin.reserved = false
 		coin.add_to_group("coins")
 		add_child(coin);
+		coins_array.append(coin)
+		realign_coins()
 		coin_count += 1
 		reserved_coin.queue_free()
-	
-	
+		
+func clean_coins_array():
+	coins_array = coins_array.filter(func(c):
+		return is_instance_valid(c)
+	)
 	
 func start_enemy_turn():
 	
@@ -258,7 +260,7 @@ func end_enemy_turn():
 	if damage != 0: show_floating_label(player,damage,LabelType.DAMAGE)
 	enemy.gain += gain
 	if gain != 0: show_floating_label(enemy,gain,LabelType.TO_GAIN)
-	var defeat = check_defeat()
+	var defeat = await check_defeat()
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
 	for coin in coins:
 		coin.queue_free()
@@ -278,70 +280,67 @@ func end_enemy_turn():
 func _on_endturn_pressed():
 	
 	#Activate End Turn Passives
-	if has_impromptu_flip:
-		show_floating_label(player,0,LabelType.IMPROMPTU_FLIP)
-		show_passive_notification("Impromptu Flip Active: Last Coin Re-Flipped")
-		if has_impromptu_flip and latest_coin != null:
-			coin_calculation()
-		await get_tree().create_timer(1.0).timeout
+	if passive_manager.has_impromptu_flip:
+		passive_manager.trigger_passive("impromptu_flip")
 	
-	if has_magic_trick and coin_count >= 6:
-		show_floating_label(player,0,LabelType.MAGIC_TRICK)
-		var coins = get_tree().get_nodes_in_group("coins")
-		var index = 0
-		var first_coin = null
-		var second_coin = null
-		for coin in coins:
-			index += 1
-			print("Checking Coin: " + str(index))
-			if index == 1: first_coin = coin
-			if index == 2: second_coin = coin
-			if index == 3 or index == 5:
-				coin.copy_coin(first_coin)
-				coin_calculation()
-				await get_tree().create_timer(0.1).timeout
-			if index == 4 or index == 6:
-				coin.copy_coin(second_coin)
-				coin_calculation()
-				await get_tree().create_timer(0.1).timeout
-		coin_calculation()
-		await get_tree().create_timer(1.0).timeout
+	
+	if passive_manager.has_magic_trick and coin_count >= 6:
+		passive_manager.trigger_passive("magic_trick")
 
 	enemy.take_damage(damage)
 	if damage != 0: show_floating_label(enemy,damage,LabelType.DAMAGE)
 	player.gain += gain
 	if gain != 0: show_floating_label(player,gain,LabelType.TO_GAIN)
 	reserve_left_over_coin()
-	var defeat = check_defeat()
+	var defeat = await check_defeat()
 	if defeat == null:
 		if current_turn == Turn.PLAYER:
 			start_enemy_turn()
 	var coins = get_tree().get_nodes_in_group("coins")
-	for coin in coins:
-		if coin.reserved == false:
+	clean_coins_array()
+	for coin in coins_array:
+		if is_instance_valid(coin) and coin.reserved == false:
 			coin.queue_free()
+	#clean_coins_array()
 			
-	total_damage += damage
-	if damage > highest_damage:
-		highest_damage = damage
+	total_damage_dealt += damage
+	if damage > highest_damage_dealt:
+		highest_damage_dealt = damage
 		
 	total_gain += gain
 	if gain > highest_gain:
 		highest_gain = gain
 		
 		
+
 func show_passive_notification(text: String, duration: float = 1.5) -> void:
-	var label: Label = $"Battle UI/PassiveNotification"
-	label.text = text
-	label.visible = true
-	label.modulate = Color(0.0, 0.0, 0.0, 1.0)
-	label.z_index = 100
-	label.global_position = get_viewport().get_visible_rect().size / 2
+	if not is_instance_valid(passive_label):
+		return
+		
+	passive_label.text = text
+	passive_label.visible = true
+	passive_label.modulate = Color(0.0, 0.0, 0.0, 1.0)
+	passive_label.z_index = 100
+	#label.global_position = get_viewport().get_visible_rect().size / 2
 
 	var tween = create_tween()
-	tween.tween_property(label, "modulate:a", 0.0, 0.5).set_delay(duration)
-	tween.tween_callback(label.queue_free)
-
+	tween.tween_property(passive_label, "modulate:a", 0.0, 0.5).set_delay(duration)
+	tween.tween_callback(func():
+		passive_label.visible = false
+		passive_label.modulate.a = 1.0 
+	)
+	
+func realign_coins():
+	clean_coins_array()
+	var coins = get_tree().get_nodes_in_group("coins")
+	var index = 1
+	
+	for coin in coins_array:
+		var target_pos = coin_deck.get_vacant_slot(index)
+		var tween = create_tween()
+		tween.tween_property(coin, "position", target_pos, 0.2)
+		index += 1
+		
 func _on_flip_pressed():
 	flip_clicks += 1
 	if player.current_re_flip != player.max_re_flip: 
@@ -358,19 +357,16 @@ func _on_flip_pressed():
 	else:
 		total_tails += 1
 	
-	if flip_clicks == 1 and has_solar_coin:
-		state = 0;
-		show_floating_label(player,0,LabelType.SOLAR_COIN)
-		show_passive_notification("Solar Coin Applied")
-	if flip_clicks == 2 and has_lunar_coin:
-		state = 1;
-		show_floating_label(player,0,LabelType.LUNAR_COIN)
-		show_passive_notification("Lunar Coin Applied")
+	state = passive_manager.handle_coin_flip(flip_clicks, state)
+	
 	player.current_flip += 1
 	player.take_damage(1)
 	show_floating_label(player,1,LabelType.DAMAGE)
+	
+	
 	var coin = COIN.instantiate()
-	coin.setup(state,coin_deck.get_vacant_slot(player.current_flip))
+	coin.setup(state, Vector2.ZERO)
+	
 	
 	#Silver/Gold Flip Rate
 	
@@ -386,12 +382,14 @@ func _on_flip_pressed():
 		show_floating_label(player,0,LabelType.GOLD_FLIP) 
 	
 	coin.add_to_group("coins")
-	add_child(coin);
+	add_child(coin)
 	latest_coin = coin
 	coin_count += 1
+	coins_array.append(coin)
+	realign_coins()
 	
 	print(player.current_flip)
-	if player.current_flip == player.max_flip or player.coin == 1:
+	if player.current_flip == player.max_flip:
 		flip_button.disabled = true
 	coin_calculation()
 	check_defeat()
@@ -431,10 +429,14 @@ func trigger_game_over(player_won: bool, is_surrender: bool = false):
 	
 	var stats = {
 	"remaining_coins": player.coin,
-	"total_damage": total_damage,
-	"highest_damage": highest_damage,
+	"total_damage_dealt": total_damage_dealt,
+	"highest_damage_dealt": highest_damage_dealt,
 	"total_gain": total_gain,
 	"highest_gain": highest_gain,
+	"overall_total_damage": overall_total_damage,
+	"overall_highest_damage": overall_highest_damage,
+	"overall_total_gain": overall_total_gain,
+	"overall_highest_gain": overall_highest_gain,
 	"enemies_defeated": enemies_defeated,
 	"heads": total_heads,
 	"tails": total_tails,
@@ -443,13 +445,6 @@ func trigger_game_over(player_won: bool, is_surrender: bool = false):
 }
 
 	game_over_ui.show_stats(stats)
-	
-	#var stats_label = game_over_ui.get_node("ColorRect/StatsLabel")
-	
-	if player_won:
-		reward_manager.show_rewards()
-		shop_manager.show_shop(player)
-	
 	game_over_ui.visible = true
 	
 	flip_button.disabled = true
@@ -501,22 +496,55 @@ func check_defeat():
 		
 	if enemy.coin <= 0:
 		enemies_defeated += 1
-		trigger_game_over(true)
-		return false
+		await handle_victory_flow()
+		return true
+	#return false
 	
-	return null
+func handle_victory_flow():
+	await show_turn_ui("VICTORY")
+	await get_tree().create_timer(0.5).timeout
+	
+	# Disable gameplay buttons
+	flip_button.disabled = true
+	re_flip_button.disabled = true
+	endTurn_button.disabled = true
+	
+	
+	overall_total_damage += total_damage_dealt
+	if total_damage_dealt > overall_highest_damage:
+		overall_highest_damage = total_damage_dealt
+		
+	overall_total_gain += total_gain
+	if total_gain > overall_highest_gain:
+		overall_highest_gain = total_gain
+	
+	await shop_manager.show_shop_async(player)
+	await reward_manager.show_card_selection_async()
+	await show_map()
 
-
+func start_next_battle():
+		
+	var enemy_coins = get_tree().get_nodes_in_group("enemy_coins")
+	for coin in enemy_coins:
+		coin.queue_free()
+	
+	# Reset UI
+	turn_calculation.text = ""
+	
+	# Start new battle
+	battle_start()
+	
+	
 func _on_re_flip_pressed():
 	print("REFLIP")
 	total_reflips += 1
-	if has_advanced_planning: show_floating_label(player,0,LabelType.ADVANCED_PLANNING)
+	if passive_manager.has_advanced_planning: show_floating_label(player,0,LabelType.ADVANCED_PLANNING)
 	player.current_re_flip += 1
 	var index = 0
 	var coins = get_tree().get_nodes_in_group("coins")
-	for coin in coins:
+	for coin in coins_array:
 		index += 1
-		if index <= 3 and has_advanced_planning:
+		if index <= 3 and passive_manager.has_advanced_planning:
 			pass
 		else:
 			coin.re_flip()
@@ -526,17 +554,23 @@ func _on_re_flip_pressed():
 	coin_calculation()
 
 func coin_calculation():
-	var is_left = true # true - Left Coin, false - Right Coin
-	var left_coin
-	var right_coin
+	clean_coins_array()
+	#var is_left = true # true - Left Coin, false - Right Coin
+	#var left_coin
+	#var right_coin
 	damage = 0
 	gain = 0
 	var coins = get_tree().get_nodes_in_group("coins")
-	for coin in coins:
-		if is_left == true:
-			left_coin = coin
-		if is_left == false:
-			right_coin = coin
+	#for coin in coins:
+		#if is_left == true:
+			#left_coin = coin
+		#if is_left == false:
+			#right_coin = coin
+	for i in range(0, coins_array.size(), 2):
+		if i + 1 >= coins_array.size():
+			break
+		var left_coin = coins_array[i]
+		var right_coin = coins_array[i + 1]
 		
 		if left_coin != null and right_coin != null:
 			# 1. HEAD-HEAD PAIR
@@ -552,11 +586,11 @@ func coin_calculation():
 			else:
 				damage += (right_coin.base_value / 2)
 				gain += (left_coin.base_value / 2)
-			left_coin = null
-			right_coin = null
-		else:
-			pass
-		is_left = !is_left
+			#left_coin = null
+			#right_coin = null
+		#else:
+			#pass
+		#is_left = !is_left
 	if damage != 0 or gain != 0:
 		var text = "DMG: " + str(damage) + " GAIN: " + str(gain)
 		turn_calculation.text = text
@@ -778,7 +812,27 @@ func _on_restart_pressed():
 	#print("Random Event Triggered:", map_scene.resource_path)
 	
 
+func show_map():
+	var map = MAP_SCENE.instantiate()
+	add_child(map)
+	
+	var choice = await map.node_selected
+	get_tree().paused = false
+	
+	map_progress += 1
 
+	if map_progress >= max_nodes:
+		print("BOSS TIME")
+		start_next_battle() # or boss scene
+		return
+
+	match choice:
+		"battle":
+			start_next_battle()
+			
+		"shop":
+			await shop_manager.show_shop_async(player)
+			await show_map()
 
 func _on_refresh_pressed() -> void:
 	pass # Replace with function body.

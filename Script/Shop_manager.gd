@@ -8,12 +8,18 @@ const Shop_card = preload("res://Scene/shop_card.tscn")
 @onready var coin_label = $Background/CoinLabel
 
 var player_ref
+var shop_done := false
 
 signal item_purchased(card_id, price)
+signal shop_closed
 
-func show_shop(player):
+func show_shop_async(player):
+	shop_done = false
 	player_ref = player
 	get_parent().reward_manager.set_cards_enabled(false)
+	
+	show()
+	await shop_done
 	
 	bg.visible = true
 	visible = true
@@ -23,6 +29,9 @@ func show_shop(player):
 	
 	var tween = create_tween()
 	tween.tween_property(bg, "modulate:a", 0.5, 0.5)
+	
+	while not shop_done:
+		await get_tree().process_frame
 	
 func generate_shop():
 	for child in container.get_children():
@@ -34,15 +43,24 @@ func generate_shop():
 		card.card_id = randi() % 5
 		card.card_name = "Item " + str(card.card_id)
 		card.price = randi_range(3, 10)
-		card.stock = randi_range(1, 3)
+		card.stock = randi_range(1, 1)
 		
-		card.card_bought.connect(_on_card_bought)
+		card.card_bought.connect(_on_card_bought.bind(card))
 		container.add_child(card)
 		
 		
-func _on_card_bought(card_id, price):
+func _on_card_bought(card_id, price, card):
 	if player_ref.coin >= price:
+		player_ref.coin -= price
+		apply_item(card_id)
 		emit_signal("item_purchased", card_id, price)
+		card.disabled = true
+		card.modulate = Color(0.5, 0.5, 0.5)
+		
+		coin_label.text = "Coins: " + str(player_ref.coin)
+		for c in container.get_children():
+			c.update_state(player_ref.coin)
+		
 	else:
 		print("Not enough coins!")
 		
@@ -62,6 +80,8 @@ func close_shop():
 	bg.visible = false
 	visible = false
 	get_parent().reward_manager.set_cards_enabled(true)
+	shop_done = true
+	emit_signal("shop_closed")
 	
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -78,6 +98,11 @@ func _process(_delta: float) -> void:
 		card.update_state(player_ref.coin)
 		
 	coin_label.text = "Coins: " + str(player_ref.coin)
+
+func _on_proceed_pressed():
+	emit_signal("shop_done")
+	queue_free()
+	
 
 
 func _on_back_pressed() -> void:

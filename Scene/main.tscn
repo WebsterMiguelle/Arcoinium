@@ -15,11 +15,14 @@
 [ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="9_jbas8"]
 [ext_resource type="Texture2D" uid="uid://r5gatuytbe0t" path="res://Assets/taxCollector.png" id="10_p4j74"]
 [ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="11_hiice"]
+[ext_resource type="Texture2D" uid="uid://dfw0gb82xbava" path="res://Assets/portraitBackground.png" id="12_pqe63"]
 [ext_resource type="Texture2D" uid="uid://cjjj3ulqgawva" path="res://Assets/apprenticeMage.png" id="12_sor6r"]
 [ext_resource type="Texture2D" uid="uid://bikjuk8fgo6p2" path="res://Assets/moonCaster-Sheet.png" id="13_pqe63"]
 [ext_resource type="Texture2D" uid="uid://di37676qo0yu4" path="res://Assets/sunCaster-Recovered-Sheet.png" id="14_aam5o"]
 [ext_resource type="Texture2D" uid="uid://ce2isyeu1yhmy" path="res://Assets/thrifter.png" id="15_nyb1q"]
 [ext_resource type="Texture2D" uid="uid://dprlqvclal2j" path="res://Assets/trader.png" id="16_xw8bv"]
+[ext_resource type="Texture2D" uid="uid://c5kws41vksxsb" path="res://Assets/twilightSageDawn.png" id="18_aam5o"]
+[ext_resource type="Texture2D" uid="uid://odbplao5e2m8" path="res://Assets/twilightSageDusk.png" id="19_nyb1q"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wimqa"]
 atlas = ExtResource("9_jbas8")
@@ -31,6 +34,10 @@ region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uctnp"]
 atlas = ExtResource("11_hiice")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xw8bv"]
+atlas = ExtResource("12_pqe63")
 region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_m37ut"]
@@ -61,6 +68,22 @@ region = Rect2(0, 0, 64, 64)
 atlas = ExtResource("16_xw8bv")
 region = Rect2(0, 0, 64, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_8bkap"]
+atlas = ExtResource("18_aam5o")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b0nqf"]
+atlas = ExtResource("18_aam5o")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ot48q"]
+atlas = ExtResource("19_nyb1q")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2uk8d"]
+atlas = ExtResource("19_nyb1q")
+region = Rect2(64, 0, 64, 64)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_8bkap"]
 animations = [{
 "frames": [{
@@ -86,6 +109,14 @@ animations = [{
 "loop": true,
 "name": &"DWARF",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xw8bv")
+}],
+"loop": true,
+"name": &"Default",
+"speed": 1.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -133,15 +164,27 @@ animations = [{
 "name": &"TRADER",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8bkap")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b0nqf")
+}],
 "loop": true,
 "name": &"TWILLIGHT_SAGE_DAWN",
-"speed": 5.0
+"speed": 1.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ot48q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2uk8d")
+}],
 "loop": true,
 "name": &"TWILLIGHT_SAGE_DUSK",
-"speed": 5.0
+"speed": 1.0
 }]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3amdw"]
@@ -250,7 +293,7 @@ offset_bottom = 137.97021
 position = Vector2(58.67501, 59.03)
 scale = Vector2(1.9374993, 1.9375)
 sprite_frames = SubResource("SpriteFrames_8bkap")
-animation = &"ARISTOCRAT"
+animation = &"Default"
 
 [node name="Enemy Gain" type="Label" parent="Enemy" unique_id=652842868]
 offset_left = 927.0

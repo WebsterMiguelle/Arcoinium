@@ -140,6 +140,7 @@ region = Rect2(56, 8, 8, 8)
 script = SubResource("GDScript_arh45")
 
 [node name="Glow Aura" type="TextureRect" parent="." unique_id=494783141]
+visible = false
 modulate = Color(1, 1, 0.7585879, 0.50600004)
 offset_left = -348.0
 offset_top = -349.00003

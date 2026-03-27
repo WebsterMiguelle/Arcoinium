@@ -5,9 +5,9 @@
 [ext_resource type="Script" uid="uid://bunbms60cogmi" path="res://Script/player.gd" id="2_1bvp3"]
 [ext_resource type="Script" uid="uid://dedsjnmo4366e" path="res://Script/enemy.gd" id="3_lquwl"]
 [ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
-[ext_resource type="PackedScene" uid="uid://b01fk6f1pan7q" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
+[ext_resource type="PackedScene" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
 [ext_resource type="Script" uid="uid://deakh0hwd6qoh" path="res://Scene/CardManager.gd" id="5_3amdw"]
-[ext_resource type="PackedScene" path="res://Scene/EnemyHealthBar.tscn" id="6_c2iwn"]
+[ext_resource type="PackedScene" uid="uid://dbj4jt3y4yqdx" path="res://Scene/EnemyHealthBar.tscn" id="6_c2iwn"]
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="6_mxd2g"]
 [ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="7_0sxm5"]
 [ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="7_3pt4j"]
@@ -28,6 +28,51 @@ use_hdr = true
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 metadata/_snap_enabled = true
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_j63at"]
+particles_animation = true
+particles_anim_h_frames = 8
+particles_anim_v_frames = 2
+particles_anim_loop = false
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0sxm5"]
+load_path = "res://.godot/imported/8-bitrunes.png-f439b6e9b440c5dae77d2198eb8d6ccb.ctex"
+
+[sub_resource type="Curve" id="Curve_0sxm5"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, -1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_hspdg"]
+curve = SubResource("Curve_0sxm5")
+
+[sub_resource type="Curve" id="Curve_hspdg"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_j63at"]
+curve = SubResource("Curve_hspdg")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6njx3"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(3.21, 0.645, 1)
+emission_shape = 1
+emission_sphere_radius = 540.9
+angle_min = -1347.5
+angle_max = -92.49999
+radial_velocity_min = -800.0
+radial_velocity_max = -2.2351742e-05
+gravity = Vector3(0, 98, 0)
+linear_accel_min = -45.710003
+linear_accel_max = -2.2351742e-06
+scale_min = 8.0
+scale_max = 8.0
+scale_curve = SubResource("CurveTexture_j63at")
+color = Color(1, 1, 1, 0.5)
+hue_variation_min = -1.0
+hue_variation_max = 0.99999994
+hue_variation_curve = SubResource("CurveTexture_hspdg")
+anim_offset_max = 1.0
 
 [node name="Main" type="TextureRect" unique_id=1891652298]
 anchors_preset = 15
@@ -332,12 +377,26 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_3amdw")
 text = "Refresh"
 
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=981605822]
-position = Vector2(594, 324)
+position = Vector2(576, 324)
 scale = Vector2(17.921875, 10.046875)
 texture = SubResource("GradientTexture2D_c2iwn")
 
 [node name="Vignette" type="CanvasModulate" parent="." unique_id=332093695]
 color = Color(0, 0, 0, 1)
+
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=186780774]
+clip_children = 1
+position = Vector2(885, 136)
+polygon = PackedVector2Array(-331, -132, -878, -132, -884, 192, -888, 519, -516, 514, -134, 511, 270, 514, 270, 225, 270, -120, 193, -67, -283, 70, -234, 92, -199, 137, -188, 205, -210, 257, -261, 296, -306, 309, -403, 271, -429, 223, -424, 163, -382, 99, -342, 70, -285, 66, 269, -125, -108, -129)
+uv = PackedVector2Array(-305, -21, -395, -66, -234, -60, -314, -22, -315, -24)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Polygon2D" unique_id=1161679312]
+material = SubResource("CanvasItemMaterial_j63at")
+position = Vector2(-309, 188)
+amount = 25
+texture = SubResource("CompressedTexture2D_0sxm5")
+lifetime = 5.0
+process_material = SubResource("ParticleProcessMaterial_6njx3")
 
 [connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]
 [connection signal="mouse_entered" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_entered"]

@@ -44,13 +44,27 @@ enum Enemy{
 @onready var turn_ui: ColorRect = $"Battle UI/Turn UI"
 @onready var turn_ui_label: Label = $"Battle UI/Turn UI/Turn UI Label"
 
+@onready var passive_manager = $PassiveManager
+@onready var passive_label = $"Battle UI/PassiveContainer"
+@onready var enemy_passive_label = $"Battle UI/EnemyLabelNotification"
+
+
+const PASSIVE_SCENE = preload("res://Scene/passsive_notification.tscn")
+
 @onready var game_over_ui: CanvasLayer = $"Game Over UI"
 
-
+@onready var pause_menu = $PauseMenu
 
 #COIN DECK 
 @onready var coin_deck: Node2D = $CoinDeck
 @onready var reward_manager = $CardManager
+@onready var shop_manager = $ShopManager
+
+#MAPSYSTEM
+const MAP_SCENE = preload("res://Scene/map_system.tscn")
+
+var map_progress = 0
+var max_nodes = 10
 
 #COIN
 const COIN = preload("uid://ddet242jm5v23")
@@ -61,7 +75,27 @@ var gain = 0
 var debt = 0
 var reserved_coin = null
 var current_turn = Turn.PLAYER
+var total_damage_dealt = 0
+var highest_damage_dealt = 0
 
+#GameStatistics
+var total_damage = 0
+var highest_damage = 0
+var total_gain = 0
+var highest_gain = 0
+var total_debt = 0
+var highest_debt = 0
+var enemies_defeated = 0
+var total_heads = 0
+var total_tails = 0
+var total_flips = 0
+var total_reflips = 0
+var total_passives = 0
+
+var overall_total_damage: int = 0
+var overall_highest_damage: int = 0
+var overall_total_gain: int = 0
+var overall_highest_gain: int = 0
 
 var current_enemy_type
 
@@ -91,6 +125,8 @@ var previous_player_flips = 0
 var player_turn_count = 0
 var sun_count = 0
 var moon_count = 0
+
+var coins_array: Array = []
 
 #GENERAL PASSIVES
 
@@ -146,14 +182,41 @@ var has_sunlit_curse = false
 var has_midnight_curse = false
 var has_dusk_stance = false
 
+
+func _on_item_purchased(card_id,price):
+	update_player_coin()
+	if shop_manager.visible:
+		shop_manager.coin_label.text = "Coins: " + str(player.coin)
+		
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	passive_manager.setup(self)
+	show_passive_notification("PASSIVE APPEAR HERE", 3.0)
+	show_enemy_passive("ENEMY PASSIVE APPEAR HERE", 3.0)
 	game_over_ui.visible = false
+	pause_menu.visible = false
 	turn_ui.visible = false
-	battle_start()
 	print(reward_manager)
 	
+	shop_manager.item_purchased.connect(_on_item_purchased)
 	
+	if not pause_menu.end_run_pressed.is_connected(_on_end_run_pressed):
+		pause_menu.end_run_pressed.connect(_on_end_run_pressed)
+ 	
+	if not endTurn_button.pressed.is_connected(_on_endturn_pressed):
+		endTurn_button.pressed.connect(_on_endturn_pressed)
+	if not re_flip_button.pressed.is_connected(_on_re_flip_pressed):
+		re_flip_button.pressed.connect(_on_re_flip_pressed)      
+	battle_start()
+	
+func _input(event):
+	if event.is_action_pressed("ui_cancel"): # ESC key
+		toggle_pause()
+		
+func toggle_pause():
+	get_tree().paused = !get_tree().paused
+	pause_menu.visible = get_tree().paused
 	
 func battle_start():
 	#Refresh Enemy Passives
@@ -167,7 +230,7 @@ func battle_start():
 	flip_button.pressed.connect(_on_flip_pressed)
 	endTurn_button.pressed.connect(_on_endturn_pressed)
 	re_flip_button.pressed.connect(_on_re_flip_pressed)
-	var enemy_id = 8
+	var enemy_id = 0
 	match enemy_id:
 		0: enemy.setup(Enemy.MAGE)
 		1: enemy.setup(Enemy.DWARF)
@@ -403,7 +466,13 @@ func show_turn_ui(text):
 		endTurn_button.disabled = false
 	await get_tree().create_timer(1.0).timeout
 	turn_ui.visible = false
-
+	
+func _on_end_run_pressed():
+	print("Main Script: Received End Run")
+	get_tree().paused = false
+	pause_menu.visible = false
+	trigger_game_over(false, true)
+	
 func start_player_turn():
 	
 	player_turn_count += 1
@@ -414,6 +483,7 @@ func start_player_turn():
 	debt = 0
 	flip_clicks = 0
 	latest_coin = null
+	coin_count = 0
 	
 	#ACTIVE INCOME
 	if has_active_income and player.gain >= 30:
@@ -538,6 +608,7 @@ func start_enemy_turn():
 
 	flip_button.disabled = true
 	re_flip_button.disabled = true
+	endTurn_button.disabled = true
 
 	#FLIP COINS
 	await get_tree().create_timer(1.0).timeout
@@ -575,7 +646,7 @@ func end_enemy_turn():
 		else:
 			enemy.debt += 10
 		
-	var defeat = check_defeat()
+	var defeat = await check_defeat()
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
 	for coin in coins:
 		coin.queue_free()
@@ -639,12 +710,74 @@ func _on_endturn_pressed():
 			coin.queue_free()
 	
 
-	var defeat = check_defeat()
+	var defeat = await check_defeat()
 	if defeat == null:
 		if current_turn == Turn.PLAYER:
 			await get_tree().create_timer(1.0).timeout
 			start_enemy_turn()
-
+			
+	total_damage_dealt += damage
+	if damage > highest_damage_dealt:
+		highest_damage_dealt = damage
+		
+	total_gain += gain
+	if gain > highest_gain:
+		highest_gain = gain
+			
+func show_passive_notification(text: String, duration: float = 1.5) -> void:
+	var notif = PASSIVE_SCENE.instantiate()
+	passive_label.add_child(notif)
+	
+	notif.setup(text)
+	
+	var container_width = passive_label.get_size().x
+	notif.position = Vector2(container_width + 50, 0)
+	
+	notif.modulate.a = 1.0
+	notif.scale = Vector2(0.9, 0.9)
+	notif.z_index = 100
+	
+	var tween_in = create_tween()
+	tween_in.parallel().tween_property(notif, "position:x", 0, 0.3)
+	tween_in.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.3)
+	
+	for i in range(passive_label.get_child_count()):
+		var child = passive_label.get_child(i)
+		if child != notif:
+			child.position.y += 30
+			
+		await get_tree().create_timer(duration).timeout
+	
+	var tween_out = create_tween()
+	tween_out.tween_property(notif, "modulate:a", 0.0, 0.5)
+	tween_out.tween_callback(func():
+		notif.queue_free()
+	)
+	
+func show_enemy_passive(text: String, duration: float = 1.5) -> void:
+	if not is_instance_valid(enemy_passive_label):
+		return
+		
+	enemy_passive_label.text = text
+	enemy_passive_label.visible = true
+	enemy_passive_label.modulate = Color(0.0, 0.0, 0.0, 1.0)
+	enemy_passive_label.z_index = 100
+	
+	var tween = create_tween()
+	tween.parallel().tween_property(enemy_passive_label, "modulate:a", 1.0, 0.2)
+	tween.parallel().tween_property(enemy_passive_label, "position:y", enemy_passive_label.position.y - 20, 0.2)
+	tween.parallel().tween_property(enemy_passive_label, "scale", Vector2(1, 1), 0.2)
+	
+	
+	var tween_out = create_tween()
+	tween_out.tween_property(enemy_passive_label, "modulate:a", 0.0, 0.5).set_delay(duration)
+	tween_out.tween_callback(func():
+		enemy_passive_label.visible = false
+		enemy_passive_label.modulate.a = 1.0 
+	)
+	
+		
+		
 func _on_flip_pressed():
 	print("FLIP")
 	flip_clicks += 1
@@ -757,7 +890,7 @@ func enemy_flip():
 	enemy_coin_calculation()
 	check_defeat()
 	
-func trigger_game_over(player_won: bool):
+func trigger_game_over(player_won: bool, is_surrender: bool = false):
 	
 	if player_won:
 		reward_manager.show_rewards()
@@ -773,6 +906,25 @@ func trigger_game_over(player_won: bool):
 	
 	var result_label = game_over_ui.get_node("ColorRect/Gameover")
 	var enemy_label = game_over_ui.get_node("ColorRect/EnemyLabel")
+	
+	var stats = {
+	"remaining_coins": player.coin,
+	"total_damage_dealt": total_damage_dealt,
+	"highest_damage_dealt": highest_damage_dealt,
+	"total_gain": total_gain,
+	"highest_gain": highest_gain,
+	"overall_total_damage": overall_total_damage,
+	"overall_highest_damage": overall_highest_damage,
+	"overall_total_gain": overall_total_gain,
+	"overall_highest_gain": overall_highest_gain,
+	"enemies_defeated": enemies_defeated,
+	"heads": total_heads,
+	"tails": total_tails,
+	"flips": total_flips,
+	"reflips": total_reflips
+}
+	game_over_ui.show_stats(stats)
+	game_over_ui.visible = true
 	
 	
 	match current_enemy_type:
@@ -800,6 +952,10 @@ func trigger_game_over(player_won: bool):
 			
 	var tween = create_tween()
 	tween.tween_property(enemy_label, "modulate:a", 1.0, 1.0)
+	
+	if is_surrender:
+		result_label.text = "RUN ABANDONED"
+		enemy_label.text = "You gave up the fight..."
 
 func check_defeat():
 	if player.coin <= 0:
@@ -813,11 +969,46 @@ func check_defeat():
 		return true
 		
 	if enemy.coin <= 0:
-		trigger_game_over(true)
-		return false
+		enemies_defeated += 1
+		await handle_victory_flow()
+		return true
 	
 	return null
 
+func handle_victory_flow():
+	await show_turn_ui("VICTORY")
+	await get_tree().create_timer(0.5).timeout
+	
+	# Disable gameplay buttons
+	flip_button.disabled = true
+	re_flip_button.disabled = true
+	endTurn_button.disabled = true
+	
+	
+	overall_total_damage += total_damage_dealt
+	if total_damage_dealt > overall_highest_damage:
+		overall_highest_damage = total_damage_dealt
+		
+	overall_total_gain += total_gain
+	if total_gain > overall_highest_gain:
+		overall_highest_gain = total_gain
+	
+	await shop_manager.show_shop_async(player)
+	await reward_manager.show_card_selection_async()
+	await show_map()
+	
+func start_next_battle():
+		
+	var enemy_coins = get_tree().get_nodes_in_group("enemy_coins")
+	for coin in enemy_coins:
+		coin.queue_free()
+	
+	# Reset UI
+	turn_calculation.text = ""
+	
+	# Start new battle
+	battle_start()
+	
 func _on_re_flip_pressed():
 	print("REFLIP")
 	print(coin_count)
@@ -1361,7 +1552,29 @@ func _on_restart_pressed():
 
 	#print("Random Event Triggered:", map_scene.resource_path)
 	
+func show_map():
+	var map = MAP_SCENE.instantiate()
+	add_child(map)
+	
+	var choice = await map.node_selected
+	map.queue_free()
+	
+	get_tree().paused = false
+	map_progress += 1
 
+	if map_progress >= max_nodes:
+		print("BOSS TIME")
+		start_next_battle() # or boss scene
+		return
+
+	match choice:
+		"battle":
+			start_next_battle()
+			return
+			
+		"shop":
+			await shop_manager.show_shop_async(player)
+			
 
 func _on_refresh_pressed() -> void:
 	pass # Replace with function body.

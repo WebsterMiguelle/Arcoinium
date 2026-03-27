@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://dqkovpohrgml"]
+
+[ext_resource type="Script" uid="uid://fncwgk6uvsdd" path="res://Script/map_system.gd" id="1_ffl6j"]
+
+[node name="MapSystem" type="CanvasLayer" unique_id=744915192]
+script = ExtResource("1_ffl6j")
+
+[node name="Background" type="ColorRect" parent="." unique_id=951872343]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background" unique_id=1238910089]
+custom_minimum_size = Vector2(200, 400)
+layout_mode = 0
+offset_left = 288.0
+offset_top = 91.0
+offset_right = 888.0
+offset_bottom = 573.0
+theme_override_constants/separation = 400
+
+[node name="Label" type="Label" parent="Background/VBoxContainer" unique_id=937650573]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.022979883, 0.022979883, 0.022979883, 1)
+theme_override_font_sizes/font_size = 30
+text = "WORLD MAP"
+horizontal_alignment = 1
+
+[node name="Battle" type="Button" parent="Background/VBoxContainer" unique_id=992363419]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Battle"
+
+[connection signal="pressed" from="Background/VBoxContainer/Battle" to="." method="_on_battle_pressed"]

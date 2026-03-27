@@ -206,7 +206,7 @@ func battle_start():
 	flip_button.pressed.connect(_on_flip_pressed)
 	endTurn_button.pressed.connect(_on_endturn_pressed)
 	re_flip_button.pressed.connect(_on_re_flip_pressed)
-	var enemy_id = 4
+	var enemy_id = 8
 	match enemy_id:
 		0: 
 			enemy.setup(Enemy.MAGE)
@@ -580,6 +580,7 @@ func start_enemy_turn():
 	enemy.gain_coin()
 	if has_fully_paid and enemy.debt == 0:
 		player.take_damage(100)
+		particle_manager.spawn_particle(DAMAGE_PARTICLE,player_portrait.global_position)
 		show_floating_label(player,100,LabelType.FULLY_PAID)
 		check_defeat()
 	if has_loan_shark and enemy.debt > 1:

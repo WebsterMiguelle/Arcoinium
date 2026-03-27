@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c8x2xmdvo1tgo"
-path="res://.godot/imported/twilightMage.png-6419b22f010d8804b544cb3599117e40.ctex"
+uid="uid://bgomk7rj834wr"
+path="res://.godot/imported/twilightSage.png-694c03f29b49c159f6cb8d7887c0101c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/twilightMage.png"
-dest_files=["res://.godot/imported/twilightMage.png-6419b22f010d8804b544cb3599117e40.ctex"]
+source_file="res://Assets/twilightSage.png"
+dest_files=["res://.godot/imported/twilightSage.png-694c03f29b49c159f6cb8d7887c0101c.ctex"]
 
 [params]
 

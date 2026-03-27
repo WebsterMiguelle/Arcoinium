@@ -40,9 +40,9 @@ func update_stock_display():
 	if stock <= 0:
 		stock_label.text = "SOLD OUT"
 		stock_label.add_theme_color_override("font_color", Color.RED)
-		text = card_name + " (SOLD OUT)"
+		text = card_name 
 		disabled = true
 	else:
 		stock_label.text = "Stock: " + str(stock)
 		stock_label.add_theme_color_override("font_color", Color.WHITE)
-		text = card_name + " (" + str(price) + "g | Stock: " + str(stock) + ")"
+		text = card_name + " (" + str(price) + "g)"

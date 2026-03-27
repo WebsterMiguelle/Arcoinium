@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ddet242jm5v23"]
 
-[ext_resource type="Script" path="res://Script/coin.gd" id="1_byqvs"]
+[ext_resource type="Script" uid="uid://ctvgpe532fo2k" path="res://Script/coin.gd" id="1_byqvs"]
 [ext_resource type="Texture2D" uid="uid://brn3ihcjo08pk" path="res://Assets/Coins/sun_to_moon_coin-Sheet.png" id="2_byqvs"]
 [ext_resource type="Texture2D" uid="uid://b26gbj0tgcnn" path="res://Assets/16bitcoins.png" id="2_jea4o"]
 

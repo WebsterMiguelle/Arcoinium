@@ -42,16 +42,11 @@ func _on_button_pressed() -> void:
 		bounce_tween.kill()
 	
 	bounce_tween = create_tween()
-	bounce_tween.tween_property(coin,"position:y", -300.0, 0.2).as_relative().set_trans(Tween.TRANS_LINEAR)
+	bounce_tween.tween_property(coin,"position:y", -500.0, 0.2).as_relative().set_trans(Tween.TRANS_LINEAR)
 	#Add tween that goes to the coin health here
-	bounce_tween.tween_property(coin,"position:y", 300.0, 0.2).as_relative().set_trans(Tween.TRANS_LINEAR)
+	coin.play("coin_flip_up") 
 	game_title_go_up()
-	coin.play("coin_flip_up")
-	
-	await coin.animation_finished
-	
-	
-	_coin_float()
+	SceneTransition.load_scene("res://Scene/main.tscn")
 	
 func _on_frame_changed() -> void:
 	if is_waiting_to_stop and coin.frame == freeze_frame_on:

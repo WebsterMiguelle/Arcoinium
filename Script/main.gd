@@ -31,7 +31,7 @@ enum Enemy{
 @onready var re_flip_button: Button = $"Battle UI/Re-Flip"
 @onready var turn_calculation: Label = $"Battle UI/Turn Calculation"
 
-@onready var player_health_bar = $"Battle UI/PlayerHealthBar"
+@onready var player_health_bar = $"Battle UI/PlayerHealthBar2"
 @onready var player_gain: Label = $"Player/Player Gain"
 @onready var player_debt: Label = $"Player/Player Debt"
 @onready var player_health_label = $"Battle UI/HealthLabel"
@@ -45,7 +45,6 @@ enum Enemy{
 @onready var turn_ui_label: Label = $"Battle UI/Turn UI/Turn UI Label"
 
 @onready var game_over_ui: CanvasLayer = $"Game Over UI"
-
 
 
 #COIN DECK 
@@ -148,6 +147,9 @@ var has_dusk_stance = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	await get_tree().create_timer(0.6).timeout
+	await _play_fake_coin_intro()
+	
 	game_over_ui.visible = false
 	turn_ui.visible = false
 	battle_start()
@@ -1373,3 +1375,34 @@ func _on_endturn_mouse_entered() -> void:
 
 func _on_endturn_mouse_exited() -> void:
 	coin_deck.sigil_unlight_()
+
+func _play_fake_coin_intro():
+	# 1. Instantiate the fake visual coin
+	var fake_coin = COIN.instantiate()
+	add_child(fake_coin)
+	fake_coin.z_index = 100 
+	
+	await get_tree().process_frame
+	
+	# 2. Start it completely OFF-SCREEN at the top so it looks like it's falling from the previous scene!
+	var screen_center = get_viewport_rect().size / 2
+	var start_pos = Vector2(screen_center.x, -200) # -200 is safely above the monitor edge
+	
+	# 3. Give it a texture
+	if fake_coin.has_method("setup"):
+		fake_coin.setup(0, start_pos) 
+	else:
+		fake_coin.global_position = start_pos
+	
+	# 4. Find the target destination
+	var target_pos = player_health_bar.global_position 
+	
+	# 5. Drop it fast! (TRANS_EXPO makes it start incredibly fast and brake hard at the end)
+	var tween = create_tween()
+	tween.tween_property(fake_coin, "global_position", target_pos, 1.0).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	
+	# Shrink it as it goes into the UI
+	tween.parallel().tween_property(fake_coin, "scale", Vector2(0.5, 0.5), 0.5)
+	
+	# 6. Delete it the moment it touches the UI
+	tween.finished.connect(fake_coin.queue_free)

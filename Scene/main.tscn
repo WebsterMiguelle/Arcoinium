@@ -29,6 +29,15 @@
 [ext_resource type="Texture2D" uid="uid://c5kws41vksxsb" path="res://Assets/twilightSageDawn.png" id="18_aam5o"]
 [ext_resource type="Texture2D" uid="uid://odbplao5e2m8" path="res://Assets/twilightSageDusk.png" id="19_nyb1q"]
 
+[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]
+
+[sub_resource type="AudioStreamSynchronized" id="AudioStreamSynchronized_2ix4a"]
+stream_count = 2
+stream_0/stream = ExtResource("4_6njx3")
+stream_0/volume = 0.0
+stream_1/stream = ExtResource("5_0y2cb")
+stream_1/volume = 0.0
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_wimqa"]
 atlas = ExtResource("9_jbas8")
 region = Rect2(0, 0, 64, 64)
@@ -572,7 +581,8 @@ text = "Refresh"
 [node name="Vignetter" type="PointLight2D" parent="."]
 position = Vector2(559, 332)
 scale = Vector2(17.921875, 10.046875)
-energy = 0.88
+color = Color(1, 0.90334755, 0.5628785, 0.61960787)
+energy = 1.05
 texture = SubResource("GradientTexture2D_c2iwn")
 texture_scale = 0.46
 
@@ -589,6 +599,7 @@ lifetime = 6.92
 randomness = 0.09
 process_material = SubResource("ParticleProcessMaterial_0y2cb")
 
+[connection signal="pressed" from="Battle UI/PlayerHealthBar2" to="Battle UI/PlayerHealthBar2" method="_on_pressed"]
 [connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]
 [connection signal="mouse_entered" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_exited"]

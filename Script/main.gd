@@ -247,6 +247,7 @@ func battle_start():
 	update_enemy_coin()
 	update_player_coin()
 	show_turn_ui("BATTLE START")
+	flip_button.disabled = false
 	
 	#Battle Start Passives
 	await activate_pre_battle_passives()
@@ -468,7 +469,7 @@ func show_turn_ui(text):
 func start_player_turn():
 	
 	player_turn_count += 1
-		
+	
 	#Initialize Global Stats
 	damage = 0
 	gain = 0

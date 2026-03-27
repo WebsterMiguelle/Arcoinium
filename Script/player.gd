@@ -1,7 +1,5 @@
 extends Node2D
 
-signal hp_changed(new_hp)
-
 #PLAYER STATS
 var max_coin = 500 #Max Coin Capacity
 var max_reserve = 6
@@ -9,8 +7,7 @@ var current_reserve = 0
 var coin = 95:
 	set(value):
 		coin = clamp(value,0,max_coin)
-		hp_changed.emit(coin)
-var max_flip: = 16 #Max Flips Per Turn
+var max_flip: = 18 #Max Flips Per Turn
 var current_flip: = 0: #Current Flip Count
 	set(value):
 		current_flip = clamp(value,0,max_flip)

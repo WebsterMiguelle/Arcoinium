@@ -24,10 +24,18 @@
 [ext_resource type="Texture2D" uid="uid://di37676qo0yu4" path="res://Assets/sunCaster-Recovered-Sheet.png" id="14_aam5o"]
 [ext_resource type="Texture2D" uid="uid://ce2isyeu1yhmy" path="res://Assets/thrifter.png" id="15_nyb1q"]
 [ext_resource type="Texture2D" uid="uid://dprlqvclal2j" path="res://Assets/trader.png" id="16_xw8bv"]
+[ext_resource type="Script" uid="uid://cjx7ln7nt56ad" path="res://Scene/particle_manager.gd" id="17_2ix4a"]
 [ext_resource type="Texture2D" uid="uid://c5kws41vksxsb" path="res://Assets/twilightSageDawn.png" id="18_aam5o"]
 [ext_resource type="Texture2D" uid="uid://odbplao5e2m8" path="res://Assets/twilightSageDusk.png" id="19_nyb1q"]
-[ext_resource type="Texture2D" uid="uid://c4wd4jo1dquma" path="res://Assets/Sun_caster.png" id="8_0sxm5"]
-[ext_resource type="Script" uid="uid://cjx7ln7nt56ad" path="res://Scene/particle_manager.gd" id="17_2ix4a"]
+
+[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]
+
+[sub_resource type="AudioStreamSynchronized" id="AudioStreamSynchronized_2ix4a"]
+stream_count = 2
+stream_0/stream = ExtResource("4_6njx3")
+stream_0/volume = 0.0
+stream_1/stream = ExtResource("5_0y2cb")
+stream_1/volume = 0.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wimqa"]
 atlas = ExtResource("9_jbas8")
@@ -191,15 +199,6 @@ animations = [{
 "name": &"TWILLIGHT_SAGE_DUSK",
 "speed": 1.0
 }]
-
-[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]
-
-[sub_resource type="AudioStreamSynchronized" id="AudioStreamSynchronized_2ix4a"]
-stream_count = 2
-stream_0/stream = ExtResource("4_6njx3")
-stream_0/volume = 0.0
-stream_1/stream = ExtResource("5_0y2cb")
-stream_1/volume = 0.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3amdw"]
 
@@ -572,12 +571,13 @@ text = "Refresh"
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=981605822]
 position = Vector2(559, 332)
 scale = Vector2(17.921875, 10.046875)
-energy = 0.88
+color = Color(1, 0.90334755, 0.5628785, 0.61960787)
+energy = 1.05
 texture = SubResource("GradientTexture2D_c2iwn")
 texture_scale = 0.46
 
 [node name="Vignette" type="CanvasModulate" parent="." unique_id=332093695]
-color = Color(0.42545944, 0.3517069, 0.4046996, 1)
+color = Color(0.8656191, 0.7472933, 0.8418262, 1)
 
 [node name="ParticleManager" type="Node2D" parent="." unique_id=543944911]
 script = ExtResource("17_2ix4a")
@@ -589,6 +589,7 @@ lifetime = 6.92
 randomness = 0.09
 process_material = SubResource("ParticleProcessMaterial_0y2cb")
 
+[connection signal="pressed" from="Battle UI/PlayerHealthBar2" to="Battle UI/PlayerHealthBar2" method="_on_pressed"]
 [connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]
 [connection signal="mouse_entered" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_exited"]

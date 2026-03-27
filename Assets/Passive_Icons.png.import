@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://fl7tmytwihia"
-path="res://.godot/imported/mapIconBoss.png-3a23068b0a7e640424ea9583651f614e.ctex"
+uid="uid://eeepgts0tvpj"
+path="res://.godot/imported/Passive_Icons.png-2329854b357c4ce15168a06f3531b75c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Fonts/mapIconBoss.png"
-dest_files=["res://.godot/imported/mapIconBoss.png-3a23068b0a7e640424ea9583651f614e.ctex"]
+source_file="res://Assets/Passive_Icons.png"
+dest_files=["res://.godot/imported/Passive_Icons.png-2329854b357c4ce15168a06f3531b75c.ctex"]
 
 [params]
 

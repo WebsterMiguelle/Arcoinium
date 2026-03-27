@@ -12,7 +12,137 @@
 [ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="7_0sxm5"]
 [ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="7_3pt4j"]
 [ext_resource type="Script" uid="uid://byrcn8pelxayw" path="res://Script/coin_deck.gd" id="7_ow1sv"]
-[ext_resource type="Texture2D" uid="uid://c4wd4jo1dquma" path="res://Assets/Sun_caster.png" id="8_0sxm5"]
+[ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="9_jbas8"]
+[ext_resource type="Texture2D" uid="uid://r5gatuytbe0t" path="res://Assets/taxCollector.png" id="10_p4j74"]
+[ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="11_hiice"]
+[ext_resource type="Texture2D" uid="uid://cjjj3ulqgawva" path="res://Assets/apprenticeMage.png" id="12_sor6r"]
+[ext_resource type="Texture2D" uid="uid://bikjuk8fgo6p2" path="res://Assets/moonCaster-Sheet.png" id="13_pqe63"]
+[ext_resource type="Texture2D" uid="uid://di37676qo0yu4" path="res://Assets/sunCaster-Recovered-Sheet.png" id="14_aam5o"]
+[ext_resource type="Texture2D" uid="uid://ce2isyeu1yhmy" path="res://Assets/thrifter.png" id="15_nyb1q"]
+[ext_resource type="Texture2D" uid="uid://dprlqvclal2j" path="res://Assets/trader.png" id="16_xw8bv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wimqa"]
+atlas = ExtResource("9_jbas8")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t372l"]
+atlas = ExtResource("10_p4j74")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uctnp"]
+atlas = ExtResource("11_hiice")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m37ut"]
+atlas = ExtResource("12_sor6r")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yoaul"]
+atlas = ExtResource("13_pqe63")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mepbf"]
+atlas = ExtResource("13_pqe63")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dvq1j"]
+atlas = ExtResource("14_aam5o")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_50v0s"]
+atlas = ExtResource("14_aam5o")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mu7ye"]
+atlas = ExtResource("15_nyb1q")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2oiod"]
+atlas = ExtResource("16_xw8bv")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8bkap"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wimqa")
+}],
+"loop": true,
+"name": &"ARISTOCRAT",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t372l")
+}],
+"loop": true,
+"name": &"COLLECTOR",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uctnp")
+}],
+"loop": true,
+"name": &"DWARF",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m37ut")
+}],
+"loop": true,
+"name": &"MAGE",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yoaul")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mepbf")
+}],
+"loop": true,
+"name": &"MOON_CASTER",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dvq1j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_50v0s")
+}],
+"loop": true,
+"name": &"SUN_CASTER",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mu7ye")
+}],
+"loop": true,
+"name": &"THRIFTER",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2oiod")
+}],
+"loop": true,
+"name": &"TRADER",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"TWILLIGHT_SAGE_DAWN",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"TWILLIGHT_SAGE_DUSK",
+"speed": 5.0
+}]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3amdw"]
 
@@ -107,24 +237,20 @@ texture = ExtResource("7_0sxm5")
 [node name="Enemy" type="Node2D" parent="." unique_id=313281892]
 script = ExtResource("3_lquwl")
 
-[node name="Enemy_Portrait" type="TextureRect" parent="Enemy" unique_id=1802771891]
+[node name="Enemy_Portrait" type="Control" parent="Enemy" unique_id=1350637343]
 custom_minimum_size = Vector2(120, 120)
+layout_mode = 3
+anchors_preset = 0
 offset_left = 1016.325
 offset_top = 17.97
 offset_right = 1136.3256
 offset_bottom = 137.97021
-texture = ExtResource("8_0sxm5")
 
-[node name="Label" type="Label" parent="Enemy/Enemy_Portrait" unique_id=1647136577]
-visible = false
-custom_minimum_size = Vector2(40, 20)
-layout_mode = 0
-offset_left = 25.0
-offset_top = 37.0
-offset_right = 139.0
-offset_bottom = 86.0
-theme_override_font_sizes/font_size = 35
-text = "Enemy"
+[node name="Enemy_Portrait_Sprite" type="AnimatedSprite2D" parent="Enemy/Enemy_Portrait" unique_id=1568445244]
+position = Vector2(58.67501, 59.03)
+scale = Vector2(1.9374993, 1.9375)
+sprite_frames = SubResource("SpriteFrames_8bkap")
+animation = &"ARISTOCRAT"
 
 [node name="Enemy Gain" type="Label" parent="Enemy" unique_id=652842868]
 offset_left = 927.0
@@ -148,9 +274,8 @@ vertical_alignment = 1
 
 [node name="Frame" type="TextureRect" parent="Enemy" unique_id=393947561]
 offset_left = 998.0
-offset_top = 1.0
 offset_right = 1152.0
-offset_bottom = 156.0
+offset_bottom = 155.0
 texture = ExtResource("7_0sxm5")
 
 [node name="Battle UI" type="Node" parent="." unique_id=2121010052]
@@ -346,11 +471,13 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_3amdw")
 text = "Refresh"
 
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=981605822]
-position = Vector2(576, 324)
+visible = false
+position = Vector2(710, 386)
 scale = Vector2(17.921875, 10.046875)
 texture = SubResource("GradientTexture2D_c2iwn")
 
 [node name="Vignette" type="CanvasModulate" parent="." unique_id=332093695]
+visible = false
 color = Color(0, 0, 0, 1)
 
 [connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]

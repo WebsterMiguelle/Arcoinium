@@ -23,7 +23,8 @@ enum Enemy{
 
 #@onready var player_portrait: ColorRect = $Player/Player_Portrait
 #@onready var enemy_portrait: ColorRect = $Enemy/Enemy_Portrait
-@onready var enemy_portrait: TextureRect = $Enemy/Enemy_Portrait
+@onready var enemy_portrait = $Enemy/Enemy_Portrait
+@onready var enemy_portrait_sprite: AnimatedSprite2D = $Enemy/Enemy_Portrait/Enemy_Portrait_Sprite
 @onready var player_portrait: TextureRect = $Player/Player_Portrait
 
 @onready var endTurn_button = $"Battle UI/Endturn"
@@ -147,7 +148,7 @@ var has_dusk_stance = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	await get_tree().create_timer(0.6).timeout
+	await get_tree().create_timer(0.4).timeout
 	await _play_fake_coin_intro()
 	
 	game_over_ui.visible = false
@@ -169,31 +170,42 @@ func battle_start():
 	flip_button.pressed.connect(_on_flip_pressed)
 	endTurn_button.pressed.connect(_on_endturn_pressed)
 	re_flip_button.pressed.connect(_on_re_flip_pressed)
-	var enemy_id = 8
+	var enemy_id = 1
 	match enemy_id:
-		0: enemy.setup(Enemy.MAGE)
-		1: enemy.setup(Enemy.DWARF)
+		0: 
+			enemy.setup(Enemy.MAGE)
+			enemy_portrait_sprite.play("MAGE")
+		1: 
+			enemy.setup(Enemy.DWARF)
+			enemy_portrait_sprite.play("DWARF")
 		2: 
 			enemy.setup(Enemy.COLLECTOR)
+			enemy_portrait_sprite.play("COLLECTOR")
 			has_value_added_tax = true
 		3: 
 			enemy.setup(Enemy.TRADER)
+			enemy_portrait_sprite.play("TRADER")
 			has_fair_trade = true
 		4: 
 			enemy.setup(Enemy.THRIFTER)
+			enemy_portrait_sprite.play("THRIFTER")
 			has_learn_to_save = true
 		5:
 			enemy.setup(Enemy.ARISTOCRAT)
+			enemy_portrait_sprite.play("ARISTOCRAT")
 			has_fully_paid = true
 			enemy.debt = 100
 		6: 
 			enemy.setup(Enemy.SUN_CASTER)
+			enemy_portrait_sprite.play("SUN_CASTER")
 			has_sunlit_curse = true
 		7: 
 			enemy.setup(Enemy.MOON_CASTER)
+			enemy_portrait_sprite.play("MOON_CASTER")
 			has_midnight_curse = true
 		8:
 			enemy.setup(Enemy.TWILIGHT_SAGE)
+			enemy_portrait_sprite.play("TWILLIGHT_SAGE_DUSK")
 			has_dusk_stance = true
 	
 	update_enemy_coin()
@@ -1392,7 +1404,7 @@ func _play_fake_coin_intro():
 	if fake_coin.has_method("setup"):
 		fake_coin.setup(0, start_pos) 
 	else:
-		fake_coin.global_position = start_pos
+		fake_coin.global_position = start_pos 
 	
 	# 4. Find the target destination
 	var target_pos = player_health_bar.global_position 
@@ -1402,7 +1414,7 @@ func _play_fake_coin_intro():
 	tween.tween_property(fake_coin, "global_position", target_pos, 1.0).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 	
 	# Shrink it as it goes into the UI
-	tween.parallel().tween_property(fake_coin, "scale", Vector2(0.5, 0.5), 0.5)
+	tween.parallel().tween_property(fake_coin, "scale", Vector2(0.6, 0.6), 0.4)
 	
 	# 6. Delete it the moment it touches the UI
 	tween.finished.connect(fake_coin.queue_free)

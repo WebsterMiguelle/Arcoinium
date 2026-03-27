@@ -66,6 +66,8 @@ const DEATH = preload("uid://bx1ttmouolx2q")
 @onready var endTurn_button = $"Battle UI/Endturn"
 @onready var flip_button = $"Battle UI/PlayerHealthBar2"
 @onready var re_flip_button: Button = $"Battle UI/Re-Flip"
+@onready var reflip_sprite: AnimatedSprite2D = $"Battle UI/Re-Flip/Reflip_Sprite"
+@onready var reflip_label: Label = $"Battle UI/Re-Flip/Reflip_Label"
 @onready var turn_calculation: Label = $"Battle UI/Turn Calculation"
 
 @onready var player_health_bar = $"Battle UI/PlayerHealthBar2"
@@ -200,6 +202,7 @@ func battle_start():
 	has_fair_trade = false
 	update_enemy_gain_debt()
 	update_player_gain_debt()
+	reflip_label.text = str(player.max_re_flip - player.current_re_flip)
 	
 	randomize()
 	
@@ -521,6 +524,7 @@ func start_player_turn():
 	#Activate Turn Start Passives
 	await activate_player_turn_start_passives()
 	
+	reflip_label.text = str(player.max_re_flip - player.current_re_flip)
 	player.current_reserve = 0
 	#Check Coin Reserve
 	var coins = get_tree().get_nodes_in_group("reserved coins")
@@ -911,10 +915,17 @@ func check_defeat():
 func _on_re_flip_pressed():
 	sound_manager.play_sound(COIN_REFLIP)
 	sound_manager.play_sound(COIN_FLIP)
+	var tween = create_tween()
+	var original_scale: Vector2 = reflip_sprite.scale
+	var swelled_scale: Vector2 = original_scale * 1.2 
+	tween.tween_property(reflip_sprite, "scale", swelled_scale, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(reflip_sprite, "scale", original_scale, 0.15).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	
 	print("REFLIP")
 	print(coin_count)
 	if has_advanced_planning: show_floating_label(player,0,LabelType.ADVANCED_PLANNING)
 	player.current_re_flip += 1
+	reflip_label.text = str(player.max_re_flip - player.current_re_flip)
 	var coins = get_tree().get_nodes_in_group("coins")
 	var index = 0
 	var refund_chance = randf()
@@ -1471,32 +1482,32 @@ func _on_endturn_mouse_exited() -> void:
 	coin_deck.sigil_unlight_()
 
 func _play_fake_coin_intro():
-	# 1. Instantiate the fake visual coin
 	var fake_coin = COIN.instantiate()
 	add_child(fake_coin)
 	fake_coin.z_index = 100 
 	
 	await get_tree().process_frame
-	
-	# 2. Start it completely OFF-SCREEN at the top so it looks like it's falling from the previous scene!
 	var screen_center = get_viewport_rect().size / 2
-	var start_pos = Vector2(screen_center.x, -200) # -200 is safely above the monitor edge
+	var start_pos = Vector2(screen_center.x, -200) 
 	
-	# 3. Give it a texture
 	if fake_coin.has_method("setup"):
 		fake_coin.setup(0, start_pos) 
 	else:
 		fake_coin.global_position = start_pos 
 	
-	# 4. Find the target destination
 	var target_pos = player_health_bar.global_position 
 	
-	# 5. Drop it fast! (TRANS_EXPO makes it start incredibly fast and brake hard at the end)
 	var tween = create_tween()
 	tween.tween_property(fake_coin, "global_position", target_pos, 1.0).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
-	
-	# Shrink it as it goes into the UI
 	tween.parallel().tween_property(fake_coin, "scale", Vector2(0.6, 0.6), 0.4)
 	
-	# 6. Delete it the moment it touches the UI
 	tween.finished.connect(fake_coin.queue_free)
+
+
+func _on_re_flip_mouse_entered() -> void:
+	if !re_flip_button.disabled:
+		reflip_sprite.play("default")
+
+
+func _on_re_flip_mouse_exited() -> void:
+	reflip_sprite.pause()

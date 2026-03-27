@@ -8,14 +8,13 @@
 [ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
 [ext_resource type="AudioStream" uid="uid://cfv556d3jos2i" path="res://BGM/Twilight Zone (Exploration).wav" id="4_6njx3"]
 [ext_resource type="AudioStream" uid="uid://0ld5vkxyd8pm" path="res://BGM/Twilight Zone (Combat).wav" id="5_0y2cb"]
-[ext_resource type="PackedScene" uid="uid://b01fk6f1pan7q" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
+[ext_resource type="PackedScene" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
 [ext_resource type="Script" uid="uid://deakh0hwd6qoh" path="res://Scene/CardManager.gd" id="5_3amdw"]
 [ext_resource type="PackedScene" uid="uid://dbj4jt3y4yqdx" path="res://Scene/EnemyHealthBar.tscn" id="6_c2iwn"]
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="6_mxd2g"]
 [ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="7_0sxm5"]
 [ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="7_3pt4j"]
 [ext_resource type="Script" uid="uid://byrcn8pelxayw" path="res://Script/coin_deck.gd" id="7_ow1sv"]
-[ext_resource type="Texture2D" uid="uid://c4wd4jo1dquma" path="res://Assets/Sun_caster.png" id="8_0sxm5"]
 [ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="9_jbas8"]
 [ext_resource type="Texture2D" uid="uid://r5gatuytbe0t" path="res://Assets/taxCollector.png" id="10_p4j74"]
 [ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="11_hiice"]
@@ -28,6 +27,8 @@
 [ext_resource type="Script" uid="uid://cjx7ln7nt56ad" path="res://Scene/particle_manager.gd" id="17_2ix4a"]
 [ext_resource type="Texture2D" uid="uid://c5kws41vksxsb" path="res://Assets/twilightSageDawn.png" id="18_aam5o"]
 [ext_resource type="Texture2D" uid="uid://odbplao5e2m8" path="res://Assets/twilightSageDusk.png" id="19_nyb1q"]
+[ext_resource type="Texture2D" uid="uid://c1oyqjdr6wop8" path="res://Assets/animated_reflipbutton-Sheet.png" id="26_wimqa"]
+[ext_resource type="FontFile" uid="uid://drm3kueev5jxy" path="res://Assets/Fonts/OXYGENE1.TTF" id="27_t372l"]
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]
 
@@ -201,14 +202,41 @@ animations = [{
 "speed": 1.0
 }]
 
-[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_cr44a"]
+atlas = ExtResource("26_wimqa")
+region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AudioStreamSynchronized" id="AudioStreamSynchronized_2ix4a"]
-stream_count = 2
-stream_0/stream = ExtResource("4_6njx3")
-stream_0/volume = 0.0
-stream_1/stream = ExtResource("5_0y2cb")
-stream_1/volume = 0.0
+[sub_resource type="AtlasTexture" id="AtlasTexture_tcekk"]
+atlas = ExtResource("26_wimqa")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1bveb"]
+atlas = ExtResource("26_wimqa")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n7vvl"]
+atlas = ExtResource("26_wimqa")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mlc74"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cr44a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tcekk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1bveb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n7vvl")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3amdw"]
 
@@ -243,7 +271,7 @@ scale_min = 0.0
 scale_max = 6.1299996
 color = Color(1, 1, 0.2901961, 1)
 
-[node name="Main" type="TextureRect"]
+[node name="Main" type="TextureRect" unique_id=975709238]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -257,7 +285,6 @@ has_solar_coin = true
 has_lunar_coin = true
 has_merchant_scroll = true
 has_impromptu_flip = true
-has_advanced_planning = true
 has_magic_trick = true
 has_sleight_of_hand = true
 has_piggy = true
@@ -278,15 +305,15 @@ has_reimbursement = true
 has_loan_shark = true
 has_lending_charge = true
 
-[node name="SoundManager" type="Node2D" parent="."]
+[node name="SoundManager" type="Node2D" parent="." unique_id=2141723055]
 position = Vector2(576, 324)
 scale = Vector2(0.555, 0.555)
 script = ExtResource("3_hspdg")
 
-[node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager"]
+[node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1219776385]
 stream = SubResource("AudioStreamPolyphonic_hspdg")
 
-[node name="BGMPlayer" type="AudioStreamPlayer2D" parent="SoundManager"]
+[node name="BGMPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=526912258]
 stream = SubResource("AudioStreamSynchronized_2ix4a")
 autoplay = true
 
@@ -295,10 +322,10 @@ position = Vector2(576.00006, 324.00003)
 scale = Vector2(0.555, 0.555)
 script = ExtResource("7_ow1sv")
 
-[node name="Player" type="Node2D" parent="."]
+[node name="Player" type="Node2D" parent="." unique_id=1483072070]
 script = ExtResource("2_1bvp3")
 
-[node name="Player_Portrait" type="TextureRect" parent="Player"]
+[node name="Player_Portrait" type="TextureRect" parent="Player" unique_id=762395906]
 custom_minimum_size = Vector2(120, 120)
 offset_left = 21.0
 offset_top = 509.0
@@ -306,7 +333,7 @@ offset_right = 141.0
 offset_bottom = 629.0
 texture = ExtResource("6_mxd2g")
 
-[node name="Label" type="Label" parent="Player/Player_Portrait"]
+[node name="Label" type="Label" parent="Player/Player_Portrait" unique_id=1715864472]
 visible = false
 custom_minimum_size = Vector2(40, 20)
 layout_mode = 0
@@ -317,7 +344,7 @@ offset_bottom = 90.0
 theme_override_font_sizes/font_size = 35
 text = "Player"
 
-[node name="Player Gain" type="Label" parent="Player"]
+[node name="Player Gain" type="Label" parent="Player" unique_id=254214022]
 offset_left = 157.0
 offset_top = 520.0
 offset_right = 217.0
@@ -326,7 +353,7 @@ theme_override_colors/font_color = Color(0.8862745, 0.59607846, 0, 1)
 theme_override_font_sizes/font_size = 18
 text = "GAIN:"
 
-[node name="Player Debt" type="Label" parent="Player"]
+[node name="Player Debt" type="Label" parent="Player" unique_id=2068659444]
 offset_left = 102.0
 offset_top = 472.0
 offset_right = 168.0
@@ -336,16 +363,16 @@ theme_override_font_sizes/font_size = 18
 text = "DEBT: 67"
 vertical_alignment = 1
 
-[node name="Frame" type="TextureRect" parent="Player"]
+[node name="Frame" type="TextureRect" parent="Player" unique_id=152420565]
 offset_top = 493.0
 offset_right = 154.0
 offset_bottom = 648.0
 texture = ExtResource("7_0sxm5")
 
-[node name="Enemy" type="Node2D" parent="."]
+[node name="Enemy" type="Node2D" parent="." unique_id=651932115]
 script = ExtResource("3_lquwl")
 
-[node name="Enemy_Portrait" type="Control" parent="Enemy"]
+[node name="Enemy_Portrait" type="Control" parent="Enemy" unique_id=686241934]
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 3
 anchors_preset = 0
@@ -354,13 +381,13 @@ offset_top = 17.97
 offset_right = 1136.3256
 offset_bottom = 137.97021
 
-[node name="Enemy_Portrait_Sprite" type="AnimatedSprite2D" parent="Enemy/Enemy_Portrait"]
+[node name="Enemy_Portrait_Sprite" type="AnimatedSprite2D" parent="Enemy/Enemy_Portrait" unique_id=1083960378]
 position = Vector2(58.67501, 59.03)
 scale = Vector2(1.9374993, 1.9375)
 sprite_frames = SubResource("SpriteFrames_8bkap")
 animation = &"Default"
 
-[node name="Enemy Gain" type="Label" parent="Enemy"]
+[node name="Enemy Gain" type="Label" parent="Enemy" unique_id=1475439462]
 offset_left = 927.0
 offset_top = 115.0
 offset_right = 987.0
@@ -370,7 +397,7 @@ theme_override_font_sizes/font_size = 18
 text = "GAIN: 30"
 vertical_alignment = 1
 
-[node name="Enemy Debt" type="Label" parent="Enemy"]
+[node name="Enemy Debt" type="Label" parent="Enemy" unique_id=2027756836]
 offset_left = 989.0
 offset_top = 158.0
 offset_right = 1055.0
@@ -380,22 +407,22 @@ theme_override_font_sizes/font_size = 18
 text = "DEBT: 30"
 vertical_alignment = 1
 
-[node name="Frame" type="TextureRect" parent="Enemy"]
+[node name="Frame" type="TextureRect" parent="Enemy" unique_id=1466787434]
 offset_left = 998.0
 offset_right = 1152.0
 offset_bottom = 155.0
 texture = ExtResource("7_0sxm5")
 
-[node name="Battle UI" type="Node" parent="."]
+[node name="Battle UI" type="Node" parent="." unique_id=1754841999]
 
-[node name="PlayerHealthBar2" parent="Battle UI" instance=ExtResource("5_1xcnr")]
+[node name="PlayerHealthBar2" parent="Battle UI" unique_id=1546897993 instance=ExtResource("5_1xcnr")]
 offset_left = 146.0
 offset_top = 548.0
 offset_right = 238.0
 offset_bottom = 564.0
 scale = Vector2(4, 4)
 
-[node name="HealthLabel" type="Label" parent="Battle UI"]
+[node name="HealthLabel" type="Label" parent="Battle UI" unique_id=580605117]
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
@@ -408,14 +435,14 @@ theme_override_colors/font_color = Color(1, 0.8500227, 0.484913, 1)
 theme_override_font_sizes/font_size = 22
 text = "Coins:"
 
-[node name="EnemyHealthBar2" parent="Battle UI" instance=ExtResource("6_c2iwn")]
+[node name="EnemyHealthBar2" parent="Battle UI" unique_id=1945687937 instance=ExtResource("6_c2iwn")]
 offset_left = 1005.0
 offset_top = 104.0
 offset_right = -55.000244
 offset_bottom = -528.0
 scale = Vector2(4, 4)
 
-[node name="EnemyHealthLabel" type="Label" parent="Battle UI"]
+[node name="EnemyHealthLabel" type="Label" parent="Battle UI" unique_id=1016348514]
 offset_left = 868.0
 offset_top = 5.0
 offset_right = 991.0
@@ -424,20 +451,40 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("7_3pt4j")
 theme_override_font_sizes/font_size = 22
 
-[node name="Re-Flip" type="Button" parent="Battle UI"]
+[node name="Re-Flip" type="Button" parent="Battle UI" unique_id=1181793745]
+self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(150, 40)
 anchors_preset = -1
 anchor_right = 0.033
 anchor_bottom = 0.048
-offset_left = 225.0
-offset_top = 473.0
-offset_right = 336.984
-offset_bottom = 481.896
+offset_left = 219.0
+offset_top = 442.0
+offset_right = 330.98404
+offset_bottom = 534.547
+scale = Vector2(0.8, 0.8)
 theme_override_font_sizes/font_size = 20
-text = "Re-Flip
+text = "
 "
 
-[node name="Turn Calculation" type="Label" parent="Battle UI"]
+[node name="Reflip_Sprite" type="AnimatedSprite2D" parent="Battle UI/Re-Flip" unique_id=1866738486]
+position = Vector2(79.999985, 62.499996)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_mlc74")
+frame = 3
+frame_progress = 0.8581795
+
+[node name="Reflip_Label" type="Label" parent="Battle UI/Re-Flip" unique_id=1593752798]
+layout_mode = 0
+offset_left = 57.499992
+offset_top = 26.249998
+offset_right = 97.49999
+offset_bottom = 102.25
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 75
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Turn Calculation" type="Label" parent="Battle UI" unique_id=854498321]
 custom_minimum_size = Vector2(150, 40)
 offset_left = 87.0
 offset_top = 169.0
@@ -449,15 +496,14 @@ theme_override_font_sizes/font_size = 35
 text = "Turn"
 horizontal_alignment = 1
 
-[node name="Turn UI" type="ColorRect" parent="Battle UI"]
-visible = false
+[node name="Turn UI" type="ColorRect" parent="Battle UI" unique_id=566011376]
 offset_left = -64.0
 offset_top = 276.0
 offset_right = 1232.0
 offset_bottom = 359.0
 color = Color(0, 0, 0, 0.5803922)
 
-[node name="Turn UI Label" type="Label" parent="Battle UI/Turn UI"]
+[node name="Turn UI Label" type="Label" parent="Battle UI/Turn UI" unique_id=421358590]
 layout_mode = 0
 offset_right = 1165.0
 offset_bottom = 85.0
@@ -466,24 +512,24 @@ text = "BATTLE START"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Endturn" type="Button" parent="Battle UI"]
+[node name="Endturn" type="Button" parent="Battle UI" unique_id=1034445602]
 self_modulate = Color(1, 1, 1, 0)
 offset_left = 453.0
 offset_top = 201.0
 offset_right = 697.0
 offset_bottom = 445.0
 
-[node name="Game Over UI" type="CanvasLayer" parent="."]
+[node name="Game Over UI" type="CanvasLayer" parent="." unique_id=420225696]
 visible = false
 
-[node name="ColorRect" type="ColorRect" parent="Game Over UI"]
+[node name="ColorRect" type="ColorRect" parent="Game Over UI" unique_id=1423685417]
 offset_left = -25.0
 offset_top = -10.0
 offset_right = 1168.0
 offset_bottom = 662.0
 color = Color(0, 0, 0, 0.7607843)
 
-[node name="Restart" type="Button" parent="Game Over UI/ColorRect"]
+[node name="Restart" type="Button" parent="Game Over UI/ColorRect" unique_id=1995089938]
 custom_minimum_size = Vector2(200, 60)
 layout_mode = 1
 anchors_preset = 8
@@ -499,7 +545,7 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Restart"
 
-[node name="Gameover" type="Label" parent="Game Over UI/ColorRect"]
+[node name="Gameover" type="Label" parent="Game Over UI/ColorRect" unique_id=1781032691]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -515,7 +561,7 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 60
 text = "Gameover"
 
-[node name="EnemyLabel" type="Label" parent="Game Over UI/ColorRect"]
+[node name="EnemyLabel" type="Label" parent="Game Over UI/ColorRect" unique_id=1741001806]
 custom_minimum_size = Vector2(400, 60)
 layout_mode = 1
 anchors_preset = 8
@@ -532,11 +578,11 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 60
 text = "Slain"
 
-[node name="CardManager" type="CanvasLayer" parent="."]
+[node name="CardManager" type="CanvasLayer" parent="." unique_id=1111735244]
 visible = false
 script = ExtResource("5_3amdw")
 
-[node name="Background" type="ColorRect" parent="CardManager"]
+[node name="Background" type="ColorRect" parent="CardManager" unique_id=1035884839]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -545,7 +591,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.6431373)
 
-[node name="CenterContainer" type="CenterContainer" parent="CardManager/Background"]
+[node name="CenterContainer" type="CenterContainer" parent="CardManager/Background" unique_id=2031190395]
 custom_minimum_size = Vector2(200, 300)
 layout_mode = 1
 anchors_preset = 8
@@ -560,17 +606,17 @@ offset_bottom = 150.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CardManager/Background/CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CardManager/Background/CenterContainer" unique_id=1608470542]
 layout_mode = 2
 theme_override_constants/separation = 40
 alignment = 1
 
-[node name="CardContainer" type="HBoxContainer" parent="CardManager/Background/CenterContainer/VBoxContainer"]
+[node name="CardContainer" type="HBoxContainer" parent="CardManager/Background/CenterContainer/VBoxContainer" unique_id=989120313]
 layout_mode = 2
 mouse_filter = 0
 theme_override_constants/separation = 20
 
-[node name="Refresh" type="Button" parent="CardManager/Background/CenterContainer/VBoxContainer"]
+[node name="Refresh" type="Button" parent="CardManager/Background/CenterContainer/VBoxContainer" unique_id=1925022178]
 custom_minimum_size = Vector2(100, 60)
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -578,7 +624,7 @@ theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_3amdw")
 text = "Refresh"
 
-[node name="Vignetter" type="PointLight2D" parent="."]
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
 position = Vector2(559, 332)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.90334755, 0.5628785, 0.61960787)
@@ -586,13 +632,13 @@ energy = 1.05
 texture = SubResource("GradientTexture2D_c2iwn")
 texture_scale = 0.46
 
-[node name="Vignette" type="CanvasModulate" parent="."]
+[node name="Vignette" type="CanvasModulate" parent="." unique_id=1590582319]
 color = Color(0.42545944, 0.3517069, 0.4046996, 1)
 
-[node name="ParticleManager" type="Node2D" parent="."]
+[node name="ParticleManager" type="Node2D" parent="." unique_id=2081468604]
 script = ExtResource("17_2ix4a")
 
-[node name="Battle Particles" type="GPUParticles2D" parent="ParticleManager"]
+[node name="Battle Particles" type="GPUParticles2D" parent="ParticleManager" unique_id=1039306359]
 position = Vector2(608, 693)
 amount = 30
 lifetime = 6.92
@@ -600,6 +646,8 @@ randomness = 0.09
 process_material = SubResource("ParticleProcessMaterial_0y2cb")
 
 [connection signal="pressed" from="Battle UI/PlayerHealthBar2" to="Battle UI/PlayerHealthBar2" method="_on_pressed"]
+[connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]
+[connection signal="mouse_exited" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_exited"]
 [connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]
 [connection signal="mouse_entered" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_exited"]

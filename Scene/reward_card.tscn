@@ -70,14 +70,6 @@ size_flags_vertical = 3
 text = "CARD"
 script = ExtResource("1_08wl6")
 
-[node name="Copper" type="Label" parent="." unique_id=275640038]
-layout_mode = 0
-offset_left = 65.0
-offset_top = 317.0
-offset_right = 127.0
-offset_bottom = 340.0
-text = "COPPER"
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1084261089]
 position = Vector2(99.99999, 143.99998)
 scale = Vector2(4, 4)

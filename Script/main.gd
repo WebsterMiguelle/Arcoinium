@@ -83,8 +83,16 @@ const DEATH = preload("uid://bx1ttmouolx2q")
 @onready var turn_ui: ColorRect = $"Battle UI/Turn UI"
 @onready var turn_ui_label: Label = $"Battle UI/Turn UI/Turn UI Label"
 
+@onready var passive_manager = $PassiveManager
+@onready var passive_label = $"Battle UI/PassiveContainer"
+@onready var enemy_passive_label = $"Battle UI/EnemyLabelNotification"
+
+
+const PASSIVE_SCENE = preload("res://Scene/passsive_notification.tscn")
+
 @onready var game_over_ui: CanvasLayer = $"Game Over UI"
 
+@onready var pause_menu = $PauseMenu
 
 #COIN DECK 
 @onready var coin_deck: Node2D = $CoinDeck
@@ -99,7 +107,27 @@ var gain = 0
 var debt = 0
 var reserved_coin = null
 var current_turn = Turn.PLAYER
+var total_damage_dealt = 0
+var highest_damage_dealt = 0
 
+#GameStatistics
+var total_damage = 0
+var highest_damage = 0
+var total_gain = 0
+var highest_gain = 0
+var total_debt = 0
+var highest_debt = 0
+var enemies_defeated = 0
+var total_heads = 0
+var total_tails = 0
+var total_flips = 0
+var total_reflips = 0
+var total_passives = 0
+
+var overall_total_damage: int = 0
+var overall_highest_damage: int = 0
+var overall_total_gain: int = 0
+var overall_highest_gain: int = 0
 
 var current_enemy_type
 
@@ -129,6 +157,8 @@ var previous_player_flips = 0
 var player_turn_count = 0
 var sun_count = 0
 var moon_count = 0
+
+var coins_array: Array = []
 
 #GENERAL PASSIVES
 
@@ -184,22 +214,83 @@ var has_sunlit_curse = false
 var has_midnight_curse = false
 var has_dusk_stance = false
 
+var current_enemy_index
+var current_room
+
+func _on_item_purchased(card_id,price):
+	update_player_coin()
+	if shop_manager.visible:
+		shop_manager.coin_label.text = "Coins: " + str(player.coin)
+		
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	await get_tree().create_timer(0.4).timeout
 	await _play_fake_coin_intro()
 	
+	current_room = 0
+	current_enemy_index = randi_range(0,1)
+	passive_manager.setup(self)
+	show_passive_notification("PASSIVE APPEAR HERE", 3.0)
+	show_enemy_passive("ENEMY PASSIVE APPEAR HERE", 3.0)
 	game_over_ui.visible = false
+	pause_menu.visible = false
 	turn_ui.visible = false
-	battle_start()
 	print(reward_manager)
 	
+	shop_manager.item_purchased.connect(_on_item_purchased)
 	
+	if not pause_menu.end_run_pressed.is_connected(_on_end_run_pressed):
+		pause_menu.end_run_pressed.connect(_on_end_run_pressed)
+ 	
+	if not endTurn_button.pressed.is_connected(_on_endturn_pressed):
+		endTurn_button.pressed.connect(_on_endturn_pressed)
+	if not re_flip_button.pressed.is_connected(_on_re_flip_pressed):
+		re_flip_button.pressed.connect(_on_re_flip_pressed)      
+	battle_start()
+	
+func _input(event):
+	if event.is_action_pressed("ui_cancel"): # ESC key
+		toggle_pause()
+		
+func toggle_pause():
+	get_tree().paused = !get_tree().paused
+	pause_menu.visible = get_tree().paused
 	
 func battle_start():
 	#Refresh Enemy Passives
+	
 	has_value_added_tax = false
 	has_fair_trade = false
+	has_learn_to_save = false
+	has_fully_paid = false
+	has_sunlit_curse = false
+	has_midnight_curse = false
+	has_dusk_stance = false
+
+	var coins = get_tree().get_nodes_in_group("enemy coins")
+	for coin in coins:
+		coin.queue_free()
+		
+	coins = get_tree().get_nodes_in_group("coins")
+	for coin in coins:
+		coin.queue_free()
+
+	coins = get_tree().get_nodes_in_group("reserved coins")
+	for coin in coins:
+		coin.queue_free()
+		
+	latest_pair_left_coin = null
+	latest_pair_right_coin = null
+	latest_coin = null
+	reserved_coin = null
+	enemy.debt = 0
+	player.debt = 0
+	enemy.gain = 0
+	player.gain = 0
+	player.max_flip = 16
+	
+	coin_deck.reset_sigils()
 	update_enemy_gain_debt()
 	update_player_gain_debt()
 	reflip_label.text = str(player.max_re_flip - player.current_re_flip)
@@ -209,7 +300,7 @@ func battle_start():
 	flip_button.pressed.connect(_on_flip_pressed)
 	endTurn_button.pressed.connect(_on_endturn_pressed)
 	re_flip_button.pressed.connect(_on_re_flip_pressed)
-	var enemy_id = 8
+	var enemy_id = current_enemy_index
 	match enemy_id:
 		0: 
 			enemy.setup(Enemy.MAGE)
@@ -378,8 +469,6 @@ func activate_player_turn_start_passives():
 		add_child(left_coin);
 		particle_manager.spawn_particle(COIN_ADD_PARTICLE,left_coin.global_position)
 		
-
-		
 		var right_coin = COIN.instantiate()
 		player.current_flip += 1
 		if coin_count >= player.max_flip:
@@ -468,7 +557,13 @@ func show_turn_ui(text):
 		endTurn_button.disabled = false
 	await get_tree().create_timer(1.0).timeout
 	turn_ui.visible = false
-
+	
+func _on_end_run_pressed():
+	print("Main Script: Received End Run")
+	get_tree().paused = false
+	pause_menu.visible = false
+	trigger_game_over(false, true)
+	
 func start_player_turn():
 	
 	player_turn_count += 1
@@ -479,6 +574,10 @@ func start_player_turn():
 	debt = 0
 	flip_clicks = 0
 	latest_coin = null
+	if has_passive_income and player_turn_count == 1:
+		pass
+	else:
+		coin_count = 0
 	
 	#ACTIVE INCOME
 	if has_active_income and player.gain >= 30:
@@ -578,6 +677,7 @@ func start_enemy_turn():
 	damage = 0
 	gain = 0
 	debt = 0
+	var defeat
 	
 	#Coin Gain Triggers
 	if enemy.gain != 0 and enemy.gain > enemy.debt: show_floating_label(enemy,enemy.gain,LabelType.GAIN)
@@ -586,13 +686,14 @@ func start_enemy_turn():
 		player.take_damage(100)
 		particle_manager.spawn_particle(DAMAGE_PARTICLE,player_portrait.global_position)
 		show_floating_label(player,100,LabelType.FULLY_PAID)
-		check_defeat()
+		defeat = await check_defeat()
 	if has_loan_shark and enemy.debt > 1:
 		var loan_damage = enemy.debt
 		enemy.take_damage(loan_damage)
 		particle_manager.spawn_particle(DAMAGE_PARTICLE,enemy_portrait.global_position)
 		sound_manager.play_sound(PASSIVE_LOAN_SHARK)
 		show_floating_label(enemy,loan_damage,LabelType.LOAN_SHARK)
+		defeat = await check_defeat()
 
 
 	#Reset Enemy Stats
@@ -609,15 +710,17 @@ func start_enemy_turn():
 
 	flip_button.disabled = true
 	re_flip_button.disabled = true
+	endTurn_button.disabled = true
 
 	#FLIP COINS
-	await get_tree().create_timer(1.0).timeout
-	while enemy.current_flip != enemy.max_flip:
-		enemy_flip()
-		await get_tree().create_timer(0.4).timeout
-	await get_tree().create_timer(1.0).timeout
-	
-	end_enemy_turn()
+	if defeat == null:
+		await get_tree().create_timer(1.0).timeout
+		while enemy.current_flip != enemy.max_flip:
+			if defeat == null:
+				enemy_flip()
+			await get_tree().create_timer(0.4).timeout
+		await get_tree().create_timer(1.0).timeout
+		end_enemy_turn()
 
 func end_enemy_turn():
 	coin_deck.sigil_pressed()
@@ -651,7 +754,7 @@ func end_enemy_turn():
 		else:
 			enemy.debt += 10
 		
-	var defeat = check_defeat()
+	var defeat = await check_defeat()
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
 	for coin in coins:
 		particle_manager.spawn_particle(COIN_PLAY_PARTICLE,coin.global_position)
@@ -726,9 +829,75 @@ func _on_endturn_pressed():
 		if coin.reserved == false:
 			particle_manager.spawn_particle(COIN_PLAY_PARTICLE,coin.global_position)
 			coin.queue_free()
-			
-	var defeat = check_defeat()
+	
+
+	var defeat = await check_defeat()
 	if defeat == null:
+		await get_tree().create_timer(1.0).timeout
+		start_enemy_turn()
+			
+	total_damage_dealt += damage
+	if damage > highest_damage_dealt:
+		highest_damage_dealt = damage
+		
+	total_gain += gain
+	if gain > highest_gain:
+		highest_gain = gain
+			
+func show_passive_notification(text: String, duration: float = 1.5) -> void:
+	var notif = PASSIVE_SCENE.instantiate()
+	passive_label.add_child(notif)
+	
+	notif.setup(text)
+	
+	var container_width = passive_label.get_size().x
+	notif.position = Vector2(container_width + 50, 0)
+	
+	notif.modulate.a = 1.0
+	notif.scale = Vector2(0.9, 0.9)
+	notif.z_index = 100
+	
+	var tween_in = create_tween()
+	tween_in.parallel().tween_property(notif, "position:x", 0, 0.3)
+	tween_in.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.3)
+	
+	for i in range(passive_label.get_child_count()):
+		var child = passive_label.get_child(i)
+		if child != notif:
+			child.position.y += 30
+			
+		await get_tree().create_timer(duration).timeout
+	
+	var tween_out = create_tween()
+	tween_out.tween_property(notif, "modulate:a", 0.0, 0.5)
+	tween_out.tween_callback(func():
+		notif.queue_free()
+	)
+	
+func show_enemy_passive(text: String, duration: float = 1.5) -> void:
+	if not is_instance_valid(enemy_passive_label):
+		return
+		
+	enemy_passive_label.text = text
+	enemy_passive_label.visible = true
+	enemy_passive_label.modulate = Color(0.0, 0.0, 0.0, 1.0)
+	enemy_passive_label.z_index = 100
+	
+	var tween = create_tween()
+	tween.parallel().tween_property(enemy_passive_label, "modulate:a", 1.0, 0.2)
+	tween.parallel().tween_property(enemy_passive_label, "position:y", enemy_passive_label.position.y - 20, 0.2)
+	tween.parallel().tween_property(enemy_passive_label, "scale", Vector2(1, 1), 0.2)
+	
+	
+	var tween_out = create_tween()
+	tween_out.tween_property(enemy_passive_label, "modulate:a", 0.0, 0.5).set_delay(duration)
+	tween_out.tween_callback(func():
+		enemy_passive_label.visible = false
+		enemy_passive_label.modulate.a = 1.0 
+	)
+	
+		
+		
 		if current_turn == Turn.PLAYER:
 			await get_tree().create_timer(1.0).timeout
 			sound_manager.play_sound(TURN_ENEMY)
@@ -822,11 +991,17 @@ func enemy_flip():
 		state = 0
 	if enemy.type == Enemy.MOON_CASTER and moon_count >= 9:
 		state = 1
-		
+
+	enemy.take_damage(1)
+	show_floating_label(enemy,1,LabelType.DAMAGE) 
+	enemy_coin_calculation()
+	var defeat = await check_defeat()
+
+	
 	enemy.current_flip += 1
-	show_floating_label(enemy,1,LabelType.DAMAGE)
 	var coin = COIN.instantiate()
-	coin.setup(state,coin_deck.get_vacant_slot(enemy.current_flip))
+	if defeat == null:
+		coin.setup(state,coin_deck.get_vacant_slot(enemy.current_flip))
 	
 	
 	#Silver/Gold Flip Rate
@@ -846,10 +1021,6 @@ func enemy_flip():
 	add_child(coin);
 	particle_manager.spawn_particle(COIN_ADD_PARTICLE,coin.global_position)
 	
-	enemy.take_damage(1)
-	show_floating_label(enemy,1,LabelType.DAMAGE) 
-	enemy_coin_calculation()
-	check_defeat()
 	
 func trigger_game_over(player_won: bool):
 	sound_manager.play_sound(DEATH)
@@ -868,6 +1039,25 @@ func trigger_game_over(player_won: bool):
 	
 	var result_label = game_over_ui.get_node("ColorRect/Gameover")
 	var enemy_label = game_over_ui.get_node("ColorRect/EnemyLabel")
+	
+	var stats = {
+	"remaining_coins": player.coin,
+	"total_damage_dealt": total_damage_dealt,
+	"highest_damage_dealt": highest_damage_dealt,
+	"total_gain": total_gain,
+	"highest_gain": highest_gain,
+	"overall_total_damage": overall_total_damage,
+	"overall_highest_damage": overall_highest_damage,
+	"overall_total_gain": overall_total_gain,
+	"overall_highest_gain": overall_highest_gain,
+	"enemies_defeated": enemies_defeated,
+	"heads": total_heads,
+	"tails": total_tails,
+	"flips": total_flips,
+	"reflips": total_reflips
+}
+	game_over_ui.show_stats(stats)
+	game_over_ui.visible = true
 	
 	
 	match current_enemy_type:
@@ -895,6 +1085,10 @@ func trigger_game_over(player_won: bool):
 			
 	var tween = create_tween()
 	tween.tween_property(enemy_label, "modulate:a", 1.0, 1.0)
+	
+	if is_surrender:
+		result_label.text = "RUN ABANDONED"
+		enemy_label.text = "You gave up the fight..."
 
 func check_defeat():
 	if player.coin <= 0:
@@ -908,11 +1102,58 @@ func check_defeat():
 		return true
 		
 	if enemy.coin <= 0:
-		trigger_game_over(true)
-		return false
+		enemy.max_flip = 0
+		enemies_defeated += 1
+		await handle_victory_flow()
+		return true
 	
 	return null
 
+func handle_victory_flow():
+	await show_turn_ui("VICTORY")
+	await get_tree().create_timer(0.2).timeout
+	
+	# Disable gameplay buttons
+	flip_button.disabled = true
+	re_flip_button.disabled = true
+	endTurn_button.disabled = true
+	
+	overall_total_damage += total_damage_dealt
+	if total_damage_dealt > overall_highest_damage:
+		overall_highest_damage = total_damage_dealt
+		
+	overall_total_gain += total_gain
+	if total_gain > overall_highest_gain:
+		overall_highest_gain = total_gain
+	
+	player.coin += enemy.bounty
+	await progression_after_victory()
+	#wait reward_manager.show_card_selection_async()
+	#wait show_map()
+	
+func progression_after_victory():
+	var map = MAP_SCENE.instantiate()
+	current_room += 1
+	map.setup(current_room)
+	add_child(map)
+	
+	if current_room == 5:
+		current_room = 5
+		trigger_game_over(true)
+	elif current_room < 4:
+		await reward_manager.show_card_selection_async()
+
+		if current_room == 4:
+			await shop_manager.show_shop_async(player)
+			current_room += 1
+			#map.background.global_position.y = 1000
+			#add_child(map)
+			#tween = create_tween()
+			#tween.tween_property(map,"position:y",0,0.4)
+		proceed_to_next_enemy()
+
+		
+	
 func _on_re_flip_pressed():
 	sound_manager.play_sound(COIN_REFLIP)
 	sound_manager.play_sound(COIN_FLIP)
@@ -1467,13 +1708,52 @@ func _on_restart_pressed():
 	#get_tree().current_scene.add_child(map_instance)
 
 	#print("Random Event Triggered:", map_scene.resource_path)
-	
+func proceed_to_next_enemy():
+	match enemies_defeated:
+		1:
+			current_enemy_index = randi_range(2,3)
+		2:
+			current_enemy_index = randi_range(4,5)
+		3:
+			current_enemy_index = randi_range(6,7)
+		4:
+			current_enemy_index = 8
+	battle_start()
+	print("I AM RWADY TO BATTLE")
+	if current_enemy_index >= enemy_order.size():
+		trigger_game_over(true, false)
 
+
+
+
+	
+	
+func show_map():
+	var map = MAP_SCENE.instantiate() as CanvasLayer
+	map.start_index = map_progress
+	add_child(map)
+	print("CURRENT MAP: " + str(map_progress))
+	map.start_index = 0
+	
+	var choice = "battle"
+	print(choice)
+	map.queue_free()
+	get_tree().paused = false
+	map_progress += 1
+	if map_progress >= max_nodes:
+		print("BOSS TIME")
+		return "boss"
+	return choice
+
+	
+			
 
 func _on_refresh_pressed() -> void:
 	pass # Replace with function body.
 
 
+		
+		
 func _on_endturn_mouse_entered() -> void:
 	if current_turn == Turn.PLAYER:
 		coin_deck.sigil_light_up()

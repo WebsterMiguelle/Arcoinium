@@ -10,11 +10,16 @@
 [ext_resource type="AudioStream" uid="uid://0ld5vkxyd8pm" path="res://BGM/Twilight Zone (Combat).wav" id="5_0y2cb"]
 [ext_resource type="PackedScene" uid="uid://b01fk6f1pan7q" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
 [ext_resource type="Script" uid="uid://deakh0hwd6qoh" path="res://Scene/CardManager.gd" id="5_3amdw"]
+[ext_resource type="Script" uid="uid://bh8ned1dqg5l3" path="res://Script/Shop_manager.gd" id="6_1xcnr"]
 [ext_resource type="PackedScene" uid="uid://dbj4jt3y4yqdx" path="res://Scene/EnemyHealthBar.tscn" id="6_c2iwn"]
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="6_mxd2g"]
 [ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="7_0sxm5"]
 [ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="7_3pt4j"]
 [ext_resource type="Script" uid="uid://byrcn8pelxayw" path="res://Script/coin_deck.gd" id="7_ow1sv"]
+[ext_resource type="Texture2D" uid="uid://c4wd4jo1dquma" path="res://Assets/Sun_caster.png" id="8_0sxm5"]
+[ext_resource type="Script" uid="uid://ka64sstswrwl" path="res://Script/game_over_ui.gd" id="13_0y2cb"]
+[ext_resource type="Script" uid="uid://cbrncrbtg7emf" path="res://Script/pause_menu.gd" id="14_hspdg"]
+[ext_resource type="Script" uid="uid://c4nmeg7fuu34n" path="res://Script/passive_manager.gd" id="16_6njx3"]
 [ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="9_jbas8"]
 [ext_resource type="Texture2D" uid="uid://r5gatuytbe0t" path="res://Assets/taxCollector.png" id="10_p4j74"]
 [ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="11_hiice"]
@@ -518,8 +523,34 @@ offset_top = 201.0
 offset_right = 697.0
 offset_bottom = 445.0
 
-[node name="Game Over UI" type="CanvasLayer" parent="." unique_id=420225696]
+[node name="EnemyLabelNotification" type="Label" parent="Battle UI" unique_id=1694276821]
+custom_minimum_size = Vector2(600, 0)
+offset_left = 273.0
+offset_top = 131.0
+offset_right = 873.0
+offset_bottom = 166.0
+theme_override_font_sizes/font_size = 25
+text = "EnemyLabel Notification"
+horizontal_alignment = 1
+
+[node name="PassiveContainer" type="VBoxContainer" parent="Battle UI" unique_id=709571412]
+custom_minimum_size = Vector2(200, 160)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -210.0
+offset_top = -177.0
+offset_right = -10.0
+offset_bottom = -17.0
+grow_horizontal = 0
+grow_vertical = 0
+alignment = 2
+
+[node name="Game Over UI" type="CanvasLayer" parent="." unique_id=994626979]
 visible = false
+script = ExtResource("13_0y2cb")
 
 [node name="ColorRect" type="ColorRect" parent="Game Over UI" unique_id=1423685417]
 offset_left = -25.0
@@ -577,7 +608,26 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 60
 text = "Slain"
 
-[node name="CardManager" type="CanvasLayer" parent="." unique_id=1111735244]
+[node name="StatsLabel" type="Label" parent="Game Over UI/ColorRect" unique_id=387974470]
+custom_minimum_size = Vector2(300, 350)
+layout_mode = 0
+offset_left = 94.0
+offset_top = 183.0
+offset_right = 394.0
+offset_bottom = 533.0
+theme_override_font_sizes/font_size = 25
+text = "Game Statistics"
+
+[node name="GameStatLabel" type="Label" parent="Game Over UI/ColorRect" unique_id=701039209]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 113.0
+offset_right = 347.0
+offset_bottom = 168.0
+theme_override_font_sizes/font_size = 40
+text = "Game Statistics"
+
+[node name="CardManager" type="CanvasLayer" parent="." unique_id=806531365]
 visible = false
 script = ExtResource("5_3amdw")
 
@@ -644,6 +694,116 @@ lifetime = 6.92
 randomness = 0.09
 process_material = SubResource("ParticleProcessMaterial_0y2cb")
 
+[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=722870696]
+process_mode = 3
+visible = false
+script = ExtResource("14_hspdg")
+
+[node name="Panel" type="Panel" parent="PauseMenu" unique_id=1158800794]
+custom_minimum_size = Vector2(600, 500)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -250.0
+offset_right = 300.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Resume" type="Button" parent="PauseMenu/Panel" unique_id=496970523]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 0
+offset_left = 200.0
+offset_top = 37.0
+offset_right = 400.0
+offset_bottom = 137.0
+text = "Resume"
+
+[node name="EndRun" type="Button" parent="PauseMenu/Panel" unique_id=1637342553]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 0
+offset_left = 204.0
+offset_top = 166.0
+offset_right = 404.0
+offset_bottom = 266.0
+text = "Endrun"
+
+[node name="Quit" type="Button" parent="PauseMenu/Panel" unique_id=1056057779]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 0
+offset_left = 200.0
+offset_top = 305.0
+offset_right = 400.0
+offset_bottom = 405.0
+text = "Quit"
+
+[node name="ShopManager" type="CanvasLayer" parent="." unique_id=248022412]
+script = ExtResource("6_1xcnr")
+
+[node name="Background" type="ColorRect" parent="ShopManager" unique_id=2038950803]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.039215688, 0.039215688, 0.039215688, 0.627451)
+
+[node name="CenterContainer" type="CenterContainer" parent="ShopManager/Background" unique_id=1050710308]
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -150.0
+offset_right = 100.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ShopManager/Background/CenterContainer" unique_id=1502406012]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CardContainer" type="GridContainer" parent="ShopManager/Background/CenterContainer/VBoxContainer" unique_id=1467760452]
+layout_mode = 2
+columns = 3
+
+[node name="Back" type="Button" parent="ShopManager/Background" unique_id=1330755300]
+layout_mode = 0
+offset_left = 950.0
+offset_top = 561.0
+offset_right = 1115.0
+offset_bottom = 624.0
+theme_override_font_sizes/font_size = 40
+text = "Proceed"
+
+[node name="Shop" type="Label" parent="ShopManager/Background" unique_id=1709692202]
+layout_mode = 0
+offset_left = 515.0
+offset_top = 80.0
+offset_right = 623.0
+offset_bottom = 135.0
+theme_override_font_sizes/font_size = 40
+text = "SHOP"
+
+[node name="CoinLabel" type="Label" parent="ShopManager/Background" unique_id=2058663755]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 0
+offset_left = 928.0
+offset_top = 24.0
+offset_right = 1128.0
+offset_bottom = 124.0
+
+[node name="PassiveManager" type="Node" parent="." unique_id=870229377]
+script = ExtResource("16_6njx3")
+
 [connection signal="pressed" from="Battle UI/PlayerHealthBar2" to="Battle UI/PlayerHealthBar2" method="_on_pressed"]
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_exited"]
@@ -653,3 +813,7 @@ process_material = SubResource("ParticleProcessMaterial_0y2cb")
 [connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]
 [connection signal="pressed" from="Game Over UI/ColorRect/Restart" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="CardManager/Background/CenterContainer/VBoxContainer/Refresh" to="CardManager" method="_on_refresh_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/Resume" to="PauseMenu" method="_on_resume_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/EndRun" to="PauseMenu" method="_on_end_run_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/Quit" to="PauseMenu" method="_on_quit_pressed"]
+[connection signal="pressed" from="ShopManager/Background/Back" to="ShopManager" method="_on_back_pressed"]

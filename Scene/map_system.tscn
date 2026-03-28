@@ -11,8 +11,8 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 5.0
-offset_top = 2.0
-offset_right = 204.0
+offset_top = 7.0
+offset_right = 1.0
 offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -33,11 +33,11 @@ theme_override_font_sizes/font_size = 30
 text = "WORLD MAP"
 horizontal_alignment = 1
 
-[node name="Battle" type="Button" parent="Background/VBoxContainer" unique_id=992363419]
+[node name="Enter" type="Button" parent="Background/VBoxContainer" unique_id=992363419]
 process_mode = 3
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Battle"
+text = "ENTER"
 
 [node name="PlayerPoint" type="ColorRect" parent="Background" unique_id=289342997]
 custom_minimum_size = Vector2(32, 32)
@@ -52,24 +52,18 @@ color = Color(0, 0, 0, 1)
 position = Vector2(100, 450)
 
 [node name="Enemy2" type="Node2D" parent="Background" unique_id=489213390]
-position = Vector2(250, 450)
+position = Vector2(292, 442)
 
 [node name="Enemy3" type="Node2D" parent="Background" unique_id=1316553771]
-position = Vector2(400, 450)
+position = Vector2(453, 441)
 
-[node name="Enemy4" type="Node2D" parent="Background" unique_id=394133185]
-position = Vector2(550, 450)
+[node name="EliteEnemy" type="Node2D" parent="Background" unique_id=394133185]
+position = Vector2(593, 442)
 
-[node name="Enemy5" type="Node2D" parent="Background" unique_id=1929144682]
-position = Vector2(700, 450)
+[node name="Shop" type="Node2D" parent="Background" unique_id=1929144682]
+position = Vector2(776, 444)
 
-[node name="Enemy6" type="Node2D" parent="Background" unique_id=258737949]
-position = Vector2(850, 450)
+[node name="Boss" type="Node2D" parent="Background" unique_id=258737949]
+position = Vector2(1004, 444)
 
-[node name="Enemy7" type="Node2D" parent="Background" unique_id=1394751239]
-position = Vector2(1002, 450)
-
-[node name="Enemy8" type="Node2D" parent="Background" unique_id=339635128]
-position = Vector2(1164, 450)
-
-[connection signal="pressed" from="Background/VBoxContainer/Battle" to="." method="_on_battle_pressed"]
+[connection signal="pressed" from="Background/VBoxContainer/Enter" to="." method="_on_battle_pressed"]

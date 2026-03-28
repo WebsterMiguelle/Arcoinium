@@ -66,7 +66,7 @@ const MAP_SCENE = preload("res://Scene/map_system.tscn")
 var map_progress = 0
 var max_nodes = 10
 
-var current_enemy_index = 0
+
 var enemy_order = [
 	Enemy.MAGE,
 	Enemy.DWARF,
@@ -195,6 +195,8 @@ var has_sunlit_curse = false
 var has_midnight_curse = false
 var has_dusk_stance = false
 
+var current_enemy_index
+var current_room
 
 func _on_item_purchased(card_id,price):
 	update_player_coin()
@@ -204,6 +206,8 @@ func _on_item_purchased(card_id,price):
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	current_room = 0
+	current_enemy_index = randi_range(0,1)
 	passive_manager.setup(self)
 	show_passive_notification("PASSIVE APPEAR HERE", 3.0)
 	show_enemy_passive("ENEMY PASSIVE APPEAR HERE", 3.0)
@@ -233,8 +237,38 @@ func toggle_pause():
 	
 func battle_start():
 	#Refresh Enemy Passives
+	
 	has_value_added_tax = false
 	has_fair_trade = false
+	has_learn_to_save = false
+	has_fully_paid = false
+	has_sunlit_curse = false
+	has_midnight_curse = false
+	has_dusk_stance = false
+
+	var coins = get_tree().get_nodes_in_group("enemy coins")
+	for coin in coins:
+		coin.queue_free()
+		
+	coins = get_tree().get_nodes_in_group("coins")
+	for coin in coins:
+		coin.queue_free()
+
+	coins = get_tree().get_nodes_in_group("reserved coins")
+	for coin in coins:
+		coin.queue_free()
+		
+	latest_pair_left_coin = null
+	latest_pair_right_coin = null
+	latest_coin = null
+	reserved_coin = null
+	enemy.debt = 0
+	player.debt = 0
+	enemy.gain = 0
+	player.gain = 0
+	player.max_flip = 16
+	
+	coin_deck.reset_sigils()
 	update_enemy_gain_debt()
 	update_player_gain_debt()
 	
@@ -394,8 +428,6 @@ func activate_player_turn_start_passives():
 		left_coin.add_to_group("coins")
 		add_child(left_coin);
 		
-
-		
 		var right_coin = COIN.instantiate()
 		player.current_flip += 1
 		if coin_count >= player.max_flip:
@@ -496,7 +528,10 @@ func start_player_turn():
 	debt = 0
 	flip_clicks = 0
 	latest_coin = null
-	coin_count = 0
+	if has_passive_income and player_turn_count == 1:
+		pass
+	else:
+		coin_count = 0
 	
 	#ACTIVE INCOME
 	if has_active_income and player.gain >= 30:
@@ -593,6 +628,7 @@ func start_enemy_turn():
 	damage = 0
 	gain = 0
 	debt = 0
+	var defeat
 	
 	#Coin Gain Triggers
 	if enemy.gain != 0 and enemy.gain > enemy.debt: show_floating_label(enemy,enemy.gain,LabelType.GAIN)
@@ -600,11 +636,12 @@ func start_enemy_turn():
 	if has_fully_paid and enemy.debt == 0:
 		player.take_damage(100)
 		show_floating_label(player,100,LabelType.FULLY_PAID)
-		check_defeat()
+		defeat = await check_defeat()
 	if has_loan_shark and enemy.debt > 1:
 		var loan_damage = enemy.debt
 		enemy.take_damage(loan_damage)
 		show_floating_label(enemy,loan_damage,LabelType.LOAN_SHARK)
+		defeat = await check_defeat()
 
 
 	#Reset Enemy Stats
@@ -624,13 +661,14 @@ func start_enemy_turn():
 	endTurn_button.disabled = true
 
 	#FLIP COINS
-	await get_tree().create_timer(1.0).timeout
-	while enemy.current_flip != enemy.max_flip:
-		enemy_flip()
-		await get_tree().create_timer(0.4).timeout
-	await get_tree().create_timer(1.0).timeout
-	
-	end_enemy_turn()
+	if defeat == null:
+		await get_tree().create_timer(1.0).timeout
+		while enemy.current_flip != enemy.max_flip:
+			if defeat == null:
+				enemy_flip()
+			await get_tree().create_timer(0.4).timeout
+		await get_tree().create_timer(1.0).timeout
+		end_enemy_turn()
 
 func end_enemy_turn():
 	coin_deck.sigil_pressed()
@@ -726,9 +764,7 @@ func _on_endturn_pressed():
 	var defeat = await check_defeat()
 	if defeat == null:
 		await get_tree().create_timer(1.0).timeout
-		show_turn_ui("Next Enemy Approaches!")
-		proceed_to_next_enemy()
-	
+		start_enemy_turn()
 			
 	total_damage_dealt += damage
 	if damage > highest_damage_dealt:
@@ -875,11 +911,17 @@ func enemy_flip():
 		state = 0
 	if enemy.type == Enemy.MOON_CASTER and moon_count >= 9:
 		state = 1
-		
+
+	enemy.take_damage(1)
+	show_floating_label(enemy,1,LabelType.DAMAGE) 
+	enemy_coin_calculation()
+	var defeat = await check_defeat()
+
+	
 	enemy.current_flip += 1
-	show_floating_label(enemy,1,LabelType.DAMAGE)
 	var coin = COIN.instantiate()
-	coin.setup(state,coin_deck.get_vacant_slot(enemy.current_flip))
+	if defeat == null:
+		coin.setup(state,coin_deck.get_vacant_slot(enemy.current_flip))
 	
 	
 	#Silver/Gold Flip Rate
@@ -899,10 +941,6 @@ func enemy_flip():
 	coin.add_to_group("enemy_coins")
 	add_child(coin);
 	
-	enemy.take_damage(1)
-	show_floating_label(enemy,1,LabelType.DAMAGE) 
-	enemy_coin_calculation()
-	check_defeat()
 	
 func trigger_game_over(player_won: bool, is_surrender: bool = false):
 	
@@ -983,6 +1021,7 @@ func check_defeat():
 		return true
 		
 	if enemy.coin <= 0:
+		enemy.max_flip = 0
 		enemies_defeated += 1
 		await handle_victory_flow()
 		return true
@@ -991,13 +1030,12 @@ func check_defeat():
 
 func handle_victory_flow():
 	await show_turn_ui("VICTORY")
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(0.2).timeout
 	
 	# Disable gameplay buttons
 	flip_button.disabled = true
 	re_flip_button.disabled = true
 	endTurn_button.disabled = true
-	
 	
 	overall_total_damage += total_damage_dealt
 	if total_damage_dealt > overall_highest_damage:
@@ -1007,40 +1045,33 @@ func handle_victory_flow():
 	if total_gain > overall_highest_gain:
 		overall_highest_gain = total_gain
 	
+	player.coin += enemy.bounty
 	await progression_after_victory()
 	#wait reward_manager.show_card_selection_async()
 	#wait show_map()
 	
 func progression_after_victory():
-	if current_enemy_index < 6:
+	var map = MAP_SCENE.instantiate()
+	current_room += 1
+	map.setup(current_room)
+	add_child(map)
+	
+	if current_room == 5:
+		current_room = 5
+		trigger_game_over(true)
+	elif current_room < 4:
 		await reward_manager.show_card_selection_async()
-		var map = MAP_SCENE.instantiate()
-		add_child(map)
-		var choice = await show_map()
-		get_tree().paused = false
-		
-		if choice == "battle":
-			proceed_to_next_enemy()
-	
-	elif current_enemy_index == 6:
-		await shop_manager.show_shop_async(player)
+
+		if current_room == 4:
+			await shop_manager.show_shop_async(player)
+			current_room += 1
+			#map.background.global_position.y = 1000
+			#add_child(map)
+			#tween = create_tween()
+			#tween.tween_property(map,"position:y",0,0.4)
 		proceed_to_next_enemy()
+
 		
-	else:
-		proceed_to_next_enemy()
-		
-		
-func start_next_battle():
-		
-	var enemy_coins = get_tree().get_nodes_in_group("enemy_coins")
-	for coin in enemy_coins:
-		coin.queue_free()
-	
-	# Reset UI
-	turn_calculation.text = ""
-	
-	# Start new battle
-	battle_start()
 	
 func _on_re_flip_pressed():
 	print("REFLIP")
@@ -1585,45 +1616,21 @@ func _on_restart_pressed():
 
 	#print("Random Event Triggered:", map_scene.resource_path)
 func proceed_to_next_enemy():
-	current_enemy_index += 1
+	match enemies_defeated:
+		1:
+			current_enemy_index = randi_range(2,3)
+		2:
+			current_enemy_index = randi_range(4,5)
+		3:
+			current_enemy_index = randi_range(6,7)
+		4:
+			current_enemy_index = 8
+	battle_start()
+	print("I AM RWADY TO BATTLE")
 	if current_enemy_index >= enemy_order.size():
 		trigger_game_over(true, false)
-	else:
-		spawn_enemy(current_enemy_index)
-	
-func spawn_enemy(index):
-	if index >= enemy_order.size():
-		print("All enemies defeated! Proceed to next map or end run.")
-		return
-	var enemy_type = enemy_order[index]
-	match enemy_type:
-		Enemy.MAGE: enemy.setup(Enemy.MAGE)
-		Enemy.DWARF: enemy.setup(Enemy.DWARF)
-		Enemy.COLLECTOR:
-			enemy.setup(Enemy.COLLECTOR)
-			has_value_added_tax = true
-		Enemy.TRADER:
-			enemy.setup(Enemy.TRADER)
-			has_fair_trade = true
-		Enemy.THRIFTER:
-			enemy.setup(Enemy.THRIFTER)
-			has_learn_to_save = true
-		Enemy.ARISTOCRAT:
-			enemy.setup(Enemy.ARISTOCRAT)
-			has_fully_paid = true
-			enemy.debt = 100
-		Enemy.SUN_CASTER:
-			enemy.setup(Enemy.SUN_CASTER)
-			has_sunlit_curse = true
-		Enemy.MOON_CASTER:
-			enemy.setup(Enemy.TWILIGHT_SAGE)
-			has_dusk_stance = true
-	update_enemy_coin()
-	update_player_coin()
-	
-	await activate_pre_battle_passives()
-	player_turn_count = 0
-	start_player_turn()
+
+
 
 
 	
@@ -1632,17 +1639,16 @@ func show_map():
 	var map = MAP_SCENE.instantiate() as CanvasLayer
 	map.start_index = map_progress
 	add_child(map)
-	
+	print("CURRENT MAP: " + str(map_progress))
 	map.start_index = 0
 	
-	var choice = await map.node_selected
+	var choice = "battle"
+	print(choice)
 	map.queue_free()
 	get_tree().paused = false
 	map_progress += 1
-
 	if map_progress >= max_nodes:
 		print("BOSS TIME")
-		start_next_battle() # or boss scene
 		return "boss"
 	return choice
 

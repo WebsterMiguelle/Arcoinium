@@ -8,15 +8,15 @@
 [ext_resource type="PackedScene" uid="uid://b01fk6f1pan7q" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
 [ext_resource type="Script" uid="uid://deakh0hwd6qoh" path="res://Scene/CardManager.gd" id="5_3amdw"]
 [ext_resource type="Script" uid="uid://bh8ned1dqg5l3" path="res://Script/Shop_manager.gd" id="6_1xcnr"]
-[ext_resource type="PackedScene" path="res://Scene/EnemyHealthBar.tscn" id="6_c2iwn"]
+[ext_resource type="PackedScene" uid="uid://dbj4jt3y4yqdx" path="res://Scene/EnemyHealthBar.tscn" id="6_c2iwn"]
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="6_mxd2g"]
 [ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="7_0sxm5"]
 [ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="7_3pt4j"]
 [ext_resource type="Script" uid="uid://byrcn8pelxayw" path="res://Script/coin_deck.gd" id="7_ow1sv"]
 [ext_resource type="Texture2D" uid="uid://c4wd4jo1dquma" path="res://Assets/Sun_caster.png" id="8_0sxm5"]
-[ext_resource type="Script" path="res://Script/game_over_ui.gd" id="13_0y2cb"]
+[ext_resource type="Script" uid="uid://ka64sstswrwl" path="res://Script/game_over_ui.gd" id="13_0y2cb"]
 [ext_resource type="Script" uid="uid://cbrncrbtg7emf" path="res://Script/pause_menu.gd" id="14_hspdg"]
-[ext_resource type="Script" path="res://Script/passive_manager.gd" id="16_6njx3"]
+[ext_resource type="Script" uid="uid://c4nmeg7fuu34n" path="res://Script/passive_manager.gd" id="16_6njx3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3amdw"]
 

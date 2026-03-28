@@ -6,7 +6,7 @@ signal hp_changed(new_hp)
 var max_coin = 500 #Max Coin Capacity
 var max_reserve = 6
 var current_reserve = 0
-var coin = 95:
+var coin = 10:
 	set(value):
 		coin = clamp(value,0,max_coin)
 		hp_changed.emit(coin)

@@ -1,5 +1,5 @@
 extends CanvasLayer
-
+@onready var main = get_node("/root/Main")
 @onready var passive_manager = get_node("/root/Main/PassiveManager")
 @onready var card_container = $Background/CenterContainer/VBoxContainer/CardContainer
 @onready var refresh_button = $Background/CenterContainer/VBoxContainer/Refresh
@@ -26,7 +26,7 @@ var all_cards = [
 	{"id": 17, "name": "A-Rank: Reimbursement", "rank": "A"},
 	{"id": 18, "name": "A-Rank: Loan Shark", "rank": "A"},
 	{"id": 19, "name": "A-Rank: Spare Change", "rank": "A"},
-	{"id": 20, "name": "A-Rank:Triple Nickel", "rank": "A"},
+	{"id": 20, "name": "A-Rank: Triple Nickel", "rank": "A"},
 	{"id": 21, "name": "S-Rank: Inflation", "rank": "S"},
 	{"id": 22, "name": "S-Rank: Active Income", "rank": "S"},
 	{"id": 23, "name": "S-Rank: Pay Down", "rank": "S"},
@@ -87,7 +87,7 @@ func create_card(data):
 	var card = CARD_SCENE.instantiate()
 	card.card_id = data.id
 	card.card_name = data.name
-	
+	card.card_rank = data.rank
 
 	card.card_selected.connect(self._on_card_selected)
 
@@ -122,11 +122,83 @@ func apply_reward(card_id):
 	match card_id:
 		0:
 			print("Solar Coin Passive")
-			passive_manager.trigger_passive("solar_coin")
+			main.trigger_passive("solar_coin")
 		1:
-			print("Increase Silver Rate")
+			print("Lunar Coin")
+			main.trigger_passive("lunar_coin")
 		2:
-			print("Increase Gold Rate")
+			print("Wish Bone")
+			main.trigger_passive("wish_bone")
+		3:
+			print("Golden Clover")
+			main.trigger_passive("golden_clover")
+		4:
+			print("Merchant Scroll Passive")
+			main.trigger_passive("merchant_scroll")
+		5:
+			print("Impromptu Flip Passive")
+			main.trigger_passive("impromptu_flip")
+		6:
+			print("Advanced Planning Passive")
+			main.trigger_passive("advanced_planning")
+		7:
+			print("Value Increase Passive")
+			main.trigger_passive("value_increase")
+		8:
+			print("Lending Charge Passive")
+			main.trigger_passive("lending_charge")
+		9:
+			print("Coin Snipe Passive")
+			main.trigger_passive("coin_snipe")
+		10:
+			print("Simple Interest Passive")
+			main.trigger_passive("simple_interest")
+		11:
+			print("Lucky Pair")
+			main.trigger_passive("lucky_pair")
+		12:
+			print("A-Rank: Sleight of Hand")
+			main.trigger_passive("sleight_of_hand")
+		13:
+			print("A-Rank: Piggy")
+			main.trigger_passive("piggy")
+		14:
+			print("A-Rank: Pocket Money")
+			main.trigger_passive("pocket_money")
+		15:
+			print("A-Rank: Passive Income")
+			main.trigger_passive("passive_income")
+		16:
+			print("A-Rank: Magic Trick")
+			main.trigger_passive("magic_trick")
+		17:
+			print("A-Rank: Reimbursement")
+			main.trigger_passive("reimbursement")
+		18:
+			print("B-Rank: Simple Interest")
+			main.trigger_passive("simple_interest")
+		19:
+			print("A-Rank: Loan Shark")
+			main.trigger_passive("loan_shark")
+		20:
+			print("A-Rank: Spare Change")
+			main.trigger_passive("spare_change")
+		21:
+			print("A-Rank:Triple Nickel")
+			main.trigger_passive("triple_nickel")
+		22:
+			print("S-Rank: Inflation")
+			main.trigger_passive("inflation")
+		23:
+			print("S-Rank: Active Income")
+			main.trigger_passive("active_income")
+		24:
+			print("S-Rank: Pay Down")
+			main.trigger_passive("pay_down")
+		25:
+			print("S-Rank: Refund")
+			main.trigger_passive("refund")
+			
 		_:
 			print("Other reward")
 

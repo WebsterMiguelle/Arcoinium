@@ -1722,13 +1722,23 @@ func proceed_to_next_enemy():
 
 	
 			
+		"pay_down":
+			has_simple_interest = true
+			show_passive_notification("Active Income Activated")
+			
+		"pay_down":
+			has_simple_interest = true
+			show_passive_notification("Pay Down Activated")
+		"refund":
+			has_simple_interest = true
+			show_passive_notification(" Refund Activated")
+			
+	await get_tree().create_timer(1.0).timeout
 
+	
 func _on_refresh_pressed() -> void:
 	pass # Replace with function body.
 
-
-		
-		
 func _on_endturn_mouse_entered() -> void:
 	if current_turn == Turn.PLAYER:
 		coin_deck.sigil_light_up()

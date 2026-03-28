@@ -2,7 +2,8 @@ extends Button
 
 @export var card_id : int
 @export var card_name : String
-
+@export var card_rank : String
+@onready var label: Label = $Label
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
@@ -10,9 +11,11 @@ signal card_selected(card_id)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	#sprite.z_index = -1
+	add_theme_color_override("font_color", Color.WHITE)
 	# 1. Play your existing animation
 	sprite.play("unfurl_down")
-	text = "%s" % [card_name]
+	label.text = "%s" % [card_name] 
 	if not self.pressed.is_connected(_on_pressed):
 		self.pressed.connect(_on_pressed)
 	_animate_entrance()

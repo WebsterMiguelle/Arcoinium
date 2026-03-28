@@ -8,9 +8,9 @@
 [ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
 [ext_resource type="AudioStream" uid="uid://cfv556d3jos2i" path="res://BGM/Twilight Zone (Exploration).wav" id="4_6njx3"]
 [ext_resource type="AudioStream" uid="uid://0ld5vkxyd8pm" path="res://BGM/Twilight Zone (Combat).wav" id="5_0y2cb"]
-[ext_resource type="PackedScene" uid="uid://b01fk6f1pan7q" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
+[ext_resource type="PackedScene" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
 [ext_resource type="Script" uid="uid://deakh0hwd6qoh" path="res://Scene/CardManager.gd" id="5_3amdw"]
-[ext_resource type="Script" uid="uid://bh8ned1dqg5l3" path="res://Script/Shop_manager.gd" id="6_1xcnr"]
+[ext_resource type="Script" path="res://Script/Shop_manager.gd" id="6_1xcnr"]
 [ext_resource type="PackedScene" uid="uid://dbj4jt3y4yqdx" path="res://Scene/EnemyHealthBar.tscn" id="6_c2iwn"]
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="6_mxd2g"]
 [ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="7_0sxm5"]
@@ -21,18 +21,26 @@
 [ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="11_hiice"]
 [ext_resource type="Texture2D" uid="uid://dfw0gb82xbava" path="res://Assets/portraitBackground.png" id="12_pqe63"]
 [ext_resource type="Texture2D" uid="uid://cjjj3ulqgawva" path="res://Assets/apprenticeMage.png" id="12_sor6r"]
-[ext_resource type="Script" uid="uid://ka64sstswrwl" path="res://Script/game_over_ui.gd" id="13_0y2cb"]
+[ext_resource type="Script" path="res://Script/game_over_ui.gd" id="13_0y2cb"]
 [ext_resource type="Texture2D" uid="uid://bikjuk8fgo6p2" path="res://Assets/moonCaster-Sheet.png" id="13_pqe63"]
 [ext_resource type="Texture2D" uid="uid://di37676qo0yu4" path="res://Assets/sunCaster-Recovered-Sheet.png" id="14_aam5o"]
-[ext_resource type="Script" uid="uid://cbrncrbtg7emf" path="res://Script/pause_menu.gd" id="14_hspdg"]
+[ext_resource type="Script" path="res://Script/pause_menu.gd" id="14_hspdg"]
 [ext_resource type="Texture2D" uid="uid://ce2isyeu1yhmy" path="res://Assets/thrifter.png" id="15_nyb1q"]
-[ext_resource type="Script" uid="uid://c4nmeg7fuu34n" path="res://Script/passive_manager.gd" id="16_6njx3"]
+[ext_resource type="Script" path="res://Script/passive_manager.gd" id="16_6njx3"]
 [ext_resource type="Texture2D" uid="uid://dprlqvclal2j" path="res://Assets/trader.png" id="16_xw8bv"]
 [ext_resource type="Script" uid="uid://cjx7ln7nt56ad" path="res://Scene/particle_manager.gd" id="17_2ix4a"]
 [ext_resource type="Texture2D" uid="uid://c5kws41vksxsb" path="res://Assets/twilightSageDawn.png" id="18_aam5o"]
 [ext_resource type="Texture2D" uid="uid://odbplao5e2m8" path="res://Assets/twilightSageDusk.png" id="19_nyb1q"]
 [ext_resource type="Texture2D" uid="uid://c1oyqjdr6wop8" path="res://Assets/animated_reflipbutton-Sheet.png" id="26_wimqa"]
 [ext_resource type="FontFile" uid="uid://drm3kueev5jxy" path="res://Assets/Fonts/OXYGENE1.TTF" id="27_t372l"]
+[ext_resource type="Texture2D" uid="uid://0of51v86402w" path="res://Assets/mapBackground.png" id="34_2oiod"]
+[ext_resource type="Texture2D" uid="uid://bj5nyxg8bmc1k" path="res://Assets/backgroundBanner.png" id="35_8bkap"]
+[ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="36_b0nqf"]
+[ext_resource type="Texture2D" uid="uid://bvlc07v3u1brg" path="res://Assets/mapIconEnemy.png" id="37_2uk8d"]
+[ext_resource type="Texture2D" uid="uid://2mfylmq5p56b" path="res://Assets/miniCoinCaster-Sheet.png" id="37_ot48q"]
+[ext_resource type="Texture2D" uid="uid://ba7v6aaoo0irq" path="res://Assets/mapIconElite.png" id="38_cr44a"]
+[ext_resource type="Texture2D" uid="uid://4aebywoijoue" path="res://Assets/mapIconShop.png" id="39_tcekk"]
+[ext_resource type="Texture2D" uid="uid://fl7tmytwihia" path="res://Assets/mapIconBoss.png" id="40_1bveb"]
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]
 
@@ -274,6 +282,28 @@ gravity = Vector3(0, -98, 0)
 scale_min = 0.0
 scale_max = 6.1299996
 color = Color(1, 1, 0.2901961, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mlc74"]
+atlas = ExtResource("37_ot48q")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_885bo"]
+atlas = ExtResource("37_ot48q")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_f043x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mlc74")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_885bo")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]
 
 [node name="Main" type="TextureRect" unique_id=975709238]
 anchors_preset = 15
@@ -648,7 +678,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_3amdw")
 text = "Refresh"
 
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
-position = Vector2(559, 332)
+position = Vector2(576, 320)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.90334755, 0.5628785, 0.61960787)
 energy = 1.05
@@ -777,6 +807,112 @@ offset_bottom = 124.0
 
 [node name="PassiveManager" type="Node" parent="." unique_id=870229377]
 script = ExtResource("16_6njx3")
+
+[node name="Progression Map" type="CanvasLayer" parent="." unique_id=442417840]
+process_mode = 3
+layer = 100
+offset = Vector2(0, 1000)
+transform = Transform2D(1, 0, 0, 1, 0, 1000)
+
+[node name="MapBackground" type="TextureRect" parent="Progression Map" unique_id=2037450257]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("34_2oiod")
+
+[node name="Banner" type="TextureRect" parent="Progression Map/MapBackground" unique_id=1875690679]
+layout_mode = 0
+offset_left = 448.0
+offset_top = 48.0
+offset_right = 601.6
+offset_bottom = 88.0
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("35_8bkap")
+
+[node name="Banner Label" type="Label" parent="Progression Map/MapBackground/Banner" unique_id=770851896]
+self_modulate = Color(0.14509805, 0.12941177, 0.12156863, 1)
+layout_mode = 0
+offset_left = 25.599998
+offset_top = 9.599998
+offset_right = 127.6
+offset_bottom = 26.599998
+rotation = 0.09067865
+theme_override_fonts/font = ExtResource("36_b0nqf")
+text = "Twilight Zone"
+horizontal_alignment = 1
+
+[node name="Enemy1" type="TextureRect" parent="Progression Map/MapBackground" unique_id=79812036]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 464.0
+offset_right = 120.0
+offset_bottom = 512.0
+texture = ExtResource("37_2uk8d")
+
+[node name="Enemy2" type="TextureRect" parent="Progression Map/MapBackground" unique_id=397134419]
+layout_mode = 0
+offset_left = 232.0
+offset_top = 464.0
+offset_right = 280.0
+offset_bottom = 512.0
+texture = ExtResource("37_2uk8d")
+
+[node name="Enemy3" type="TextureRect" parent="Progression Map/MapBackground" unique_id=805506994]
+layout_mode = 0
+offset_left = 424.0
+offset_top = 464.0
+offset_right = 472.0
+offset_bottom = 512.0
+texture = ExtResource("37_2uk8d")
+
+[node name="EliteEnemy" type="TextureRect" parent="Progression Map/MapBackground" unique_id=1609057767]
+layout_mode = 0
+offset_left = 616.0
+offset_top = 464.0
+offset_right = 664.0
+offset_bottom = 512.0
+texture = ExtResource("38_cr44a")
+
+[node name="Shop" type="TextureRect" parent="Progression Map/MapBackground" unique_id=825695393]
+layout_mode = 0
+offset_left = 808.0
+offset_top = 464.0
+offset_right = 856.0
+offset_bottom = 512.0
+texture = ExtResource("39_tcekk")
+
+[node name="Boss" type="TextureRect" parent="Progression Map/MapBackground" unique_id=2069607408]
+layout_mode = 0
+offset_left = 1000.0
+offset_top = 464.0
+offset_right = 1048.0
+offset_bottom = 512.0
+texture = ExtResource("40_1bveb")
+
+[node name="Enemy 1" type="Marker2D" parent="Progression Map" unique_id=417052663]
+position = Vector2(96, 432)
+
+[node name="Enemy 2" type="Marker2D" parent="Progression Map" unique_id=566553087]
+position = Vector2(256, 432)
+
+[node name="Enemy 3" type="Marker2D" parent="Progression Map" unique_id=2042417836]
+position = Vector2(448, 432)
+
+[node name="Elite Enemy" type="Marker2D" parent="Progression Map" unique_id=1245316051]
+position = Vector2(640, 432)
+
+[node name="Shop" type="Marker2D" parent="Progression Map" unique_id=1158372386]
+position = Vector2(832, 432)
+
+[node name="Boss" type="Marker2D" parent="Progression Map" unique_id=728995645]
+position = Vector2(1024, 432)
+
+[node name="Player_Sprite" type="AnimatedSprite2D" parent="Progression Map" unique_id=148271655]
+position = Vector2(96, 424)
+scale = Vector2(2, 2.5)
+sprite_frames = SubResource("SpriteFrames_f043x")
 
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_exited"]

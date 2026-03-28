@@ -276,7 +276,7 @@ func _ready():
 	current_enemy_index = randi_range(0,1)
 	passive_manager.setup(self)
 	#show_passive_notification("PASSIVE APPEAR HERE", 3.0)
-	#show_enemy_passive("ENEMY PASSIVE APPEAR HERE", 3.0)
+	show_enemy_passive("", 3.0)
 	game_over_ui.visible = false
 	pause_menu.visible = false
 	turn_ui.visible = false
@@ -696,6 +696,7 @@ func start_player_turn():
 			latest_coin.add_to_group("coins")
 			add_child(latest_coin)
 			latest_coin.refresh_sprite()
+			coin_calculation()
 			#reserved_coin.queue_free()
 	if has_learn_to_save and coin_count >= 8 or player.coin == 1:
 		flip_button.disabled = true
@@ -1143,6 +1144,9 @@ func check_defeat():
 		return true
 		
 	if enemy.coin <= 0:
+		flip_button.disabled = true
+		endTurn_button.disabled = true 
+		re_flip_button.disabled = true
 		enemy.max_flip = 0
 		enemies_defeated += 1
 		await handle_victory_flow()
@@ -1152,7 +1156,6 @@ func check_defeat():
 
 func handle_victory_flow():
 	await show_turn_ui("VICTORY")
-	await get_tree().create_timer(0.2).timeout
 	
 	# Disable gameplay buttons
 	flip_button.disabled = true
@@ -1484,7 +1487,7 @@ func enemy_coin_calculation():
 	if damage != 0 or debt != 0 or gain != 0:
 		var text = "DMG: " + str(damage) + "\nGAIN: " + str(gain) + "\nDEBT: " + str(debt)
 		turn_calculation.text = text
-		turn_calculation.add_theme_color_override("font_color", Color.INDIAN_RED)
+		turn_calculation.add_theme_color_override("font_color", Color.ORANGE)
 
 
 enum LabelType{

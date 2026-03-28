@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://bvg1hmi6pjwfb" path="res://Assets/Coins/sun_flip_upright.png" id="2_b43xc"]
 [ext_resource type="Texture2D" uid="uid://ctp4djn4xcepy" path="res://Assets/Coins/moon_flip_upright.png" id="3_ppjel"]
 [ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="5_yf7ie"]
+[ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="6_uyvy5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_i4xaw"]
 atlas = ExtResource("2_b43xc")
@@ -103,6 +104,8 @@ animations = [{
 "speed": 8.0
 }]
 
+[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_eslk0"]
+
 [node name="MainMenu" type="ColorRect" unique_id=1926174809 node_paths=PackedStringArray("coin", "button")]
 anchors_preset = 15
 anchor_right = 1.0
@@ -157,3 +160,11 @@ theme_override_font_sizes/font_size = 31
 text = "FLIP COIN TO START"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="SoundManager" type="Node2D" parent="." unique_id=1880931932]
+position = Vector2(576, 324)
+scale = Vector2(0.555, 0.555)
+script = ExtResource("6_uyvy5")
+
+[node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1088019939]
+stream = SubResource("AudioStreamPolyphonic_eslk0")

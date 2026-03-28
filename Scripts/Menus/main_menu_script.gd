@@ -3,6 +3,9 @@ extends Node
 @export var button: Button
 @onready var flip_coin_to_start: Label = $"Flip Coin to Start"
 @onready var main_game_title: Label = $"Main Game Title"
+@onready var sound_manager: Node2D = $SoundManager
+const COIN_FLIP = preload("uid://bmscttmxwr782")
+const PASSIVE_PASSIVE_INCOME = preload("uid://cl4xnombcshkv")
 
 var is_waiting_to_stop = false
 var freeze_frame_on : int = 0
@@ -32,6 +35,8 @@ func _on_button_exited() -> void:
 		coin.play()
 		
 func _on_button_pressed() -> void:
+	sound_manager.play_sound(COIN_FLIP)
+	sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
 	button.disabled = true
 	
 	is_waiting_to_stop = false

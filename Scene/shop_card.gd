@@ -5,6 +5,7 @@ extends Button
 @export var card_name : String
 @export var price : int = 5
 @export var stock: int = 1
+var rank
 
 
 signal card_bought(card_id, price)

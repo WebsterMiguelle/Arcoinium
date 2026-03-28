@@ -333,10 +333,10 @@ theme_override_font_sizes/font_size = 18
 text = "GAIN:"
 
 [node name="Player Debt" type="Label" parent="Player" unique_id=2068659444]
-offset_left = 102.0
-offset_top = 472.0
-offset_right = 168.0
-offset_bottom = 491.0
+offset_left = 221.0
+offset_top = 522.0
+offset_right = 287.0
+offset_bottom = 541.0
 theme_override_colors/font_color = Color(0.54901963, 0, 0.42745098, 1)
 theme_override_font_sizes/font_size = 18
 text = "DEBT: 67"
@@ -377,10 +377,10 @@ text = "GAIN: 30"
 vertical_alignment = 1
 
 [node name="Enemy Debt" type="Label" parent="Enemy" unique_id=2027756836]
-offset_left = 989.0
-offset_top = 158.0
-offset_right = 1055.0
-offset_bottom = 177.0
+offset_left = 842.0
+offset_top = 113.0
+offset_right = 908.0
+offset_bottom = 138.0
 theme_override_colors/font_color = Color(0.55085, 2.892658e-05, 0.42899314, 1)
 theme_override_font_sizes/font_size = 18
 text = "DEBT: 30"
@@ -426,7 +426,7 @@ offset_left = 868.0
 offset_top = 5.0
 offset_right = 991.0
 offset_bottom = 37.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0.9214317, 0.6317199, 0, 1)
 theme_override_fonts/font = ExtResource("7_3pt4j")
 theme_override_font_sizes/font_size = 22
 
@@ -436,10 +436,10 @@ custom_minimum_size = Vector2(150, 40)
 anchors_preset = -1
 anchor_right = 0.033
 anchor_bottom = 0.048
-offset_left = 219.0
-offset_top = 442.0
-offset_right = 330.98404
-offset_bottom = 534.547
+offset_left = 185.00002
+offset_top = 350.00003
+offset_right = 296.984
+offset_bottom = 441.39597
 scale = Vector2(0.8, 0.8)
 theme_override_font_sizes/font_size = 20
 text = "
@@ -465,15 +465,14 @@ vertical_alignment = 1
 
 [node name="Turn Calculation" type="Label" parent="Battle UI" unique_id=854498321]
 custom_minimum_size = Vector2(150, 40)
-offset_left = 87.0
+offset_left = 106.93462
 offset_top = 169.0
-offset_right = 237.0
-offset_bottom = 408.0
+offset_right = 256.93463
+offset_bottom = 350.0
 scale = Vector2(1.2137691, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 35
 text = "Turn"
-horizontal_alignment = 1
 
 [node name="Turn UI" type="ColorRect" parent="Battle UI" unique_id=566011376]
 offset_left = -64.0

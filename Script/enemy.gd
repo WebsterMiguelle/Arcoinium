@@ -85,7 +85,7 @@ func setup(enemy):
 			type = Enemy.DWARF
 		Enemy.COLLECTOR:
 			max_coin = 200
-			coin = 30
+			coin = 36
 			max_flip = 6
 			silver_flip_rate = 0.1
 			gold_flip_rate = 0.0
@@ -93,7 +93,7 @@ func setup(enemy):
 			type = Enemy.COLLECTOR
 		Enemy.TRADER:
 			max_coin = 200
-			coin = 36
+			coin = 40
 			max_flip = 2
 			silver_flip_rate = 0.05
 			gold_flip_rate = 0.0
@@ -109,7 +109,7 @@ func setup(enemy):
 			type = Enemy.THRIFTER
 		Enemy.ARISTOCRAT:
 			max_coin = 200
-			coin = 120
+			coin = 150
 			max_flip = 16
 			silver_flip_rate = 1
 			gold_flip_rate = 0
@@ -117,7 +117,7 @@ func setup(enemy):
 			type = Enemy.ARISTOCRAT
 		Enemy.SUN_CASTER:
 			max_coin = 200
-			coin = 100
+			coin = 120
 			max_flip = 12
 			silver_flip_rate = 1
 			gold_flip_rate = 0
@@ -125,7 +125,7 @@ func setup(enemy):
 			type = Enemy.SUN_CASTER
 		Enemy.MOON_CASTER:
 			max_coin = 200
-			coin = 80
+			coin = 100
 			max_flip = 12
 			silver_flip_rate = 1
 			gold_flip_rate = 0

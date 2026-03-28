@@ -6,6 +6,8 @@ extends CanvasLayer
 const CARD_SCENE = preload("res://Scene/reward_card.tscn")
 @onready var player: Node2D = $"../Player"
 
+
+
 var all_cards = [
 	{"id": 0, "name": "B-Rank: Solar Coin", "rank": "B"},
 	{"id": 1, "name": "B-Rank: Lunar Coin", "rank": "B"},
@@ -50,13 +52,12 @@ func show_rewards():
 	
 	var available_cards = []
 
-	match player_progress:
-		0:
-			available_cards = all_cards.filter(func(c): return c["rank"] == "B")
-		1:
-			available_cards = all_cards.filter(func(c): return c["rank"] == "B" or c["rank"] == "A")
-		2:
-			available_cards = all_cards.duplicate()
+	if main.current_room < 2:
+		available_cards = all_cards.filter(func(c): return c["rank"] == "B")
+	elif main.current_room < 3:
+			available_cards = all_cards.filter(func(c): return c["rank"] == "A")
+	elif main.current_room < 4:
+			available_cards = all_cards.filter(func(c): return c["rank"] == "S")
 			
 	available_cards.shuffle()
 	
@@ -130,7 +131,7 @@ func apply_reward(card_id):
 			main.has_lunar_coin = true
 		2:
 			print("Wish Bone")
-			main.has_wish_bone = true
+			main.has_wishbone = true
 			player.silver_flip_rate += 0.1
 		3:
 			print("Golden Clover")

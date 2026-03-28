@@ -16,7 +16,6 @@
 [ext_resource type="Texture2D" uid="uid://c4wd4jo1dquma" path="res://Assets/Sun_caster.png" id="8_0sxm5"]
 [ext_resource type="Script" path="res://Script/game_over_ui.gd" id="13_0y2cb"]
 [ext_resource type="Script" uid="uid://cbrncrbtg7emf" path="res://Script/pause_menu.gd" id="14_hspdg"]
-[ext_resource type="Script" path="res://Script/passive_manager.gd" id="16_6njx3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3amdw"]
 
@@ -508,9 +507,6 @@ offset_left = 928.0
 offset_top = 24.0
 offset_right = 1128.0
 offset_bottom = 124.0
-
-[node name="PassiveManager" type="Node" parent="." unique_id=870229377]
-script = ExtResource("16_6njx3")
 
 [connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]
 [connection signal="mouse_entered" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_entered"]

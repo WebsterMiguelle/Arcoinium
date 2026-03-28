@@ -204,7 +204,7 @@ func _on_item_purchased(card_id,price):
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	passive_manager.setup(self)
+	#	passive_manager.setup(self)
 	show_passive_notification("PASSIVE APPEAR HERE", 3.0)
 	show_enemy_passive("ENEMY PASSIVE APPEAR HERE", 3.0)
 	game_over_ui.visible = false
@@ -1634,27 +1634,120 @@ func show_map():
 	add_child(map)
 	
 	map.start_index = 0
-	
-	var choice = await map.node_selected
 	map.queue_free()
 	get_tree().paused = false
 	map_progress += 1
-
+	
 	if map_progress >= max_nodes:
-		print("BOSS TIME")
+		if map_progress >= max_nodes:
+			print("BOSS TIME")
 		start_next_battle() # or boss scene
 		return "boss"
-	return choice
+
+
+
+func trigger_passive(passive_name: String):
+	match passive_name:
+		"solar_coin":
+			has_solar_coin = true
+			show_floating_label(player, 0, LabelType.SOLAR_COIN)
+			show_passive_notification("Solar Coin Applied")
+			
+		"lunar_coin":
+			has_lunar_coin = true
+			show_floating_label(player, 0, LabelType.LUNAR_COIN)
+			show_passive_notification("Lunar Coin Applied")
+			
+		"wishbone":
+			has_wishbone = true
+			show_passive_notification("Wish Bone Activated")
+			
+		"golden_clover":
+			has_golden_clover = true
+			show_passive_notification("Golden Clover Activated")
+			
+		"impromptu_flip":
+			has_impromptu_flip = true
+			show_floating_label(player, 0, LabelType.IMPROMPTU_FLIP)
+			show_passive_notification("Impromptu Flip Activated")
+			
+		"value_increase":
+			has_value_increase = true
+			show_passive_notification("Value Increase Activated")
+			
+		"lending_charge":
+			has_lending_charge = true
+			show_passive_notification("Lending Charge Activated")
+
+		"coin_snipe":
+			has_coin_snipe = true
+			show_passive_notification("Coin Snipe Activated")
+
+		"simple_interest":
+			has_simple_interest = true
+			show_passive_notification("Simple Interest Activated")
+			
+		"lucky_pair":
+			has_simple_interest = true
+			show_passive_notification("Lucky Pair Activated")
+			
+		"sleight_of_hand":
+			has_simple_interest = true
+			show_passive_notification("Sleight of Hand Activated")
+			
+		"piggy":
+			has_simple_interest = true
+			show_passive_notification("Piggy Activated")
+			
+		"pocket_money":
+			has_simple_interest = true
+			show_passive_notification("Pocket Money Activated")
+			
+		"passive_income":
+			has_simple_interest = true
+			show_passive_notification("Passive Income Activated")
+			
+		"magic_trick":
+			has_simple_interest = true
+			show_passive_notification("Magic Trick Activated")
+			
+		"reimbursement":
+			has_simple_interest = true
+			show_passive_notification("Reimbursement Activated")
+			
+		"loan_shark":
+			has_simple_interest = true
+			show_passive_notification("Loan Shark Activated")
+			
+		"spare_change":
+			has_simple_interest = true
+			show_passive_notification("Spare Change Activated")
+			
+		"triple_nickel":
+			has_simple_interest = true
+			show_passive_notification("Triple Nickel Activated")
+			
+		"inflation":
+			has_simple_interest = true
+			show_passive_notification("Inflation Activated")
+			
+		"pay_down":
+			has_simple_interest = true
+			show_passive_notification("Active Income Activated")
+			
+		"pay_down":
+			has_simple_interest = true
+			show_passive_notification("Pay Down Activated")
+		"refund":
+			has_simple_interest = true
+			show_passive_notification(" Refund Activated")
+			
+	await get_tree().create_timer(1.0).timeout
 
 	
-			
-
 func _on_refresh_pressed() -> void:
 	pass # Replace with function body.
 
-
-		
-		
 func _on_endturn_mouse_entered() -> void:
 	coin_deck.sigil_light_up()
 

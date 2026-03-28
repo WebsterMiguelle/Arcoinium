@@ -679,7 +679,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_3amdw")
 text = "Refresh"
 
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
-position = Vector2(559, 332)
+position = Vector2(576, 320)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.90334755, 0.5628785, 0.61960787)
 energy = 1.05

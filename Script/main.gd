@@ -216,12 +216,12 @@ var has_dusk_stance = false
 
 var current_enemy_index
 var current_room
+@onready var shop_manager: CanvasLayer = $ShopManager
 
 func _on_item_purchased(card_id,price):
 	update_player_coin()
 	if shop_manager.visible:
 		shop_manager.coin_label.text = "Coins: " + str(player.coin)
-		
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -562,7 +562,7 @@ func _on_end_run_pressed():
 	print("Main Script: Received End Run")
 	get_tree().paused = false
 	pause_menu.visible = false
-	trigger_game_over(false, true)
+	trigger_game_over(false)
 	
 func start_player_turn():
 	
@@ -896,12 +896,7 @@ func show_enemy_passive(text: String, duration: float = 1.5) -> void:
 		enemy_passive_label.modulate.a = 1.0 
 	)
 	
-		
-		
-		if current_turn == Turn.PLAYER:
-			await get_tree().create_timer(1.0).timeout
-			sound_manager.play_sound(TURN_ENEMY)
-			start_enemy_turn()
+
 
 func _on_flip_pressed():
 	sound_manager.play_sound(COIN_FLIP)
@@ -1059,6 +1054,7 @@ func trigger_game_over(player_won: bool):
 	game_over_ui.show_stats(stats)
 	game_over_ui.visible = true
 	
+	var is_surrender
 	
 	match current_enemy_type:
 		Enemy.MAGE:
@@ -1132,17 +1128,16 @@ func handle_victory_flow():
 	#wait show_map()
 	
 func progression_after_victory():
-	var map = MAP_SCENE.instantiate()
-	current_room += 1
-	map.setup(current_room)
-	add_child(map)
+	#var map = MAP_SCENE.instantiate()
+	#map.setup(current_room)
+	#add_child(map)
 	
 	if current_room == 5:
 		current_room = 5
 		trigger_game_over(true)
 	elif current_room < 4:
 		await reward_manager.show_card_selection_async()
-
+		current_room += 1
 		if current_room == 4:
 			await shop_manager.show_shop_async(player)
 			current_room += 1
@@ -1720,30 +1715,10 @@ func proceed_to_next_enemy():
 			current_enemy_index = 8
 	battle_start()
 	print("I AM RWADY TO BATTLE")
-	if current_enemy_index >= enemy_order.size():
-		trigger_game_over(true, false)
 
 
 
 
-	
-	
-func show_map():
-	var map = MAP_SCENE.instantiate() as CanvasLayer
-	map.start_index = map_progress
-	add_child(map)
-	print("CURRENT MAP: " + str(map_progress))
-	map.start_index = 0
-	
-	var choice = "battle"
-	print(choice)
-	map.queue_free()
-	get_tree().paused = false
-	map_progress += 1
-	if map_progress >= max_nodes:
-		print("BOSS TIME")
-		return "boss"
-	return choice
 
 	
 			

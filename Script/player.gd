@@ -18,10 +18,10 @@ var max_re_flip = 6 #Max Re-Flips Per Turn
 var current_re_flip = 0: #Current Re-Flip Count
 	set(value):
 		current_re_flip = clamp(value,0,max_re_flip)
-var silver_flip_rate = 0.4: #Chance to Flip a Silver Coin
+var silver_flip_rate = 0.1: #Chance to Flip a Silver Coin
 	set(value): 
 		silver_flip_rate = clamp(value,0.0,100.0) 
-var gold_flip_rate = 0.2: #Chance to Flip a Gold Coin
+var gold_flip_rate = 0.05: #Chance to Flip a Gold Coin
 	set(value): 
 		gold_flip_rate = clamp(value,0.0,100.0) 
 
@@ -45,6 +45,18 @@ func gain_coin():
 	coin += gain
 	gain = 0
 	print("Player HP: ", coin)
+
+func reset_stats():
+	max_coin = 500 #Max Coin Capacity
+	max_reserve = 6
+	current_reserve = 0
+	coin = 10
+	max_flip = 16 #Max Flips Per Turn
+	current_flip = 0 #Current Flip Count
+	max_re_flip = 6 #Max Re-Flips Per Turn
+	current_re_flip = 0 #Current Re-Flip Count
+	silver_flip_rate = 0.1 #Chance to Flip a Silver Coin 
+	gold_flip_rate = 0.05 #Chance to Flip a Gold Coin
 
 	
 # Called when the node enters the scene tree for the first time.

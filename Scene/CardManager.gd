@@ -4,6 +4,7 @@ extends CanvasLayer
 @onready var card_container = $Background/CenterContainer/VBoxContainer/CardContainer
 @onready var refresh_button = $Background/CenterContainer/VBoxContainer/Refresh
 const CARD_SCENE = preload("res://Scene/reward_card.tscn")
+@onready var player: Node2D = $"../Player"
 
 var all_cards = [
 	{"id": 0, "name": "B-Rank: Solar Coin", "rank": "B"},
@@ -24,13 +25,14 @@ var all_cards = [
 	{"id": 15, "name": "A-Rank: Passive Income", "rank": "A"},
 	{"id": 16, "name": "A-Rank: Magic Trick", "rank": "A"},
 	{"id": 17, "name": "A-Rank: Reimbursement", "rank": "A"},
-	{"id": 18, "name": "A-Rank: Loan Shark", "rank": "A"},
-	{"id": 19, "name": "A-Rank: Spare Change", "rank": "A"},
-	{"id": 20, "name": "A-Rank: Triple Nickel", "rank": "A"},
-	{"id": 21, "name": "S-Rank: Inflation", "rank": "S"},
-	{"id": 22, "name": "S-Rank: Active Income", "rank": "S"},
-	{"id": 23, "name": "S-Rank: Pay Down", "rank": "S"},
-	{"id": 24, "name": "S-Rank: Refund", "rank": "S"}
+	{"id": 18, "name": "A-Rank: Payback", "rank": "A"},
+	{"id": 19, "name": "A-Rank: Loan Shark", "rank": "A"},
+	{"id": 20, "name": "A-Rank: Spare Change", "rank": "A"},
+	{"id": 21, "name": "A-Rank: Triple Nickel", "rank": "A"},
+	{"id": 22, "name": "S-Rank: Inflation", "rank": "S"},
+	{"id": 23, "name": "S-Rank: Active Income", "rank": "S"},
+	{"id": 24, "name": "S-Rank: Pay Down", "rank": "S"},
+	{"id": 25, "name": "S-Rank: Refund", "rank": "S"}
 	
 ]
 
@@ -122,82 +124,86 @@ func apply_reward(card_id):
 	match card_id:
 		0:
 			print("Solar Coin Passive")
-			main.trigger_passive("solar_coin")
+			main.has_solar_coin = true
 		1:
 			print("Lunar Coin")
-			main.trigger_passive("lunar_coin")
+			main.has_lunar_coin = true
 		2:
 			print("Wish Bone")
-			main.trigger_passive("wish_bone")
+			main.has_wish_bone = true
+			player.silver_flip_rate += 0.1
 		3:
 			print("Golden Clover")
-			main.trigger_passive("golden_clover")
+			main.has_golden_clover = true
+			player.gold_flip_rate += 0.05
 		4:
 			print("Merchant Scroll Passive")
-			main.trigger_passive("merchant_scroll")
+			main.has_merchant_scroll = true
 		5:
 			print("Impromptu Flip Passive")
-			main.trigger_passive("impromptu_flip")
+			main.has_impromptu_flip = true
 		6:
 			print("Advanced Planning Passive")
-			main.trigger_passive("advanced_planning")
+			main.has_advanced_planning = true
 		7:
 			print("Value Increase Passive")
-			main.trigger_passive("value_increase")
+			main.has_value_increase = true
 		8:
 			print("Lending Charge Passive")
-			main.trigger_passive("lending_charge")
+			main.has_lending_charge = true
 		9:
 			print("Coin Snipe Passive")
-			main.trigger_passive("coin_snipe")
+			main.has_coin_snipe = true
 		10:
 			print("Simple Interest Passive")
-			main.trigger_passive("simple_interest")
+			main.has_simple_interest = true
 		11:
 			print("Lucky Pair")
-			main.trigger_passive("lucky_pair")
+			main.has_lucky_pair = true
 		12:
 			print("A-Rank: Sleight of Hand")
-			main.trigger_passive("sleight_of_hand")
+			main.has_sleight_of_hand = true
+			player.max_flip += 3
+			player.max_reserve += 2
 		13:
 			print("A-Rank: Piggy")
-			main.trigger_passive("piggy")
+			main.has_piggy = true
 		14:
 			print("A-Rank: Pocket Money")
-			main.trigger_passive("pocket_money")
+			main.has_pocket_money = true
 		15:
 			print("A-Rank: Passive Income")
-			main.trigger_passive("passive_income")
+			main.has_passive_income = true
 		16:
 			print("A-Rank: Magic Trick")
-			main.trigger_passive("magic_trick")
+			main.has_magic_trick = true
 		17:
 			print("A-Rank: Reimbursement")
-			main.trigger_passive("reimbursement")
+			main.has_reimbursement = true
 		18:
-			print("B-Rank: Simple Interest")
-			main.trigger_passive("simple_interest")
+			print("A-Rank: Payback")
+			main.has_payback = true
 		19:
 			print("A-Rank: Loan Shark")
-			main.trigger_passive("loan_shark")
+			main.has_loan_shark = true
 		20:
 			print("A-Rank: Spare Change")
-			main.trigger_passive("spare_change")
+			main.has_spare_change = true
 		21:
 			print("A-Rank:Triple Nickel")
-			main.trigger_passive("triple_nickel")
+			main.has_triple_nickel = true
 		22:
 			print("S-Rank: Inflation")
-			main.trigger_passive("inflation")
+			main.has_inflation = true
 		23:
 			print("S-Rank: Active Income")
-			main.trigger_passive("active_income")
+			main.has_active_income = true
 		24:
 			print("S-Rank: Pay Down")
-			main.trigger_passive("pay_down")
+			main.has_pay_down = true
 		25:
 			print("S-Rank: Refund")
-			main.trigger_passive("refund")
+			main.has_refund = true
 			
 		_:
 			print("Other reward")

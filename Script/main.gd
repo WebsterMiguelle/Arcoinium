@@ -223,6 +223,50 @@ func _on_item_purchased(card_id,price):
 	if shop_manager.visible:
 		shop_manager.coin_label.text = "Coins: " + str(player.coin)
 	
+
+func reset_player_passives():
+		#B-Rank
+	has_wishbone = false
+	has_golden_clover = false
+	has_solar_coin = false
+	has_lunar_coin = false
+	has_merchant_scroll = false
+	has_impromptu_flip = false
+	has_advanced_planning = false
+
+	#A-Rank
+	has_magic_trick = false
+	has_sleight_of_hand = false
+	has_piggy = false
+
+	#INNOVATOR PASSIVES
+
+	has_inflation = false
+	has_payback = false
+	has_lucky_pair = false
+	has_value_increase = false
+
+	#SHOOTER PASSIVES
+
+	has_spare_change = false
+	has_triple_nickel = false
+	has_refund = false
+	has_coin_snipe = false
+
+	#INVESTOR PASSIVES
+
+	has_active_income = false
+	has_pocket_money = false
+	has_passive_income = false
+	has_simple_interest = false
+
+	#DEBTOR PASSIVES
+
+	has_pay_down = false
+	has_reimbursement = false
+	has_loan_shark = false
+	has_lending_charge = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	await get_tree().create_timer(0.4).timeout
@@ -231,13 +275,14 @@ func _ready():
 	current_room = 0
 	current_enemy_index = randi_range(0,1)
 	passive_manager.setup(self)
-	show_passive_notification("PASSIVE APPEAR HERE", 3.0)
-	show_enemy_passive("ENEMY PASSIVE APPEAR HERE", 3.0)
+	#show_passive_notification("PASSIVE APPEAR HERE", 3.0)
+	#show_enemy_passive("ENEMY PASSIVE APPEAR HERE", 3.0)
 	game_over_ui.visible = false
 	pause_menu.visible = false
 	turn_ui.visible = false
 	print(reward_manager)
-	
+	reset_player_passives()
+	player.reset_stats()
 	shop_manager.item_purchased.connect(_on_item_purchased)
 	
 	if not pause_menu.end_run_pressed.is_connected(_on_end_run_pressed):
@@ -716,6 +761,7 @@ func start_enemy_turn():
 	if defeat == null:
 		await get_tree().create_timer(1.0).timeout
 		while enemy.current_flip != enemy.max_flip:
+			defeat = await check_defeat()
 			if defeat == null:
 				enemy_flip()
 			await get_tree().create_timer(0.4).timeout
@@ -997,7 +1043,6 @@ func enemy_flip():
 	var coin = COIN.instantiate()
 	if defeat == null:
 		coin.setup(state,coin_deck.get_vacant_slot(enemy.current_flip))
-	
 	
 	#Silver/Gold Flip Rate
 	
@@ -1721,21 +1766,6 @@ func proceed_to_next_enemy():
 
 
 	
-			
-		"pay_down":
-			has_simple_interest = true
-			show_passive_notification("Active Income Activated")
-			
-		"pay_down":
-			has_simple_interest = true
-			show_passive_notification("Pay Down Activated")
-		"refund":
-			has_simple_interest = true
-			show_passive_notification(" Refund Activated")
-			
-	await get_tree().create_timer(1.0).timeout
-
-	
 func _on_refresh_pressed() -> void:
 	pass # Replace with function body.
 
@@ -1749,6 +1779,7 @@ func _on_endturn_mouse_exited() -> void:
 
 func _play_fake_coin_intro():
 	var fake_coin = COIN.instantiate()
+	fake_coin.degrade_to_copper()
 	add_child(fake_coin)
 	fake_coin.z_index = 100 
 	

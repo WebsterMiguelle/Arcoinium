@@ -36,7 +36,11 @@
 [ext_resource type="Texture2D" uid="uid://0of51v86402w" path="res://Assets/mapBackground.png" id="34_2oiod"]
 [ext_resource type="Texture2D" uid="uid://bj5nyxg8bmc1k" path="res://Assets/backgroundBanner.png" id="35_8bkap"]
 [ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="36_b0nqf"]
+[ext_resource type="Texture2D" uid="uid://bvlc07v3u1brg" path="res://Assets/mapIconEnemy.png" id="37_2uk8d"]
 [ext_resource type="Texture2D" uid="uid://2mfylmq5p56b" path="res://Assets/miniCoinCaster-Sheet.png" id="37_ot48q"]
+[ext_resource type="Texture2D" uid="uid://ba7v6aaoo0irq" path="res://Assets/mapIconElite.png" id="38_cr44a"]
+[ext_resource type="Texture2D" uid="uid://4aebywoijoue" path="res://Assets/mapIconShop.png" id="39_tcekk"]
+[ext_resource type="Texture2D" uid="uid://fl7tmytwihia" path="res://Assets/mapIconBoss.png" id="40_1bveb"]
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]
 
@@ -315,7 +319,6 @@ has_solar_coin = true
 has_lunar_coin = true
 has_merchant_scroll = true
 has_impromptu_flip = true
-has_advanced_planning = null
 has_magic_trick = true
 has_sleight_of_hand = true
 has_piggy = true
@@ -324,7 +327,6 @@ has_payback = true
 has_lucky_pair = true
 has_value_increase = true
 has_spare_change = true
-has_triple_nickel = null
 has_refund = true
 has_coin_snipe = true
 has_active_income = true
@@ -866,23 +868,71 @@ theme_override_fonts/font = ExtResource("36_b0nqf")
 text = "Twilight Zone"
 horizontal_alignment = 1
 
+[node name="Enemy1" type="TextureRect" parent="Progression Map/MapBackground" unique_id=79812036]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 464.0
+offset_right = 120.0
+offset_bottom = 512.0
+texture = ExtResource("37_2uk8d")
+
+[node name="Enemy2" type="TextureRect" parent="Progression Map/MapBackground" unique_id=397134419]
+layout_mode = 0
+offset_left = 232.0
+offset_top = 464.0
+offset_right = 280.0
+offset_bottom = 512.0
+texture = ExtResource("37_2uk8d")
+
+[node name="Enemy3" type="TextureRect" parent="Progression Map/MapBackground" unique_id=805506994]
+layout_mode = 0
+offset_left = 424.0
+offset_top = 464.0
+offset_right = 472.0
+offset_bottom = 512.0
+texture = ExtResource("37_2uk8d")
+
+[node name="EliteEnemy" type="TextureRect" parent="Progression Map/MapBackground" unique_id=1609057767]
+layout_mode = 0
+offset_left = 616.0
+offset_top = 464.0
+offset_right = 664.0
+offset_bottom = 512.0
+texture = ExtResource("38_cr44a")
+
+[node name="Shop" type="TextureRect" parent="Progression Map/MapBackground" unique_id=825695393]
+layout_mode = 0
+offset_left = 808.0
+offset_top = 464.0
+offset_right = 856.0
+offset_bottom = 512.0
+texture = ExtResource("39_tcekk")
+
+[node name="Boss" type="TextureRect" parent="Progression Map/MapBackground" unique_id=2069607408]
+layout_mode = 0
+offset_left = 1000.0
+offset_top = 464.0
+offset_right = 1048.0
+offset_bottom = 512.0
+texture = ExtResource("40_1bveb")
+
 [node name="Enemy 1" type="Marker2D" parent="Progression Map" unique_id=417052663]
-position = Vector2(192, 456)
+position = Vector2(96, 432)
 
 [node name="Enemy 2" type="Marker2D" parent="Progression Map" unique_id=566553087]
-position = Vector2(320, 456)
+position = Vector2(256, 432)
 
 [node name="Enemy 3" type="Marker2D" parent="Progression Map" unique_id=2042417836]
-position = Vector2(448, 456)
+position = Vector2(448, 432)
 
 [node name="Elite Enemy" type="Marker2D" parent="Progression Map" unique_id=1245316051]
-position = Vector2(640, 456)
+position = Vector2(640, 432)
 
 [node name="Shop" type="Marker2D" parent="Progression Map" unique_id=1158372386]
-position = Vector2(832, 456)
+position = Vector2(832, 432)
 
 [node name="Boss" type="Marker2D" parent="Progression Map" unique_id=728995645]
-position = Vector2(1024, 456)
+position = Vector2(1024, 432)
 
 [node name="Player_Sprite" type="AnimatedSprite2D" parent="Progression Map" unique_id=148271655]
 position = Vector2(96, 424)

@@ -1160,9 +1160,11 @@ func progression_after_victory():
 			#add_child(map)
 			#tween = create_tween()
 			#tween.tween_property(map,"position:y",0,0.4)
-			_play_progression_cutscene(current_room - 1, current_room)
+		_play_progression_cutscene(current_room - 1, current_room)
 		proceed_to_next_enemy()
-	
+		
+		
+		
 func _on_re_flip_pressed():
 	sound_manager.play_sound(COIN_REFLIP)
 	sound_manager.play_sound(COIN_FLIP)
@@ -1783,25 +1785,17 @@ func _on_re_flip_mouse_exited() -> void:
 	reflip_sprite.pause()
 
 func _play_progression_cutscene(from_index: int, to_index: int) -> void:
-	# 1. FREEZE THE GAME
 	get_tree().paused = true
 	var screen_height = get_viewport_rect().size.y 
 	
-	# Start the map completely off-screen at the TOP
 	progression_map.offset.y = -screen_height 
 	progression_map.visible = true
 	
-	# 2. THE CURTAIN DROPS
 	var slide_in = progression_map.create_tween()
-	# TRANS_QUINT gives it a heavy, theatrical drop feel
-	slide_in.tween_property(progression_map, "offset:y", 0.0, 0.8).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	slide_in.tween_property(progression_map, "offset:y", 0.0, 0.5).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 	
-	# Add a tiny 0.3s pause after it lands before the character starts moving
 	slide_in.tween_interval(0.3)
 	await slide_in.finished
-	
-
-	player_sprite.global_position = map_markers[from_index].global_position
 	
 	player_sprite.play("default") 
 	
@@ -1814,16 +1808,13 @@ func _play_progression_cutscene(from_index: int, to_index: int) -> void:
 	await walk_tween.finished
 
 	
-	# Add a dramatic 1-second pause while the player looks at where they are
 	var dramatic_pause = progression_map.create_tween()
-	dramatic_pause.tween_interval(1.0)
+	dramatic_pause.tween_interval(3.0)
 	await dramatic_pause.finished
 	
-	# 6. THE CURTAIN RISES
 	var slide_out = progression_map.create_tween()
 	slide_out.tween_property(progression_map, "offset:y", -screen_height, 0.8).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN)
 	await slide_out.finished
 	
-	# 7. CLEANUP
 	progression_map.visible = false
 	get_tree().paused = false

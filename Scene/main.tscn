@@ -3,15 +3,15 @@
 [ext_resource type="Script" uid="uid://qxyeds7oh4s7" path="res://Script/main.gd" id="1_h2yge"]
 [ext_resource type="Texture2D" uid="uid://bvtpq810pp6la" path="res://Assets/New Background.png" id="1_mxd2g"]
 [ext_resource type="Script" uid="uid://bunbms60cogmi" path="res://Script/player.gd" id="2_1bvp3"]
-[ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="3_hspdg"]
+[ext_resource type="Script" path="res://Script/sound_manager.gd" id="3_hspdg"]
 [ext_resource type="Script" uid="uid://dedsjnmo4366e" path="res://Script/enemy.gd" id="3_lquwl"]
 [ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
 [ext_resource type="AudioStream" uid="uid://cfv556d3jos2i" path="res://BGM/Twilight Zone (Exploration).wav" id="4_6njx3"]
 [ext_resource type="AudioStream" uid="uid://0ld5vkxyd8pm" path="res://BGM/Twilight Zone (Combat).wav" id="5_0y2cb"]
-[ext_resource type="PackedScene" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
+[ext_resource type="PackedScene" uid="uid://b01fk6f1pan7q" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
 [ext_resource type="Script" uid="uid://deakh0hwd6qoh" path="res://Scene/CardManager.gd" id="5_3amdw"]
 [ext_resource type="Script" path="res://Script/Shop_manager.gd" id="6_1xcnr"]
-[ext_resource type="PackedScene" uid="uid://dbj4jt3y4yqdx" path="res://Scene/EnemyHealthBar.tscn" id="6_c2iwn"]
+[ext_resource type="PackedScene" path="res://Scene/EnemyHealthBar.tscn" id="6_c2iwn"]
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="6_mxd2g"]
 [ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="7_0sxm5"]
 [ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="7_3pt4j"]
@@ -28,7 +28,7 @@
 [ext_resource type="Texture2D" uid="uid://ce2isyeu1yhmy" path="res://Assets/thrifter.png" id="15_nyb1q"]
 [ext_resource type="Script" path="res://Script/passive_manager.gd" id="16_6njx3"]
 [ext_resource type="Texture2D" uid="uid://dprlqvclal2j" path="res://Assets/trader.png" id="16_xw8bv"]
-[ext_resource type="Script" uid="uid://cjx7ln7nt56ad" path="res://Scene/particle_manager.gd" id="17_2ix4a"]
+[ext_resource type="Script" path="res://Scene/particle_manager.gd" id="17_2ix4a"]
 [ext_resource type="Texture2D" uid="uid://c5kws41vksxsb" path="res://Assets/twilightSageDawn.png" id="18_aam5o"]
 [ext_resource type="Texture2D" uid="uid://odbplao5e2m8" path="res://Assets/twilightSageDusk.png" id="19_nyb1q"]
 [ext_resource type="Texture2D" uid="uid://c1oyqjdr6wop8" path="res://Assets/animated_reflipbutton-Sheet.png" id="26_wimqa"]
@@ -50,6 +50,28 @@ stream_0/stream = ExtResource("4_6njx3")
 stream_0/volume = 0.0
 stream_1/stream = ExtResource("5_0y2cb")
 stream_1/volume = 0.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f043x"]
+atlas = ExtResource("6_mxd2g")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5qrjd"]
+atlas = ExtResource("6_mxd2g")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5rsq1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f043x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5qrjd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wimqa"]
 atlas = ExtResource("9_jbas8")
@@ -191,6 +213,11 @@ animations = [{
 "name": &"TRADER",
 "speed": 5.0
 }, {
+"frames": [],
+"loop": true,
+"name": &"TWILIGHT_SAGE",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_8bkap")
@@ -313,6 +340,32 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_mxd2g")
 script = ExtResource("1_h2yge")
+has_wishbone = true
+has_golden_clover = true
+has_solar_coin = true
+has_lunar_coin = true
+has_merchant_scroll = true
+has_impromptu_flip = true
+has_advanced_planning = true
+has_magic_trick = true
+has_sleight_of_hand = true
+has_piggy = true
+has_inflation = true
+has_payback = true
+has_lucky_pair = true
+has_value_increase = true
+has_spare_change = true
+has_triple_nickel = true
+has_refund = true
+has_coin_snipe = true
+has_active_income = true
+has_pocket_money = true
+has_passive_income = true
+has_simple_interest = true
+has_pay_down = true
+has_reimbursement = true
+has_loan_shark = true
+has_lending_charge = true
 
 [node name="SoundManager" type="Node2D" parent="." unique_id=2141723055]
 position = Vector2(576, 324)
@@ -334,18 +387,14 @@ script = ExtResource("7_ow1sv")
 [node name="Player" type="Node2D" parent="." unique_id=1483072070]
 script = ExtResource("2_1bvp3")
 
-[node name="Player_Portrait" type="TextureRect" parent="Player" unique_id=762395906]
-custom_minimum_size = Vector2(120, 120)
-offset_left = 21.0
-offset_top = 509.0
-offset_right = 141.0
-offset_bottom = 629.0
-texture = ExtResource("6_mxd2g")
+[node name="Player_Portrait" type="AnimatedSprite2D" parent="Player" unique_id=1707183387]
+position = Vector2(75.5, 570.99994)
+scale = Vector2(2.015625, 2)
+sprite_frames = SubResource("SpriteFrames_5rsq1")
 
 [node name="Label" type="Label" parent="Player/Player_Portrait" unique_id=1715864472]
 visible = false
 custom_minimum_size = Vector2(40, 20)
-layout_mode = 0
 offset_left = 23.0
 offset_top = 35.0
 offset_right = 144.0
@@ -394,7 +443,7 @@ offset_bottom = 137.97021
 position = Vector2(58.67501, 59.03)
 scale = Vector2(1.9374993, 1.9375)
 sprite_frames = SubResource("SpriteFrames_8bkap")
-animation = &"Default"
+animation = &"TWILIGHT_SAGE"
 
 [node name="Enemy Gain" type="Label" parent="Enemy" unique_id=1475439462]
 offset_left = 927.0

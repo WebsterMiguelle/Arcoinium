@@ -22,10 +22,10 @@ enum Enemy{
 @onready var enemy = $Enemy
 
 #PARTICLES
-const COIN_ADD_PARTICLE = preload("uid://s6va71jul34t")
-const COIN_PLAY_PARTICLE = preload("uid://w5jgphq268vx")
-const DAMAGE_PARTICLE = preload("uid://q4hytnmn2fbt")
-const SINGLE_DAMAGE_PARTICLE = preload("uid://dgeahqxig4fqa")
+const COIN_ADD_PARTICLE = preload("res://Scene/Coin Add Particle.tscn")
+const COIN_PLAY_PARTICLE = preload("res://Scene/Coin Play Particle.tscn")
+const DAMAGE_PARTICLE = preload("res://Scene/Damage Particle.tscn")
+const SINGLE_DAMAGE_PARTICLE = preload("res://Scene/Single Damage Particle.tscn")
 
 #MANAGERS
 @onready var sound_manager: Node2D = $SoundManager
@@ -61,7 +61,7 @@ const DEATH = preload("uid://bx1ttmouolx2q")
 #@onready var enemy_portrait: ColorRect = $Enemy/Enemy_Portrait
 @onready var enemy_portrait = $Enemy/Enemy_Portrait
 @onready var enemy_portrait_sprite: AnimatedSprite2D = $Enemy/Enemy_Portrait/Enemy_Portrait_Sprite
-@onready var player_portrait: TextureRect = $Player/Player_Portrait
+@onready var player_portrait: AnimatedSprite2D = $Player/Player_Portrait
 
 # --- PROGRESSION MAP ---
 @onready var progression_map: CanvasLayer = $"Progression Map"
@@ -327,6 +327,7 @@ func battle_start():
 	has_sunlit_curse = false
 	has_midnight_curse = false
 	has_dusk_stance = false
+	
 
 	var coins = get_tree().get_nodes_in_group("enemy coins")
 	for coin in coins:
@@ -395,7 +396,7 @@ func battle_start():
 			has_midnight_curse = true
 		8:
 			enemy.setup(Enemy.TWILIGHT_SAGE)
-			enemy_portrait_sprite.play("TWILLIGHT_SAGE_DUSK")
+			enemy_portrait_sprite.play("TWILIGHT_SAGE_DUSK")
 			has_dusk_stance = true
 	
 	update_enemy_coin()
@@ -834,6 +835,10 @@ func end_enemy_turn():
 		await get_tree().create_timer(1.0).timeout
 		show_turn_ui("Player Turn")
 		if enemy.type == Enemy.TWILIGHT_SAGE:
+			if has_dusk_stance == true:
+				enemy_portrait_sprite.play("TWILIGHT_SAGE_DUSK")
+			else:
+				enemy_portrait_sprite.play("TWILIGHT_SAGE_DAWN")	
 			has_dusk_stance = !has_dusk_stance
 			enemy.max_flip += 4
 		sound_manager.play_sound(TURN_PLAYER)
@@ -871,6 +876,7 @@ func _on_endturn_pressed():
 			enemy.gain += moon_count * 3
 			update_enemy_gain_debt()
 		else:
+			enemy_portrait_sprite.play("TWILIGHT_SAGE_DAWN")
 			player.debt += sun_count * 3
 			update_player_gain_debt()
 	reserve_left_over_coin()

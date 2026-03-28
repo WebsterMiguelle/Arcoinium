@@ -1,6 +1,7 @@
 extends Node2D
 
 signal hp_changed(new_hp)
+@onready var player_portrait: AnimatedSprite2D = $Player_Portrait
 
 #PLAYER STATS
 var max_coin = 500 #Max Coin Capacity
@@ -61,4 +62,4 @@ func reset_stats():
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	player_portrait.play("default")

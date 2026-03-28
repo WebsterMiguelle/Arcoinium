@@ -63,6 +63,21 @@ const DEATH = preload("uid://bx1ttmouolx2q")
 @onready var enemy_portrait_sprite: AnimatedSprite2D = $Enemy/Enemy_Portrait/Enemy_Portrait_Sprite
 @onready var player_portrait: TextureRect = $Player/Player_Portrait
 
+# --- PROGRESSION MAP ---
+@onready var progression_map: CanvasLayer = $"Progression Map"
+@onready var player_sprite: AnimatedSprite2D = $"Progression Map/Player_Sprite"
+@onready var banner: TextureRect = $"Progression Map/MapBackground/Banner"
+
+# Put your markers in the exact order they should be visited
+@onready var map_markers: Array[Node] = [
+$"Progression Map/Enemy 1", 
+$"Progression Map/Enemy 2", 
+$"Progression Map/Enemy 3", 
+$"Progression Map/Elite Enemy", 
+$"Progression Map/Shop", 
+$"Progression Map/Boss"
+]
+
 @onready var endTurn_button = $"Battle UI/Endturn"
 @onready var flip_button = $"Battle UI/PlayerHealthBar2"
 @onready var re_flip_button: Button = $"Battle UI/Re-Flip"
@@ -1176,7 +1191,6 @@ func progression_after_victory():
 	#var map = MAP_SCENE.instantiate()
 	#map.setup(current_room)
 	#add_child(map)
-	
 	if current_room == 5:
 		current_room = 5
 		trigger_game_over(true)
@@ -1190,10 +1204,11 @@ func progression_after_victory():
 			#add_child(map)
 			#tween = create_tween()
 			#tween.tween_property(map,"position:y",0,0.4)
+		_play_progression_cutscene(current_room - 1, current_room)
 		proceed_to_next_enemy()
-
 		
-	
+		
+		
 func _on_re_flip_pressed():
 	sound_manager.play_sound(COIN_REFLIP)
 	sound_manager.play_sound(COIN_FLIP)
@@ -1808,3 +1823,38 @@ func _on_re_flip_mouse_entered() -> void:
 
 func _on_re_flip_mouse_exited() -> void:
 	reflip_sprite.pause()
+
+func _play_progression_cutscene(from_index: int, to_index: int) -> void:
+	get_tree().paused = true
+	var screen_height = get_viewport_rect().size.y 
+	
+	progression_map.offset.y = -screen_height 
+	progression_map.visible = true
+	
+	var slide_in = progression_map.create_tween()
+	slide_in.tween_property(progression_map, "offset:y", 0.0, 0.5).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	
+	slide_in.tween_interval(0.3)
+	await slide_in.finished
+	
+	player_sprite.play("default") 
+	
+	var walk_tween = progression_map.create_tween()
+	
+	var distance = player_sprite.global_position.distance_to(map_markers[to_index].global_position)
+	var walk_duration = distance / 150.0 
+	
+	walk_tween.tween_property(player_sprite, "global_position", map_markers[to_index].global_position, walk_duration).set_trans(Tween.TRANS_LINEAR)
+	await walk_tween.finished
+
+	
+	var dramatic_pause = progression_map.create_tween()
+	dramatic_pause.tween_interval(3.0)
+	await dramatic_pause.finished
+	
+	var slide_out = progression_map.create_tween()
+	slide_out.tween_property(progression_map, "offset:y", -screen_height, 0.8).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN)
+	await slide_out.finished
+	
+	progression_map.visible = false
+	get_tree().paused = false

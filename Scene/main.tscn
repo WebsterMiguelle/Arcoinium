@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
 [ext_resource type="AudioStream" uid="uid://cfv556d3jos2i" path="res://BGM/Twilight Zone (Exploration).wav" id="4_6njx3"]
 [ext_resource type="AudioStream" uid="uid://0ld5vkxyd8pm" path="res://BGM/Twilight Zone (Combat).wav" id="5_0y2cb"]
-[ext_resource type="PackedScene" uid="uid://b01fk6f1pan7q" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
+[ext_resource type="PackedScene" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
 [ext_resource type="Script" uid="uid://deakh0hwd6qoh" path="res://Scene/CardManager.gd" id="5_3amdw"]
 [ext_resource type="Script" uid="uid://bh8ned1dqg5l3" path="res://Script/Shop_manager.gd" id="6_1xcnr"]
 [ext_resource type="PackedScene" uid="uid://dbj4jt3y4yqdx" path="res://Scene/EnemyHealthBar.tscn" id="6_c2iwn"]
@@ -21,12 +21,12 @@
 [ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="11_hiice"]
 [ext_resource type="Texture2D" uid="uid://dfw0gb82xbava" path="res://Assets/portraitBackground.png" id="12_pqe63"]
 [ext_resource type="Texture2D" uid="uid://cjjj3ulqgawva" path="res://Assets/apprenticeMage.png" id="12_sor6r"]
-[ext_resource type="Script" uid="uid://ka64sstswrwl" path="res://Script/game_over_ui.gd" id="13_0y2cb"]
+[ext_resource type="Script" path="res://Script/game_over_ui.gd" id="13_0y2cb"]
 [ext_resource type="Texture2D" uid="uid://bikjuk8fgo6p2" path="res://Assets/moonCaster-Sheet.png" id="13_pqe63"]
 [ext_resource type="Texture2D" uid="uid://di37676qo0yu4" path="res://Assets/sunCaster-Recovered-Sheet.png" id="14_aam5o"]
-[ext_resource type="Script" uid="uid://cbrncrbtg7emf" path="res://Script/pause_menu.gd" id="14_hspdg"]
+[ext_resource type="Script" path="res://Script/pause_menu.gd" id="14_hspdg"]
 [ext_resource type="Texture2D" uid="uid://ce2isyeu1yhmy" path="res://Assets/thrifter.png" id="15_nyb1q"]
-[ext_resource type="Script" uid="uid://c4nmeg7fuu34n" path="res://Script/passive_manager.gd" id="16_6njx3"]
+[ext_resource type="Script" path="res://Script/passive_manager.gd" id="16_6njx3"]
 [ext_resource type="Texture2D" uid="uid://dprlqvclal2j" path="res://Assets/trader.png" id="16_xw8bv"]
 [ext_resource type="Script" uid="uid://cjx7ln7nt56ad" path="res://Scene/particle_manager.gd" id="17_2ix4a"]
 [ext_resource type="Texture2D" uid="uid://c5kws41vksxsb" path="res://Assets/twilightSageDawn.png" id="18_aam5o"]
@@ -277,19 +277,6 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="Gradient" id="Gradient_75buv"]
-offsets = PackedFloat32Array(0, 0.22742476)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_c2iwn"]
-gradient = SubResource("Gradient_75buv")
-width = 512
-height = 512
-use_hdr = true
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-metadata/_snap_enabled = true
-
 [sub_resource type="CurveXYZTexture" id="CurveXYZTexture_6njx3"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0y2cb"]
@@ -329,6 +316,19 @@ animations = [{
 "name": &"default",
 "speed": 1.0
 }]
+
+[sub_resource type="Gradient" id="Gradient_75buv"]
+offsets = PackedFloat32Array(0, 0.22742476)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_c2iwn"]
+gradient = SubResource("Gradient_75buv")
+width = 512
+height = 512
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
 
 [node name="Main" type="TextureRect" unique_id=975709238]
 anchors_preset = 15
@@ -716,17 +716,6 @@ layout_mode = 2
 mouse_filter = 0
 theme_override_constants/separation = 20
 
-[node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
-position = Vector2(576, 320)
-scale = Vector2(17.921875, 10.046875)
-color = Color(1, 0.90334755, 0.5628785, 0.61960787)
-energy = 1.05
-texture = SubResource("GradientTexture2D_c2iwn")
-texture_scale = 0.46
-
-[node name="Vignette" type="CanvasModulate" parent="." unique_id=1590582319]
-color = Color(0.6964535, 0.6192358, 0.67436445, 1)
-
 [node name="ParticleManager" type="Node2D" parent="." unique_id=2081468604]
 script = ExtResource("17_2ix4a")
 
@@ -739,6 +728,7 @@ process_material = SubResource("ParticleProcessMaterial_0y2cb")
 
 [node name="PauseMenu" type="CanvasLayer" parent="." unique_id=722870696]
 process_mode = 3
+layer = 5
 visible = false
 script = ExtResource("14_hspdg")
 
@@ -784,16 +774,18 @@ offset_bottom = 405.0
 text = "Quit"
 
 [node name="ShopManager" type="CanvasLayer" parent="." unique_id=248022412]
+layer = 5
 visible = false
 script = ExtResource("6_1xcnr")
 
 [node name="Background" type="ColorRect" parent="ShopManager" unique_id=2038950803]
+self_modulate = Color(1, 1, 1, 0.5)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.007843138, 0.007843138, 0.007843138, 0.6431373)
+color = Color(0.012920001, 0.012920001, 0.012920001, 1)
 
 [node name="CenterContainer" type="CenterContainer" parent="ShopManager/Background" unique_id=1050710308]
 custom_minimum_size = Vector2(200, 300)
@@ -957,6 +949,17 @@ position = Vector2(1024, 432)
 position = Vector2(96, 424)
 scale = Vector2(2, 2.5)
 sprite_frames = SubResource("SpriteFrames_f043x")
+
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
+position = Vector2(576, 320)
+scale = Vector2(17.921875, 10.046875)
+color = Color(1, 0.90334755, 0.5628785, 0.61960787)
+energy = 1.05
+texture = SubResource("GradientTexture2D_c2iwn")
+texture_scale = 0.46
+
+[node name="Vignette" type="CanvasModulate" parent="." unique_id=1590582319]
+color = Color(0.6964535, 0.6192358, 0.67436445, 1)
 
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_exited"]

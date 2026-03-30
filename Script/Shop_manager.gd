@@ -60,9 +60,6 @@ func show_shop_async(player):
 	
 	generate_shop()
 	
-	var tween = create_tween()
-	tween.tween_property(bg, "modulate:a", 0.5, 0.5)
-	
 	while not shop_done:
 		await get_tree().process_frame
 		

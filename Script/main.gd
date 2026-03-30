@@ -1788,11 +1788,6 @@ func proceed_to_next_enemy():
 	battle_start()
 	print("I AM RWADY TO BATTLE")
 
-
-
-
-
-	
 func _on_refresh_pressed() -> void:
 	pass # Replace with function body.
 

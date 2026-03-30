@@ -42,11 +42,11 @@ func _process(_delta: float) -> void:
 func update_state(player_coin):
 	if player_coin < price or stock <= 0:
 		disabled = true
-		#modulate = Color(1,1,1,0.5)
+		#modulate = Color(1,1,1)
 		modulate.a = 0.5
 	else:
 		disabled = false
-		#modulate = Color(1,1,1,1)
+		#modulate = Color(1,1,1)
 		modulate.a = 1.0
 	
 func _on_pressed() -> void:
@@ -62,16 +62,25 @@ func _on_pressed() -> void:
 	
 	
 func _animate_entrance():
-	modulate.a = 0.5
+	modulate.a = 0.0 
+	
 	await get_tree().process_frame
 	await get_tree().process_frame
+	
 	var final_x = position.x
 	position.x += 400
+	
+	var target_alpha = 1.0
+	if disabled: 
+		target_alpha = 0.5
+		
 	var tween = create_tween()
 	var index = get_index()
+	
 	tween.tween_interval(index * 0.1)
 	tween.tween_property(self, "position:x", final_x, 0.4).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
-	tween.parallel().tween_property(self, "modulate:a", 1.0, 0.2)
+	
+	tween.parallel().tween_property(self, "modulate:a", target_alpha, 0.2)
 	
 func _on_mouse_entered() -> void:
 	var tween = create_tween()

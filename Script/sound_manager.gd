@@ -8,7 +8,7 @@ var synchronizer: AudioStreamSynchronized
 
 
 # Called when the node enters the scene tree for the first time.
-func _ready() -> void:
+func _ready() -> void:	
 	playback = sfx_player.get_stream_playback()
 
 

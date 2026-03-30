@@ -277,8 +277,6 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3amdw"]
-
 [sub_resource type="Gradient" id="Gradient_75buv"]
 offsets = PackedFloat32Array(0, 0.22742476)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
@@ -493,7 +491,7 @@ theme_override_colors/font_color = Color(1, 0.8500227, 0.484913, 1)
 theme_override_font_sizes/font_size = 22
 text = "Coins:"
 
-[node name="EnemyHealthBar2" parent="Battle UI" unique_id=1945687937 instance=ExtResource("6_c2iwn")]
+[node name="EnemyHealthBar" parent="Battle UI" unique_id=1945687937 instance=ExtResource("6_c2iwn")]
 offset_left = 1005.0
 offset_top = 104.0
 offset_right = 1097.0
@@ -718,14 +716,6 @@ layout_mode = 2
 mouse_filter = 0
 theme_override_constants/separation = 20
 
-[node name="Refresh" type="Button" parent="CardManager/Background/CenterContainer/VBoxContainer" unique_id=1925022178]
-custom_minimum_size = Vector2(100, 60)
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxFlat_3amdw")
-text = "Refresh"
-
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
 position = Vector2(576, 320)
 scale = Vector2(17.921875, 10.046875)
@@ -794,16 +784,16 @@ offset_bottom = 405.0
 text = "Quit"
 
 [node name="ShopManager" type="CanvasLayer" parent="." unique_id=248022412]
+visible = false
 script = ExtResource("6_1xcnr")
 
 [node name="Background" type="ColorRect" parent="ShopManager" unique_id=2038950803]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.039215688, 0.039215688, 0.039215688, 0.627451)
+color = Color(0.007843138, 0.007843138, 0.007843138, 0.6431373)
 
 [node name="CenterContainer" type="CenterContainer" parent="ShopManager/Background" unique_id=1050710308]
 custom_minimum_size = Vector2(200, 300)
@@ -826,6 +816,8 @@ theme_override_constants/separation = 10
 
 [node name="CardContainer" type="GridContainer" parent="ShopManager/Background/CenterContainer/VBoxContainer" unique_id=1467760452]
 layout_mode = 2
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
 columns = 3
 
 [node name="Back" type="Button" parent="ShopManager/Background" unique_id=1330755300]
@@ -836,23 +828,26 @@ offset_right = 1115.0
 offset_bottom = 624.0
 theme_override_font_sizes/font_size = 40
 text = "Proceed"
+icon_alignment = 1
 
 [node name="Shop" type="Label" parent="ShopManager/Background" unique_id=1709692202]
 layout_mode = 0
-offset_left = 515.0
-offset_top = 80.0
-offset_right = 623.0
-offset_bottom = 135.0
+offset_left = 510.0
+offset_top = 54.0
+offset_right = 618.0
+offset_bottom = 109.0
 theme_override_font_sizes/font_size = 40
 text = "SHOP"
+horizontal_alignment = 1
 
 [node name="CoinLabel" type="Label" parent="ShopManager/Background" unique_id=2058663755]
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 0
-offset_left = 928.0
-offset_top = 24.0
-offset_right = 1128.0
-offset_bottom = 124.0
+offset_left = 905.0
+offset_top = 40.0
+offset_right = 1105.0
+offset_bottom = 140.0
+theme_override_font_sizes/font_size = 24
 
 [node name="PassiveManager" type="Node" parent="." unique_id=870229377]
 script = ExtResource("16_6njx3")
@@ -970,7 +965,6 @@ sprite_frames = SubResource("SpriteFrames_f043x")
 [connection signal="mouse_exited" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_exited"]
 [connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]
 [connection signal="pressed" from="Game Over UI/ColorRect/Restart" to="." method="_on_restart_pressed"]
-[connection signal="pressed" from="CardManager/Background/CenterContainer/VBoxContainer/Refresh" to="CardManager" method="_on_refresh_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/Resume" to="PauseMenu" method="_on_resume_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/EndRun" to="PauseMenu" method="_on_end_run_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/Quit" to="PauseMenu" method="_on_quit_pressed"]

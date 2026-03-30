@@ -779,6 +779,9 @@ func start_enemy_turn():
 		await get_tree().create_timer(1.0).timeout
 		while enemy.current_flip != enemy.max_flip:
 			defeat = await check_defeat()
+			if enemy.coin <= 2:
+				print("Enemy has insufficient coins, ending turn early")
+				break
 			if defeat == null:
 				enemy_flip()
 			await get_tree().create_timer(0.4).timeout

@@ -2,7 +2,7 @@ extends CanvasLayer
 @onready var main = get_node("/root/Main")
 @onready var passive_manager = get_node("/root/Main/PassiveManager")
 @onready var card_container = $Background/CenterContainer/VBoxContainer/CardContainer
-@onready var refresh_button = $Background/CenterContainer/VBoxContainer/Refresh
+#@onready var refresh_button = $Background/CenterContainer/VBoxContainer/Refresh
 const CARD_SCENE = preload("res://Scene/reward_card.tscn")
 @onready var player: Node2D = $"../Player"
 
@@ -38,42 +38,70 @@ var all_cards = [
 	
 ]
 
-var shuffled_cards = []
+
 var picked_cards = []
 var max_picks = 2
-var refresh_count = 1
-var player_progress = 0
 var previous_cards = []
 signal selection_done
 
+func draw_cards(from_pool: Array, amount: int) -> Array:
+		var result = []
+		for i in range(amount):
+			if from_pool.is_empty():
+				break
+			var pick = from_pool.pick_random()
+			result.append(pick)
+			from_pool.erase(pick)
+		return result
+		
 func show_rewards():
 	visible = true
 	clear_cards()
 	
-	var available_cards = []
-
-	if main.current_room < 2:
-		available_cards = all_cards.filter(func(c): return c["rank"] == "B")
-	elif main.current_room < 3:
-			available_cards = all_cards.filter(func(c): return c["rank"] == "A")
-	elif main.current_room < 4:
-			available_cards = all_cards.filter(func(c): return c["rank"] == "S")
-			
-	available_cards.shuffle()
+	var pool = all_cards.filter(func(card):
+		return not is_card_owned(card["id"])
+	)
+	var b_pool = pool.filter(func(c): return c["rank"] == "B")
+	var a_pool = pool.filter(func(c): return c["rank"] == "A")
+	var s_pool = pool.filter(func(c): return c["rank"] == "S")
 	
-	var count = 0
-	for card in available_cards:
-		if not previous_cards.has(card["id"]):
-			create_card(card)
-			count += 1
-		if count >= 3:
-			break
-	if count < 3:
-		var i = 0
-		while count < 3 and i < available_cards.size():
-			create_card(available_cards[i])
-			count += 1
-			i += 1
+	var b_count = 0
+	var a_count = 0
+	var s_count = 0
+
+	match main.current_room:
+		0:
+			b_count = 4
+		1:
+			b_count = 3
+			a_count = 1
+		2:
+			b_count = 1
+			a_count = 3
+		3:
+			a_count = 3
+			s_count = 1
+		_:
+			b_count = 2
+			a_count = 2
+
+	var selected_cards = []
+	
+	selected_cards += draw_cards(b_pool, b_count)
+	selected_cards += draw_cards(a_pool, a_count)
+	selected_cards += draw_cards(s_pool, s_count)
+	
+	var remaining = 4 - selected_cards.size()
+	if remaining > 0:
+		var fallback_pool = pool.duplicate()
+		for card in selected_cards:
+			fallback_pool.erase(card)
+		selected_cards += draw_cards(fallback_pool, remaining)
+		
+	selected_cards.shuffle()
+	for data in selected_cards:
+		create_card(data)
+	
 	previous_cards.clear()
 	for c in card_container.get_children():
 		previous_cards.append(c.card_id)
@@ -88,12 +116,11 @@ func show_card_selection_async():
 	
 func create_card(data):
 	var card = CARD_SCENE.instantiate()
-	card.card_id = data.id
-	card.card_name = data.name
-	card.card_rank = data.rank
+	card.card_id = data["id"]
+	card.card_name = data["name"]
+	card.card_rank = data["rank"]
 
 	card.card_selected.connect(self._on_card_selected)
-
 	card_container.add_child(card)
 
 func clear_cards():
@@ -103,8 +130,7 @@ func clear_cards():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	visible = false
-	if not refresh_button.pressed.is_connected(_on_refresh_pressed):
-		refresh_button.pressed.connect(_on_refresh_pressed)
+
 
 func _on_card_selected(card_id):
 	if picked_cards.has(card_id):
@@ -209,25 +235,60 @@ func apply_reward(card_id):
 		_:
 			print("Other reward")
 
-func set_cards_enabled(enabled: bool):
-	for card in card_container.get_children():
-		if card is Button:
-			card.disabled = not enabled
-	refresh_button.disabled = not enabled
-
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
-
-
-func _on_refresh_pressed():
-	show_rewards()
-	if refresh_count <= 0:
-		refresh_button.disabled = true
-		return
 	
-	refresh_count -= 1
-	show_rewards()
-	
+func is_card_owned(card_id: int) -> bool:
+	match card_id:
+		0: 
+			return main.has_solar_coin
+		1: 
+			return main.has_lunar_coin
+		2: 
+			return main.has_wishbone
+		3: 
+			return main.has_golden_clover
+		4: 
+			return main.has_merchant_scroll
+		5: 
+			return main.has_impromptu_flip
+		6: 
+			return main.has_advanced_planning
+		7: 
+			return main.has_value_increase
+		8: 
+			return main.has_lending_charge
+		9: 
+			return main.has_coin_snipe
+		10: 
+			return main.has_simple_interest
+		11: 
+			return main.has_lucky_pair
+		12: 
+			return main.has_sleight_of_hand
+		13: 
+			return main.has_piggy
+		14: 
+			return main.has_pocket_money
+		15: 
+			return main.has_passive_income
+		16: 
+			return main.has_magic_trick
+		17: 
+			return main.has_reimbursement
+		18: 
+			return main.has_payback
+		19: 
+			return main.has_loan_shark
+		20: 
+			return main.has_spare_change
+		21: 
+			return main.has_triple_nickel
+		22: 
+			return main.has_inflation
+		23: 
+			return main.has_active_income
+		24: 
+			return main.has_pay_down
+		25: 
+			return main.has_refund
+		_:
+			return false

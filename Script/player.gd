@@ -51,7 +51,7 @@ func reset_stats():
 	max_coin = 500 #Max Coin Capacity
 	max_reserve = 6
 	current_reserve = 0
-	coin = 10
+	coin = 100
 	max_flip = 16 #Max Flips Per Turn
 	current_flip = 0 #Current Flip Count
 	max_re_flip = 6 #Max Re-Flips Per Turn

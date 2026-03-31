@@ -20,7 +20,6 @@ var max_capacity: int = 18
 @onready var _15: ColorRect = $"Deck/Row 3/15"
 @onready var _16: ColorRect = $"Deck/Row 3/16"
 
-
 @onready var a1: TextureRect = $"Deck/Wheels/Rune_Layer1/1"
 @onready var a2: TextureRect = $"Deck/Wheels/Rune_Layer1/2"
 @onready var a3: TextureRect = $"Deck/Wheels/Rune_Layer1/3"
@@ -38,7 +37,6 @@ var max_capacity: int = 18
 @onready var a15: TextureRect = $"Deck/Wheels/Rune_Layer4/15"
 @onready var a16: TextureRect = $"Deck/Wheels/Rune_Layer4/16"
 
-
 @onready var sigil_textures: Array = [a1, a2, a3, a4,a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16]
 
 @onready var coin_reserve: ColorRect = $CoinReserve
@@ -55,13 +53,35 @@ func _process(delta: float) -> void:
 func get_vacant_slot(current_flip):
 	var slot = get("_" + str(current_flip))
 	sigil_textures[current_flip - 1].visible = true
-	var pos_x = slot.global_position.x - 16
-	var pos_y = slot.global_position.y + 20
+	var pos_x
+	var pos_y
+	if is_instance_valid(slot):
+		pos_x = slot.global_position.x - 16
+		pos_y = slot.global_position.y + 20
 	return [pos_x,pos_y]
 
 func get_reserve_slot():
-	return coin_reserve.global_position
+	var slot = coin_reserve
+	var pos_x = slot.global_position.x + randi_range(-50,50)
+	var pos_y = slot.global_position.y + randi_range(-50,50)
+	return [pos_x,pos_y]
 	
 func reset_sigils():
 	for sigil in sigil_textures:
+		sigil.modulate = Color(1,1,1,1)
 		sigil.visible = false
+		
+func sigil_light_up():
+	for sigil in sigil_textures:
+		sigil.self_modulate = Color(18.892, 18.892, 18.892)
+	
+func sigil_unlight_():
+	for sigil in sigil_textures:
+		sigil.self_modulate = Color(1,1,1)
+		
+func sigil_pressed():
+	var tween = create_tween()
+	for sigil in sigil_textures:
+		sigil.self_modulate = Color(0.624,0.347,1,1)
+		tween.tween_property(sigil, "modulate:a", 0.0, 0.05)
+		

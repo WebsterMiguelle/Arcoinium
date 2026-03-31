@@ -18,6 +18,7 @@ func _ready() -> void:
 		_update_visuals(player_node.coin)
 
 func _pressed() -> void:
+	print("PRESSED")
 	if lifted_slot:
 		var slot = lifted_slot
 		lifted_slot = null 
@@ -65,3 +66,7 @@ func _on_mouse_exited() -> void:
 		var t = create_tween()
 		t.tween_property(lifted_slot, "position:y", 0, 0.1)
 		lifted_slot = null
+
+
+func _on_pressed() -> void:
+	pass # Replace with function body.

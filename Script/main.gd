@@ -102,6 +102,7 @@ $"Progression Map/Boss"
 @onready var passive_label = $"Battle UI/PassiveContainer"
 @onready var enemy_passive_label = $"Battle UI/EnemyLabelNotification"
 
+var active_passive_notifs: Dictionary = {}
 
 const PASSIVE_SCENE = preload("res://Scene/passsive_notification.tscn")
 
@@ -418,9 +419,13 @@ func _process(delta: float) -> void:
 
 func activate_pre_battle_passives():
 	
+	show_all_passive_notifications()
+	
 	if has_value_added_tax:
 		player.debt += 5
 		show_floating_label(player,0,LabelType.VALUE_ADDED_TAX)
+		
+		
 	passive_income_used = false
 	payback_used = false
 	payback_coins = 12
@@ -915,35 +920,30 @@ func _on_endturn_pressed():
 	if gain > highest_gain:
 		highest_gain = gain
 			
-func show_passive_notification(text: String, duration: float = 1.5) -> void:
-	var notif = PASSIVE_SCENE.instantiate()
-	passive_label.add_child(notif)
-	
-	notif.setup(text)
-	
-	var container_width = passive_label.get_size().x
-	notif.position = Vector2(container_width + 50, 0)
-	
-	notif.modulate.a = 1.0
-	notif.scale = Vector2(0.9, 0.9)
-	notif.z_index = 100
-	
-	var tween_in = create_tween()
-	tween_in.parallel().tween_property(notif, "position:x", 0, 0.3)
-	tween_in.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.3)
-	
-	for i in range(passive_label.get_child_count()):
-		var child = passive_label.get_child(i)
-		if child != notif:
-			child.position.y += 30
-			
-		await get_tree().create_timer(duration).timeout
-	
-	var tween_out = create_tween()
-	tween_out.tween_property(notif, "modulate:a", 0.0, 0.5)
-	tween_out.tween_callback(func():
-		notif.queue_free()
-	)
+	#func show_passive_notification(text: String, duration: float = 1.5) -> void:
+		#var notif = PASSIVE_SCENE.instantiate()
+		#passive_label.add_child(notif)
+		
+		#notif.setup(text)
+		
+		#var container_width = passive_label.get_rect().size.x
+		#notif.position = Vector2(container_width + 50, 0)
+		
+		#notif.modulate.a = 1.0
+		#notif.scale = Vector2(0.9, 0.9)
+		#notif.z_index = 100
+		
+		#var tween_in = create_tween()
+		#tween_in.parallel().tween_property(notif, "position:x", 0, 0.3)
+		#tween_in.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.3)
+		
+		#await get_tree().create_timer(duration).timeout
+		
+		#var tween_out = create_tween()
+		#tween_out.tween_property(notif, "modulate:a", 0.0, 0.5)
+		#tween_out.tween_callback(func():
+			#notif.queue_free()
+		#)
 	
 func show_enemy_passive(text: String, duration: float = 1.5) -> void:
 	if not is_instance_valid(enemy_passive_label):
@@ -951,7 +951,7 @@ func show_enemy_passive(text: String, duration: float = 1.5) -> void:
 		
 	enemy_passive_label.text = text
 	enemy_passive_label.visible = true
-	enemy_passive_label.modulate = Color(0.0, 0.0, 0.0, 1.0)
+	enemy_passive_label.modulate.a = 0.0
 	enemy_passive_label.z_index = 100
 	
 	var tween = create_tween()
@@ -1865,3 +1865,122 @@ func _play_progression_cutscene(from_index: int, to_index: int) -> void:
 	
 	progression_map.visible = false
 	get_tree().paused = false
+	
+func add_passive_notification(id: String, text: String):
+	if active_passive_notifs.has(id):
+		return
+	
+	var notif = PASSIVE_SCENE.instantiate()
+	passive_label.add_child(notif)
+	notif.setup(text)
+	
+	#var start_x = get_viewport_rect().size.x + 100
+	notif.position = Vector2(passive_label.size.x + 200, 0)
+	
+	notif.modulate.a = 0.0     
+	notif.scale = Vector2(0.9, 0.9)
+	active_passive_notifs.erase(id)
+	active_passive_notifs[id] = notif
+	
+	var tween = create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(notif, "position:x", 0, 0.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(notif, "modulate:a", 1.0, 0.3)
+	tween.tween_property(notif, "scale", Vector2(1, 1), 0.3)
+	_restack_passives()
+	
+func remove_passive_notification(id: String):
+	if not active_passive_notifs.has(id):
+		return
+		
+	var notif = active_passive_notifs[id]
+	active_passive_notifs.erase(id)
+	var tween = create_tween()
+	tween.tween_property(notif, "modulate:a", 0.0, 0.4)
+	tween.tween_callback(func():
+		notif.queue_free()
+		_restack_passives()
+	)
+
+func _restack_passives():
+	var spacing = 40
+	var index = 0
+	
+	var keys = active_passive_notifs.keys()
+	keys.reverse()
+	
+	for id in keys:
+		var notif = active_passive_notifs[id]
+		
+		if not is_instance_valid(notif):
+			continue
+			
+		var target_y = index * spacing
+		var tween = create_tween()
+		tween.tween_property(notif, "position:y", target_y, 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		index += 1
+		
+		
+func show_all_passive_notifications():
+	if has_wishbone:
+		add_passive_notification("wishbone", "WISH BONE ACTIVE")
+	if has_golden_clover:
+		add_passive_notification("golden_clover", "GOLDEN CLOVER ACTIVE")
+	if has_solar_coin:
+		add_passive_notification("solar_coin", "SOLAR COIN ACTIVE")
+	if has_lunar_coin:
+		add_passive_notification("lunar_coin", "LUNAR COIN ACTIVE")
+	if has_merchant_scroll:
+		add_passive_notification("merchant_scroll", "MERCHANT SCROLL ACTIVE")
+	if has_impromptu_flip:
+		add_passive_notification("impromptu_flip", "IMPROMPTU FLIP ACTIVE")
+	if has_advanced_planning:
+		add_passive_notification("advanced_planning", "ADVANCED PLANNING ACTIVE")
+
+	# A-Rank
+	if has_magic_trick:
+		add_passive_notification("magic_trick", "MAGIC TRICK ACTIVE")
+	if has_sleight_of_hand:
+		add_passive_notification("sleight_of_hand", "SLEIGHT OF HAND ACTIVE")
+	if has_piggy:
+		add_passive_notification("piggy", "PIGGY ACTIVE")
+
+	# Innovator
+	if has_inflation:
+		add_passive_notification("inflation", "INFLATION ACTIVE")
+	if has_payback:
+		add_passive_notification("payback", "PAYBACK READY")
+	if has_lucky_pair:
+		add_passive_notification("lucky_pair", "LUCKY PAIR ACTIVE")
+	if has_value_increase:
+		add_passive_notification("value_increase", "VALUE INCREASE ACTIVE")
+
+	# Shooter
+	if has_spare_change:
+		add_passive_notification("spare_change", "SPARE CHANGE ACTIVE")
+	if has_triple_nickel:
+		add_passive_notification("triple_nickel", "TRIPLE NICKEL ACTIVE")
+	if has_refund:
+		add_passive_notification("refund", "REFUND ACTIVE")
+	if has_coin_snipe:
+		add_passive_notification("coin_snipe", "COIN SNIPE ACTIVE")
+
+	# Investor
+	if has_active_income:
+		add_passive_notification("active_income", "ACTIVE INCOME READY")
+	if has_pocket_money:
+		add_passive_notification("pocket_money", "POCKET MONEY ACTIVE")
+	if has_passive_income:
+		add_passive_notification("passive_income", "PASSIVE INCOME ACTIVE")
+	if has_simple_interest:
+		add_passive_notification("simple_interest", "SIMPLE INTEREST ACTIVE")
+
+	# Debtor
+	if has_pay_down:
+		add_passive_notification("pay_down", "PAY DOWN ACTIVE")
+	if has_reimbursement:
+		add_passive_notification("reimbursement", "REIMBURSEMENT ACTIVE")
+	if has_loan_shark:
+		add_passive_notification("loan_shark", "LOAN SHARK ACTIVE")
+	if has_lending_charge:
+		add_passive_notification("lending_charge", "LENDING CHARGE ACTIVE")

@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
 [ext_resource type="AudioStream" uid="uid://cfv556d3jos2i" path="res://BGM/Twilight Zone (Exploration).wav" id="4_6njx3"]
 [ext_resource type="AudioStream" uid="uid://0ld5vkxyd8pm" path="res://BGM/Twilight Zone (Combat).wav" id="5_0y2cb"]
-[ext_resource type="PackedScene" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
+[ext_resource type="PackedScene" uid="uid://b01fk6f1pan7q" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
 [ext_resource type="Script" uid="uid://deakh0hwd6qoh" path="res://Scene/CardManager.gd" id="5_3amdw"]
 [ext_resource type="Script" uid="uid://bh8ned1dqg5l3" path="res://Script/Shop_manager.gd" id="6_1xcnr"]
 [ext_resource type="PackedScene" uid="uid://dbj4jt3y4yqdx" path="res://Scene/EnemyHealthBar.tscn" id="6_c2iwn"]
@@ -21,12 +21,12 @@
 [ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="11_hiice"]
 [ext_resource type="Texture2D" uid="uid://dfw0gb82xbava" path="res://Assets/portraitBackground.png" id="12_pqe63"]
 [ext_resource type="Texture2D" uid="uid://cjjj3ulqgawva" path="res://Assets/apprenticeMage.png" id="12_sor6r"]
-[ext_resource type="Script" path="res://Script/game_over_ui.gd" id="13_0y2cb"]
+[ext_resource type="Script" uid="uid://ka64sstswrwl" path="res://Script/game_over_ui.gd" id="13_0y2cb"]
 [ext_resource type="Texture2D" uid="uid://bikjuk8fgo6p2" path="res://Assets/moonCaster-Sheet.png" id="13_pqe63"]
 [ext_resource type="Texture2D" uid="uid://di37676qo0yu4" path="res://Assets/sunCaster-Recovered-Sheet.png" id="14_aam5o"]
-[ext_resource type="Script" path="res://Script/pause_menu.gd" id="14_hspdg"]
+[ext_resource type="Script" uid="uid://cbrncrbtg7emf" path="res://Script/pause_menu.gd" id="14_hspdg"]
 [ext_resource type="Texture2D" uid="uid://ce2isyeu1yhmy" path="res://Assets/thrifter.png" id="15_nyb1q"]
-[ext_resource type="Script" path="res://Script/passive_manager.gd" id="16_6njx3"]
+[ext_resource type="Script" uid="uid://c4nmeg7fuu34n" path="res://Script/passive_manager.gd" id="16_6njx3"]
 [ext_resource type="Texture2D" uid="uid://dprlqvclal2j" path="res://Assets/trader.png" id="16_xw8bv"]
 [ext_resource type="Script" uid="uid://cjx7ln7nt56ad" path="res://Scene/particle_manager.gd" id="17_2ix4a"]
 [ext_resource type="Texture2D" uid="uid://c5kws41vksxsb" path="res://Assets/twilightSageDawn.png" id="18_aam5o"]
@@ -591,10 +591,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -210.0
-offset_top = -177.0
-offset_right = -10.0
-offset_bottom = -17.0
+offset_left = -214.0
+offset_top = -191.0
+offset_right = -14.0
+offset_bottom = -31.0
 grow_horizontal = 0
 grow_vertical = 0
 alignment = 2

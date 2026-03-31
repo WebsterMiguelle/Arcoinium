@@ -8,73 +8,72 @@ const Shop_card = preload("res://Scene/shop_card.tscn")
 @onready var coin_label = $Background/CoinLabel
 @onready var player: Node2D = $"../Player"
 
+# NEW: Reference the new text box you just made!
+@onready var descriptions: Label = $Background/Descriptions
+
 var player_ref
 var shop_done := false
 
 signal item_purchased(card_id, price)
 signal shop_closed
 
-
+# UPDATED: Now contains all the "desc" keys!
 var all_cards = [
-	{"id": 0, "name": "Solar Coin", "rank": "B"},
-	{"id": 1, "name": "Lunar Coin", "rank": "B"},
-	{"id": 2, "name": "Wish Bone", "rank": "B"},
-	{"id": 3, "name": "Golden Clover", "rank": "B"},
-	{"id": 4, "name": "Merchant’s Scroll", "rank": "B"},
-	{"id": 5, "name": "Impromptu Flip", "rank": "B"},
-	{"id": 6, "name": "Advanced Planning", "rank": "B"},
-	{"id": 7, "name": "Value Increase", "rank": "B"},
-	{"id": 8, "name": "Lending Charge", "rank": "B"},
-	{"id": 9, "name": "Coin Snipe", "rank": "B"},
-	{"id": 10, "name": "Simple Interest", "rank": "B"},
-	{"id": 11, "name": "Lucky Pair", "rank": "A"},
-	{"id": 12, "name": "Sleight of Hand", "rank": "A"},
-	{"id": 13, "name": "Piggy", "rank": "A"},
-	{"id": 14, "name": "Pocket Money", "rank": "A"},
-	{"id": 15, "name": "Passive Income", "rank": "A"},
-	{"id": 16, "name": "Magic Trick", "rank": "A"},
-	{"id": 17, "name": "Reimbursement", "rank": "A"},
-	{"id": 18, "name": "Payback", "rank": "A"},
-	{"id": 19, "name": "Loan Shark", "rank": "A"},
-	{"id": 20, "name": "Spare Change", "rank": "A"},
-	{"id": 21, "name": "Triple Nickel", "rank": "A"},
-	{"id": 22, "name": "Inflation", "rank": "S"},
-	{"id": 23, "name": "Jar'O Savings", "rank": "S"},
-	{"id": 24, "name": "Pay Down", "rank": "S"},
-	{"id": 25, "name": "Refund", "rank": "S"}
-	
+	{"id": 0, "name": "Solar Coin", "rank": "B", "desc": "Guarantee that the 1st coin flip is an H."},
+	{"id": 1, "name": "Lunar Coin", "rank": "B", "desc": "Guarantee that the 2nd coin flip is a T."},
+	{"id": 2, "name": "Wish Bone", "rank": "B", "desc": "Raise chances of flipping a Silver Coin by 10%."},
+	{"id": 3, "name": "Golden Clover", "rank": "B", "desc": "Raise chances of flipping a Gold Coin by 5%."},
+	{"id": 4, "name": "Merchant’s Scroll", "rank": "B", "desc": "25% Shop Discount."},
+	{"id": 5, "name": "Impromptu Flip", "rank": "B", "desc": "Upon ending the turn, the last coin on the deck will be flipped, switching its side."},
+	{"id": 6, "name": "Advanced Planning", "rank": "B", "desc": "The first 2 coins on the deck will not be affected by Re-Flips."},
+	{"id": 7, "name": "Value Increase", "rank": "B", "desc": "If there is a reserved copper/silver coin on the deck this turn, upgrade it to silver/gold next turn."},
+	{"id": 8, "name": "Lending Charge", "rank": "B", "desc": "Each HT/TH Pairs played this turn applies 3 Debt to the enemy."},
+	{"id": 9, "name": "Coin Snipe", "rank": "B", "desc": "If the player flipped a Silver or Gold Coin, Deal 1 Damage to the enemy then place it on the deck."},
+	{"id": 10, "name": "Simple Interest", "rank": "B", "desc": "At the start of each turn, add Gain to self based on 20% of Gain from last turn."},
+	{"id": 11, "name": "Lucky Pair", "rank": "A", "desc": "+10% Gold Flip Rate. The 7th and 8th Flipped Coin on every turn is guaranteed to be upgraded."},
+	{"id": 12, "name": "Sleight of Hand", "rank": "A", "desc": "+3 Extra Re-Flips and +2 Max Coin Reserve."},
+	{"id": 13, "name": "Piggy", "rank": "A", "desc": "At the start of each turn, Piggy will generate the 1st Coin Pair on the deck based on the previous turn’s Last Coin Pair."},
+	{"id": 14, "name": "Pocket Money", "rank": "A", "desc": "Start each battle with 4 Silver TT Pairs."},
+	{"id": 15, "name": "Passive Income", "rank": "A", "desc": "Start Combat with 8 Gain. In every battle, the first enemy damage will be turned into player HP. (Caps at 30 Coin Gain)"},
+	{"id": 16, "name": "Magic Trick", "rank": "A", "desc": "Upon ending the turn with 6 or more Coins, the 1st Coin Pair will be copied to the 2nd and 3rd Coin Pair."},
+	{"id": 17, "name": "Reimbursement", "rank": "A", "desc": "+3 Re-Flips. If all Coin Pairs played this turn are HT/TH, Double the Debt Application this turn."},
+	{"id": 18, "name": "Payback", "rank": "A", "desc": "If the player receives Fatal Damage from an enemy attack, set HP to 1, and immediately generate 12 Gold Coins on the deck next turn. (One-Time per Battle)"},
+	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "At the start of the enemy’s turn, immediately deal damage based on the Enemy’s Debt."},
+	{"id": 20, "name": "Spare Change", "rank": "A", "desc": "Upon a Re-Flip, retrieve all reserved coins on the deck."},
+	{"id": 21, "name": "Triple Nickel", "rank": "A", "desc": "+20% Silver Flip Rate. The first 3 Flips on every turn are guaranteed to be Silver Coins."},
+	{"id": 22, "name": "Inflation", "rank": "S", "desc": "+3 Extra Re-Flips. There is a 30% chance for each coin on the deck to upgrade every Re-Flip."},
+	{"id": 23, "name": "Jar'O Savings", "rank": "S", "desc": "At the start of each turn, if a player has 30 or more gained coins, cleanse all Debt Stacks and immediately deal 100% of Gain as damage."},
+	{"id": 24, "name": "Pay Down", "rank": "S", "desc": "Add 10 Debt at the end of the Enemy’s Turn. If Enemy Debt is greater than their Current Coins at the end of their turn, perish instantly."},
+	{"id": 25, "name": "Refund", "rank": "S", "desc": "+3 Re-Flips. There is a 10% chance to retrieve all coins on the deck upon a Re-Flip."}
 ]
-
 
 func show_shop_async(player):
 	shop_done = false
 	player_ref = player
-	#get_parent().reward_manager.set_cards_enabled(false)
-	
 	show()
-	
 	
 	bg.visible = true
 	visible = true
 	back_button.disabled = false 
 	
-	generate_shop()
+	# Clear the label when the shop opens!
+	if descriptions:
+		descriptions.text = ""
 	
-	var tween = create_tween()
-	tween.tween_property(bg, "modulate:a", 0.5, 0.5)
+	generate_shop()
 	
 	while not shop_done:
 		await get_tree().process_frame
 		
 func draw_cards(from_pool: Array, amount: int) -> Array:
-		var result = []
-		for i in range(amount):
-			if from_pool.is_empty():
-				break
-			var pick = from_pool.pick_random()
-			result.append(pick)
-			from_pool.erase(pick) # prevent duplicates
-		return result
+	var result = []
+	for i in range(amount):
+		if from_pool.is_empty():
+			break
+		var pick = from_pool.pick_random()
+		result.append(pick)
+		from_pool.erase(pick) # prevent duplicates
+	return result
 
 func generate_shop():
 	for child in container.get_children():
@@ -100,18 +99,41 @@ func generate_shop():
 		card.card_id = data["id"]
 		card.card_name = data["name"]
 		card.card_rank = data["rank"]
+		
+		# NEW: Hand the description to the shop card!
+		card.card_desc = data.get("desc", "")
+		
+		var base_price = 10
 		match card.card_rank:
-			"S":
-				card.price = 30
-			"A":
-				card.price = 20
-			"B":
-				card.price = 10
+			"S": base_price = 30
+			"A": base_price = 20
+			"B": base_price = 10
+			
+		# BONUS: Your Merchant Scroll Logic perfectly implemented!
+		if main.has_merchant_scroll:
+			card.price = int(base_price * 0.75) # 25% Off!
+		else:
+			card.price = base_price
+			
 		card.stock = 1
 		
 		card.card_bought.connect(_on_card_bought.bind(card))
-		container.add_child(card)
 		
+		# NEW: Listen for the hover signals!
+		card.card_hovered.connect(_on_card_hovered)
+		card.card_unhovered.connect(_on_card_unhovered)
+		
+		container.add_child(card)
+
+# NEW: Update the label when hovered
+func _on_card_hovered(description_text: String) -> void:
+	if descriptions:
+		descriptions.text = description_text
+
+# NEW: Clear the label when mouse leaves
+func _on_card_unhovered() -> void:
+	if descriptions:
+		descriptions.text = ""
 		
 func _on_card_bought(card_id, price, card):
 	if player_ref.coin >= price:
@@ -121,6 +143,10 @@ func _on_card_bought(card_id, price, card):
 		card.disabled = true
 		card.modulate = Color(0.5, 0.5, 0.5)
 		
+		# NEW: Clear the description text when they buy it
+		if descriptions:
+			descriptions.text = ""
+		
 		coin_label.text = "Coins: " + str(player_ref.coin)
 		for c in container.get_children():
 			c.update_state(player_ref.coin)
@@ -128,9 +154,8 @@ func _on_card_bought(card_id, price, card):
 	else:
 		print("Not enough coins!")
 		
-		
-		
 func apply_item(card_id):
+	# ... (Your existing apply_item logic remains entirely unchanged here) ...
 	match card_id:
 		0:
 			print("Solar Coin Passive")
@@ -220,44 +245,25 @@ func apply_item(card_id):
 func close_shop():
 	bg.visible = false
 	visible = false
-	#get_parent().reward_manager.set_cards_enabled(true)
 	shop_done = true
 	emit_signal("shop_closed")
 	
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if not back_button.pressed.is_connected(_on_back_pressed):
 		back_button.pressed.connect(_on_back_pressed)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	if not visible or player_ref == null:
 		return
-		
-	#for card in container.get_children():
-		#card.update_state(player_ref.coin)
 		
 	coin_label.text = "Coins: " + str(player_ref.coin)
 
 func _on_proceed_pressed():
 	emit_signal("shop_closed")
 	queue_free()
-	
-
 
 func _on_back_pressed() -> void:
 	close_shop()
-	
-func create_card(data):
-	var card = Shop_card.instantiate()
-	card.card_id = data["id"]
-	card.card_name = data["name"]
-	card.card_rank = data["rank"]
-
-	card.card_selected.connect(self._on_card_bought)
-
-	container.add_child(card)
 	
 func is_card_owned(card_id: int) -> bool:
 	match card_id:

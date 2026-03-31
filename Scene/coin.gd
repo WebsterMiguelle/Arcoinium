@@ -21,7 +21,7 @@ func setup(s,pos):
 	reserved = false
 	type = CoinType.COPPER
 	base_value = 2
-
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	match type:

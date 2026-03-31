@@ -33,6 +33,7 @@
 [ext_resource type="Texture2D" uid="uid://odbplao5e2m8" path="res://Assets/twilightSageDusk.png" id="19_nyb1q"]
 [ext_resource type="Texture2D" uid="uid://c1oyqjdr6wop8" path="res://Assets/animated_reflipbutton-Sheet.png" id="26_wimqa"]
 [ext_resource type="FontFile" uid="uid://drm3kueev5jxy" path="res://Assets/Fonts/OXYGENE1.TTF" id="27_t372l"]
+[ext_resource type="FontFile" uid="uid://cmvd7gycedmwg" path="res://Assets/Fonts/GothicByte.ttf" id="30_cr44a"]
 [ext_resource type="Texture2D" uid="uid://0of51v86402w" path="res://Assets/mapBackground.png" id="34_2oiod"]
 [ext_resource type="Texture2D" uid="uid://bj5nyxg8bmc1k" path="res://Assets/backgroundBanner.png" id="35_8bkap"]
 [ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="36_b0nqf"]
@@ -277,19 +278,6 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="Gradient" id="Gradient_75buv"]
-offsets = PackedFloat32Array(0, 0.22742476)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_c2iwn"]
-gradient = SubResource("Gradient_75buv")
-width = 512
-height = 512
-use_hdr = true
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-metadata/_snap_enabled = true
-
 [sub_resource type="CurveXYZTexture" id="CurveXYZTexture_6njx3"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0y2cb"]
@@ -330,6 +318,19 @@ animations = [{
 "speed": 1.0
 }]
 
+[sub_resource type="Gradient" id="Gradient_75buv"]
+offsets = PackedFloat32Array(0, 0.22742476)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_c2iwn"]
+gradient = SubResource("Gradient_75buv")
+width = 512
+height = 512
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
 [node name="Main" type="TextureRect" unique_id=975709238]
 anchors_preset = 15
 anchor_right = 1.0
@@ -338,6 +339,9 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_mxd2g")
 script = ExtResource("1_h2yge")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=659444321]
+position = Vector2(576, 324)
 
 [node name="SoundManager" type="Node2D" parent="." unique_id=2141723055]
 position = Vector2(576, 324)
@@ -566,10 +570,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -210.0
-offset_top = -177.0
-offset_right = -10.0
-offset_bottom = -17.0
+offset_left = -214.0
+offset_top = -191.0
+offset_right = -14.0
+offset_bottom = -31.0
 grow_horizontal = 0
 grow_vertical = 0
 alignment = 2
@@ -654,7 +658,6 @@ theme_override_font_sizes/font_size = 40
 text = "Game Statistics"
 
 [node name="CardManager" type="CanvasLayer" parent="." unique_id=806531365]
-visible = false
 script = ExtResource("5_3amdw")
 
 [node name="Background" type="ColorRect" parent="CardManager" unique_id=1035884839]
@@ -691,13 +694,19 @@ layout_mode = 2
 mouse_filter = 0
 theme_override_constants/separation = 20
 
-[node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
-position = Vector2(576, 320)
-scale = Vector2(17.921875, 10.046875)
-color = Color(1, 0.90334755, 0.5628785, 0.61960787)
-energy = 1.05
-texture = SubResource("GradientTexture2D_c2iwn")
-texture_scale = 0.46
+[node name="Card_Description" type="Label" parent="CardManager/Background" unique_id=2092561966]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 542.0
+offset_right = 1088.0
+offset_bottom = 615.0
+theme_override_fonts/font = ExtResource("30_cr44a")
+theme_override_font_sizes/font_size = 30
+text = "
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Vignette" type="CanvasModulate" parent="." unique_id=1590582319]
 color = Color(0.6964535, 0.6192358, 0.67436445, 1)
@@ -714,6 +723,7 @@ process_material = SubResource("ParticleProcessMaterial_0y2cb")
 
 [node name="PauseMenu" type="CanvasLayer" parent="." unique_id=722870696]
 process_mode = 3
+layer = 5
 visible = false
 script = ExtResource("14_hspdg")
 
@@ -759,16 +769,18 @@ offset_bottom = 405.0
 text = "Quit"
 
 [node name="ShopManager" type="CanvasLayer" parent="." unique_id=248022412]
+layer = 5
 visible = false
 script = ExtResource("6_1xcnr")
 
 [node name="Background" type="ColorRect" parent="ShopManager" unique_id=2038950803]
+self_modulate = Color(1, 1, 1, 0.5)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.007843138, 0.007843138, 0.007843138, 0.6431373)
+color = Color(0.012920001, 0.012920001, 0.012920001, 1)
 
 [node name="CenterContainer" type="CenterContainer" parent="ShopManager/Background" unique_id=1050710308]
 custom_minimum_size = Vector2(200, 300)
@@ -787,12 +799,12 @@ grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ShopManager/Background/CenterContainer" unique_id=1502406012]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 16
 
 [node name="CardContainer" type="GridContainer" parent="ShopManager/Background/CenterContainer/VBoxContainer" unique_id=1467760452]
 layout_mode = 2
-theme_override_constants/h_separation = 4
-theme_override_constants/v_separation = 4
+theme_override_constants/h_separation = 60
+theme_override_constants/v_separation = 83
 columns = 3
 
 [node name="Back" type="Button" parent="ShopManager/Background" unique_id=1330755300]
@@ -807,10 +819,11 @@ icon_alignment = 1
 
 [node name="Shop" type="Label" parent="ShopManager/Background" unique_id=1709692202]
 layout_mode = 0
-offset_left = 510.0
-offset_top = 54.0
-offset_right = 618.0
-offset_bottom = 109.0
+offset_left = 520.0
+offset_top = 8.0
+offset_right = 632.0
+offset_bottom = 63.0
+theme_override_fonts/font = ExtResource("36_b0nqf")
 theme_override_font_sizes/font_size = 40
 text = "SHOP"
 horizontal_alignment = 1
@@ -822,7 +835,19 @@ offset_left = 905.0
 offset_top = 40.0
 offset_right = 1105.0
 offset_bottom = 140.0
+theme_override_fonts/font = ExtResource("30_cr44a")
 theme_override_font_sizes/font_size = 24
+
+[node name="Descriptions" type="Label" parent="ShopManager/Background" unique_id=1569933575]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 64.0
+offset_right = 160.0
+offset_bottom = 576.0
+theme_override_fonts/font = ExtResource("30_cr44a")
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="PassiveManager" type="Node" parent="." unique_id=870229377]
 script = ExtResource("16_6njx3")
@@ -932,6 +957,18 @@ position = Vector2(1024, 432)
 position = Vector2(96, 424)
 scale = Vector2(2, 2.5)
 sprite_frames = SubResource("SpriteFrames_f043x")
+
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
+position = Vector2(576, 321)
+scale = Vector2(17.921875, 10.046875)
+color = Color(1, 0.90334755, 0.5628785, 0.61960787)
+energy = 1.05
+texture = SubResource("GradientTexture2D_c2iwn")
+texture_scale = 0.46
+
+[node name="Vignette" type="CanvasModulate" parent="." unique_id=1590582319]
+position = Vector2(576, 320)
+color = Color(0.6964535, 0.6192358, 0.67436445, 1)
 
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_exited"]

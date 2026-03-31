@@ -79,8 +79,8 @@ func show_rewards():
 			b_count = 1
 			a_count = 3
 		3:
-			a_count = 3
-			s_count = 1
+			a_count = 2
+			s_count = 2
 		_:
 			b_count = 2
 			a_count = 2
@@ -151,86 +151,85 @@ func apply_reward(card_id):
 	match card_id:
 		0:
 			print("Solar Coin Passive")
-			main.has_solar_coin = true
+			main.player.has_solar_coin = true
 		1:
 			print("Lunar Coin")
-			main.has_lunar_coin = true
+			main.player.has_lunar_coin = true
 		2:
 			print("Wish Bone")
-			main.has_wishbone = true
-			player.silver_flip_rate += 0.1
+			main.player.has_wishbone = true
+			main.player.silver_flip_rate += 0.1
 		3:
 			print("Golden Clover")
-			main.has_golden_clover = true
-			player.gold_flip_rate += 0.05
+			main.player.has_golden_clover = true
+			main.player.gold_flip_rate += 0.05
 		4:
 			print("Merchant Scroll Passive")
-			main.has_merchant_scroll = true
+			main.player.has_merchant_scroll = true
 		5:
 			print("Impromptu Flip Passive")
-			main.has_impromptu_flip = true
+			main.player.has_impromptu_flip = true
 		6:
 			print("Advanced Planning Passive")
-			main.has_advanced_planning = true
+			main.player.has_advanced_planning = true
 		7:
 			print("Value Increase Passive")
-			main.has_value_increase = true
+			main.player.has_value_increase = true
 		8:
 			print("Lending Charge Passive")
-			main.has_lending_charge = true
+			main.player.has_lending_charge = true
 		9:
 			print("Coin Snipe Passive")
-			main.has_coin_snipe = true
+			main.player.has_coin_snipe = true
 		10:
 			print("Simple Interest Passive")
-			main.has_simple_interest = true
+			main.player.has_simple_interest = true
 		11:
 			print("Lucky Pair")
-			main.has_lucky_pair = true
+			main.player.has_lucky_pair = true
 		12:
 			print("A-Rank: Sleight of Hand")
-			main.has_sleight_of_hand = true
-			player.max_flip += 3
-			player.max_reserve += 2
+			main.player.has_sleight_of_hand = true
+			main.player.max_reflip += 6
 		13:
 			print("A-Rank: Piggy")
-			main.has_piggy = true
+			main.player.has_piggy = true
 		14:
 			print("A-Rank: Pocket Money")
-			main.has_pocket_money = true
+			main.player.has_pocket_money = true
 		15:
 			print("A-Rank: Passive Income")
-			main.has_passive_income = true
+			main.player.has_passive_income = true
 		16:
 			print("A-Rank: Magic Trick")
-			main.has_magic_trick = true
+			main.player.has_magic_trick = true
 		17:
 			print("A-Rank: Reimbursement")
-			main.has_reimbursement = true
+			main.player.has_reimbursement = true
 		18:
 			print("A-Rank: Payback")
-			main.has_payback = true
+			main.player.has_payback = true
 		19:
 			print("A-Rank: Loan Shark")
-			main.has_loan_shark = true
+			main.player.has_loan_shark = true
 		20:
 			print("A-Rank: Spare Change")
-			main.has_spare_change = true
+			main.player.has_spare_change = true
 		21:
 			print("A-Rank:Triple Nickel")
-			main.has_triple_nickel = true
+			main.player.has_triple_nickel = true
 		22:
 			print("S-Rank: Inflation")
-			main.has_inflation = true
+			main.player.has_inflation = true
 		23:
 			print("S-Rank: Active Income")
-			main.has_active_income = true
+			main.player.has_active_income = true
 		24:
 			print("S-Rank: Pay Down")
-			main.has_pay_down = true
+			main.player.has_pay_down = true
 		25:
 			print("S-Rank: Refund")
-			main.has_refund = true
+			main.player.has_refund = true
 			
 		_:
 			print("Other reward")
@@ -239,56 +238,56 @@ func apply_reward(card_id):
 func is_card_owned(card_id: int) -> bool:
 	match card_id:
 		0: 
-			return main.has_solar_coin
+			return main.player.has_solar_coin
 		1: 
-			return main.has_lunar_coin
+			return main.player.has_lunar_coin
 		2: 
-			return main.has_wishbone
+			return main.player.has_wishbone
 		3: 
-			return main.has_golden_clover
+			return main.player.has_golden_clover
 		4: 
-			return main.has_merchant_scroll
+			return main.player.has_merchant_scroll
 		5: 
-			return main.has_impromptu_flip
+			return main.player.has_impromptu_flip
 		6: 
-			return main.has_advanced_planning
+			return main.player.has_advanced_planning
 		7: 
-			return main.has_value_increase
+			return main.player.has_value_increase
 		8: 
-			return main.has_lending_charge
+			return main.player.has_lending_charge
 		9: 
-			return main.has_coin_snipe
+			return main.player.has_coin_snipe
 		10: 
-			return main.has_simple_interest
+			return main.player.has_simple_interest
 		11: 
-			return main.has_lucky_pair
+			return main.player.has_lucky_pair
 		12: 
-			return main.has_sleight_of_hand
+			return main.player.has_sleight_of_hand
 		13: 
-			return main.has_piggy
+			return main.player.has_piggy
 		14: 
-			return main.has_pocket_money
+			return main.player.has_pocket_money
 		15: 
-			return main.has_passive_income
+			return main.player.has_passive_income
 		16: 
-			return main.has_magic_trick
+			return main.player.has_magic_trick
 		17: 
-			return main.has_reimbursement
+			return main.player.has_reimbursement
 		18: 
-			return main.has_payback
+			return main.player.has_payback
 		19: 
-			return main.has_loan_shark
+			return main.player.has_loan_shark
 		20: 
-			return main.has_spare_change
+			return main.player.has_spare_change
 		21: 
-			return main.has_triple_nickel
+			return main.player.has_triple_nickel
 		22: 
-			return main.has_inflation
+			return main.player.has_inflation
 		23: 
-			return main.has_active_income
+			return main.player.has_active_income
 		24: 
-			return main.has_pay_down
+			return main.player.has_pay_down
 		25: 
-			return main.has_refund
+			return main.player.has_refund
 		_:
 			return false

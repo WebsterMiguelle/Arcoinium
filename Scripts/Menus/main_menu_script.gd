@@ -6,7 +6,6 @@ extends Node
 @onready var sound_manager: Node2D = $SoundManager
 const COIN_FLIP = preload("uid://bmscttmxwr782")
 const PASSIVE_PASSIVE_INCOME = preload("uid://cl4xnombcshkv")
-
 var is_waiting_to_stop = false
 var freeze_frame_on : int = 0
 var float_tween: Tween

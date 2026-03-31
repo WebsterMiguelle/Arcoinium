@@ -12,6 +12,20 @@ border_width_right = 5
 border_width_bottom = 5
 border_color = Color(0, 0, 0, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nn8ao"]
+bg_color = Color(0.8745098, 0.7372549, 0.09019608, 0)
+border_width_left = 30
+border_width_top = 15
+border_width_right = 30
+border_width_bottom = 15
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(1, 1, 1, 1)
+shadow_size = 38
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_8yx6l"]
 atlas = ExtResource("2_nn8ao")
 region = Rect2(0, 240, 48, 80)
@@ -507,6 +521,7 @@ self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(150, 200)
 offset_right = 150.0
 offset_bottom = 201.0
+scale = Vector2(0.8, 0.8)
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -515,15 +530,30 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_08wl6")
 text = "CARD"
 script = ExtResource("1_dvf4x")
 
+[node name="GlowPanel" type="Panel" parent="." unique_id=1440354801]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 25.0
+offset_top = 21.25
+offset_right = -28.750015
+offset_bottom = 17.749985
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nn8ao")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=571560191]
-position = Vector2(76, 115.5)
-scale = Vector2(3.059, 2.9375)
+position = Vector2(72.5, 120)
+scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_23lek")
 animation = &"B"
+frame = 4
 
 [node name="Icon" type="AnimatedSprite2D" parent="." unique_id=1661363716]
-position = Vector2(77, 71.00001)
-scale = Vector2(2.9864998, 2.9375)
+position = Vector2(72.49999, 75)
+scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_u5k1i")
 animation = &"Pay Down"
 

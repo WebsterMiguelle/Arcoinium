@@ -19,6 +19,11 @@ config/icon="res://icon.svg"
 
 SceneTransition="*uid://dtv64xe1i5jfr"
 
+[display]
+
+window/size/mode=2
+window/stretch/mode="canvas_items"
+
 [gui]
 
 theme/custom_font="uid://dkuhhu62wkjgk"

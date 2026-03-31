@@ -7,6 +7,16 @@
 [ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="5_yf7ie"]
 [ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="6_uyvy5"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uyvy5"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+shadow_color = Color(1, 1, 1, 1)
+shadow_size = 91
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_i4xaw"]
 atlas = ExtResource("2_b43xc")
 region = Rect2(0, 0, 16, 16)
@@ -106,7 +116,7 @@ animations = [{
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_eslk0"]
 
-[node name="MainMenu" type="ColorRect" unique_id=1926174809 node_paths=PackedStringArray("coin", "button")]
+[node name="MainMenu" type="ColorRect" unique_id=1926174809]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -114,8 +124,16 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 script = ExtResource("1_sjmou")
-coin = NodePath("Coin")
-button = NodePath("Button")
+
+[node name="Glow" type="Panel" parent="." unique_id=712917737]
+layout_mode = 0
+offset_left = 568.0
+offset_top = 440.0
+offset_right = 584.0
+offset_bottom = 456.0
+pivot_offset = Vector2(-5, 5)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_uyvy5")
 
 [node name="Button" type="Button" parent="." unique_id=1036852794]
 self_modulate = Color(1, 1, 1, 0)

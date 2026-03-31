@@ -6,38 +6,37 @@ extends CanvasLayer
 const CARD_SCENE = preload("res://Scene/reward_card.tscn")
 @onready var player: Node2D = $"../Player"
 
+@onready var card_description: Label = $Background/Card_Description
 
 
 var all_cards = [
-	{"id": 0, "name": "Solar Coin", "rank": "B"},
-	{"id": 1, "name": "Lunar Coin", "rank": "B"},
-	{"id": 2, "name": "Wish Bone", "rank": "B"},
-	{"id": 3, "name": "Golden Clover", "rank": "B"},
-	{"id": 4, "name": "Merchant’s Scroll", "rank": "B"},
-	{"id": 5, "name": "Impromptu Flip", "rank": "B"},
-	{"id": 6, "name": "Advanced Planning", "rank": "B"},
-	{"id": 7, "name": "Value Increase", "rank": "B"},
-	{"id": 8, "name": "Lending Charge", "rank": "B"},
-	{"id": 9, "name": "Coin Snipe", "rank": "B"},
-	{"id": 10, "name": "Simple Interest", "rank": "B"},
-	{"id": 11, "name": "Lucky Pair", "rank": "A"},
-	{"id": 12, "name": "Sleight of Hand", "rank": "A"},
-	{"id": 13, "name": "Piggy", "rank": "A"},
-	{"id": 14, "name": "Pocket Money", "rank": "A"},
-	{"id": 15, "name": "Passive Income", "rank": "A"},
-	{"id": 16, "name": "Magic Trick", "rank": "A"},
-	{"id": 17, "name": "Reimbursement", "rank": "A"},
-	{"id": 18, "name": "Payback", "rank": "A"},
-	{"id": 19, "name": "Loan Shark", "rank": "A"},
-	{"id": 20, "name": "Spare Change", "rank": "A"},
-	{"id": 21, "name": "Triple Nickel", "rank": "A"},
-	{"id": 22, "name": "Inflation", "rank": "S"},
-	{"id": 23, "name": "Jar'O Savings", "rank": "S"},
-	{"id": 24, "name": "Pay Down", "rank": "S"},
-	{"id": 25, "name": "Refund", "rank": "S"}
-	
+	{"id": 0, "name": "Solar Coin", "rank": "B", "desc": "Guarantee that the 1st coin flip is an H."},
+	{"id": 1, "name": "Lunar Coin", "rank": "B", "desc": "Guarantee that the 2nd coin flip is a T."},
+	{"id": 2, "name": "Wish Bone", "rank": "B", "desc": "Raise chances of flipping a Silver Coin by 10%."},
+	{"id": 3, "name": "Golden Clover", "rank": "B", "desc": "Raise chances of flipping a Gold Coin by 5%."},
+	{"id": 4, "name": "Merchant's Scroll", "rank": "B", "desc": "25% Shop Discount."},
+	{"id": 5, "name": "Impromptu Flip", "rank": "B", "desc": "Upon ending the turn, the last coin on the deck will be flipped, switching its side."},
+	{"id": 6, "name": "Advanced Planning", "rank": "B", "desc": "The first 2 coins on the deck will not be affected by Re-Flips."},
+	{"id": 7, "name": "Value Increase", "rank": "B", "desc": "If there is a reserved copper/silver coin on the deck this turn, upgrade it to silver/gold next turn."},
+	{"id": 8, "name": "Lending Charge", "rank": "B", "desc": "Each HT/TH Pairs played this turn applies 3 Debt to the enemy."},
+	{"id": 9, "name": "Coin Snipe", "rank": "B", "desc": "If the player flipped a Silver or Gold Coin, Deal 1 Damage to the enemy then place it on the deck."},
+	{"id": 10, "name": "Simple Interest", "rank": "B", "desc": "At the start of each turn, add Gain to self based on 20% of Gain from last turn."},
+	{"id": 11, "name": "Lucky Pair", "rank": "A", "desc": "+10% Gold Flip Rate. The 7th and 8th Flipped Coin on every turn is guaranteed to be upgraded."},
+	{"id": 12, "name": "Sleight of Hand", "rank": "A", "desc": "+3 Extra Re-Flips and +2 Max Coin Reserve."},
+	{"id": 13, "name": "Piggy", "rank": "A", "desc": "At the start of each turn, Piggy will generate the 1st Coin Pair on the deck based on the previous turn’s Last Coin Pair."},
+	{"id": 14, "name": "Pocket Money", "rank": "A", "desc": "Start each battle with 4 Silver TT Pairs."},
+	{"id": 15, "name": "Passive Income", "rank": "A", "desc": "Start Combat with 8 Gain. In every battle, the first enemy damage will be turned into player HP. (Caps at 30 Coin Gain)"},
+	{"id": 16, "name": "Magic Trick", "rank": "A", "desc": "Upon ending the turn with 6 or more Coins, the 1st Coin Pair will be copied to the 2nd and 3rd Coin Pair."},
+	{"id": 17, "name": "Reimbursement", "rank": "A", "desc": "+3 Re-Flips. If all Coin Pairs played this turn are HT/TH, Double the Debt Application this turn."},
+	{"id": 18, "name": "Payback", "rank": "A", "desc": "If the player receives Fatal Damage from an enemy attack, set HP to 1, and immediately generate 12 Gold Coins on the deck next turn. (One-Time per Battle)"},
+	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "At the start of the enemy’s turn, immediately deal damage based on the Enemy’s Debt."},
+	{"id": 20, "name": "Spare Change", "rank": "A", "desc": "Upon a Re-Flip, retrieve all reserved coins on the deck."},
+	{"id": 21, "name": "Triple Nickel", "rank": "A", "desc": "+20% Silver Flip Rate. The first 3 Flips on every turn are guaranteed to be Silver Coins."},
+	{"id": 22, "name": "Inflation", "rank": "S", "desc": "+3 Extra Re-Flips. There is a 30% chance for each coin on the deck to upgrade every Re-Flip."},
+	{"id": 23, "name": "Jar'O Savings", "rank": "S", "desc": "At the start of each turn, if a player has 30 or more gained coins, cleanse all Debt Stacks and immediately deal 100% of Gain as damage."},
+	{"id": 24, "name": "Pay Down", "rank": "S", "desc": "Add 10 Debt at the end of the Enemy’s Turn. If Enemy Debt is greater than their Current Coins at the end of their turn, perish instantly."},
+	{"id": 25, "name": "Refund", "rank": "S", "desc": "+3 Re-Flips. There is a 10% chance to retrieve all coins on the deck upon a Re-Flip."}
 ]
-
 
 var picked_cards = []
 var max_picks = 2
@@ -119,8 +118,13 @@ func create_card(data):
 	card.card_id = data["id"]
 	card.card_name = data["name"]
 	card.card_rank = data["rank"]
+	card.card_desc = data["desc"]
 
 	card.card_selected.connect(self._on_card_selected)
+	
+	card.card_hovered.connect(self._on_card_hovered)
+	card.card_unhovered.connect(self._on_card_unhovered)
+	
 	card_container.add_child(card)
 
 func clear_cards():
@@ -292,3 +296,11 @@ func is_card_owned(card_id: int) -> bool:
 			return main.has_refund
 		_:
 			return false
+
+func _on_card_hovered(description_text: String) -> void:
+	# Add [center] tags if you want the text to always be centered!
+	card_description.text = description_text
+
+func _on_card_unhovered() -> void:
+	# Clear the text box when the mouse leaves the card
+	card_description.text = ""

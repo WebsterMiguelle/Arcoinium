@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ddet242jm5v23"]
 
-[ext_resource type="Script" path="res://Script/coin.gd" id="1_byqvs"]
+[ext_resource type="Script" uid="uid://ctvgpe532fo2k" path="res://Script/coin.gd" id="1_byqvs"]
 [ext_resource type="Texture2D" uid="uid://brn3ihcjo08pk" path="res://Assets/Coins/sun_to_moon_coin-Sheet.png" id="2_byqvs"]
 [ext_resource type="Texture2D" uid="uid://b26gbj0tgcnn" path="res://Assets/16bitcoins.png" id="2_jea4o"]
 
@@ -88,6 +88,10 @@ region = Rect2(64, 16, 16, 16)
 atlas = ExtResource("2_jea4o")
 region = Rect2(0, 32, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_4l3rx"]
+atlas = ExtResource("2_jea4o")
+region = Rect2(16, 32, 16, 16)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_s32fv"]
 atlas = ExtResource("2_byqvs")
 region = Rect2(16, 32, 16, 16)
@@ -119,10 +123,6 @@ region = Rect2(48, 32, 16, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_nn1j4"]
 atlas = ExtResource("2_byqvs")
 region = Rect2(64, 32, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4l3rx"]
-atlas = ExtResource("2_jea4o")
-region = Rect2(16, 32, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_hncfd"]
 animations = [{
@@ -236,6 +236,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_4l3rx")
+}],
+"loop": true,
+"name": &"silver_tail",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_s32fv")
 }, {
 "duration": 1.0,
@@ -267,14 +275,6 @@ animations = [{
 "loop": false,
 "name": &"silver_to_tail",
 "speed": 8.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_4l3rx")
-}],
-"loop": true,
-"name": &"tail_silver",
-"speed": 5.0
 }]
 
 [node name="Coin" type="Node2D" unique_id=1898979683]
@@ -285,4 +285,4 @@ texture_filter = 1
 position = Vector2(40, 40)
 scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_hncfd")
-animation = &"copper_head"
+animation = &"silver_tail"

@@ -18,6 +18,7 @@ func _on_resume_pressed() -> void:
 
 
 func _on_end_run_pressed() -> void:
+	print("Pause Menu: End Run pressed")
 	emit_signal("end_run_pressed")
 
 

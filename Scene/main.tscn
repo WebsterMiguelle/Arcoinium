@@ -3,21 +3,322 @@
 [ext_resource type="Script" uid="uid://qxyeds7oh4s7" path="res://Script/main.gd" id="1_h2yge"]
 [ext_resource type="Texture2D" uid="uid://bvtpq810pp6la" path="res://Assets/New Background.png" id="1_mxd2g"]
 [ext_resource type="Script" uid="uid://bunbms60cogmi" path="res://Script/player.gd" id="2_1bvp3"]
+[ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="3_hspdg"]
 [ext_resource type="Script" uid="uid://dedsjnmo4366e" path="res://Script/enemy.gd" id="3_lquwl"]
 [ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
+[ext_resource type="AudioStream" uid="uid://cfv556d3jos2i" path="res://BGM/Twilight Zone (Exploration).wav" id="4_6njx3"]
+[ext_resource type="AudioStream" uid="uid://0ld5vkxyd8pm" path="res://BGM/Twilight Zone (Combat).wav" id="5_0y2cb"]
+[ext_resource type="PackedScene" uid="uid://b01fk6f1pan7q" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
 [ext_resource type="Script" uid="uid://deakh0hwd6qoh" path="res://Scene/CardManager.gd" id="5_3amdw"]
-[ext_resource type="Script" uid="uid://ka64sstswrwl" path="res://Scene/game_over_ui.gd" id="5_75buv"]
 [ext_resource type="Script" uid="uid://bh8ned1dqg5l3" path="res://Script/Shop_manager.gd" id="6_1xcnr"]
 [ext_resource type="PackedScene" uid="uid://dbj4jt3y4yqdx" path="res://Scene/EnemyHealthBar.tscn" id="6_c2iwn"]
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="6_mxd2g"]
 [ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="7_0sxm5"]
-[ext_resource type="Script" uid="uid://byrcn8pelxayw" path="res://Script/coin_deck.gd" id="7_deck"]
-[ext_resource type="Script" uid="uid://cbrncrbtg7emf" path="res://Script/pause_menu.gd" id="7_pause"]
-[ext_resource type="Texture2D" uid="uid://c4wd4jo1dquma" path="res://Assets/Sun_caster.png" id="8_0sxm5"]
-[ext_resource type="Script" uid="uid://c4nmeg7fuu34n" path="res://Script/passive_manager.gd" id="9_c2iwn"]
+[ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="7_3pt4j"]
+[ext_resource type="Script" uid="uid://byrcn8pelxayw" path="res://Script/coin_deck.gd" id="7_ow1sv"]
+[ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="9_jbas8"]
+[ext_resource type="Texture2D" uid="uid://r5gatuytbe0t" path="res://Assets/taxCollector.png" id="10_p4j74"]
+[ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="11_hiice"]
+[ext_resource type="Texture2D" uid="uid://dfw0gb82xbava" path="res://Assets/portraitBackground.png" id="12_pqe63"]
+[ext_resource type="Texture2D" uid="uid://cjjj3ulqgawva" path="res://Assets/apprenticeMage.png" id="12_sor6r"]
+[ext_resource type="Script" uid="uid://ka64sstswrwl" path="res://Script/game_over_ui.gd" id="13_0y2cb"]
+[ext_resource type="Texture2D" uid="uid://bikjuk8fgo6p2" path="res://Assets/moonCaster-Sheet.png" id="13_pqe63"]
+[ext_resource type="Texture2D" uid="uid://di37676qo0yu4" path="res://Assets/sunCaster-Recovered-Sheet.png" id="14_aam5o"]
+[ext_resource type="Script" uid="uid://cbrncrbtg7emf" path="res://Script/pause_menu.gd" id="14_hspdg"]
+[ext_resource type="Texture2D" uid="uid://ce2isyeu1yhmy" path="res://Assets/thrifter.png" id="15_nyb1q"]
+[ext_resource type="Script" uid="uid://c4nmeg7fuu34n" path="res://Script/passive_manager.gd" id="16_6njx3"]
+[ext_resource type="Texture2D" uid="uid://dprlqvclal2j" path="res://Assets/trader.png" id="16_xw8bv"]
+[ext_resource type="Script" uid="uid://cjx7ln7nt56ad" path="res://Scene/particle_manager.gd" id="17_2ix4a"]
+[ext_resource type="Texture2D" uid="uid://c5kws41vksxsb" path="res://Assets/twilightSageDawn.png" id="18_aam5o"]
+[ext_resource type="Texture2D" uid="uid://odbplao5e2m8" path="res://Assets/twilightSageDusk.png" id="19_nyb1q"]
+[ext_resource type="Texture2D" uid="uid://c1oyqjdr6wop8" path="res://Assets/animated_reflipbutton-Sheet.png" id="26_wimqa"]
+[ext_resource type="FontFile" uid="uid://drm3kueev5jxy" path="res://Assets/Fonts/OXYGENE1.TTF" id="27_t372l"]
+[ext_resource type="Texture2D" uid="uid://0of51v86402w" path="res://Assets/mapBackground.png" id="34_2oiod"]
+[ext_resource type="Texture2D" uid="uid://bj5nyxg8bmc1k" path="res://Assets/backgroundBanner.png" id="35_8bkap"]
+[ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="36_b0nqf"]
+[ext_resource type="Texture2D" uid="uid://bvlc07v3u1brg" path="res://Assets/mapIconEnemy.png" id="37_2uk8d"]
+[ext_resource type="Texture2D" uid="uid://2mfylmq5p56b" path="res://Assets/miniCoinCaster-Sheet.png" id="37_ot48q"]
+[ext_resource type="Texture2D" uid="uid://ba7v6aaoo0irq" path="res://Assets/mapIconElite.png" id="38_cr44a"]
+[ext_resource type="Texture2D" uid="uid://4aebywoijoue" path="res://Assets/mapIconShop.png" id="39_tcekk"]
+[ext_resource type="Texture2D" uid="uid://fl7tmytwihia" path="res://Assets/mapIconBoss.png" id="40_1bveb"]
+
+[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]
+
+[sub_resource type="AudioStreamSynchronized" id="AudioStreamSynchronized_2ix4a"]
+stream_count = 2
+stream_0/stream = ExtResource("4_6njx3")
+stream_0/volume = 0.0
+stream_1/stream = ExtResource("5_0y2cb")
+stream_1/volume = 0.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f043x"]
+atlas = ExtResource("6_mxd2g")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5qrjd"]
+atlas = ExtResource("6_mxd2g")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5rsq1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f043x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5qrjd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wimqa"]
+atlas = ExtResource("9_jbas8")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t372l"]
+atlas = ExtResource("10_p4j74")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uctnp"]
+atlas = ExtResource("11_hiice")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xw8bv"]
+atlas = ExtResource("12_pqe63")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m37ut"]
+atlas = ExtResource("12_sor6r")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yoaul"]
+atlas = ExtResource("13_pqe63")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mepbf"]
+atlas = ExtResource("13_pqe63")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dvq1j"]
+atlas = ExtResource("14_aam5o")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_50v0s"]
+atlas = ExtResource("14_aam5o")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mu7ye"]
+atlas = ExtResource("15_nyb1q")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2oiod"]
+atlas = ExtResource("16_xw8bv")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8bkap"]
+atlas = ExtResource("18_aam5o")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b0nqf"]
+atlas = ExtResource("18_aam5o")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ot48q"]
+atlas = ExtResource("19_nyb1q")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2uk8d"]
+atlas = ExtResource("19_nyb1q")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8bkap"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wimqa")
+}],
+"loop": true,
+"name": &"ARISTOCRAT",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t372l")
+}],
+"loop": true,
+"name": &"COLLECTOR",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uctnp")
+}],
+"loop": true,
+"name": &"DWARF",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xw8bv")
+}],
+"loop": true,
+"name": &"Default",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m37ut")
+}],
+"loop": true,
+"name": &"MAGE",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yoaul")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mepbf")
+}],
+"loop": true,
+"name": &"MOON_CASTER",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dvq1j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_50v0s")
+}],
+"loop": true,
+"name": &"SUN_CASTER",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mu7ye")
+}],
+"loop": true,
+"name": &"THRIFTER",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2oiod")
+}],
+"loop": true,
+"name": &"TRADER",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"TWILIGHT_SAGE",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8bkap")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b0nqf")
+}],
+"loop": true,
+"name": &"TWILIGHT_SAGE_DAWN",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ot48q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2uk8d")
+}],
+"loop": true,
+"name": &"TWILIGHT_SAGE_DUSK",
+"speed": 1.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cr44a"]
+atlas = ExtResource("26_wimqa")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tcekk"]
+atlas = ExtResource("26_wimqa")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1bveb"]
+atlas = ExtResource("26_wimqa")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n7vvl"]
+atlas = ExtResource("26_wimqa")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mlc74"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cr44a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tcekk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1bveb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n7vvl")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_6njx3"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0y2cb"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(-59.555, 0, 0)
+emission_shape_scale = Vector3(5.42, 0.19, 1)
+emission_shape = 1
+emission_sphere_radius = 128.0
+angular_velocity_min = 8.2799835
+angular_velocity_max = 229.08998
+directional_velocity_min = -227.40001
+directional_velocity_max = 61.67998
+directional_velocity_curve = SubResource("CurveXYZTexture_6njx3")
+gravity = Vector3(0, -98, 0)
+scale_min = 0.0
+scale_max = 6.1299996
+color = Color(1, 1, 0.2901961, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mlc74"]
+atlas = ExtResource("37_ot48q")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_885bo"]
+atlas = ExtResource("37_ot48q")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_f043x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mlc74")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_885bo")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]
 
 [sub_resource type="Gradient" id="Gradient_75buv"]
-offsets = PackedFloat32Array(0, 0.33734939)
+offsets = PackedFloat32Array(0, 0.22742476)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_c2iwn"]
@@ -29,7 +330,7 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 metadata/_snap_enabled = true
 
-[node name="Main" type="TextureRect" unique_id=637478806]
+[node name="Main" type="TextureRect" unique_id=975709238]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -37,81 +338,637 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_mxd2g")
 script = ExtResource("1_h2yge")
+has_wishbone = true
+has_golden_clover = true
+has_solar_coin = true
+has_lunar_coin = true
+has_merchant_scroll = true
+has_impromptu_flip = true
+has_advanced_planning = true
+has_magic_trick = true
+has_sleight_of_hand = true
+has_piggy = true
+has_inflation = true
+has_payback = true
+has_lucky_pair = true
+has_value_increase = true
+has_spare_change = true
+has_triple_nickel = true
+has_refund = true
+has_coin_snipe = true
+has_active_income = true
+has_pocket_money = true
+has_passive_income = true
+has_simple_interest = true
+has_pay_down = true
+has_reimbursement = true
+has_loan_shark = true
+has_lending_charge = true
 
-[node name="CoinDeck" parent="." unique_id=228263131 instance=ExtResource("4_2wwxx")]
+[node name="SoundManager" type="Node2D" parent="." unique_id=2141723055]
 position = Vector2(576, 324)
 scale = Vector2(0.555, 0.555)
-script = ExtResource("7_deck")
+script = ExtResource("3_hspdg")
 
-[node name="Player" type="Node2D" parent="." unique_id=645093509]
+[node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1219776385]
+stream = SubResource("AudioStreamPolyphonic_hspdg")
+
+[node name="BGMPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=526912258]
+stream = SubResource("AudioStreamSynchronized_2ix4a")
+autoplay = true
+
+[node name="CoinDeck" parent="." unique_id=955153148 instance=ExtResource("4_2wwxx")]
+position = Vector2(576.00006, 324.00003)
+scale = Vector2(0.555, 0.555)
+script = ExtResource("7_ow1sv")
+
+[node name="Player" type="Node2D" parent="." unique_id=1483072070]
 script = ExtResource("2_1bvp3")
 
-[node name="Player_Portrait" type="TextureRect" parent="Player" unique_id=522594154]
-custom_minimum_size = Vector2(120, 120)
-offset_left = 21.0
-offset_top = 509.0
-offset_right = 141.0
-offset_bottom = 629.0
-texture = ExtResource("6_mxd2g")
+[node name="Player_Portrait" type="AnimatedSprite2D" parent="Player" unique_id=1707183387]
+position = Vector2(75.5, 570.99994)
+scale = Vector2(2.015625, 2)
+sprite_frames = SubResource("SpriteFrames_5rsq1")
 
-[node name="Player Debt" type="Label" parent="Player" unique_id=1963981497]
-offset_left = 102.0
-offset_top = 472.0
-offset_right = 168.0
-offset_bottom = 491.0
+[node name="Label" type="Label" parent="Player/Player_Portrait" unique_id=1715864472]
+visible = false
+custom_minimum_size = Vector2(40, 20)
+offset_left = 23.0
+offset_top = 35.0
+offset_right = 144.0
+offset_bottom = 90.0
+theme_override_font_sizes/font_size = 35
+text = "Player"
+
+[node name="Player Gain" type="Label" parent="Player" unique_id=254214022]
+offset_left = 157.0
+offset_top = 520.0
+offset_right = 217.0
+offset_bottom = 539.0
+theme_override_colors/font_color = Color(0.8862745, 0.59607846, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = "GAIN:"
+
+[node name="Player Debt" type="Label" parent="Player" unique_id=2068659444]
+offset_left = 221.0
+offset_top = 522.0
+offset_right = 287.0
+offset_bottom = 541.0
+theme_override_colors/font_color = Color(0.54901963, 0, 0.42745098, 1)
+theme_override_font_sizes/font_size = 18
 text = "DEBT: 67"
+vertical_alignment = 1
 
-[node name="Frame" type="TextureRect" parent="Player" unique_id=1615650423]
+[node name="PlayerFrame" type="TextureRect" parent="Player" unique_id=152420565]
 offset_top = 493.0
 offset_right = 154.0
 offset_bottom = 648.0
 texture = ExtResource("7_0sxm5")
 
-[node name="Enemy" type="Node2D" parent="." unique_id=1992140612]
+[node name="Enemy" type="Node2D" parent="." unique_id=651932115]
 script = ExtResource("3_lquwl")
 
-[node name="Enemy_Portrait" type="TextureRect" parent="Enemy" unique_id=1056059216]
+[node name="Enemy_Portrait" type="Control" parent="Enemy" unique_id=686241934]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 3
+anchors_preset = 0
 offset_left = 1016.325
 offset_top = 17.97
-texture = ExtResource("8_0sxm5")
+offset_right = 1136.3256
+offset_bottom = 137.97021
 
-[node name="Battle UI" type="CanvasLayer" parent="." unique_id=1842511652]
+[node name="Enemy_Portrait_Sprite" type="AnimatedSprite2D" parent="Enemy/Enemy_Portrait" unique_id=1083960378]
+position = Vector2(58.67501, 59.03)
+scale = Vector2(1.9374993, 1.9375)
+sprite_frames = SubResource("SpriteFrames_8bkap")
+animation = &"TWILIGHT_SAGE"
 
-[node name="EnemyHealthBar2" parent="Battle UI" unique_id=801324529 instance=ExtResource("6_c2iwn")]
-offset_left = 1005.0
-offset_top = 104.0
+[node name="Enemy Gain" type="Label" parent="Enemy" unique_id=1475439462]
+offset_left = 927.0
+offset_top = 115.0
+offset_right = 987.0
+offset_bottom = 134.0
+theme_override_colors/font_color = Color(0.8881403, 0.5978696, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = "GAIN: 30"
+vertical_alignment = 1
+
+[node name="Enemy Debt" type="Label" parent="Enemy" unique_id=2027756836]
+offset_left = 842.0
+offset_top = 113.0
+offset_right = 908.0
+offset_bottom = 138.0
+theme_override_colors/font_color = Color(0.55085, 2.892658e-05, 0.42899314, 1)
+theme_override_font_sizes/font_size = 18
+text = "DEBT: 30"
+vertical_alignment = 1
+
+[node name="EnemyFrame" type="TextureRect" parent="Enemy" unique_id=1466787434]
+offset_left = 998.0
+offset_right = 1152.0
+offset_bottom = 155.0
+texture = ExtResource("7_0sxm5")
+
+[node name="Battle UI" type="Node" parent="." unique_id=1754841999]
+
+[node name="PlayerHealthBar2" parent="Battle UI" unique_id=1546897993 instance=ExtResource("5_1xcnr")]
+offset_left = 146.0
+offset_top = 548.0
+offset_right = 238.0
+offset_bottom = 564.0
 scale = Vector2(4, 4)
 
-[node name="Turn UI" type="ColorRect" parent="Battle UI" unique_id=2073122718]
-visible = false
+[node name="HealthLabel" type="Label" parent="Battle UI" unique_id=580605117]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 158.0
+offset_top = 290.0
+offset_right = 281.0
+offset_bottom = 322.0
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.8500227, 0.484913, 1)
+theme_override_font_sizes/font_size = 22
+text = "Coins:"
+
+[node name="EnemyHealthBar" parent="Battle UI" unique_id=1945687937 instance=ExtResource("6_c2iwn")]
+offset_left = 1005.0
+offset_top = 104.0
+offset_right = 1097.0
+offset_bottom = 120.0
+scale = Vector2(4, 4)
+
+[node name="EnemyHealthLabel" type="Label" parent="Battle UI" unique_id=1016348514]
+offset_left = 868.0
+offset_top = 5.0
+offset_right = 991.0
+offset_bottom = 37.0
+theme_override_colors/font_color = Color(0.9214317, 0.6317199, 0, 1)
+theme_override_fonts/font = ExtResource("7_3pt4j")
+theme_override_font_sizes/font_size = 22
+
+[node name="Re-Flip" type="Button" parent="Battle UI" unique_id=1181793745]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(150, 40)
+anchors_preset = -1
+anchor_right = 0.033
+anchor_bottom = 0.048
+offset_left = 185.00002
+offset_top = 350.00003
+offset_right = 296.984
+offset_bottom = 441.39597
+scale = Vector2(0.8, 0.8)
+theme_override_font_sizes/font_size = 20
+text = "
+"
+
+[node name="Reflip_Sprite" type="AnimatedSprite2D" parent="Battle UI/Re-Flip" unique_id=1866738486]
+position = Vector2(79.999985, 62.499996)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_mlc74")
+frame = 3
+frame_progress = 0.8581795
+
+[node name="Reflip_Label" type="Label" parent="Battle UI/Re-Flip" unique_id=1593752798]
+layout_mode = 0
+offset_left = 57.499992
+offset_top = 26.249998
+offset_right = 97.49999
+offset_bottom = 102.25
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 75
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Turn Calculation" type="Label" parent="Battle UI" unique_id=854498321]
+custom_minimum_size = Vector2(150, 40)
+offset_left = 106.93462
+offset_top = 169.0
+offset_right = 256.93463
+offset_bottom = 350.0
+scale = Vector2(1.2137691, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 35
+text = "Turn"
+
+[node name="Turn UI" type="ColorRect" parent="Battle UI" unique_id=566011376]
 offset_left = -64.0
 offset_top = 276.0
 offset_right = 1232.0
 offset_bottom = 359.0
-color = Color(0, 0, 0, 0.58)
+color = Color(0, 0, 0, 0.5803922)
 
-[node name="Game Over UI" type="CanvasLayer" parent="." unique_id=337266201]
-script = ExtResource("5_75buv")
+[node name="Turn UI Label" type="Label" parent="Battle UI/Turn UI" unique_id=421358590]
+layout_mode = 0
+offset_right = 1165.0
+offset_bottom = 85.0
+theme_override_font_sizes/font_size = 30
+text = "BATTLE START"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="CardManager" type="CanvasLayer" parent="." unique_id=209321248]
+[node name="Endturn" type="Button" parent="Battle UI" unique_id=1034445602]
+self_modulate = Color(1, 1, 1, 0)
+offset_left = 453.0
+offset_top = 201.0
+offset_right = 697.0
+offset_bottom = 445.0
+
+[node name="EnemyLabelNotification" type="Label" parent="Battle UI" unique_id=1694276821]
+custom_minimum_size = Vector2(600, 0)
+offset_left = 273.0
+offset_top = 131.0
+offset_right = 873.0
+offset_bottom = 166.0
+theme_override_font_sizes/font_size = 25
+text = "EnemyLabel Notification"
+horizontal_alignment = 1
+
+[node name="PassiveContainer" type="VBoxContainer" parent="Battle UI" unique_id=709571412]
+custom_minimum_size = Vector2(200, 160)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -214.0
+offset_top = -191.0
+offset_right = -14.0
+offset_bottom = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+alignment = 2
+
+[node name="Game Over UI" type="CanvasLayer" parent="." unique_id=994626979]
+visible = false
+script = ExtResource("13_0y2cb")
+
+[node name="ColorRect" type="ColorRect" parent="Game Over UI" unique_id=1423685417]
+offset_left = -25.0
+offset_top = -10.0
+offset_right = 1168.0
+offset_bottom = 662.0
+color = Color(0, 0, 0, 0.7607843)
+
+[node name="Restart" type="Button" parent="Game Over UI/ColorRect" unique_id=1995089938]
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -113.5
+offset_top = 53.0
+offset_right = 86.5
+offset_bottom = 113.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Restart"
+
+[node name="Gameover" type="Label" parent="Game Over UI/ColorRect" unique_id=1781032691]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -149.5
+offset_top = -41.5
+offset_right = 149.5
+offset_bottom = 41.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 60
+text = "Gameover"
+
+[node name="EnemyLabel" type="Label" parent="Game Over UI/ColorRect" unique_id=1741001806]
+custom_minimum_size = Vector2(400, 60)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -214.5
+offset_top = -133.0
+offset_right = 185.5
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 60
+text = "Slain"
+
+[node name="StatsLabel" type="Label" parent="Game Over UI/ColorRect" unique_id=387974470]
+custom_minimum_size = Vector2(300, 350)
+layout_mode = 0
+offset_left = 94.0
+offset_top = 183.0
+offset_right = 394.0
+offset_bottom = 533.0
+theme_override_font_sizes/font_size = 25
+text = "Game Statistics"
+
+[node name="GameStatLabel" type="Label" parent="Game Over UI/ColorRect" unique_id=701039209]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 113.0
+offset_right = 347.0
+offset_bottom = 168.0
+theme_override_font_sizes/font_size = 40
+text = "Game Statistics"
+
+[node name="CardManager" type="CanvasLayer" parent="." unique_id=806531365]
 visible = false
 script = ExtResource("5_3amdw")
 
-[node name="ShopManager" type="CanvasLayer" parent="." unique_id=1041967988]
+[node name="Background" type="ColorRect" parent="CardManager" unique_id=1035884839]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.6431373)
+
+[node name="CenterContainer" type="CenterContainer" parent="CardManager/Background" unique_id=2031190395]
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -150.0
+offset_right = 100.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CardManager/Background/CenterContainer" unique_id=1608470542]
+layout_mode = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="CardContainer" type="HBoxContainer" parent="CardManager/Background/CenterContainer/VBoxContainer" unique_id=989120313]
+layout_mode = 2
+mouse_filter = 0
+theme_override_constants/separation = 20
+
+[node name="ParticleManager" type="Node2D" parent="." unique_id=2081468604]
+script = ExtResource("17_2ix4a")
+
+[node name="Battle Particles" type="GPUParticles2D" parent="ParticleManager" unique_id=1039306359]
+position = Vector2(608, 693)
+amount = 30
+lifetime = 6.92
+randomness = 0.09
+process_material = SubResource("ParticleProcessMaterial_0y2cb")
+
+[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=722870696]
+process_mode = 3
+layer = 5
+visible = false
+script = ExtResource("14_hspdg")
+
+[node name="Panel" type="Panel" parent="PauseMenu" unique_id=1158800794]
+custom_minimum_size = Vector2(600, 500)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -250.0
+offset_right = 300.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Resume" type="Button" parent="PauseMenu/Panel" unique_id=496970523]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 0
+offset_left = 200.0
+offset_top = 37.0
+offset_right = 400.0
+offset_bottom = 137.0
+text = "Resume"
+
+[node name="EndRun" type="Button" parent="PauseMenu/Panel" unique_id=1637342553]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 0
+offset_left = 204.0
+offset_top = 166.0
+offset_right = 404.0
+offset_bottom = 266.0
+text = "Endrun"
+
+[node name="Quit" type="Button" parent="PauseMenu/Panel" unique_id=1056057779]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 0
+offset_left = 200.0
+offset_top = 305.0
+offset_right = 400.0
+offset_bottom = 405.0
+text = "Quit"
+
+[node name="ShopManager" type="CanvasLayer" parent="." unique_id=248022412]
+layer = 5
+visible = false
 script = ExtResource("6_1xcnr")
 
-[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=52511218]
+[node name="Background" type="ColorRect" parent="ShopManager" unique_id=2038950803]
+self_modulate = Color(1, 1, 1, 0.5)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.012920001, 0.012920001, 0.012920001, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="ShopManager/Background" unique_id=1050710308]
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -150.0
+offset_right = 100.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ShopManager/Background/CenterContainer" unique_id=1502406012]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CardContainer" type="GridContainer" parent="ShopManager/Background/CenterContainer/VBoxContainer" unique_id=1467760452]
+layout_mode = 2
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+columns = 3
+
+[node name="Back" type="Button" parent="ShopManager/Background" unique_id=1330755300]
+layout_mode = 0
+offset_left = 950.0
+offset_top = 561.0
+offset_right = 1115.0
+offset_bottom = 624.0
+theme_override_font_sizes/font_size = 40
+text = "Proceed"
+icon_alignment = 1
+
+[node name="Shop" type="Label" parent="ShopManager/Background" unique_id=1709692202]
+layout_mode = 0
+offset_left = 510.0
+offset_top = 54.0
+offset_right = 618.0
+offset_bottom = 109.0
+theme_override_font_sizes/font_size = 40
+text = "SHOP"
+horizontal_alignment = 1
+
+[node name="CoinLabel" type="Label" parent="ShopManager/Background" unique_id=2058663755]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 0
+offset_left = 905.0
+offset_top = 40.0
+offset_right = 1105.0
+offset_bottom = 140.0
+theme_override_font_sizes/font_size = 24
+
+[node name="PassiveManager" type="Node" parent="." unique_id=870229377]
+script = ExtResource("16_6njx3")
+
+[node name="Progression Map" type="CanvasLayer" parent="." unique_id=442417840]
 process_mode = 3
-visible = false
-script = ExtResource("7_pause")
+layer = 100
+offset = Vector2(0, 1000)
+transform = Transform2D(1, 0, 0, 1, 0, 1000)
 
-[node name="PassiveManager" type="Node" parent="." unique_id=1596461214]
-script = ExtResource("9_c2iwn")
+[node name="MapBackground" type="TextureRect" parent="Progression Map" unique_id=2037450257]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("34_2oiod")
 
-[node name="Vignetter" type="PointLight2D" parent="." unique_id=1128484850]
-position = Vector2(594, 324)
+[node name="Banner" type="TextureRect" parent="Progression Map/MapBackground" unique_id=1875690679]
+layout_mode = 0
+offset_left = 448.0
+offset_top = 48.0
+offset_right = 601.6
+offset_bottom = 88.0
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("35_8bkap")
+
+[node name="Banner Label" type="Label" parent="Progression Map/MapBackground/Banner" unique_id=770851896]
+self_modulate = Color(0.14509805, 0.12941177, 0.12156863, 1)
+layout_mode = 0
+offset_left = 25.599998
+offset_top = 9.599998
+offset_right = 127.6
+offset_bottom = 26.599998
+rotation = 0.09067865
+theme_override_fonts/font = ExtResource("36_b0nqf")
+text = "Twilight Zone"
+horizontal_alignment = 1
+
+[node name="Enemy1" type="TextureRect" parent="Progression Map/MapBackground" unique_id=79812036]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 464.0
+offset_right = 120.0
+offset_bottom = 512.0
+texture = ExtResource("37_2uk8d")
+
+[node name="Enemy2" type="TextureRect" parent="Progression Map/MapBackground" unique_id=397134419]
+layout_mode = 0
+offset_left = 232.0
+offset_top = 464.0
+offset_right = 280.0
+offset_bottom = 512.0
+texture = ExtResource("37_2uk8d")
+
+[node name="Enemy3" type="TextureRect" parent="Progression Map/MapBackground" unique_id=805506994]
+layout_mode = 0
+offset_left = 424.0
+offset_top = 464.0
+offset_right = 472.0
+offset_bottom = 512.0
+texture = ExtResource("37_2uk8d")
+
+[node name="EliteEnemy" type="TextureRect" parent="Progression Map/MapBackground" unique_id=1609057767]
+layout_mode = 0
+offset_left = 616.0
+offset_top = 464.0
+offset_right = 664.0
+offset_bottom = 512.0
+texture = ExtResource("38_cr44a")
+
+[node name="Shop" type="TextureRect" parent="Progression Map/MapBackground" unique_id=825695393]
+layout_mode = 0
+offset_left = 808.0
+offset_top = 464.0
+offset_right = 856.0
+offset_bottom = 512.0
+texture = ExtResource("39_tcekk")
+
+[node name="Boss" type="TextureRect" parent="Progression Map/MapBackground" unique_id=2069607408]
+layout_mode = 0
+offset_left = 1000.0
+offset_top = 464.0
+offset_right = 1048.0
+offset_bottom = 512.0
+texture = ExtResource("40_1bveb")
+
+[node name="Enemy 1" type="Marker2D" parent="Progression Map" unique_id=417052663]
+position = Vector2(96, 432)
+
+[node name="Enemy 2" type="Marker2D" parent="Progression Map" unique_id=566553087]
+position = Vector2(256, 432)
+
+[node name="Enemy 3" type="Marker2D" parent="Progression Map" unique_id=2042417836]
+position = Vector2(448, 432)
+
+[node name="Elite Enemy" type="Marker2D" parent="Progression Map" unique_id=1245316051]
+position = Vector2(640, 432)
+
+[node name="Shop" type="Marker2D" parent="Progression Map" unique_id=1158372386]
+position = Vector2(832, 432)
+
+[node name="Boss" type="Marker2D" parent="Progression Map" unique_id=728995645]
+position = Vector2(1024, 432)
+
+[node name="Player_Sprite" type="AnimatedSprite2D" parent="Progression Map" unique_id=148271655]
+position = Vector2(96, 424)
+scale = Vector2(2, 2.5)
+sprite_frames = SubResource("SpriteFrames_f043x")
+
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
+position = Vector2(576, 320)
+scale = Vector2(17.921875, 10.046875)
+color = Color(1, 0.90334755, 0.5628785, 0.61960787)
+energy = 1.05
 texture = SubResource("GradientTexture2D_c2iwn")
+texture_scale = 0.46
 
-[node name="Vignette" type="CanvasModulate" parent="." unique_id=211252321]
-visible = false
-color = Color(0, 0, 0, 1)
+[node name="Vignette" type="CanvasModulate" parent="." unique_id=1590582319]
+color = Color(0.6964535, 0.6192358, 0.67436445, 1)
+
+[connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]
+[connection signal="mouse_exited" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_exited"]
+[connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]
+[connection signal="mouse_entered" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_entered"]
+[connection signal="mouse_exited" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_exited"]
+[connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]
+[connection signal="pressed" from="Game Over UI/ColorRect/Restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/Resume" to="PauseMenu" method="_on_resume_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/EndRun" to="PauseMenu" method="_on_end_run_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/Quit" to="PauseMenu" method="_on_quit_pressed"]
+[connection signal="pressed" from="ShopManager/Background/Back" to="ShopManager" method="_on_back_pressed"]

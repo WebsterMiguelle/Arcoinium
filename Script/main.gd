@@ -222,6 +222,7 @@ func battle_start():
 	player.refresh_start_of_battle_stats()
 	enemy.refresh_start_of_battle_stats()
 	enemy.reset_passives()
+	show_all_passive_notifications()
 
 	coin_deck.reset_sigils()
 	update_enemy_gain_debt()
@@ -731,65 +732,65 @@ func _restack_passives():
 		
 		
 func show_all_passive_notifications():
-	if has_wishbone:
+	if player.has_wishbone:
 		add_passive_notification("wishbone", "WISH BONE ACTIVE")
-	if has_golden_clover:
+	if player.has_golden_clover:
 		add_passive_notification("golden_clover", "GOLDEN CLOVER ACTIVE")
-	if has_solar_coin:
+	if player.has_solar_coin:
 		add_passive_notification("solar_coin", "SOLAR COIN ACTIVE")
-	if has_lunar_coin:
+	if player.has_lunar_coin:
 		add_passive_notification("lunar_coin", "LUNAR COIN ACTIVE")
-	if has_merchant_scroll:
+	if player.has_merchant_scroll:
 		add_passive_notification("merchant_scroll", "MERCHANT SCROLL ACTIVE")
-	if has_impromptu_flip:
+	if player.has_impromptu_flip:
 		add_passive_notification("impromptu_flip", "IMPROMPTU FLIP ACTIVE")
-	if has_advanced_planning:
+	if player.has_advanced_planning:
 		add_passive_notification("advanced_planning", "ADVANCED PLANNING ACTIVE")
 
 	# A-Rank
-	if has_magic_trick:
+	if player.has_magic_trick:
 		add_passive_notification("magic_trick", "MAGIC TRICK ACTIVE")
-	if has_sleight_of_hand:
+	if player.has_sleight_of_hand:
 		add_passive_notification("sleight_of_hand", "SLEIGHT OF HAND ACTIVE")
-	if has_piggy:
+	if player.has_piggy:
 		add_passive_notification("piggy", "PIGGY ACTIVE")
 
 	# Innovator
-	if has_inflation:
+	if player.has_inflation:
 		add_passive_notification("inflation", "INFLATION ACTIVE")
-	if has_payback:
+	if player.has_payback:
 		add_passive_notification("payback", "PAYBACK READY")
-	if has_lucky_pair:
+	if player.has_lucky_pair:
 		add_passive_notification("lucky_pair", "LUCKY PAIR ACTIVE")
-	if has_value_increase:
+	if player.has_value_increase:
 		add_passive_notification("value_increase", "VALUE INCREASE ACTIVE")
 
 	# Shooter
-	if has_spare_change:
+	if player.has_spare_change:
 		add_passive_notification("spare_change", "SPARE CHANGE ACTIVE")
-	if has_triple_nickel:
+	if player.has_triple_nickel:
 		add_passive_notification("triple_nickel", "TRIPLE NICKEL ACTIVE")
-	if has_refund:
+	if player.has_refund:
 		add_passive_notification("refund", "REFUND ACTIVE")
-	if has_coin_snipe:
+	if player.has_coin_snipe:
 		add_passive_notification("coin_snipe", "COIN SNIPE ACTIVE")
 
 	# Investor
-	if has_active_income:
+	if player.has_active_income:
 		add_passive_notification("active_income", "ACTIVE INCOME READY")
-	if has_pocket_money:
+	if player.has_pocket_money:
 		add_passive_notification("pocket_money", "POCKET MONEY ACTIVE")
-	if has_passive_income:
+	if player.has_passive_income:
 		add_passive_notification("passive_income", "PASSIVE INCOME ACTIVE")
-	if has_simple_interest:
+	if player.has_simple_interest:
 		add_passive_notification("simple_interest", "SIMPLE INTEREST ACTIVE")
 
 	# Debtor
-	if has_pay_down:
+	if player.has_pay_down:
 		add_passive_notification("pay_down", "PAY DOWN ACTIVE")
-	if has_reimbursement:
+	if player.has_reimbursement:
 		add_passive_notification("reimbursement", "REIMBURSEMENT ACTIVE")
-	if has_loan_shark:
+	if player.has_loan_shark:
 		add_passive_notification("loan_shark", "LOAN SHARK ACTIVE")
-	if has_lending_charge:
+	if player.has_lending_charge:
 		add_passive_notification("lending_charge", "LENDING CHARGE ACTIVE")

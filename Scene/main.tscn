@@ -966,10 +966,6 @@ energy = 1.05
 texture = SubResource("GradientTexture2D_c2iwn")
 texture_scale = 0.46
 
-[node name="Vignette" type="CanvasModulate" parent="." unique_id=1590582319]
-position = Vector2(576, 320)
-color = Color(0.6964535, 0.6192358, 0.67436445, 1)
-
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_exited"]
 [connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]

@@ -18,6 +18,7 @@ signal hp_changed(new_hp)
 #SCENES
 const COIN = preload("uid://ddet242jm5v23")
 var main
+@onready var particle_manager: Node2D = $"../ParticleManager"
 
 #SOUNDS
 const COIN_FLIP = preload("uid://bmscttmxwr782")
@@ -154,8 +155,12 @@ var has_sunlit_curse = false
 var has_midnight_curse = false
 var has_dusk_stance = false
 
+var reflip_tween: Tween
+var base_reflip_scale: Vector2
+	
 func setup(m):
 	main = m
+	base_reflip_scale = main.reflip_sprite.scale
 func take_damage(amount):
 	coin -= amount
 	print("Player HP: ", coin)
@@ -243,6 +248,8 @@ func refresh_start_of_battle_stats():
 	has_sunlit_curse = false
 	has_midnight_curse = false
 	has_dusk_stance = false
+	
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	player_portrait.play("default")
@@ -310,7 +317,7 @@ func flip():
 	print("FLIP")
 	flip_clicks += 1
 	if current_re_flip != max_re_flip: 
-		main.re_flip_button.disabled = false
+		toggle_button(main.re_flip_button,false)
 		
 	var state = randi() % 2
 	
@@ -371,19 +378,23 @@ func flip():
 
 	print(current_played_coin)
 	if (current_played_coin == max_playable_coins and current_reserve == max_reserve) or coin == 1:
-		main.flip_button.disabled = true
+		toggle_button(main.flip_button,true)
 	coin_calculation()
 	main.check_defeat()
 
 func re_flip():
+
 	main.sound_manager.play_sound(COIN_REFLIP)
 	main.sound_manager.play_sound(COIN_FLIP)
-	var tween = create_tween()
-	var original_scale: Vector2 = main.reflip_sprite.scale
-	var swelled_scale: Vector2 = original_scale * 1.2 
-	tween.tween_property(main.reflip_sprite, "scale", swelled_scale, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	tween.tween_property(main.reflip_sprite, "scale", original_scale, 0.15).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	
+	if reflip_tween:
+		reflip_tween.kill()
+	reflip_tween = create_tween()
+	var swelled_scale: Vector2 = base_reflip_scale * 1.2 
+	
+	reflip_tween.tween_property(main.reflip_sprite, "scale", swelled_scale, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	reflip_tween.tween_property(main.reflip_sprite, "scale", base_reflip_scale, 0.15).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+
 	current_re_flip += 1
 	main.reflip_label.text = str(max_re_flip - current_re_flip)
 	var coins = get_tree().get_nodes_in_group("coins")
@@ -407,7 +418,7 @@ func re_flip():
 				coin += 1
 				current_played_coin = 0
 				c.queue_free()
-				main.flip_button.disabled = false
+				toggle_button(main.flip_button,false)
 				coin_calculation()
 			else:
 				c.re_flip()
@@ -417,7 +428,7 @@ func re_flip():
 		for c in reserved_coins:
 			coin += 1
 			c.queue_free()
-			main.flip_button.disabled = false
+			toggle_button(main.flip_button,false)
 			current_reserve -= 1
 			
 	if has_reimbursement:
@@ -425,7 +436,7 @@ func re_flip():
 		if debt_chance <= 0.5: main.enemy.debt += 1
 		
 	if current_re_flip == max_re_flip or current_played_coin == 0:
-		main.re_flip_button.disabled = true
+		toggle_button(main.re_flip_button,true)
 
 	coin_calculation()
 	
@@ -461,10 +472,9 @@ func start_turn():
 		latest_coin = null
 		main.coin_deck.reset_sigils()
 
-	
-	main.flip_button.disabled = false
+	toggle_button(main.flip_button,false)
 	if current_played_coin == 0:
-		main.re_flip_button.disabled = true
+		toggle_button(main.re_flip_button,true)
 		main.turn_calculation.text = ""
 	
 	#Activate Turn Start Passives
@@ -481,7 +491,7 @@ func start_turn():
 		var is_deck_full = false
 		for coin in coins:
 			if coin.reserved:
-				main.re_flip_button.disabled = false
+				toggle_button(main.re_flip_button,false)
 				var pos
 				if current_played_coin == max_playable_coins: is_deck_full = true
 				if is_deck_full:
@@ -537,11 +547,11 @@ func start_turn():
 			main.sound_manager.play_sound(DAMAGE_MODERATE)	
 				#reserved_coin.queue_free()
 	if coin == 1:
-		main.flip_button.disabled = true
+		toggle_button(main.flip_button,true)
 	main.check_defeat()
 
 func end_turn():
-	main.re_flip_button.disabled = true
+	toggle_button(main.re_flip_button,true)
 	main.endTurn_button.disabled = true
 	main.sound_manager.play_sound(COIN_ENDTURN)
 	main.coin_deck.sigil_pressed();
@@ -556,6 +566,10 @@ func end_turn():
 
 	#Activate End Turn Passives
 	await activate_player_turn_end_passives()
+	
+	if turn_damage > 0:
+		particle_manager.play_attack_animation(main.coin_deck, main.enemy_portrait, turn_damage)
+		await get_tree().create_timer(1.0).timeout
 	
 	main.enemy.take_damage(turn_damage)
 	if turn_damage == 0: pass
@@ -634,12 +648,12 @@ func activate_pre_battle_passives():
 			
 			
 			if current_played_coin == max_playable_coins or coin == 1:
-				main.flip_button.disabled = true
+				toggle_button(main.flip_button,true)
 			coin_calculation()
 			pocket_money_coins -= 1
 			await get_tree().create_timer(0.1).timeout
 		main.endTurn_button.disabled = false
-		main.re_flip_button.disabled = false
+		toggle_button(main.re_flip_button,false)
 
 func activate_player_turn_start_passives():
 	previous_player_flips = 0
@@ -651,7 +665,7 @@ func activate_player_turn_start_passives():
 		else:
 			payback_coins = 12
 		main.endTurn_button.disabled = true
-		main.re_flip_button.disabled = true
+		toggle_button(main.re_flip_button,true)
 		print("PAYBACK: " + str(payback_coins))
 		main.sound_manager.play_sound(PASSIVE_PAYBACK)
 		while payback_coins != 0:
@@ -673,13 +687,13 @@ func activate_player_turn_start_passives():
 			main.sound_manager.play_sound(COIN_FLIP)
 			main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,c.global_position)
 			if current_played_coin or coin == 1:
-				main.flip_button.disabled = true
+				toggle_button(main.flip_button,true)
 			coin_calculation()
 			payback_coins -= 1
 			await get_tree().create_timer(0.2).timeout
 			latest_coin = coin
 		main.endTurn_button.disabled = false
-		main.re_flip_button.disabled = false
+		toggle_button(main.re_flip_button,false)
 
 	#Piggy Passive
 	if latest_pair_left_coin != null and latest_pair_right_coin != null:
@@ -693,7 +707,7 @@ func activate_player_turn_start_passives():
 		else:
 			pos = main.coin_deck.get_vacant_slot(current_played_coin)
 			left_coin.reserved = false
-		main.re_flip_button.disabled = false
+		toggle_button(main.re_flip_button,false)
 		left_coin.setup(latest_pair_left_coin.state,pos)
 		left_coin.copy_coin(latest_pair_left_coin)
 		left_coin.reserved = false
@@ -710,7 +724,7 @@ func activate_player_turn_start_passives():
 		else:
 			pos = main.coin_deck.get_vacant_slot(current_played_coin)
 			right_coin.reserved = false
-		main.re_flip_button.disabled = false
+		toggle_button(main.re_flip_button,false)
 		right_coin.setup(latest_pair_right_coin.state,pos)
 		right_coin.copy_coin(latest_pair_right_coin)
 		right_coin.reserved = false
@@ -765,7 +779,20 @@ func extra_turn():
 	main.show_turn_ui("EXTRA TURN")
 	extra_turn_penalty = 0.5
 	start_turn()
-	main.flip_button.disabled = true
+	toggle_button(main.flip_button,true)
 	current_re_flip = 0
-	main.re_flip_button.disabled = true
+	toggle_button(main.re_flip_buttton,true)
 	
+	
+func toggle_button(btn: Button, make_disabled: bool) -> void:
+	btn.disabled = make_disabled
+	
+	if make_disabled:
+		btn.modulate = Color(0.5, 0.5, 0.5, 1.0) # Darken to 50%
+		
+		# NEW: If the button has a lifted coin, force it to drop!
+		if "lifted_slot" in btn and btn.lifted_slot != null:
+			btn._on_mouse_exited()
+			
+	else:
+		btn.modulate = Color(1.0, 1.0, 1.0, 1.0) # Restore to normal brightness

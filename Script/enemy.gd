@@ -3,6 +3,8 @@ extends Node
 
 var main
 
+@onready var particle_manager: Node2D = $"../ParticleManager"
+
 const COIN = preload("uid://ddet242jm5v23")
 
 
@@ -368,8 +370,8 @@ func enemy_coin_calculation():
 	return [total_damage,total_gain,total_debt]
 
 func start_enemy_turn():
-	main.flip_button.disabled = true
-	main.re_flip_button.disabled = true
+	toggle_button(main.flip_button,true)
+	toggle_button(main.re_flip_button,true)
 	main.endTurn_button.disabled = true
 	
 	if type == Enemy.SUN_CASTER:
@@ -394,6 +396,9 @@ func start_enemy_turn():
 	#Coin Gain Triggers
 	gain_coin()
 	if has_fully_paid and debt == 0:
+		particle_manager.play_attack_animation(main.coin_deck, main.player_portrait, turn_damage)
+		await get_tree().create_timer(1.0).timeout
+		
 		main.player.take_damage(100)
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.player_portrait.global_position)
 		defeat = await main.check_defeat()
@@ -446,6 +451,9 @@ func end_enemy_turn():
 		main.turn_calculation.text = ""
 
 	if turn_damage != 0: 
+		particle_manager.play_attack_animation(main.coin_deck, main.player_portrait, turn_damage)
+		await get_tree().create_timer(1.0).timeout
+		
 		if main.player.has_passive_income and !main.player.passive_income_used:
 			main.player.passive_income_used = true
 			if turn_damage >= 30:
@@ -494,3 +502,16 @@ func end_enemy_turn():
 	
 	
 	main.coin_deck.sigil_unlight_()
+	
+func toggle_button(btn: Button, make_disabled: bool) -> void:
+	btn.disabled = make_disabled
+	
+	if make_disabled:
+		btn.modulate = Color(0.5, 0.5, 0.5, 1.0) # Darken to 50%
+		
+		# NEW: If the button has a lifted coin, force it to drop!
+		if "lifted_slot" in btn and btn.lifted_slot != null:
+			btn._on_mouse_exited()
+			
+	else:
+		btn.modulate = Color(1.0, 1.0, 1.0, 1.0) # Restore to normal brightness

@@ -68,7 +68,6 @@ const DEATH = preload("uid://bx1ttmouolx2q")
 @onready var player_sprite: AnimatedSprite2D = $"Progression Map/Player_Sprite"
 @onready var banner: TextureRect = $"Progression Map/MapBackground/Banner"
 
-# Put your markers in the exact order they should be visited
 @onready var map_markers: Array[Node] = [
 $"Progression Map/Enemy 1", 
 $"Progression Map/Enemy 2", 
@@ -154,7 +153,6 @@ var event_maps = [
    # preload("res://Events/###.tscn")
 ]
 
-
 var current_enemy_index
 var current_room
 @onready var shop_manager: CanvasLayer = $ShopManager
@@ -163,7 +161,7 @@ func _on_item_purchased(card_id,price):
 	update_player_coin()
 	if shop_manager.visible:
 		shop_manager.coin_label.text = "Coins: " + str(player.coin)
-	
+
 
 
 # Called when the node enters the scene tree for the first time.
@@ -532,7 +530,6 @@ func progression_after_victory():
 func _on_re_flip_pressed():
 	player.re_flip()
 
-
 func reserve_left_over_coin():
 	var is_left = true # true - Left Coin, false - Right Coin
 	var left_coin
@@ -572,7 +569,7 @@ func update_player_gain_debt():
 	if player.gain != 0:
 		player_gain.text = "GAIN: " + str(player.gain)
 	if player.debt != 0:
-		player_debt.text = "DEBT: " + str(player.debt)
+		player_debt.text = str(player.debt)
 	
 func update_enemy_gain_debt():
 	enemy_gain.text = ""
@@ -580,7 +577,7 @@ func update_enemy_gain_debt():
 	if enemy.gain != 0:
 		enemy_gain.text = "GAIN: " + str(enemy.gain)
 	if enemy.debt != 0:
-		enemy_debt.text = "DEBT: " + str(enemy.debt)
+		enemy_debt.text =str(enemy.debt)
 
 func _on_restart_pressed():
 	await get_tree().create_timer(0.2).timeout
@@ -601,10 +598,6 @@ func proceed_to_next_enemy():
 	print("I AM RWADY TO BATTLE")
 
 
-
-
-
-	
 func _on_refresh_pressed() -> void:
 	pass # Replace with function body.
 

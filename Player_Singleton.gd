@@ -48,6 +48,8 @@ var previous_player_flips = 0
 var player_turn_count = 0
 var sun_count = 0
 var moon_count = 0
+var has_extra_turn = false
+var extra_turn_penalty = 1
 
 #GENERAL PASSIVES
 
@@ -93,6 +95,12 @@ var moon_count = 0
 @export var has_loan_shark = false
 @export var has_lending_charge = false
 
+#BANKER PASSIVES
+
+@export var has_cash_out = false
+@export var has_dividend = false
+@export var has_withdraw = false
+@export var has_deposit = false
 
 func save_stats(player):
 	
@@ -148,6 +156,12 @@ func save_stats(player):
 	has_reimbursement = player.has_reimbursement
 	has_loan_shark = player.has_loan_shark
 	has_lending_charge = player.has_lending_charge
+	
+	#BANKER PASSIVES
+	has_cash_out = player.has_cash_out
+	has_dividend = player.has_dividend
+	has_deposit = player.has_deposit
+	has_withdraw = player.has_withdraw
 
 func load_stats(player):
 	
@@ -203,3 +217,9 @@ func load_stats(player):
 	player.has_reimbursement = has_reimbursement
 	player.has_loan_shark = has_loan_shark
 	player.has_lending_charge = has_lending_charge
+
+	#BANKER PASSIVES
+	player.has_cash_out = has_cash_out
+	player.has_dividend = has_dividend
+	player.has_deposit = has_deposit
+	player.has_withdraw = has_withdraw

@@ -336,7 +336,12 @@ func _on_endturn_pressed():
 	var defeat = await check_defeat()
 	if defeat == null:
 		await get_tree().create_timer(1.0).timeout
-		start_enemy_turn()
+		if !player.has_extra_turn:
+			start_enemy_turn()
+			player.extra_turn_penalty = 1
+		else:
+			player.extra_turn()
+			player.has_extra_turn = false
 
 func show_passive_notification(text: String, duration: float = 1.5) -> void:
 	var notif = PASSIVE_SCENE.instantiate()

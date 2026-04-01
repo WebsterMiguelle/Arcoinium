@@ -21,8 +21,8 @@ signal shop_closed
 var all_cards = [
 	{"id": 0, "name": "Solar Coin", "rank": "B", "desc": "Guarantee that the 1st and 3rd coin flip is a Sun."},
 	{"id": 1, "name": "Lunar Coin", "rank": "B", "desc": "Guarantee that the 2nd and 4th coin flip is a Moon."},
-	{"id": 2, "name": "Wish Bone", "rank": "B", "desc": "Raise chances of flipping a Silver Coin by 10%."},
-	{"id": 3, "name": "Golden Clover", "rank": "B", "desc": "Raise chances of flipping a Gold Coin by 5%."},
+	{"id": 2, "name": "Wish Bone", "rank": "B", "desc": "Raise chances of flipping a Silver Coin by 20%."},
+	{"id": 3, "name": "Golden Clover", "rank": "B", "desc": "Raise chances of flipping a Gold Coin by 10%."},
 	{"id": 4, "name": "Merchant's Scroll", "rank": "B", "desc": "25% Shop Discount."},
 	{"id": 5, "name": "Impromptu Flip", "rank": "B", "desc": "Upon ending the turn, the last coin on the Arcane Circle will be flipped, switching its side."},
 	{"id": 6, "name": "Advanced Planning", "rank": "B", "desc": "The first 2 coins on the Arcane Circle will not be affected by Re-Flips."},
@@ -44,7 +44,11 @@ var all_cards = [
 	{"id": 22, "name": "Inflation", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 30% chance for each coin on the deck to upgrade every Re-Flip."},
 	{"id": 23, "name": "Jar'O Savings", "rank": "S", "desc": "At the start of each turn, if Coin Caster has 30 or more gained coins, cleanse all Debt Stacks and immediately deal 100% of Gain as damage."},
 	{"id": 24, "name": "Pay Down", "rank": "S", "desc": "Add 5 Debt at the end of the Enemy’s Turn. If Enemy Debt is greater than their Current Coins at the end of their turn, perish instantly."},
-	{"id": 25, "name": "Refund", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 10% chance to retrieve all coins from the Arcane Circle upon a Re-Flip. Refresh Re-Flip Count afterwards."}
+	{"id": 25, "name": "Refund", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 10% chance to retrieve all coins from the Arcane Circle upon a Re-Flip. Refresh Re-Flip Count afterwards."},
+	{"id": 26, "name": "Withdraw", "rank": "B", "desc": "For each reserved coin added to the Arcane Circle next turn, deal 1 Damage."},
+	{"id": 27, "name": "Deposit", "rank": "A", "desc": "+6 Max Reserve."},
+	{"id": 28, "name": "Dividend", "rank": "A", "desc": "There is a 30% chance to duplicate each reserved coin on the next turn."},
+	{"id": 29, "name": "Cash Out", "rank": "S", "desc": "When both the Arcane Circle and Reserve are full at the end of this turn, immediately gain an Extra Turn. (Extra Turn: DMG, Gain and Debt is halved. Cannot Flip or Re-Flip this turn.)"}
 ]
 
 func show_shop_async(player):
@@ -166,11 +170,11 @@ func apply_item(card_id):
 		2:
 			print("Wish Bone")
 			main.player.has_wishbone = true
-			main.player.silver_flip_rate += 0.1
+			main.player.silver_flip_rate += 0.2
 		3:
 			print("Golden Clover")
 			main.player.has_golden_clover = true
-			main.player.gold_flip_rate += 0.05
+			main.player.gold_flip_rate += 0.1
 		4:
 			print("Merchant Scroll Passive")
 			main.player.has_merchant_scroll = true
@@ -242,7 +246,19 @@ func apply_item(card_id):
 			print("S-Rank: Refund")
 			main.player.has_refund = true
 			main.player.max_re_flip += 1
-			
+		26:
+			print("B-Rank: Withdraw")
+			main.player.has_withdraw = true
+		27:
+			print("A-Rank: Deposit")
+			main.player.has_deposit = true
+			main.player.max_reserve += 6
+		28:
+			print("A-Rank: Dividend")
+			main.player.has_dividend = true
+		29:
+			print("S-Rank: Cash Out")
+			main.player.has_cash_out = true
 		_:
 			print("Other reward")
 
@@ -324,5 +340,13 @@ func is_card_owned(card_id: int) -> bool:
 			return main.player.has_pay_down
 		25: 
 			return main.player.has_refund
+		26:
+			return main.player.has_withdraw
+		27:
+			return main.player.has_deposit
+		28:
+			return main.player.has_dividend
+		29:
+			return main.player.has_cash_out
 		_:
 			return false

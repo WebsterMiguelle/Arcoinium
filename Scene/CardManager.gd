@@ -28,7 +28,7 @@ var all_cards = [
 	{"id": 9, "name": "Coin Snipe", "rank": "B", "desc": "If Coin Caster flipped a Silver or Gold Coin, Deal 1 Damage to the enemy."},
 	{"id": 10, "name": "Simple Interest", "rank": "B", "desc": "For each reserved coin added to the Arcane Circle next turn, apply 1 Gain to self."},
 	{"id": 11, "name": "Lucky Pair", "rank": "A", "desc": "+10% Gold Flip Rate. The 7th and 8th Flipped Coin on every turn is guaranteed to be upgraded."},
-	{"id": 12, "name": "Sleight of Hand", "rank": "A", "desc": "+3 Extra Re-Flips."},
+	{"id": 12, "name": "Sleight of Hand", "rank": "A", "desc": "+4 Extra Re-Flips."},
 	{"id": 13, "name": "Piggy", "rank": "A", "desc": "At the start of each turn, Piggy will generate the 1st Coin Pair on the Arcane Circle based on the previous turn’s Last Coin Pair."},
 	{"id": 14, "name": "Pocket Money", "rank": "A", "desc": "Start each battle with 8 Silver Moon Coins."},
 	{"id": 15, "name": "Passive Income", "rank": "A", "desc": "In every battle, the first enemy damage will be turned into Coins. (Caps at 30 Coin Gain)"},
@@ -44,7 +44,7 @@ var all_cards = [
 	{"id": 25, "name": "Refund", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 10% chance to retrieve all coins from the Arcane Circle upon a Re-Flip. Refresh Re-Flip Count afterwards."},
 	{"id": 26, "name": "Withdraw", "rank": "B", "desc": "For each reserved coin added to the Arcane Circle next turn, deal 2 Damage."},
 	{"id": 27, "name": "Deposit", "rank": "A", "desc": "+6 Max Reserve."},
-	{"id": 28, "name": "Dividend", "rank": "A", "desc": "There is a 30% chance to duplicate each reserved coin on the next turn."},
+	{"id": 28, "name": "Dividend", "rank": "A", "desc": "There is a 50% chance to duplicate each reserved coin on the next turn."},
 	{"id": 29, "name": "Cash Out", "rank": "S", "desc": "When both the Arcane Circle and Reserve are full at the end of this turn, immediately gain an Extra Turn. Cannot Flip or Re-Flip during this turn."}
 ]
 
@@ -207,7 +207,7 @@ func apply_reward(card_id):
 		12:
 			print("A-Rank: Sleight of Hand")
 			main.player.has_sleight_of_hand = true
-			main.player.max_re_flip += 3
+			main.player.max_re_flip += 4
 		13:
 			print("A-Rank: Piggy")
 			main.player.has_piggy = true

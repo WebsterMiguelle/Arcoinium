@@ -514,7 +514,7 @@ func start_turn():
 				add_child(latest_coin)
 				
 				dividend_chance = randf()
-				if has_dividend and dividend_chance <= 0.3:
+				if has_dividend and dividend_chance <= 0.5:
 					if current_played_coin == max_playable_coins: is_deck_full = true
 					if is_deck_full:
 						pos = main.coin_deck.get_reserve_slot()

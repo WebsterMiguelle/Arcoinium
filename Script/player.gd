@@ -194,11 +194,11 @@ func reset_stats():
 	has_solar_coin = false
 	has_lunar_coin = false
 	has_merchant_scroll = false
-	has_impromptu_flip = false
-	has_advanced_planning = false
+	has_impromptu_flip = true
+	has_advanced_planning = true
 
 	#A-Rank
-	has_magic_trick = false
+	has_magic_trick = true
 	has_sleight_of_hand = false
 	has_piggy = false
 
@@ -746,12 +746,24 @@ func activate_player_turn_end_passives():
 			latest_coin.state = 1
 		else:
 			latest_coin.state = 0
+		latest_coin.upgrade()
 		latest_coin.refresh_sprite()
 		main.sound_manager.play_sound(COIN_FLIP)
 		coin_calculation()
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(0.6).timeout
 
-	if has_magic_trick and current_played_coin >= 6:
+	if has_advanced_planning:
+		var coins = get_tree().get_nodes_in_group("coins")
+		var index = 0
+		for coin in coins:
+			index += 1
+			if index == 1 or index == 2:
+				coin.upgrade()
+				coin.refresh_sprite()
+				main.sound_manager.play_sound(COIN_FLIP)
+		await get_tree().create_timer(0.6).timeout
+		
+	if has_magic_trick and current_played_coin >= 8:
 		var coins = get_tree().get_nodes_in_group("coins")
 		var index = 0
 		var first_coin = null
@@ -761,13 +773,13 @@ func activate_player_turn_end_passives():
 			print("Checking Coin: " + str(index))
 			if index == 1: first_coin = coin
 			if index == 2: second_coin = coin
-			if index == 3 or index == 5:
+			if index == 3 or index == 5 or index == 7:
 				coin.copy_coin(first_coin)
 				coin.refresh_sprite()
 				main.sound_manager.play_sound(COIN_FLIP)
 				coin_calculation()
 				await get_tree().create_timer(0.1).timeout
-			if index == 4 or index == 6:
+			if index == 4 or index == 6 or index == 8:
 				coin.copy_coin(second_coin)
 				coin.refresh_sprite()
 				main.sound_manager.play_sound(COIN_FLIP)

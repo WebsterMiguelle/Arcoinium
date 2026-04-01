@@ -965,7 +965,6 @@ scale = Vector2(2, 2.5)
 sprite_frames = SubResource("SpriteFrames_f043x")
 
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
-visible = false
 position = Vector2(576, 321)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.90334755, 0.5628785, 0.61960787)
@@ -974,7 +973,6 @@ texture = SubResource("GradientTexture2D_c2iwn")
 texture_scale = 0.46
 
 [node name="Vignette" type="CanvasModulate" parent="." unique_id=1590582319]
-visible = false
 color = Color(0.6964535, 0.6192358, 0.67436445, 1)
 
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]

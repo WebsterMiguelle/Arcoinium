@@ -395,7 +395,7 @@ func _on_flip_pressed():
 func trigger_game_over(player_won: bool):
 	sound_manager.play_sound(DEATH)
 	if player_won:
-		enemy.max_flip = 0
+		enemy.max_playable_coins = 0
 		reward_manager.show_rewards()
 	
 	game_over_ui.visible = true

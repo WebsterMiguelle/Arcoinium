@@ -161,12 +161,12 @@ func gain_coin():
 
 func reset_stats():
 	max_coin = 500 #Max Coin Capacity
-	max_reserve = 6
+	max_reserve = 4
 	current_reserve = 0
-	coin = 200
+	coin = 100
 	max_playable_coins = 16 #Max Flips Per Turn
 	current_played_coin = 0 #Current Flip Count
-	max_re_flip = 6 #Max Re-Flips Per Turn
+	max_re_flip = 3 #Max Re-Flips Per Turn
 	current_re_flip = 0 #Current Re-Flip Count
 	silver_flip_rate = 0.1 #Chance to Flip a Silver Coin 
 	gold_flip_rate = 0.05 #Chance to Flip a Gold Coin
@@ -274,8 +274,6 @@ func coin_calculation():
 		else:
 			pass
 		is_left = !is_left
-	if has_reimbursement and head_tail_count == current_played_coin / 2:
-		total_debt *= 2
 	if (total_damage != 0 or total_gain != 0) and coins != null:
 		var text = "DMG: " + str(total_damage) + "\nGAIN: " + str(total_gain)
 		if total_debt != 0:
@@ -301,9 +299,9 @@ func flip():
 	if has_midnight_curse:
 		state = 1
 		
-	if flip_clicks == 1 and has_solar_coin:
+	if (flip_clicks == 1 or flip_clicks == 3) and has_solar_coin:
 		state = 0;
-	if flip_clicks == 2 and has_lunar_coin:
+	if (flip_clicks == 2 or flip_clicks == 4) and has_lunar_coin:
 		state = 1;
 		
 	current_played_coin += 1
@@ -340,11 +338,12 @@ func flip():
 		main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 		main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
 		main.enemy.take_damage(1)
-		main.check_defeat()
 
 	take_damage(1)
 	add_child(c)
-	
+	if has_reimbursement:
+		var debt_chance = randf()
+		if debt_chance <= 0.5: main.enemy.debt += 1
 	if c.reserved == false:
 		latest_coin = c
 		main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,latest_coin.global_position)
@@ -369,9 +368,11 @@ func re_flip():
 	var coins = get_tree().get_nodes_in_group("coins")
 	var index = 0
 	var refund_chance = randf()
-	if has_refund and refund_chance <= 0.1: main.sound_manager.play_sound(PASSIVE_REFUND)
-	for coin in coins:
-		if !coin.reserved:
+	if has_refund and refund_chance <= 0.1:
+		main.sound_manager.play_sound(PASSIVE_REFUND)
+		current_re_flip = 0
+	for c in coins:
+		if !c.reserved:
 			index += 1
 		if index <= 2 and has_advanced_planning:
 			pass
@@ -379,25 +380,29 @@ func re_flip():
 			if has_inflation:
 				var upgrade_chance = randf()
 				if upgrade_chance <= 0.3:
-					coin.upgrade()
-				coin.re_flip()
+					c.upgrade()
+				c.re_flip()
 			if has_refund and refund_chance <= 0.1:
 				coin += 1
-				current_played_coin -= 1
-				coin.queue_free()
+				current_played_coin = 0
+				c.queue_free()
 				main.flip_button.disabled = false
 				coin_calculation()
 			else:
-				coin.re_flip()
+				c.re_flip()
 	if has_spare_change:
 		main.sound_manager.play_sound(PASSIVE_SPARE_CHANGE)
 		var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
-		for coin in reserved_coins:
+		for c in reserved_coins:
 			coin += 1
-			coin.queue_free()
+			c.queue_free()
 			main.flip_button.disabled = false
 			current_reserve -= 1
-	
+			
+	if has_reimbursement:
+		var debt_chance = randf()
+		if debt_chance <= 0.5: main.enemy.debt += 1
+		
 	if current_re_flip == max_re_flip or current_played_coin == 0:
 		main.re_flip_button.disabled = true
 
@@ -409,10 +414,7 @@ func start_turn():
 	#Initialize Global Stats
 	flip_clicks = 0
 	latest_coin = null
-	if (has_passive_income and player_turn_count == 1) or (has_pocket_money and player_turn_count == 1):
-		pass
-	else:
-		current_played_coin = 0
+	current_played_coin = 0
 	
 	#ACTIVE INCOME
 	if has_active_income and gain >= 30:
@@ -428,10 +430,6 @@ func start_turn():
 
 	if player_turn_count != 1:
 		gain_coin()
-
-	if has_simple_interest:
-		var interest = int(previous_player_gain * 0.2)
-		gain += interest
 
 	#Reset Player Stats
 	if has_pocket_money and player_turn_count == 1:
@@ -478,6 +476,7 @@ func start_turn():
 				coin.queue_free()
 				latest_coin.add_to_group("coins")
 				add_child(latest_coin)
+				if has_simple_interest: gain += 1
 				latest_coin.refresh_sprite()
 				if current_played_coin > 1:
 					coin_calculation()
@@ -497,6 +496,7 @@ func end_turn():
 	var turn_damage = calculations[0]
 	var turn_gain = calculations[1]
 	var turn_debt = calculations[2]
+	previous_player_gain = 0
 	
 	#Activate End Turn Passives
 	await activate_player_turn_end_passives()
@@ -506,11 +506,11 @@ func end_turn():
 	elif turn_damage <= 10: main.sound_manager.play_sound(DAMAGE_LIGHT)
 	elif turn_damage <= 20: main.sound_manager.play_sound(DAMAGE_MODERATE)
 	else: main.sound_manager.play_sound(DAMAGE_HEAVY)
-	previous_player_gain += turn_gain
+	previous_player_gain = turn_gain
 	if turn_damage != 0: 
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 	gain += turn_gain
-	if debt != 0: 
+	if turn_debt != 0: 
 		main.sound_manager.play_sound(DEBT)
 		main.enemy.debt += turn_debt
 
@@ -556,10 +556,8 @@ func activate_pre_battle_passives():
 	payback_coins = 12
 	pocket_money_coins = 8
 	current_played_coin = 0
-	if has_passive_income:
-		gain += 8
 	if has_pocket_money:
-		while pocket_money_coins != 0:
+		while pocket_money_coins != -1:
 			var state = 1
 			current_played_coin += 1
 			var c = COIN.instantiate()
@@ -599,7 +597,7 @@ func activate_player_turn_start_passives():
 		main.sound_manager.play_sound(PASSIVE_PAYBACK)
 		while payback_coins != 0:
 				
-			var state = randi() % 2
+			var state = 0
 			current_played_coin += 1
 			var c = COIN.instantiate()
 			c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))

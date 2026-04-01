@@ -439,6 +439,12 @@ func end_enemy_turn():
 	var turn_gain = calculations[1]
 	var turn_debt = calculations[2]
 	
+	if coin == 0:
+		turn_damage = 0
+		turn_gain = 0
+		turn_debt = 0
+		main.turn_calculation.text = ""
+
 	if turn_damage != 0: 
 		if main.player.has_passive_income and !main.player.passive_income_used:
 			main.player.passive_income_used = true
@@ -461,7 +467,7 @@ func end_enemy_turn():
 			coin = 0
 			main.sound_manager.play_sound(PASSIVE_PAYDOWN)
 		else:
-			debt += 10
+			debt += 5
 		
 	var defeat = await main.check_defeat()
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
@@ -473,8 +479,8 @@ func end_enemy_turn():
 	if main.player.has_payback and !main.player.payback_used and defeat: 
 		defeat = null
 		main.player.coin = 1
-		main.payback_used = true
-		main.payback_coins = 12
+		main.player.payback_used = true
+		main.player.payback_coins = 12
 		
 	if defeat == null:
 		await get_tree().create_timer(1.0).timeout

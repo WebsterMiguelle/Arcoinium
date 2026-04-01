@@ -10,32 +10,32 @@ const CARD_SCENE = preload("res://Scene/reward_card.tscn")
 
 
 var all_cards = [
-	{"id": 0, "name": "Solar Coin", "rank": "B", "desc": "Guarantee that the 1st coin flip is an H."},
-	{"id": 1, "name": "Lunar Coin", "rank": "B", "desc": "Guarantee that the 2nd coin flip is a T."},
+	{"id": 0, "name": "Solar Coin", "rank": "B", "desc": "Guarantee that the 1st and 3rd coin flip is a Sun."},
+	{"id": 1, "name": "Lunar Coin", "rank": "B", "desc": "Guarantee that the 2nd and 4th coin flip is a Moon."},
 	{"id": 2, "name": "Wish Bone", "rank": "B", "desc": "Raise chances of flipping a Silver Coin by 10%."},
 	{"id": 3, "name": "Golden Clover", "rank": "B", "desc": "Raise chances of flipping a Gold Coin by 5%."},
 	{"id": 4, "name": "Merchant's Scroll", "rank": "B", "desc": "25% Shop Discount."},
-	{"id": 5, "name": "Impromptu Flip", "rank": "B", "desc": "Upon ending the turn, the last coin on the deck will be flipped, switching its side."},
-	{"id": 6, "name": "Advanced Planning", "rank": "B", "desc": "The first 2 coins on the deck will not be affected by Re-Flips."},
-	{"id": 7, "name": "Value Increase", "rank": "B", "desc": "If there is a reserved copper/silver coin on the deck this turn, upgrade it to silver/gold next turn."},
-	{"id": 8, "name": "Lending Charge", "rank": "B", "desc": "Each HT/TH Pairs played this turn applies 3 Debt to the enemy."},
-	{"id": 9, "name": "Coin Snipe", "rank": "B", "desc": "If the player flipped a Silver or Gold Coin, Deal 1 Damage to the enemy then place it on the deck."},
-	{"id": 10, "name": "Simple Interest", "rank": "B", "desc": "At the start of each turn, add Gain to self based on 20% of Gain from last turn."},
+	{"id": 5, "name": "Impromptu Flip", "rank": "B", "desc": "Upon ending the turn, the last coin on the Arcane Circle will be flipped, switching its side."},
+	{"id": 6, "name": "Advanced Planning", "rank": "B", "desc": "The first 2 coins on the Arcane Circle will not be affected by Re-Flips."},
+	{"id": 7, "name": "Value Increase", "rank": "B", "desc": "Upgrade all reserved coins next turn."},
+	{"id": 8, "name": "Lending Charge", "rank": "B", "desc": "Each Sun-Moon Pairs played this turn applies 3 Debt to the enemy."},
+	{"id": 9, "name": "Coin Snipe", "rank": "B", "desc": "If Coin Caster flipped a Silver or Gold Coin, Deal 1 Damage to the enemy."},
+	{"id": 10, "name": "Simple Interest", "rank": "B", "desc": "For each reserved coin added to the Arcane Circle next turn, apply 1 Gain to self."},
 	{"id": 11, "name": "Lucky Pair", "rank": "A", "desc": "+10% Gold Flip Rate. The 7th and 8th Flipped Coin on every turn is guaranteed to be upgraded."},
-	{"id": 12, "name": "Sleight of Hand", "rank": "A", "desc": "+3 Extra Re-Flips and +2 Max Coin Reserve."},
-	{"id": 13, "name": "Piggy", "rank": "A", "desc": "At the start of each turn, Piggy will generate the 1st Coin Pair on the deck based on the previous turn’s Last Coin Pair."},
-	{"id": 14, "name": "Pocket Money", "rank": "A", "desc": "Start each battle with 4 Silver TT Pairs."},
-	{"id": 15, "name": "Passive Income", "rank": "A", "desc": "Start Combat with 8 Gain. In every battle, the first enemy damage will be turned into player HP. (Caps at 30 Coin Gain)"},
+	{"id": 12, "name": "Sleight of Hand", "rank": "A", "desc": "+3 Extra Re-Flips."},
+	{"id": 13, "name": "Piggy", "rank": "A", "desc": "At the start of each turn, Piggy will generate the 1st Coin Pair on the Arcane Circle based on the previous turn’s Last Coin Pair."},
+	{"id": 14, "name": "Pocket Money", "rank": "A", "desc": "Start each battle with 8 Silver Moon Coins."},
+	{"id": 15, "name": "Passive Income", "rank": "A", "desc": "In every battle, the first enemy damage will be turned into Coins. (Caps at 30 Coin Gain)"},
 	{"id": 16, "name": "Magic Trick", "rank": "A", "desc": "Upon ending the turn with 6 or more Coins, the 1st Coin Pair will be copied to the 2nd and 3rd Coin Pair."},
-	{"id": 17, "name": "Reimbursement", "rank": "A", "desc": "+3 Re-Flips. If all Coin Pairs played this turn are HT/TH, Double the Debt Application this turn."},
-	{"id": 18, "name": "Payback", "rank": "A", "desc": "If the player receives Fatal Damage from an enemy attack, set HP to 1, and immediately generate 12 Gold Coins on the deck next turn. (One-Time per Battle)"},
-	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "At the start of the enemy’s turn, immediately deal damage based on the Enemy’s Debt."},
+	{"id": 17, "name": "Reimbursement", "rank": "A", "desc": "Each Flip and Re-Flip has a 50% Chance to apply 1 Debt."},
+	{"id": 18, "name": "Payback", "rank": "A", "desc": "If Coin Caster receives a killing blow, set Coin back to 1, and immediately generate 12 Gold Sun Coins on the Arcane Circle next turn. (One-Time per Battle)"},
+	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "At the start of the enemy’s turn, immediately deal damage based on half of the Enemy’s Debt."},
 	{"id": 20, "name": "Spare Change", "rank": "A", "desc": "Upon a Re-Flip, retrieve all reserved coins on the deck."},
 	{"id": 21, "name": "Triple Nickel", "rank": "A", "desc": "+20% Silver Flip Rate. The first 3 Flips on every turn are guaranteed to be Silver Coins."},
-	{"id": 22, "name": "Inflation", "rank": "S", "desc": "+3 Extra Re-Flips. There is a 30% chance for each coin on the deck to upgrade every Re-Flip."},
-	{"id": 23, "name": "Jar'O Savings", "rank": "S", "desc": "At the start of each turn, if a player has 30 or more gained coins, cleanse all Debt Stacks and immediately deal 100% of Gain as damage."},
-	{"id": 24, "name": "Pay Down", "rank": "S", "desc": "Add 10 Debt at the end of the Enemy’s Turn. If Enemy Debt is greater than their Current Coins at the end of their turn, perish instantly."},
-	{"id": 25, "name": "Refund", "rank": "S", "desc": "+3 Re-Flips. There is a 10% chance to retrieve all coins on the deck upon a Re-Flip."}
+	{"id": 22, "name": "Inflation", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 30% chance for each coin on the deck to upgrade every Re-Flip."},
+	{"id": 23, "name": "Jar'O Savings", "rank": "S", "desc": "At the start of each turn, if Coin Caster has 30 or more gained coins, cleanse all Debt Stacks and immediately deal 100% of Gain as damage."},
+	{"id": 24, "name": "Pay Down", "rank": "S", "desc": "Add 5 Debt at the end of the Enemy’s Turn. If Enemy Debt is greater than their Current Coins at the end of their turn, perish instantly."},
+	{"id": 25, "name": "Refund", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 10% chance to retrieve all coins from the Arcane Circle upon a Re-Flip. Refresh Re-Flip Count afterwards."}
 ]
 
 var picked_cards = []
@@ -191,10 +191,11 @@ func apply_reward(card_id):
 		11:
 			print("Lucky Pair")
 			main.player.has_lucky_pair = true
+			main.player.gold_flip_rate += 0.1
 		12:
 			print("A-Rank: Sleight of Hand")
 			main.player.has_sleight_of_hand = true
-			main.player.max_reflip += 6
+			main.player.max_re_flip += 3
 		13:
 			print("A-Rank: Piggy")
 			main.player.has_piggy = true
@@ -222,9 +223,11 @@ func apply_reward(card_id):
 		21:
 			print("A-Rank:Triple Nickel")
 			main.player.has_triple_nickel = true
+			main.player.silver_flip_rate += 0.2
 		22:
 			print("S-Rank: Inflation")
 			main.player.has_inflation = true
+			main.player.max_re_flip += 1
 		23:
 			print("S-Rank: Active Income")
 			main.player.has_active_income = true
@@ -234,6 +237,7 @@ func apply_reward(card_id):
 		25:
 			print("S-Rank: Refund")
 			main.player.has_refund = true
+			main.player.max_re_flip += 1
 			
 		_:
 			print("Other reward")

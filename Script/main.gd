@@ -287,6 +287,7 @@ func battle_start():
 	#Battle Start Passives
 	player.activate_pre_battle_passives()
 	player.player_turn_count = 0
+	show_turn_ui("BATTLE START")
 	start_player_turn()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -329,7 +330,8 @@ func _on_end_run_pressed():
 	trigger_game_over(false)
 	
 func start_player_turn():
-	show_turn_ui("PLAYER TURN")
+	if player.player_turn_count != 1:
+		show_turn_ui("PLAYER TURN")
 	coin_deck.reset_sigils()
 	current_turn = Turn.PLAYER
 	sound_manager.play_sound(TURN_PLAYER)
@@ -538,17 +540,18 @@ func progression_after_victory():
 		sound_manager.play_music(PASSIVE_SELECTION)
 		await reward_manager.show_card_selection_async()
 		current_room += 1
-		if current_room == 4:
-			await shop_manager.show_shop_async(player)
-			current_room += 1
 			#map.background.global_position.y = 1000
 			#add_child(map)
 			#tween = create_tween()
 			#tween.tween_property(map,"position:y",0,0.4)
-		sound_manager.stop_music()
-		_play_progression_cutscene(current_room - 1, current_room)
-		proceed_to_next_enemy()
-		show_turn_ui("BATTLE START")
+		await _play_progression_cutscene(current_room - 1, current_room)
+		if current_room == 4:
+			await shop_manager.show_shop_async(player)
+			current_room += 1
+			await _play_progression_cutscene(current_room - 1, current_room)
+			proceed_to_next_enemy()
+		else:
+			proceed_to_next_enemy()
 		
 func _on_re_flip_pressed():
 	player.re_flip()
@@ -681,19 +684,21 @@ func _play_progression_cutscene(from_index: int, to_index: int) -> void:
 	var walk_tween = progression_map.create_tween()
 	
 	var distance = player_sprite.global_position.distance_to(map_markers[to_index].global_position)
-	var walk_duration = distance / 150.0 
+	var walk_duration = distance / 80.0 
 	
 	walk_tween.tween_property(player_sprite, "global_position", map_markers[to_index].global_position, walk_duration).set_trans(Tween.TRANS_LINEAR)
 	await walk_tween.finished
 
 	var dramatic_pause = progression_map.create_tween()
-	dramatic_pause.tween_interval(3.0)
+	dramatic_pause.tween_interval(1.0)
 	await dramatic_pause.finished
+	sound_manager.stop_music()
+	sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
 	
 	var slide_out = progression_map.create_tween()
 	slide_out.tween_property(progression_map, "offset:y", -screen_height, 0.8).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN)
 	await slide_out.finished
-	
+
 	progression_map.visible = false
 	get_tree().paused = false
 	

@@ -342,9 +342,11 @@ scale = Vector2(0.555, 0.555)
 script = ExtResource("3_hspdg")
 
 [node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1219776385]
+process_mode = 3
 stream = SubResource("AudioStreamPolyphonic_hspdg")
 
 [node name="BGMPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=526912258]
+process_mode = 3
 stream = SubResource("AudioStream_ot48q")
 
 [node name="CoinDeck" parent="." unique_id=955153148 instance=ExtResource("4_2wwxx")]

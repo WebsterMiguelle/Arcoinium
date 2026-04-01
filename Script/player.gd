@@ -35,6 +35,9 @@ const PASSIVE_JAR_O_SAVINGS = preload("uid://ctageqytkfmgg")
 const DEBT = preload("uid://cuwgygacdm7dj")
 const PASSIVE_PAYBACK = preload("uid://bbsxs62yhirxa")
 
+const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
+
+
 #PARTICLES
 const SINGLE_DAMAGE_PARTICLE = preload("uid://dgeahqxig4fqa")
 const DAMAGE_PARTICLE = preload("uid://q4hytnmn2fbt")
@@ -227,7 +230,7 @@ func reset_stats():
 	has_loan_shark = false
 	has_lending_charge = false
 
-	has_cash_out = false
+	has_cash_out = true
 	has_dividend = false
 	has_withdraw = false
 	has_deposit = false
@@ -356,16 +359,17 @@ func flip():
 	
 	if has_lucky_pair and (flip_clicks == 7 or flip_clicks == 8):
 		c.upgrade()
-		main.sound_manager.play_sound(COIN_UPGRADE)
+		
 	
 	if flip_clicks <= 3 and has_triple_nickel:
 		c.upgrade_to_silver()
-		main.sound_manager.play_sound(COIN_UPGRADE)
 		
-	if has_coin_snipe and c.base_value > 2:
-		main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
-		main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
-		main.enemy.take_damage(1)
+	if c.base_value > 2:
+		main.sound_manager.play_sound(COIN_UPGRADE)
+		if has_coin_snipe:
+			main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
+			main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
+			main.enemy.take_damage(1)
 
 	take_damage(1)
 	add_child(c)
@@ -464,13 +468,10 @@ func start_turn():
 		gain_coin()
 
 	#Reset Player Stats
-	if has_pocket_money and player_turn_count == 1:
-		pass
-	else:
-		current_played_coin = 0
-		current_re_flip = 0
-		latest_coin = null
-		main.coin_deck.reset_sigils()
+	current_played_coin = 0
+	current_re_flip = 0
+	latest_coin = null
+	main.coin_deck.reset_sigils()
 
 	toggle_button(main.flip_button,false)
 	if current_played_coin == 0:
@@ -531,13 +532,13 @@ func start_turn():
 					add_child(dividend_coin)
 					if has_simple_interest: gain += 1
 					if has_withdraw:
-						main.enemy.take_damage(1)
+						main.enemy.take_damage(2)
 						has_withdraw_damage = true
 	
 					
 				if has_simple_interest: gain += 1
 				if has_withdraw: 
-					main.enemy.take_damage(1)
+					main.enemy.take_damage(2)
 					has_withdraw_damage = true
 				latest_coin.refresh_sprite()
 				if current_played_coin > 1:
@@ -553,9 +554,8 @@ func start_turn():
 func end_turn():
 	toggle_button(main.re_flip_button,true)
 	main.endTurn_button.disabled = true
-	main.sound_manager.play_sound(COIN_ENDTURN)
 	main.coin_deck.sigil_pressed();
-	previous_player_flips = flip_clicks
+	previous_player_flips = current_played_coin
 	
 	var calculations = coin_calculation()
 	var turn_damage = calculations[0]
@@ -566,8 +566,9 @@ func end_turn():
 
 	#Activate End Turn Passives
 	await activate_player_turn_end_passives()
-	
+	main.sound_manager.play_sound(COIN_ENDTURN)
 	if turn_damage > 0:
+		main.sound_manager.play_sound(COIN_ATTACK_PARTICLE)
 		particle_manager.play_attack_animation(main.coin_deck, main.enemy_portrait, turn_damage)
 		await get_tree().create_timer(1.0).timeout
 	
@@ -677,7 +678,7 @@ func activate_player_turn_start_passives():
 			
 			#Guaranteed Silver Flips
 			
-			c.upgrade_to_gold()
+			c.upgrade_tSo_gold()
 			c.add_to_group("coins")
 			
 			add_child(c);
@@ -777,12 +778,11 @@ func activate_player_turn_end_passives():
 
 func extra_turn():
 	main.show_turn_ui("EXTRA TURN")
-	extra_turn_penalty = 0.5
+	extra_turn_penalty = 1
 	start_turn()
 	toggle_button(main.flip_button,true)
 	current_re_flip = 0
-	toggle_button(main.re_flip_buttton,true)
-	
+	toggle_button(main.re_flip_button,true)
 	
 func toggle_button(btn: Button, make_disabled: bool) -> void:
 	btn.disabled = make_disabled

@@ -34,7 +34,6 @@ const SINGLE_DAMAGE_PARTICLE = preload("res://Scene/Single Damage Particle.tscn"
 #SFX
 const COIN_ENDTURN = preload("uid://bfruqunt0uyuj")
 const COIN_FLIP = preload("uid://bmscttmxwr782")
-const COIN_GAIN = preload("uid://c3v64vs2uqtik")
 const COIN_REFLIP = preload("uid://qtxsmuntihe3")
 const DAMAGE_HEAVY = preload("uid://b8us2t16pmggo")
 const DAMAGE_LIGHT = preload("uid://ds0jngoq17iij")
@@ -42,6 +41,7 @@ const DAMAGE_MODERATE = preload("uid://b2rf2iy046cx2")
 const TURN_ENEMY = preload("uid://rncriov1quyx")
 const TURN_PLAYER = preload("uid://dk7433d32rg52")
 const TURN_REVEAL = preload("uid://boyjppal62qns")
+const VICTORY = preload("uid://bu3c18dhngcvw")
 
 const PASSIVE_PASSIVE_INCOME = preload("uid://cl4xnombcshkv")
 const PASSIVE_PAYBACK = preload("uid://bbsxs62yhirxa")
@@ -55,7 +55,16 @@ const PASSIVE_LOAN_SHARK = preload("uid://6xxw4avoncr8")
 const PASSIVE_PAYDOWN = preload("uid://djv3lp0l3aftb")
 const DEATH = preload("uid://bx1ttmouolx2q")
 
+const BATTLE_START = preload("uid://whq12p7mykru")
+const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
+const EXTRA_TURN = preload("uid://yp1dxyml8rna")
 
+#MUSIC
+
+const PASSIVE_SELECTION = preload("uid://cfm3uhjitv627")
+const TWILIGHT_SAGE = preload("uid://dh7vynnxrbqwa")
+const TWILIGHT_ZONE___BATTLE_THEME_1 = preload("uid://b8go57qfww8el")
+const TWILIGHT_ZONE___BATTLE_THEME_2 = preload("uid://byxwfs5g71s5x")
 
 #@onready var player_portrait: ColorRect = $Player/Player_Portrait
 #@onready var enemy_portrait: ColorRect = $Enemy/Enemy_Portrait
@@ -266,7 +275,15 @@ func battle_start():
 	update_enemy_coin()
 	update_player_coin()
 	flip_button.disabled = false
-	
+	sound_manager.play_sound(BATTLE_START)
+	var bgm_rand = randi_range(0,1)
+	if current_enemy_index == 8:
+		sound_manager.play_music(TWILIGHT_SAGE)
+	elif bgm_rand == 1: 
+		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_1)
+	else:
+		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_2)
+		
 	#Battle Start Passives
 	player.activate_pre_battle_passives()
 	player.player_turn_count = 0
@@ -338,6 +355,7 @@ func _on_endturn_pressed():
 			start_enemy_turn()
 			player.extra_turn_penalty = 1
 		else:
+			sound_manager.play_sound(EXTRA_TURN)
 			player.extra_turn()
 			player.has_extra_turn = false
 
@@ -397,6 +415,7 @@ func _on_flip_pressed():
 	
 func trigger_game_over(player_won: bool):
 	sound_manager.play_sound(DEATH)
+	sound_manager.stop_music()
 	if player_won:
 		enemy.max_playable_coins = 0
 		reward_manager.show_rewards()
@@ -486,6 +505,7 @@ func check_defeat():
 	return null
 
 func handle_victory_flow():
+	sound_manager.play_sound(VICTORY)
 	await show_turn_ui("VICTORY")
 	
 	# Disable gameplay buttons
@@ -514,6 +534,8 @@ func progression_after_victory():
 		current_room = 5
 		trigger_game_over(true)
 	elif current_room < 4:
+		sound_manager.stop_music()
+		sound_manager.play_music(PASSIVE_SELECTION)
 		await reward_manager.show_card_selection_async()
 		current_room += 1
 		if current_room == 4:
@@ -523,6 +545,7 @@ func progression_after_victory():
 			#add_child(map)
 			#tween = create_tween()
 			#tween.tween_property(map,"position:y",0,0.4)
+		sound_manager.stop_music()
 		_play_progression_cutscene(current_room - 1, current_room)
 		proceed_to_next_enemy()
 		show_turn_ui("BATTLE START")
@@ -792,3 +815,13 @@ func show_all_passive_notifications():
 		add_passive_notification("loan_shark", "LOAN SHARK ACTIVE")
 	if player.has_lending_charge:
 		add_passive_notification("lending_charge", "LENDING CHARGE ACTIVE")
+		
+	# Banker
+	if player.has_withdraw:
+		add_passive_notification("withdraw", "WITHDRAW ACTIVE")
+	if player.has_deposit:
+		add_passive_notification("deposit", "DEPOSIT ACTIVE")
+	if player.has_dividend:
+		add_passive_notification("dividend", "DIVIDEND ACTIVE")
+	if player.has_cash_out:
+		add_passive_notification("cash_out", "CASH OUT ACTIVE")

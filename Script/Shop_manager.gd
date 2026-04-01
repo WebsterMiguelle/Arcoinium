@@ -8,6 +8,9 @@ const Shop_card = preload("res://Scene/shop_card.tscn")
 @onready var coin_label = $Background/CoinLabel
 @onready var player: Node2D = $"../Player"
 
+const SCROLL_HOVERED = preload("uid://dpcddmlbji61k")
+const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
+
 # NEW: Reference the new text box you just made!
 @onready var descriptions: Label = $Background/Descriptions
 
@@ -45,10 +48,10 @@ var all_cards = [
 	{"id": 23, "name": "Jar'O Savings", "rank": "S", "desc": "At the start of each turn, if Coin Caster has 30 or more gained coins, cleanse all Debt Stacks and immediately deal 100% of Gain as damage."},
 	{"id": 24, "name": "Pay Down", "rank": "S", "desc": "Add 5 Debt at the end of the Enemy’s Turn. If Enemy Debt is greater than their Current Coins at the end of their turn, perish instantly."},
 	{"id": 25, "name": "Refund", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 10% chance to retrieve all coins from the Arcane Circle upon a Re-Flip. Refresh Re-Flip Count afterwards."},
-	{"id": 26, "name": "Withdraw", "rank": "B", "desc": "For each reserved coin added to the Arcane Circle next turn, deal 1 Damage."},
+	{"id": 26, "name": "Withdraw", "rank": "B", "desc": "For each reserved coin added to the Arcane Circle next turn, deal 2 Damage."},
 	{"id": 27, "name": "Deposit", "rank": "A", "desc": "+6 Max Reserve."},
 	{"id": 28, "name": "Dividend", "rank": "A", "desc": "There is a 30% chance to duplicate each reserved coin on the next turn."},
-	{"id": 29, "name": "Cash Out", "rank": "S", "desc": "When both the Arcane Circle and Reserve are full at the end of this turn, immediately gain an Extra Turn. (Extra Turn: DMG, Gain and Debt is halved. Cannot Flip or Re-Flip this turn.)"}
+	{"id": 29, "name": "Cash Out", "rank": "S", "desc": "When both the Arcane Circle and Reserve are full at the end of this turn, immediately gain an Extra Turn. Cannot Flip or Re-Flip during this turn."}
 ]
 
 func show_shop_async(player):
@@ -93,9 +96,9 @@ func generate_shop():
 	var s_pool = pool.filter(func(c): return c["rank"] == "S")
 	
 	var selected_cards = []
-	selected_cards += draw_cards(b_pool, 3)
+	selected_cards += draw_cards(b_pool, 1)
 	selected_cards += draw_cards(a_pool, 2)
-	selected_cards += draw_cards(s_pool, 1)
+	selected_cards += draw_cards(s_pool, 3)
 
 	for data in selected_cards:
 		var card = Shop_card.instantiate()
@@ -126,11 +129,12 @@ func generate_shop():
 		# NEW: Listen for the hover signals!
 		card.card_hovered.connect(_on_card_hovered)
 		card.card_unhovered.connect(_on_card_unhovered)
-		
+		card.setup(main)
 		container.add_child(card)
 
 # NEW: Update the label when hovered
 func _on_card_hovered(description_text: String) -> void:
+	main.sound_manager.play_sound(SCROLL_HOVERED)
 	if descriptions:
 		descriptions.text = description_text
 

@@ -20,6 +20,7 @@ const PASSIVE_LOAN_SHARK = preload("uid://6xxw4avoncr8")
 const PASSIVE_PASSIVE_INCOME = preload("uid://cl4xnombcshkv")
 const PASSIVE_PAYDOWN = preload("uid://djv3lp0l3aftb")
 
+const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
 
 #PARTICLES
 const COIN_ADD_PARTICLE = preload("uid://s6va71jul34t")
@@ -451,6 +452,7 @@ func end_enemy_turn():
 		main.turn_calculation.text = ""
 
 	if turn_damage != 0: 
+		main.sound_manager.play_sound(COIN_ATTACK_PARTICLE)
 		particle_manager.play_attack_animation(main.coin_deck, main.player_portrait, turn_damage)
 		await get_tree().create_timer(1.0).timeout
 		

@@ -6,8 +6,6 @@
 [ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="3_hspdg"]
 [ext_resource type="Script" uid="uid://dedsjnmo4366e" path="res://Script/enemy.gd" id="3_lquwl"]
 [ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
-[ext_resource type="AudioStream" uid="uid://cfv556d3jos2i" path="res://BGM/Twilight Zone (Exploration).wav" id="4_6njx3"]
-[ext_resource type="AudioStream" uid="uid://0ld5vkxyd8pm" path="res://BGM/Twilight Zone (Combat).wav" id="5_0y2cb"]
 [ext_resource type="PackedScene" uid="uid://vnsb1sd0yalg" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
 [ext_resource type="Script" uid="uid://deakh0hwd6qoh" path="res://Scene/CardManager.gd" id="5_3amdw"]
 [ext_resource type="Script" uid="uid://bh8ned1dqg5l3" path="res://Script/Shop_manager.gd" id="6_1xcnr"]
@@ -45,12 +43,7 @@
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]
 
-[sub_resource type="AudioStreamSynchronized" id="AudioStreamSynchronized_2ix4a"]
-stream_count = 2
-stream_0/stream = ExtResource("4_6njx3")
-stream_0/volume = 0.0
-stream_1/stream = ExtResource("5_0y2cb")
-stream_1/volume = 0.0
+[sub_resource type="AudioStream" id="AudioStream_ot48q"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f043x"]
 atlas = ExtResource("6_mxd2g")
@@ -352,8 +345,7 @@ script = ExtResource("3_hspdg")
 stream = SubResource("AudioStreamPolyphonic_hspdg")
 
 [node name="BGMPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=526912258]
-stream = SubResource("AudioStreamSynchronized_2ix4a")
-autoplay = true
+stream = SubResource("AudioStream_ot48q")
 
 [node name="CoinDeck" parent="." unique_id=955153148 instance=ExtResource("4_2wwxx")]
 position = Vector2(576.00006, 324.00003)

@@ -26,6 +26,12 @@ signal card_bought(card_id, price)
 signal card_hovered(description: String) # NEW
 signal card_unhovered() # NEW
 
+var main
+const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
+
+func setup(m):
+	main = m
+
 func _ready() -> void:
 	# UI Setup
 	update_stock_display()
@@ -116,9 +122,10 @@ func _on_mouse_exited() -> void:
 	card_unhovered.emit()
 
 func _on_pressed() -> void:
+	
 	if stock <= 0:
 		return
-		
+	main.sound_manager.play_sound(SCROLL_OPEN)
 	stock -= 1
 	card_bought.emit(card_id, price)
 	update_stock_display()

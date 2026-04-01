@@ -1,12 +1,18 @@
 extends CanvasLayer
 @onready var main = get_node("/root/Main")
 @onready var passive_manager = get_node("/root/Main/PassiveManager")
+@onready var sound_manager: Node2D = $"../SoundManager"
+
 @onready var card_container = $Background/CenterContainer/VBoxContainer/CardContainer
 #@onready var refresh_button = $Background/CenterContainer/VBoxContainer/Refresh
 const CARD_SCENE = preload("res://Scene/reward_card.tscn")
 @onready var player: Node2D = $"../Player"
 
 @onready var card_description: Label = $Background/Card_Description
+
+
+const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
+const SCROLL_HOVERED = preload("uid://dpcddmlbji61k")
 
 
 var all_cards = [
@@ -36,10 +42,10 @@ var all_cards = [
 	{"id": 23, "name": "Jar'O Savings", "rank": "S", "desc": "At the start of each turn, if Coin Caster has 30 or more gained coins, cleanse all Debt Stacks and immediately deal 100% of Gain as damage."},
 	{"id": 24, "name": "Pay Down", "rank": "S", "desc": "Add 5 Debt at the end of the Enemy’s Turn. If Enemy Debt is greater than their Current Coins at the end of their turn, perish instantly."},
 	{"id": 25, "name": "Refund", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 10% chance to retrieve all coins from the Arcane Circle upon a Re-Flip. Refresh Re-Flip Count afterwards."},
-	{"id": 26, "name": "Withdraw", "rank": "B", "desc": "For each reserved coin added to the Arcane Circle next turn, deal 1 Damage."},
+	{"id": 26, "name": "Withdraw", "rank": "B", "desc": "For each reserved coin added to the Arcane Circle next turn, deal 2 Damage."},
 	{"id": 27, "name": "Deposit", "rank": "A", "desc": "+6 Max Reserve."},
 	{"id": 28, "name": "Dividend", "rank": "A", "desc": "There is a 30% chance to duplicate each reserved coin on the next turn."},
-	{"id": 29, "name": "Cash Out", "rank": "S", "desc": "When both the Arcane Circle and Reserve are full at the end of this turn, immediately gain an Extra Turn. (Extra Turn: DMG, Gain and Debt is halved. Cannot Flip or Re-Flip this turn.)"}
+	{"id": 29, "name": "Cash Out", "rank": "S", "desc": "When both the Arcane Circle and Reserve are full at the end of this turn, immediately gain an Extra Turn. Cannot Flip or Re-Flip during this turn."}
 ]
 
 var picked_cards = []
@@ -58,6 +64,7 @@ func draw_cards(from_pool: Array, amount: int) -> Array:
 		return result
 		
 func show_rewards():
+	main.sound_manager.play_sound(SCROLL_OPEN)
 	visible = true
 	clear_cards()
 	
@@ -74,16 +81,17 @@ func show_rewards():
 
 	match main.current_room:
 		0:
-			b_count = 4
+			b_count = 5
 		1:
-			b_count = 3
+			b_count = 4
 			a_count = 1
 		2:
-			b_count = 1
+			b_count = 2
 			a_count = 3
 		3:
-			a_count = 2
-			s_count = 2
+			b_count = 1
+			a_count = 3
+			s_count = 1
 		_:
 			b_count = 2
 			a_count = 2
@@ -94,7 +102,7 @@ func show_rewards():
 	selected_cards += draw_cards(a_pool, a_count)
 	selected_cards += draw_cards(s_pool, s_count)
 	
-	var remaining = 4 - selected_cards.size()
+	var remaining = 5 - selected_cards.size()
 	if remaining > 0:
 		var fallback_pool = pool.duplicate()
 		for card in selected_cards:
@@ -128,7 +136,7 @@ func create_card(data):
 	
 	card.card_hovered.connect(self._on_card_hovered)
 	card.card_unhovered.connect(self._on_card_unhovered)
-	
+	card.setup(main)
 	card_container.add_child(card)
 
 func clear_cards():
@@ -326,6 +334,7 @@ func is_card_owned(card_id: int) -> bool:
 
 func _on_card_hovered(description_text: String) -> void:
 	# Add [center] tags if you want the text to always be centered!
+	main.sound_manager.play_sound(SCROLL_HOVERED)
 	card_description.text = description_text
 
 func _on_card_unhovered() -> void:

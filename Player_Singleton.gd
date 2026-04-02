@@ -32,7 +32,7 @@ var debt = 0: #Gain Blocked
 		debt = clamp(value,0,1000) 
 var thrift = 0: #Reduced Playable Coins
 	set(value):
-		thrift = clamp(value,0,15) 
+		thrift = clamp(value,0,16) 
 
 #PASSIVES
 

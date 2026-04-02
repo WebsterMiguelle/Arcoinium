@@ -101,6 +101,15 @@ $"Progression Map/Boss"
 @onready var player_health_label = $"Battle UI/HealthLabel"
 @onready var player_thrift: Label = $"Player/Player Thrift"
 
+@onready var player_gain_particles: GPUParticles2D = $"Player/Player Gain Particles"
+@onready var player_debt_particles: GPUParticles2D = $"Player/Player Debt Particles"
+@onready var enemy_debt_particles: GPUParticles2D = $"Enemy/Enemy Debt Particles"
+@onready var player_thrift_particles: GPUParticles2D = $"Player/Player Thrift Particles"
+@onready var enemy_thrift_particles: GPUParticles2D = $"Enemy/Enemy Thrift Particles"
+@onready var enemy_gain_particles: GPUParticles2D = $"Enemy/Enemy Gain Particles"
+
+
+
 @onready var enemy_health_bar = $"Battle UI/EnemyHealthBar"
 @onready var enemy_health_label: Label = $"Battle UI/EnemyHealthLabel"
 @onready var enemy_gain: Label = $"Enemy/Enemy Gain"
@@ -239,7 +248,7 @@ func battle_start():
 
 	coin_deck.reset_sigils()
 	reflip_label.text = str(player.max_re_flip - player.current_re_flip)
-	
+
 	randomize()
 	
 	flip_button.pressed.connect(_on_flip_pressed)
@@ -334,22 +343,26 @@ func _on_end_run_pressed():
 	trigger_game_over(false)
 	
 func start_player_turn():
-	show_turn_ui("PLAYER TURN")
-	coin_deck.reset_sigils()
-	current_turn = Turn.PLAYER
-	sound_manager.play_sound(TURN_PLAYER)
-	player.start_turn()
+	if player.coin > 0:
+		show_turn_ui("PLAYER TURN")
+		coin_deck.reset_sigils()
+		current_turn = Turn.PLAYER
+		sound_manager.play_sound(TURN_PLAYER)
+		player.start_turn()
+	else:
+		check_defeat()
 			
 func start_enemy_turn():
-	check_defeat()
 	if enemy.coin > 0:
 		show_turn_ui("ENEMY'S TURN")
 		coin_deck.reset_sigils()
 		current_turn = Turn.ENEMY
 		sound_manager.play_sound(TURN_ENEMY)
 		await enemy.start_enemy_turn()
-		start_player_turn()
-
+		if enemy.coin > 0:
+			start_player_turn()
+		else:
+			check_defeat()
 
 func _on_endturn_pressed():
 	await player.end_turn()
@@ -500,7 +513,6 @@ func check_defeat():
 		return true
 		
 	if enemy.coin <= 0:
-		turn_calculation_box.exit()
 		flip_button.disabled = true
 		endTurn_button.disabled = true 
 		re_flip_button.disabled = true
@@ -512,7 +524,14 @@ func check_defeat():
 
 func handle_victory_flow():
 	sound_manager.play_sound(VICTORY)
+	turn_calculation_box.exit()
 	await show_turn_ui("VICTORY")
+	sound_manager.play_sound(PASSIVE_SPARE_CHANGE)
+	var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
+	for c in reserved_coins:
+		player.coin += 1
+		c.queue_free()
+		player.current_reserve -= 1
 	
 	# Disable gameplay buttons
 	flip_button.disabled = true
@@ -594,26 +613,38 @@ func update_enemy_coin():
 	enemy_health_label.text = "Coins: " + str(enemy.coin)
 	
 func update_player_stacks():
+	player_debt_particles.emitting = false
+	player_gain_particles.emitting = false
+	player_thrift_particles.emitting = false
 	player_gain.text = ""
 	player_debt.text = ""
 	player_thrift.text = ""
 	if player.gain != 0:
-		player_gain.text = "GAIN: " + str(player.gain)
+		player_gain.text = str(player.gain)
+		player_gain_particles.emitting = true
 	if player.debt != 0:
+		player_debt_particles.emitting = true
 		player_debt.text = str(player.debt)
 	if player.thrift != 0:
-		player_thrift.text = "THRIFT: " + str(player.thrift)
+		player_thrift.text = str(player.thrift)
+		player_thrift_particles.emitting = true
 	
 func update_enemy_stacks():
+	enemy_debt_particles.emitting = false
+	enemy_thrift_particles.emitting = false
+	enemy_gain_particles.emitting = false
 	enemy_gain.text = ""
 	enemy_debt.text = ""
 	enemy_thrift.text = ""
 	if enemy.gain != 0:
-		enemy_gain.text = "GAIN: " + str(enemy.gain)
+		enemy_gain.text = str(enemy.gain)
+		enemy_gain_particles.emitting = true
 	if enemy.debt != 0:
 		enemy_debt.text =str(enemy.debt)
+		enemy_debt_particles.emitting = true
 	if enemy.thrift != 0:
-		enemy_thrift.text =str(enemy.thrift)
+		enemy_thrift.text = str(enemy.thrift)
+		enemy_thrift_particles.emitting = true
 
 func _on_restart_pressed():
 	await get_tree().create_timer(0.2).timeout

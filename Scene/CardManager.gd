@@ -33,18 +33,18 @@ var all_cards = [
 	{"id": 14, "name": "Pocket Money", "rank": "A", "desc": "Start each battle with 8 Silver Moon Coins."},
 	{"id": 15, "name": "Passive Income", "rank": "A", "desc": "In every battle, the first enemy damage will be turned into Coins. (Caps at 30 Coin Gain)"},
 	{"id": 16, "name": "Magic Trick", "rank": "A", "desc": "Upon ending the turn with 8 or more Coins, the 1st Coin Pair will be copied to the 2nd, 3rd, and 4th Coin Pair."},
-	{"id": 17, "name": "Reimbursement", "rank": "A", "desc": "Each Flip and Re-Flip has a 50% Chance to apply 1 Debt."},
+	{"id": 17, "name": "Reimbursement", "rank": "A", "desc": "Each Flip and Re-Flip has a 30% Chance to apply 1 Debt."},
 	{"id": 18, "name": "Payback", "rank": "A", "desc": "If Coin Caster receives a killing blow, set Coin back to 1, and immediately generate 12 Gold Sun Coins on the Arcane Circle next turn. (One-Time per Battle)"},
 	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "At the start of the enemy’s turn, immediately deal damage based on half of the Enemy’s Debt."},
 	{"id": 20, "name": "Spare Change", "rank": "A", "desc": "Upon a Re-Flip, retrieve all reserved coins on the deck."},
 	{"id": 21, "name": "Triple Nickel", "rank": "A", "desc": "+20% Silver Flip Rate. The first 3 Flips on every turn are guaranteed to be Silver Coins."},
-	{"id": 22, "name": "Inflation", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 30% chance for each coin on the deck to upgrade every Re-Flip."},
-	{"id": 23, "name": "Jar'O Savings", "rank": "S", "desc": "At the start of each turn, if Coin Caster has 30 or more gained coins, cleanse all Debt Stacks and immediately deal 100% of Gain as damage."},
+	{"id": 22, "name": "Inflation", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 30% chance for each coin on the Arcane Circle to upgrade every Re-Flip."},
+	{"id": 23, "name": "Jar'O Savings", "rank": "S", "desc":"For every 10 Gain, apply 2 Thrift to the Enemy."},
 	{"id": 24, "name": "Pay Down", "rank": "S", "desc": "Add 5 Debt at the end of the Enemy’s Turn. If Enemy Debt is greater than their Current Coins at the end of their turn, perish instantly."},
 	{"id": 25, "name": "Refund", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 20% chance to retrieve all coins from the Arcane Circle upon a Re-Flip. Refresh Re-Flip Count afterwards."},
 	{"id": 26, "name": "Withdraw", "rank": "B", "desc": "For each reserved coin added to the Arcane Circle next turn, deal 2 Damage."},
 	{"id": 27, "name": "Deposit", "rank": "A", "desc": "+4 Max Reserve."},
-	{"id": 28, "name": "Dividend", "rank": "A", "desc": "There is a 50% chance to duplicate each reserved coin on the next turn."},
+	{"id": 28, "name": "Dividend", "rank": "A", "desc": "There is a 30% chance to duplicate each reserved coin on the next turn."},
 	{"id": 29, "name": "Cash Out", "rank": "S", "desc": " When Coin Caster flipped all playable and reservable coins, immediately gain an Extra Turn upon ending the current turn. Coin Caster cannot Flip or Re-Flip during Extra Turns."}
 ]
 

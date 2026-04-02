@@ -349,6 +349,8 @@ func start_player_turn():
 		current_turn = Turn.PLAYER
 		sound_manager.play_sound(TURN_PLAYER)
 		player.start_turn()
+		if enemy.coin == 0:
+			check_defeat()
 	else:
 		check_defeat()
 			
@@ -366,6 +368,7 @@ func start_enemy_turn():
 
 func _on_endturn_pressed():
 	await player.end_turn()
+	turn_calculation_box.exit()
 	var defeat = await check_defeat()
 	if defeat == null:
 		await get_tree().create_timer(1.0).timeout

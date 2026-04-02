@@ -187,7 +187,7 @@ func reset_stats():
 	max_coin = 500 #Max Coin Capacity
 	max_reserve = 4
 	current_reserve = 0
-	coin = 100
+	coin = 1
 	max_playable_coins = 16 #Max Flips Per Turn
 	current_played_coin = 0 #Current Flip Count
 	max_re_flip = 3 #Max Re-Flips Per Turn
@@ -212,7 +212,7 @@ func reset_stats():
 	#INNOVATOR PASSIVES
 
 	has_inflation = false
-	has_payback = false
+	has_payback = true
 	has_lucky_pair = false
 	has_value_increase = false
 
@@ -226,8 +226,8 @@ func reset_stats():
 	#INVESTOR PASSIVES
 
 	has_active_income = true
-	has_pocket_money = true
-	has_passive_income = true
+	has_pocket_money = false
+	has_passive_income = false
 	has_simple_interest = true
 
 	#DEBTOR PASSIVES
@@ -309,7 +309,7 @@ func coin_calculation():
 			pass
 		is_left = !is_left
 	if has_active_income:
-		total_thrift += (total_gain / 10) * 2
+		total_thrift += (total_gain/15 * 2)
 	var text = ""
 	if coins != null:
 		if total_damage != 0: 
@@ -662,7 +662,7 @@ func activate_pre_battle_passives():
 		debt += 5
 	passive_income_used = false
 	payback_used = false
-	payback_coins = 12
+	payback_coins = 8
 	pocket_money_coins = 8
 	current_played_coin = 0
 	if has_pocket_money:
@@ -694,7 +694,9 @@ func activate_pre_battle_passives():
 func activate_player_turn_start_passives():
 	previous_player_flips = 0
 	if payback_used and payback_coins != 0:
-		payback_coins = 12
+		payback_coins = 8
+		main.enemy.thrift += 16
+		main.sound_manager.play_sound(THRIFT)
 		main.endTurn_button.disabled = true
 		toggle_button(main.re_flip_button,true)
 		print("PAYBACK: " + str(payback_coins))
@@ -713,7 +715,7 @@ func activate_player_turn_start_passives():
 				c.add_to_group("reserved coins")
 			else:
 				c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
-				c.upgrade_to_gold()
+				c.upgrade_to_silver()
 				c.add_to_group("coins")
 
 			#Guaranteed Silver Flips

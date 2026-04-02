@@ -19,6 +19,7 @@ const DEBT = preload("uid://cuwgygacdm7dj")
 const PASSIVE_LOAN_SHARK = preload("uid://6xxw4avoncr8")
 const PASSIVE_PASSIVE_INCOME = preload("uid://cl4xnombcshkv")
 const PASSIVE_PAYDOWN = preload("uid://djv3lp0l3aftb")
+const THRIFT = preload("uid://b34wg18n8eb0t")
 
 const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
 
@@ -48,6 +49,7 @@ var max_coin = 0 #Max Coin Capacity
 var coin = 0:
 	set(value):
 		coin = clamp(value,0,max_coin)
+var initial_max_playable_coins = 0
 var max_playable_coins: = 0: #Max Flips Per Turn
 	set(value):
 		max_playable_coins = clamp(value,0,16)
@@ -69,6 +71,9 @@ var gain = 0: #Coin to be gained next turn
 var debt = 0: #Gain Blocked
 	set(value):
 		debt = clamp(value,0,1000) 
+var thrift = 0: #Reduced Playable Coins
+	set(value):
+		thrift = clamp(value,0,15) 
 
 func take_damage(amount):
 	coin-= amount
@@ -164,7 +169,7 @@ func setup(m,enemy):
 			type = Enemy.THRIFTER
 			has_learn_to_save = true
 			main.player.has_learn_to_save = true
-			main.player.max_playable_coins = 8
+			main.player.thrift = 8
 		Enemy.ARISTOCRAT:
 			max_coin = 200
 			coin = 150
@@ -241,6 +246,7 @@ func enemy_coin_calculation():
 	var total_damage = 0
 	var total_gain = 0
 	var total_debt = 0
+	var total_thrift = 0
 	var type = type
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
 	match type:
@@ -290,6 +296,8 @@ func enemy_coin_calculation():
 						total_gain += (left_coin.base_value) + (right_coin.base_value)
 					if left_coin.state == 0 and right_coin.state == 0:
 						total_damage += (left_coin.base_value) + (right_coin.base_value)
+					else:
+						total_thrift += 2
 					left_coin = null
 					right_coin = null
 				else:
@@ -364,11 +372,21 @@ func enemy_coin_calculation():
 				else:
 					pass
 				is_left = !is_left
-	if total_damage != 0 or total_debt != 0 or total_gain != 0:
-		var text = "DMG: " + str(total_damage) + "\nGAIN: " + str(total_gain) + "\nDEBT: " + str(total_debt)
+	var text = ""
+	if coins != null:
+		if total_damage != 0: 
+			text += "\nDMG: " + str(total_damage)
+		if total_gain != 0:
+			text += "\nGAIN: " + str(total_gain)
+		if total_debt != 0:
+			text += "\nDEBT: " + str(total_debt)
+		if total_thrift != 0:
+			text += "\nTHRIFT: " + str(total_thrift)
 		main.turn_calculation.text = text
-		main.turn_calculation.add_theme_color_override("font_color", Color.ORANGE)
-	return [total_damage,total_gain,total_debt]
+		main.turn_calculation.add_theme_color_override("font_color", Color.WHITE)
+	if text != "":
+		main.turn_calculation_box.entrance(true)
+	return [total_damage,total_gain,total_debt,total_thrift]
 
 func start_enemy_turn():
 	toggle_button(main.flip_button,true)
@@ -394,6 +412,9 @@ func start_enemy_turn():
 	var turn_debt = 0
 	var defeat
 	
+	#THRIFT
+	initial_max_playable_coins = max_playable_coins
+	max_playable_coins -= thrift
 	#Coin Gain Triggers
 	gain_coin()
 	if has_fully_paid and debt == 0:
@@ -444,6 +465,7 @@ func end_enemy_turn():
 	var turn_damage = calculations[0]
 	var turn_gain = calculations[1]
 	var turn_debt = calculations[2]
+	var turn_thrift = calculations[3]
 	
 	if coin == 0:
 		turn_damage = 0
@@ -454,7 +476,10 @@ func end_enemy_turn():
 	if turn_damage != 0: 
 		main.sound_manager.play_sound(COIN_ATTACK_PARTICLE)
 		particle_manager.play_attack_animation(main.coin_deck, main.player_portrait, turn_damage)
+		main.turn_calculation_box.exit()
 		await get_tree().create_timer(1.0).timeout
+		thrift = 0
+		max_playable_coins = initial_max_playable_coins
 		
 		if main.player.has_passive_income and !main.player.passive_income_used:
 			main.player.passive_income_used = true
@@ -469,8 +494,11 @@ func end_enemy_turn():
 			main.player.take_damage(turn_damage)
 			main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.player_portrait.global_position)
 	if turn_debt != 0:
-			main.player.debt += turn_debt
-			main.sound_manager.play_sound(DEBT)
+		main.player.debt += turn_debt
+		main.sound_manager.play_sound(DEBT)
+	if turn_thrift != 0:
+		main.player.thrift += turn_thrift
+		main.sound_manager.play_sound(THRIFT)
 	gain += turn_gain
 	if main.player.has_pay_down:
 		if debt > coin:

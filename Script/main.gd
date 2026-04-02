@@ -91,17 +91,22 @@ $"Progression Map/Boss"
 @onready var re_flip_button: Button = $"Battle UI/Re-Flip"
 @onready var reflip_sprite: AnimatedSprite2D = $"Battle UI/Re-Flip/Reflip_Sprite"
 @onready var reflip_label: Label = $"Battle UI/Re-Flip/Reflip_Label"
-@onready var turn_calculation: Label = $"Battle UI/Turn Calculation"
+@onready var turn_calculation: Label = $"Battle UI/Turn Calculation Box/Turn Calculation"
+@onready var turn_calculation_box: TextureRect = $"Battle UI/Turn Calculation Box"
+
 
 @onready var player_health_bar = $"Battle UI/PlayerHealthBar2"
 @onready var player_gain: Label = $"Player/Player Gain"
 @onready var player_debt: Label = $"Player/Player Debt"
 @onready var player_health_label = $"Battle UI/HealthLabel"
+@onready var player_thrift: Label = $"Player/Player Thrift"
 
 @onready var enemy_health_bar = $"Battle UI/EnemyHealthBar"
 @onready var enemy_health_label: Label = $"Battle UI/EnemyHealthLabel"
 @onready var enemy_gain: Label = $"Enemy/Enemy Gain"
 @onready var enemy_debt: Label = $"Enemy/Enemy Debt"
+@onready var enemy_thrift: Label = $"Enemy/Enemy Thrift"
+
 
 @onready var turn_ui: ColorRect = $"Battle UI/Turn UI"
 @onready var turn_ui_label: Label = $"Battle UI/Turn UI/Turn UI Label"
@@ -177,6 +182,7 @@ func _on_item_purchased(card_id,price):
 func _ready():
 	await get_tree().create_timer(0.4).timeout
 	await _play_fake_coin_intro()
+	turn_calculation_box.visible = false
 	turn_ui.visible = false
 	current_room = 0
 	current_enemy_index = randi_range(0,1)
@@ -232,8 +238,6 @@ func battle_start():
 	show_all_passive_notifications()
 
 	coin_deck.reset_sigils()
-	update_enemy_gain_debt()
-	update_player_gain_debt()
 	reflip_label.text = str(player.max_re_flip - player.current_re_flip)
 	
 	randomize()
@@ -294,8 +298,8 @@ func battle_start():
 func _process(delta: float) -> void:
 	update_player_coin()
 	update_enemy_coin()
-	update_player_gain_debt()
-	update_enemy_gain_debt()
+	update_player_stacks()
+	update_enemy_stacks()
 
 func show_turn_ui(text):
 	sound_manager.play_sound(TURN_REVEAL)
@@ -330,8 +334,7 @@ func _on_end_run_pressed():
 	trigger_game_over(false)
 	
 func start_player_turn():
-	if player.player_turn_count != 1:
-		show_turn_ui("PLAYER TURN")
+	show_turn_ui("PLAYER TURN")
 	coin_deck.reset_sigils()
 	current_turn = Turn.PLAYER
 	sound_manager.play_sound(TURN_PLAYER)
@@ -497,6 +500,7 @@ func check_defeat():
 		return true
 		
 	if enemy.coin <= 0:
+		turn_calculation_box.exit()
 		flip_button.disabled = true
 		endTurn_button.disabled = true 
 		re_flip_button.disabled = true
@@ -589,21 +593,27 @@ func update_player_coin():
 func update_enemy_coin():
 	enemy_health_label.text = "Coins: " + str(enemy.coin)
 	
-func update_player_gain_debt():
+func update_player_stacks():
 	player_gain.text = ""
 	player_debt.text = ""
+	player_thrift.text = ""
 	if player.gain != 0:
 		player_gain.text = "GAIN: " + str(player.gain)
 	if player.debt != 0:
 		player_debt.text = str(player.debt)
+	if player.thrift != 0:
+		player_thrift.text = "THRIFT: " + str(player.thrift)
 	
-func update_enemy_gain_debt():
+func update_enemy_stacks():
 	enemy_gain.text = ""
 	enemy_debt.text = ""
+	enemy_thrift.text = ""
 	if enemy.gain != 0:
 		enemy_gain.text = "GAIN: " + str(enemy.gain)
 	if enemy.debt != 0:
 		enemy_debt.text =str(enemy.debt)
+	if enemy.thrift != 0:
+		enemy_thrift.text =str(enemy.thrift)
 
 func _on_restart_pressed():
 	await get_tree().create_timer(0.2).timeout
@@ -615,7 +625,7 @@ func proceed_to_next_enemy():
 		1:
 			current_enemy_index = randi_range(2,3)
 		2:
-			current_enemy_index = randi_range(4,5)
+			current_enemy_index = randi_range(4,4)
 		3:
 			current_enemy_index = randi_range(6,7)
 		4:

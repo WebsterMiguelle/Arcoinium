@@ -36,6 +36,7 @@ const DEBT = preload("uid://cuwgygacdm7dj")
 const PASSIVE_PAYBACK = preload("uid://bbsxs62yhirxa")
 
 const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
+const THRIFT = preload("uid://b34wg18n8eb0t")
 
 
 #PARTICLES
@@ -53,6 +54,7 @@ var coin = 100:
 	set(value):
 		coin = clamp(value,0,max_coin)
 		hp_changed.emit(coin)
+var initial_max_playable_coins
 var max_playable_coins: = 16 #Max Flips Per Turn
 var current_played_coin: = 0: #Current Flip Count
 	set(value):
@@ -76,6 +78,9 @@ var gain = 0: #Coin to be gained next turn
 var debt = 0: #Gain Blocked
 	set(value):
 		debt = clamp(value,0,1000) 
+var thrift = 0: #Reduced Playable Coins
+	set(value):
+		thrift = clamp(value,0,15) 
 
 #PASSIVES
 
@@ -213,7 +218,7 @@ func reset_stats():
 
 	has_spare_change = false
 	has_triple_nickel = false
-	has_refund = false
+	has_refund = true
 	has_coin_snipe = false
 
 	#INVESTOR PASSIVES
@@ -264,9 +269,9 @@ func coin_calculation():
 	var total_damage = 0
 	var total_gain = 0
 	var total_debt = 0
+	var total_thrift = 0
 	sun_count = 0
 	moon_count = 0
-	var head_tail_count = 0
 	var coins = get_tree().get_nodes_in_group("coins")
 	for coin in coins:
 		if is_left == true:
@@ -288,31 +293,33 @@ func coin_calculation():
 			elif left_coin.state == 0 and right_coin.state == 1:
 				total_damage += (left_coin.base_value / 2)
 				total_gain += (right_coin.base_value / 2)
-				head_tail_count += 1
 				if has_lending_charge: total_debt += 3
 			else:
 				total_damage += (right_coin.base_value / 2)
 				total_gain += (left_coin.base_value / 2)
 				if has_lending_charge: total_debt += 3
-				head_tail_count += 1
 			left_coin = null
 			right_coin = null
 		else:
 			pass
 		is_left = !is_left
-	total_damage = int(total_damage * extra_turn_penalty)
-	total_gain = int(total_gain * extra_turn_penalty)
-	total_debt = int(total_debt * extra_turn_penalty)
-	if (total_damage != 0 or total_gain != 0) and coins != null:
-		var text = "DMG: " + str(total_damage) + "\nGAIN: " + str(total_gain)
+	var text = ""
+	if coins != null:
+		if total_damage != 0: 
+			text += "\nDMG: " + str(total_damage)
+		if total_gain != 0:
+			text += "\nGAIN: " + str(total_gain)
 		if total_debt != 0:
-			text = "DMG: " + str(total_damage) + "\nGAIN: " + str(total_gain) + "\nDEBT: " + str(total_debt)
+			text += "\nDEBT: " + str(total_debt)
+		if total_thrift != 0:
+			text += "\nTHRIFT: " + str(total_thrift)
 		main.turn_calculation.text = text
 		main.turn_calculation.add_theme_color_override("font_color", Color.WHITE)
 	else: 
 		main.turn_calculation.text = ""
-	
-	return [total_damage,total_gain,total_debt]
+	if text != "":
+		main.turn_calculation_box.entrance(true)
+	return [total_damage,total_gain,total_debt,total_thrift]
 
 func flip():
 	var is_deck_full = false
@@ -404,7 +411,7 @@ func re_flip():
 	var coins = get_tree().get_nodes_in_group("coins")
 	var index = 0
 	var refund_chance = randf()
-	if has_refund and refund_chance <= 0.1:
+	if has_refund and refund_chance <= 0.2:
 		main.sound_manager.play_sound(PASSIVE_REFUND)
 		current_re_flip = 0
 	for c in coins:
@@ -420,10 +427,9 @@ func re_flip():
 				c.re_flip()
 			if has_refund and refund_chance <= 0.1:
 				coin += 1
-				current_played_coin = 0
+				current_played_coin -= 1
 				c.queue_free()
 				toggle_button(main.flip_button,false)
-				coin_calculation()
 			else:
 				c.re_flip()
 	if has_spare_change:
@@ -442,7 +448,9 @@ func re_flip():
 	if current_re_flip == max_re_flip or current_played_coin == 0:
 		toggle_button(main.re_flip_button,true)
 
+	await get_tree().create_timer(0.1).timeout
 	coin_calculation()
+	
 	
 func start_turn():
 	player_turn_count += 1
@@ -451,6 +459,10 @@ func start_turn():
 	flip_clicks = 0
 	latest_coin = null
 	current_played_coin = 0
+	
+	#THRIFT
+	initial_max_playable_coins = max_playable_coins
+	max_playable_coins -= thrift
 	
 	#ACTIVE INCOME
 	if has_active_income and gain >= 30:
@@ -557,20 +569,27 @@ func end_turn():
 	main.coin_deck.sigil_pressed();
 	previous_player_flips = current_played_coin
 	
-	var calculations = coin_calculation()
-	var turn_damage = calculations[0]
-	var turn_gain = calculations[1]
-	var turn_debt = calculations[2]
-	previous_player_gain = 0
+
 	
 
 	#Activate End Turn Passives
 	await activate_player_turn_end_passives()
 	main.sound_manager.play_sound(COIN_ENDTURN)
+	
+	var calculations = coin_calculation()
+	print(calculations)
+	var turn_damage = calculations[0]
+	var turn_gain = calculations[1]
+	var turn_debt = calculations[2]
+	var turn_thrift = calculations[3]
+	previous_player_gain = 0
+	
 	if turn_damage > 0:
 		main.sound_manager.play_sound(COIN_ATTACK_PARTICLE)
 		particle_manager.play_attack_animation(main.coin_deck, main.enemy_portrait, turn_damage)
+		main.turn_calculation_box.exit()
 		await get_tree().create_timer(1.0).timeout
+		thrift = 0
 	
 	main.enemy.take_damage(turn_damage)
 	if turn_damage == 0: pass
@@ -584,7 +603,10 @@ func end_turn():
 	if turn_debt != 0: 
 		main.sound_manager.play_sound(DEBT)
 		main.enemy.debt += turn_debt
-
+	if turn_thrift != 0:
+		main.enemy.thrift += turn_thrift
+		main.sound_manager.play_sound(THRIFT)
+		
 	if main.enemy.type == Enemy.TWILIGHT_SAGE:
 		if has_dusk_stance:
 			main.enemy.gain += moon_count * 3
@@ -618,10 +640,12 @@ func end_turn():
 	main.total_gain += turn_gain
 	if turn_gain > main.highest_gain:
 		main.highest_gain = turn_gain
+
 	
 	if main.enemy.coin > 0 and has_cash_out and current_played_coin == max_playable_coins and current_reserve == max_reserve:
 		has_extra_turn = true
-
+	max_playable_coins = initial_max_playable_coins
+	
 func activate_pre_battle_passives():
 	if has_value_added_tax:
 		debt += 5
@@ -659,12 +683,7 @@ func activate_pre_battle_passives():
 func activate_player_turn_start_passives():
 	previous_player_flips = 0
 	if payback_used and payback_coins != 0:
-		if has_learn_to_save:
-			payback_coins = 8
-			if has_piggy:
-				payback_coins = 6
-		else:
-			payback_coins = 12
+		payback_coins = 12
 		main.endTurn_button.disabled = true
 		toggle_button(main.re_flip_button,true)
 		print("PAYBACK: " + str(payback_coins))

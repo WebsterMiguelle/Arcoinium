@@ -29,6 +29,7 @@
 [ext_resource type="Script" uid="uid://cjx7ln7nt56ad" path="res://Scene/particle_manager.gd" id="17_2ix4a"]
 [ext_resource type="Texture2D" uid="uid://c5kws41vksxsb" path="res://Assets/twilightSageDawn.png" id="18_aam5o"]
 [ext_resource type="Texture2D" uid="uid://odbplao5e2m8" path="res://Assets/twilightSageDusk.png" id="19_nyb1q"]
+[ext_resource type="Script" uid="uid://cxmghjg3j6upn" path="res://Scene/turn_calculation_box.gd" id="26_2uk8d"]
 [ext_resource type="Texture2D" uid="uid://c1oyqjdr6wop8" path="res://Assets/animated_reflipbutton-Sheet.png" id="26_wimqa"]
 [ext_resource type="FontFile" uid="uid://drm3kueev5jxy" path="res://Assets/Fonts/OXYGENE1.TTF" id="27_t372l"]
 [ext_resource type="FontFile" uid="uid://cmvd7gycedmwg" path="res://Assets/Fonts/GothicByte.ttf" id="30_cr44a"]
@@ -271,6 +272,29 @@ animations = [{
 "speed": 8.0
 }]
 
+[sub_resource type="Gradient" id="Gradient_ot48q"]
+offsets = PackedFloat32Array(0, 0.4924812, 1)
+colors = PackedColorArray(1, 0.75235814, 0.3749981, 1, 1, 0.8745098, 0.68235296, 0.2627451, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2uk8d"]
+gradient = SubResource("Gradient_ot48q")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ot48q"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(26.73, 77.67, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(11.495, 0, 0)
+spread = 0.0
+flatness = 1.0
+initial_velocity_min = 238.56
+initial_velocity_max = 290.85
+gravity = Vector3(0, 0, 0)
+scale_max = 4.27
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color = Color(1, 1, 0.5686275, 1)
+
 [sub_resource type="CurveXYZTexture" id="CurveXYZTexture_6njx3"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0y2cb"]
@@ -377,9 +401,19 @@ offset_left = 157.0
 offset_top = 520.0
 offset_right = 217.0
 offset_bottom = 539.0
-theme_override_colors/font_color = Color(0.8862745, 0.59607846, 0, 1)
+theme_override_colors/font_color = Color(1, 0.7529412, 0.39215687, 1)
 theme_override_font_sizes/font_size = 18
 text = "GAIN:"
+
+[node name="Player Thrift" type="Label" parent="Player" unique_id=2054409732]
+offset_left = 220.0
+offset_top = 520.0
+offset_right = 280.0
+offset_bottom = 539.0
+theme_override_colors/font_color = Color(0.21960784, 0.7764706, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "THRIFT: 9
+"
 
 [node name="PlayerFrame" type="TextureRect" parent="Player" unique_id=152420565]
 offset_top = 493.0
@@ -392,7 +426,7 @@ offset_left = 110.0
 offset_top = 497.0
 offset_right = 150.0
 offset_bottom = 537.0
-theme_override_colors/font_color = Color(0.55085, 2.892658e-05, 0.42899314, 1)
+theme_override_colors/font_color = Color(1, 0.4768706, 0.83371246, 1)
 theme_override_colors/font_outline_color = Color(0.31, 0, 0.24283333, 1)
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("27_t372l")
@@ -424,9 +458,19 @@ offset_left = 927.0
 offset_top = 115.0
 offset_right = 987.0
 offset_bottom = 134.0
-theme_override_colors/font_color = Color(0.8881403, 0.5978696, 0, 1)
+theme_override_colors/font_color = Color(1, 0.75139385, 0.39092284, 1)
 theme_override_font_sizes/font_size = 18
 text = "GAIN: 30"
+vertical_alignment = 1
+
+[node name="Enemy Thrift" type="Label" parent="Enemy" unique_id=1113214489]
+offset_left = 837.0
+offset_top = 115.0
+offset_right = 912.0
+offset_bottom = 134.0
+theme_override_colors/font_color = Color(0.22070616, 0.7757475, 0.9999998, 1)
+theme_override_font_sizes/font_size = 18
+text = "THRIFT: 12"
 vertical_alignment = 1
 
 [node name="EnemyFrame" type="TextureRect" parent="Enemy" unique_id=1466787434]
@@ -440,7 +484,7 @@ offset_left = 1001.0
 offset_top = 112.0
 offset_right = 1041.0
 offset_bottom = 152.0
-theme_override_colors/font_color = Color(0.55085, 2.892658e-05, 0.42899314, 1)
+theme_override_colors/font_color = Color(1, 0.47843137, 0.8352941, 1)
 theme_override_colors/font_outline_color = Color(0.31, 0, 0.24283333, 1)
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("27_t372l")
@@ -493,10 +537,10 @@ custom_minimum_size = Vector2(150, 40)
 anchors_preset = -1
 anchor_right = 0.033
 anchor_bottom = 0.048
-offset_left = 185.00002
-offset_top = 350.00003
-offset_right = 296.984
-offset_bottom = 441.39597
+offset_left = 229.0
+offset_top = 389.99997
+offset_right = 340.984
+offset_bottom = 488.896
 scale = Vector2(0.8, 0.8)
 theme_override_font_sizes/font_size = 20
 text = "
@@ -520,16 +564,30 @@ theme_override_font_sizes/font_size = 75
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Turn Calculation" type="Label" parent="Battle UI" unique_id=854498321]
+[node name="Turn Calculation Box" type="TextureRect" parent="Battle UI" unique_id=1091749495]
+offset_left = -3.0
+offset_top = 158.0
+offset_right = 311.0
+offset_bottom = 289.0
+texture = SubResource("GradientTexture2D_2uk8d")
+script = ExtResource("26_2uk8d")
+
+[node name="Turn Calculation" type="Label" parent="Battle UI/Turn Calculation Box" unique_id=854498321]
 custom_minimum_size = Vector2(150, 40)
-offset_left = 106.93462
-offset_top = 169.0
-offset_right = 256.93463
-offset_bottom = 350.0
+layout_mode = 0
+offset_left = 87.0
+offset_top = -10.0
+offset_right = 237.0
+offset_bottom = 164.0
 scale = Vector2(1.2137691, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 24
 text = "Turn"
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Battle UI/Turn Calculation Box" unique_id=432170455]
+position = Vector2(-12, 66)
+amount = 12
+process_material = SubResource("ParticleProcessMaterial_ot48q")
 
 [node name="Turn UI" type="ColorRect" parent="Battle UI" unique_id=566011376]
 visible = false

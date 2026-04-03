@@ -34,6 +34,7 @@ func re_flip():
 	if !reserved:
 		refresh_sprite()
 	
+		
 func upgrade():
 	match type:
 		CoinType.COPPER:
@@ -51,6 +52,10 @@ func upgrade_to_gold():
 	type = CoinType.GOLD
 	base_value = 6
 
+func degrade_to_copper():
+	type = CoinType.COPPER
+	base_value = 2
+	
 func copy_coin(coin):
 	base_value = coin.base_value
 	reserved = coin.reserved

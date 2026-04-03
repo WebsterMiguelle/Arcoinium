@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://cr4jrnum24onu"]
+
+[ext_resource type="Texture2D" uid="uid://0of51v86402w" path="res://Assets/mapBackground.png" id="1_f2lvv"]
+[ext_resource type="Texture2D" uid="uid://4yyp0vofsne2" path="res://Assets/miniCoinCaster.png" id="2_8v25y"]
+[ext_resource type="Texture2D" uid="uid://bj5nyxg8bmc1k" path="res://Assets/backgroundBanner.png" id="3_7334q"]
+
+[node name="MapScene" type="TextureRect" unique_id=1935140740]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_f2lvv")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=373374812]
+layout_mode = 0
+offset_left = 64.00006
+offset_top = 376.0
+offset_right = 96.00006
+offset_bottom = 408.0
+scale = Vector2(3, 3)
+texture = ExtResource("2_8v25y")
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=671234139]
+layout_mode = 0
+offset_left = 416.00003
+offset_top = 24.000002
+offset_right = 544.0
+offset_bottom = 64.0
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("3_7334q")

@@ -278,6 +278,15 @@ animations = [{
 "speed": 8.0
 }]
 
+[sub_resource type="Gradient" id="Gradient_cr44a"]
+offsets = PackedFloat32Array(0, 0.4548872, 1)
+colors = PackedColorArray(0.6901961, 0, 0, 0, 0.83137256, 0.1764706, 0.14901961, 1, 0.68235296, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tcekk"]
+gradient = SubResource("Gradient_cr44a")
+fill_from = Vector2(1, 0)
+fill_to = Vector2(0, 0)
+
 [sub_resource type="CurveXYZTexture" id="CurveXYZTexture_6njx3"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0y2cb"]
@@ -553,16 +562,6 @@ offset_top = 201.0
 offset_right = 697.0
 offset_bottom = 445.0
 
-[node name="EnemyLabelNotification" type="Label" parent="Battle UI" unique_id=1694276821]
-custom_minimum_size = Vector2(600, 0)
-offset_left = 273.0
-offset_top = 131.0
-offset_right = 873.0
-offset_bottom = 166.0
-theme_override_font_sizes/font_size = 25
-text = "EnemyLabel Notification"
-horizontal_alignment = 1
-
 [node name="PassiveContainer" type="VBoxContainer" parent="Battle UI" unique_id=709571412]
 custom_minimum_size = Vector2(200, 160)
 anchors_preset = 3
@@ -577,6 +576,41 @@ offset_bottom = -31.0
 grow_horizontal = 0
 grow_vertical = 0
 alignment = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="Battle UI" unique_id=182589184]
+custom_minimum_size = Vector2(1000, 10)
+anchors_preset = -1
+anchor_right = 1.0
+offset_left = 3.0
+offset_top = 106.0
+offset_right = 3.0
+offset_bottom = 170.0
+grow_horizontal = 2
+
+[node name="Background" type="TextureRect" parent="Battle UI/CenterContainer" unique_id=380363480]
+visible = false
+custom_minimum_size = Vector2(1000, 10)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+texture = SubResource("GradientTexture2D_tcekk")
+
+[node name="EnemyLabelNotification" type="Label" parent="Battle UI/CenterContainer/Background" unique_id=1694276821]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -31.0
+offset_right = 300.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 1
+vertical_alignment = 2
 
 [node name="Game Over UI" type="CanvasLayer" parent="." unique_id=994626979]
 visible = false

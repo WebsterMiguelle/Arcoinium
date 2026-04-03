@@ -100,17 +100,20 @@ $"Progression Map/Boss"
 
 @onready var passive_manager = $PassiveManager
 @onready var passive_label = $"Battle UI/PassiveContainer"
-@onready var enemy_passive_label = $"Battle UI/EnemyLabelNotification"
+@onready var enemy_passive_label = $"Battle UI/CenterContainer/Background/EnemyLabelNotification"
+@onready var enemy_passive_bg = $"Battle UI/CenterContainer/Background"
 
 var active_passive_notifs: Dictionary = {}
 var active_temp_notifs: Array = []
 var recent_triggers: Dictionary = {}
 var active_temp_ids: Dictionary = {}
 var passive_order: Array = []
-var max_visible_passives = 5
+var max_visible_passives = 2
 var overflow_notif: Control = null
 
-	
+var enemy_notif_tween: Tween = null
+var enemy_notif_base_pos: Vector2
+
 const PASSIVE_SCENE = preload("res://Scene/passsive_notification.tscn")
 
 @onready var game_over_ui: CanvasLayer = $"Game Over UI"
@@ -182,8 +185,6 @@ func _ready():
 	current_enemy_index = randi_range(0,1)
 	passive_manager.setup(self)
 	player.setup(self)
-	#show_passive_notification("PASSIVE APPEAR HERE", 3.0)
-	show_enemy_passive("", 3.0)
 	game_over_ui.visible = false
 	pause_menu.visible = false
 	turn_ui.visible = false
@@ -382,28 +383,38 @@ func show_passive_notification(text: String, duration: float = 1.5) -> TextureRe
 	
 	return notif
 	
-func show_enemy_passive(text: String, duration: float = 1.5) -> void:
+func show_enemy_passive(text: String, duration: float = 2.5) -> void:
 	if not is_instance_valid(enemy_passive_label):
 		return
 		
+	if enemy_notif_base_pos == Vector2.ZERO:
+		enemy_notif_base_pos = enemy_passive_bg.position
+	
+	# Kill previous animation (IMPORTANT)
+	if enemy_notif_tween and enemy_notif_tween.is_running():
+		enemy_notif_tween.kill()
+	
 	enemy_passive_label.text = text
 	enemy_passive_label.visible = true
+	enemy_passive_bg.visible = true
 	enemy_passive_label.modulate.a = 0.0
-	enemy_passive_label.z_index = 100
+	enemy_passive_bg.modulate.a = 0.0
+	enemy_passive_label.scale = Vector2(0.9, 0.9)
+
 	
-	var tween = create_tween()
-	tween.parallel().tween_property(enemy_passive_label, "modulate:a", 1.0, 0.2)
-	tween.parallel().tween_property(enemy_passive_label, "position:y", enemy_passive_label.position.y - 20, 0.2)
-	tween.parallel().tween_property(enemy_passive_label, "scale", Vector2(1, 1), 0.2)
-	
-	
-	var tween_out = create_tween()
-	tween_out.tween_property(enemy_passive_label, "modulate:a", 0.0, 0.5).set_delay(duration)
-	tween_out.tween_callback(func():
+	enemy_notif_tween = create_tween()
+	enemy_notif_tween.parallel().tween_property(enemy_passive_label, "modulate:a", 1.0, 0.2)
+	enemy_notif_tween.parallel().tween_property(enemy_passive_bg, "modulate:a", 1.0, 0.2)
+	enemy_notif_tween.parallel().tween_property(enemy_passive_label, "position:y", enemy_notif_base_pos.y - 15, 0.2)
+	enemy_notif_tween.parallel().tween_property(enemy_passive_label, "scale", Vector2(1.05, 1.05), 0.2)
+	enemy_notif_tween.tween_property(enemy_passive_label, "scale", Vector2(1, 1), 0.1)
+	enemy_notif_tween.tween_interval(duration)
+	enemy_notif_tween.tween_property(enemy_passive_label, "modulate:a", 0.0, 0.4)
+	enemy_notif_tween.tween_property(enemy_passive_bg,	 "modulate:a", 0.0, 0.4)
+	enemy_notif_tween.tween_callback(func():
 		enemy_passive_label.visible = false
-		enemy_passive_label.modulate.a = 1.0 
+		enemy_passive_bg.visible = false
 	)
-	
 
 func _on_flip_pressed():
 	if current_turn != Turn.PLAYER:

@@ -142,6 +142,7 @@ func setup(m,enemy):
 			type = Enemy.COLLECTOR
 			has_value_added_tax = true
 			main.player.has_value_added_tax = true
+			trigger_enemy_passive("Value Added Tax!")
 		Enemy.TRADER:
 			max_coin = 200
 			coin = 40
@@ -151,6 +152,7 @@ func setup(m,enemy):
 			bounty = 40
 			type = Enemy.TRADER
 			has_fair_trade = true
+			trigger_enemy_passive("Fair Trade!")
 		Enemy.THRIFTER:
 			max_coin = 200
 			coin = 60
@@ -161,6 +163,7 @@ func setup(m,enemy):
 			type = Enemy.THRIFTER
 			has_learn_to_save = true
 			main.player.has_learn_to_save = true
+			trigger_enemy_passive("Learn To Save!")
 			main.player.max_playable_coins = 8
 		Enemy.ARISTOCRAT:
 			max_coin = 200
@@ -172,6 +175,7 @@ func setup(m,enemy):
 			type = Enemy.ARISTOCRAT
 			has_fully_paid = true
 			debt = 100
+			trigger_enemy_passive("Fully Paid!")
 		Enemy.SUN_CASTER:
 			max_coin = 200
 			coin = 120
@@ -182,6 +186,7 @@ func setup(m,enemy):
 			type = Enemy.SUN_CASTER
 			has_sunlit_curse = true
 			main.player.has_sunlit_curse = true
+			trigger_enemy_passive("Sunlit Curse!")
 		Enemy.MOON_CASTER:
 			max_coin = 200
 			coin = 100
@@ -192,6 +197,7 @@ func setup(m,enemy):
 			type = Enemy.MOON_CASTER
 			has_midnight_curse = true
 			main.player.has_midnight_curse = true
+			trigger_enemy_passive("Midnight Curse!")
 		Enemy.TWILIGHT_SAGE:
 			max_coin = 200
 			coin = 200
@@ -201,6 +207,7 @@ func setup(m,enemy):
 			bounty = 200
 			type = Enemy.TWILIGHT_SAGE
 			has_dusk_stance = true
+			trigger_enemy_passive("Dusk Stance!")
 
 func flip():
 	main.sound_manager.play_sound(COIN_FLIP)
@@ -208,8 +215,10 @@ func flip():
 	
 	if type == Enemy.SUN_CASTER and main.player.sun_count >= 9:
 		state = 0
+		trigger_enemy_passive("Solar Overload!")
 	if type == Enemy.MOON_CASTER and main.player.moon_count >= 9:
 		state = 1
+		trigger_enemy_passive("Moonfall!")
 
 	take_damage(1)
 	
@@ -395,9 +404,11 @@ func start_enemy_turn():
 	gain_coin()
 	if has_fully_paid and debt == 0:
 		main.player.take_damage(100)
+		trigger_enemy_passive("Fully Paid Activated!")
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.player_portrait.global_position)
 		defeat = await main.check_defeat()
 	if main.player.has_loan_shark and debt > 1:
+		trigger_enemy_passive("Loan Shark Hit!")
 		var loan_damage = debt / 2
 		take_damage(loan_damage)
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
@@ -487,10 +498,16 @@ func end_enemy_turn():
 		if type == Enemy.TWILIGHT_SAGE:
 			if has_dusk_stance == true:
 				main.enemy_portrait_sprite.play("TWILIGHT_SAGE_DUSK")
+				trigger_enemy_passive("Dusk Stance!")
 			else:
 				main.enemy_portrait_sprite.play("TWILIGHT_SAGE_DAWN")	
 			has_dusk_stance = !has_dusk_stance
+			trigger_enemy_passive("Dawn Stance!")
 			max_playable_coins += 4
 	
 	
 	main.coin_deck.sigil_unlight_()
+	
+func trigger_enemy_passive(text: String, duration: float = 1.5):
+	if main:
+		main.show_enemy_passive(text, duration)

@@ -1,0 +1,193 @@
+[gd_scene format=3 uid="uid://dnnwqv3jo1tat"]
+
+[ext_resource type="Texture2D" uid="uid://brn3ihcjo08pk" path="res://Assets/Coins/sun_to_moon_coin-Sheet.png" id="1_s7vc7"]
+[ext_resource type="Script" uid="uid://jwx6fba1yb5l" path="res://Scripts/Menus/main_menu_script.gd" id="1_sjmou"]
+[ext_resource type="Texture2D" uid="uid://bvg1hmi6pjwfb" path="res://Assets/Coins/sun_flip_upright.png" id="2_b43xc"]
+[ext_resource type="Texture2D" uid="uid://ctp4djn4xcepy" path="res://Assets/Coins/moon_flip_upright.png" id="3_ppjel"]
+[ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="5_yf7ie"]
+[ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="6_uyvy5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uyvy5"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+shadow_color = Color(1, 1, 1, 1)
+shadow_size = 91
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i4xaw"]
+atlas = ExtResource("2_b43xc")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ban4"]
+atlas = ExtResource("2_b43xc")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r1861"]
+atlas = ExtResource("2_b43xc")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ke88y"]
+atlas = ExtResource("2_b43xc")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ppjel"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b43xc"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yf7ie"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uyvy5"]
+atlas = ExtResource("3_ppjel")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eslk0"]
+atlas = ExtResource("3_ppjel")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p0twe"]
+atlas = ExtResource("3_ppjel")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_of7ff"]
+atlas = ExtResource("3_ppjel")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e60vw"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(112, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_i4xaw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i4xaw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ban4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r1861")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ke88y")
+}],
+"loop": true,
+"name": &"coin_flip_up",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ppjel")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b43xc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yf7ie")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uyvy5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eslk0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p0twe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_of7ff")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e60vw")
+}],
+"loop": true,
+"name": &"coin_flipping",
+"speed": 8.0
+}]
+
+[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_eslk0"]
+
+[node name="MainMenu" type="ColorRect" unique_id=1926174809]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("1_sjmou")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=254091799]
+position = Vector2(576, 324)
+
+[node name="Glow" type="Panel" parent="." unique_id=712917737]
+layout_mode = 0
+offset_left = 568.0
+offset_top = 440.0
+offset_right = 584.0
+offset_bottom = 456.0
+pivot_offset = Vector2(-5, 5)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_uyvy5")
+
+[node name="Button" type="Button" parent="." unique_id=1036852794]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 512.0
+offset_top = 384.0
+offset_right = -512.0
+offset_bottom = -136.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Coin" type="AnimatedSprite2D" parent="." unique_id=1128530618]
+position = Vector2(576, 448)
+rotation = 1.5707964
+scale = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_i4xaw")
+animation = &"coin_flip_up"
+
+[node name="Main Game Title" type="Label" parent="." unique_id=1408840644]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 128.0
+offset_right = 1024.0
+offset_bottom = 320.0
+scale = Vector2(0.5, 0.5)
+theme_override_fonts/font = ExtResource("5_yf7ie")
+theme_override_font_sizes/font_size = 272
+text = "A r c o i n i u m"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Flip Coin to Start" type="Label" parent="." unique_id=287850024]
+self_modulate = Color(0.86610603, 0.86610603, 0.86610603, 1)
+layout_mode = 0
+offset_left = 440.0
+offset_top = 560.0
+offset_right = 712.0
+offset_bottom = 616.0
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/font_size = 63
+text = "FLIP COIN TO START"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SoundManager" type="Node2D" parent="." unique_id=1880931932]
+position = Vector2(576, 324)
+scale = Vector2(0.555, 0.555)
+script = ExtResource("6_uyvy5")
+
+[node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1088019939]
+stream = SubResource("AudioStreamPolyphonic_eslk0")

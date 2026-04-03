@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://b01fk6f1pan7q"]
+[gd_scene format=3 uid="uid://vnsb1sd0yalg"]
 
 [ext_resource type="Script" uid="uid://deiq0ju8easi5" path="res://Script/PlayerHealthBarScript.gd" id="1_y2g15"]
 [ext_resource type="Texture2D" uid="uid://brn3ihcjo08pk" path="res://Assets/Coins/sun_to_moon_coin-Sheet.png" id="2_y2g15"]

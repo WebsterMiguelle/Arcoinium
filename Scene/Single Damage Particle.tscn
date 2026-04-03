@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://dgeahqxig4fqa"]
+
+[ext_resource type="Texture2D" uid="uid://dfxpsusewco7g" path="res://Assets/Coins/healthmodecoinbronze.png" id="1_tjckr"]
+[ext_resource type="Script" uid="uid://b81y1v87st1oc" path="res://Scene/coin_add_particles.gd" id="2_fyh0y"]
+
+[sub_resource type="Curve" id="Curve_fftk1"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 0.85234904), 0.0, 0.0, 0, 0, Vector2(1, 0.53020144), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_hijrn"]
+curve = SubResource("Curve_fftk1")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hijrn"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(1.485, 1.62, 1)
+angle_min = 124.20001
+angle_max = 281.7
+spread = 180.0
+initial_velocity_min = 72.65
+initial_velocity_max = 245.06
+gravity = Vector3(0, 500, 0)
+scale_min = 0.0
+scale_max = 6.74
+scale_over_velocity_max = 201.15
+scale_over_velocity_curve = SubResource("CurveTexture_hijrn")
+
+[node name="DamageParticle" type="Node2D" unique_id=257060510]
+top_level = true
+
+[node name="DamageParticle" type="GPUParticles2D" parent="." unique_id=881501940]
+position = Vector2(72, 51)
+emitting = false
+amount = 1
+texture = ExtResource("1_tjckr")
+lifetime = 2.4299999999999997
+one_shot = true
+explosiveness = 1.0
+randomness = 0.17
+process_material = SubResource("ParticleProcessMaterial_hijrn")
+script = ExtResource("2_fyh0y")

@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://b5x6b2q8jvqa5"]
+
+[ext_resource type="Script" uid="uid://b81y1v87st1oc" path="res://Scene/coin_add_particles.gd" id="1_7fe2u"]
+
+[sub_resource type="Gradient" id="Gradient_7fe2u"]
+colors = PackedColorArray(0.60784316, 0.75686276, 1, 0.72156864, 1, 1, 1, 0.65882355)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_02dq5"]
+gradient = SubResource("Gradient_7fe2u")
+
+[sub_resource type="CurveTexture" id="CurveTexture_7fe2u"]
+texture_mode = 1
+
+[sub_resource type="Curve" id="Curve_7fe2u"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_02dq5"]
+curve = SubResource("Curve_7fe2u")
+
+[sub_resource type="Curve" id="Curve_fftk1"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 1.3355706), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_hijrn"]
+curve = SubResource("Curve_fftk1")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hijrn"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(31.16, 15.08, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+angle_min = 124.20001
+angle_max = 281.7
+direction = Vector3(0, -1, 0)
+spread = 0.0
+initial_velocity_min = 31.01
+initial_velocity_max = 131.52
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_max = 24.25
+scale_curve = SubResource("CurveTexture_02dq5")
+scale_over_velocity_min = 404.9
+scale_over_velocity_max = 718.38995
+scale_over_velocity_curve = SubResource("CurveTexture_hijrn")
+color = Color(0.6443057, 0.8078116, 0.9999965, 1)
+color_ramp = SubResource("GradientTexture1D_02dq5")
+hue_variation_curve = SubResource("CurveTexture_7fe2u")
+
+[node name="ThriftParticle" type="Node2D" unique_id=257060510]
+
+[node name="ThriftParticle" type="GPUParticles2D" parent="." unique_id=881501940]
+position = Vector2(32, 4)
+amount = 64
+lifetime = 0.99
+process_material = SubResource("ParticleProcessMaterial_hijrn")
+script = ExtResource("1_7fe2u")

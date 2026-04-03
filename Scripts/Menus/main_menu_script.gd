@@ -56,7 +56,6 @@ func _on_button_exited() -> void:
 		
 func _on_button_pressed() -> void:
 	sound_manager.play_sound(COIN_FLIP)
-	sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
 	button.disabled = true
 	
 	is_waiting_to_stop = false

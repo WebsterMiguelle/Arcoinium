@@ -34,7 +34,6 @@ const SINGLE_DAMAGE_PARTICLE = preload("res://Scene/Single Damage Particle.tscn"
 #SFX
 const COIN_ENDTURN = preload("uid://bfruqunt0uyuj")
 const COIN_FLIP = preload("uid://bmscttmxwr782")
-const COIN_GAIN = preload("uid://c3v64vs2uqtik")
 const COIN_REFLIP = preload("uid://qtxsmuntihe3")
 const DAMAGE_HEAVY = preload("uid://b8us2t16pmggo")
 const DAMAGE_LIGHT = preload("uid://ds0jngoq17iij")
@@ -42,6 +41,7 @@ const DAMAGE_MODERATE = preload("uid://b2rf2iy046cx2")
 const TURN_ENEMY = preload("uid://rncriov1quyx")
 const TURN_PLAYER = preload("uid://dk7433d32rg52")
 const TURN_REVEAL = preload("uid://boyjppal62qns")
+const VICTORY = preload("uid://bu3c18dhngcvw")
 
 const PASSIVE_PASSIVE_INCOME = preload("uid://cl4xnombcshkv")
 const PASSIVE_PAYBACK = preload("uid://bbsxs62yhirxa")
@@ -55,7 +55,16 @@ const PASSIVE_LOAN_SHARK = preload("uid://6xxw4avoncr8")
 const PASSIVE_PAYDOWN = preload("uid://djv3lp0l3aftb")
 const DEATH = preload("uid://bx1ttmouolx2q")
 
+const BATTLE_START = preload("uid://whq12p7mykru")
+const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
+const EXTRA_TURN = preload("uid://yp1dxyml8rna")
 
+#MUSIC
+
+const PASSIVE_SELECTION = preload("uid://cfm3uhjitv627")
+const TWILIGHT_SAGE = preload("uid://dh7vynnxrbqwa")
+const TWILIGHT_ZONE___BATTLE_THEME_1 = preload("uid://b8go57qfww8el")
+const TWILIGHT_ZONE___BATTLE_THEME_2 = preload("uid://byxwfs5g71s5x")
 
 #@onready var player_portrait: ColorRect = $Player/Player_Portrait
 #@onready var enemy_portrait: ColorRect = $Enemy/Enemy_Portrait
@@ -82,17 +91,31 @@ $"Progression Map/Boss"
 @onready var re_flip_button: Button = $"Battle UI/Re-Flip"
 @onready var reflip_sprite: AnimatedSprite2D = $"Battle UI/Re-Flip/Reflip_Sprite"
 @onready var reflip_label: Label = $"Battle UI/Re-Flip/Reflip_Label"
-@onready var turn_calculation: Label = $"Battle UI/Turn Calculation"
+@onready var turn_calculation: Label = $"Battle UI/Turn Calculation Box/Turn Calculation"
+@onready var turn_calculation_box: TextureRect = $"Battle UI/Turn Calculation Box"
+
 
 @onready var player_health_bar = $"Battle UI/PlayerHealthBar2"
 @onready var player_gain: Label = $"Player/Player Gain"
 @onready var player_debt: Label = $"Player/Player Debt"
 @onready var player_health_label = $"Battle UI/HealthLabel"
+@onready var player_thrift: Label = $"Player/Player Thrift"
+
+@onready var player_gain_particles: GPUParticles2D = $"Player/Player Gain Particles"
+@onready var player_debt_particles: GPUParticles2D = $"Player/Player Debt Particles"
+@onready var enemy_debt_particles: GPUParticles2D = $"Enemy/Enemy Debt Particles"
+@onready var player_thrift_particles: GPUParticles2D = $"Player/Player Thrift Particles"
+@onready var enemy_thrift_particles: GPUParticles2D = $"Enemy/Enemy Thrift Particles"
+@onready var enemy_gain_particles: GPUParticles2D = $"Enemy/Enemy Gain Particles"
+
+
 
 @onready var enemy_health_bar = $"Battle UI/EnemyHealthBar"
 @onready var enemy_health_label: Label = $"Battle UI/EnemyHealthLabel"
 @onready var enemy_gain: Label = $"Enemy/Enemy Gain"
 @onready var enemy_debt: Label = $"Enemy/Enemy Debt"
+@onready var enemy_thrift: Label = $"Enemy/Enemy Thrift"
+
 
 @onready var turn_ui: ColorRect = $"Battle UI/Turn UI"
 @onready var turn_ui_label: Label = $"Battle UI/Turn UI/Turn UI Label"
@@ -168,6 +191,7 @@ func _on_item_purchased(card_id,price):
 func _ready():
 	await get_tree().create_timer(0.4).timeout
 	await _play_fake_coin_intro()
+	turn_calculation_box.visible = false
 	turn_ui.visible = false
 	current_room = 0
 	current_enemy_index = randi_range(0,1)
@@ -223,10 +247,8 @@ func battle_start():
 	show_all_passive_notifications()
 
 	coin_deck.reset_sigils()
-	update_enemy_gain_debt()
-	update_player_gain_debt()
 	reflip_label.text = str(player.max_re_flip - player.current_re_flip)
-	
+
 	randomize()
 	
 	flip_button.pressed.connect(_on_flip_pressed)
@@ -266,18 +288,27 @@ func battle_start():
 	update_enemy_coin()
 	update_player_coin()
 	flip_button.disabled = false
-	
+	sound_manager.play_sound(BATTLE_START)
+	var bgm_rand = randi_range(0,1)
+	if current_enemy_index == 8:
+		sound_manager.play_music(TWILIGHT_SAGE)
+	elif bgm_rand == 1: 
+		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_1)
+	else:
+		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_2)
+		
 	#Battle Start Passives
 	player.activate_pre_battle_passives()
 	player.player_turn_count = 0
+	show_turn_ui("BATTLE START")
 	start_player_turn()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	update_player_coin()
 	update_enemy_coin()
-	update_player_gain_debt()
-	update_enemy_gain_debt()
+	update_player_stacks()
+	update_enemy_stacks()
 
 func show_turn_ui(text):
 	sound_manager.play_sound(TURN_REVEAL)
@@ -312,22 +343,26 @@ func _on_end_run_pressed():
 	trigger_game_over(false)
 	
 func start_player_turn():
-	show_turn_ui("PLAYER TURN")
-	coin_deck.reset_sigils()
-	current_turn = Turn.PLAYER
-	sound_manager.play_sound(TURN_PLAYER)
-	player.start_turn()
+	if player.coin > 0:
+		show_turn_ui("PLAYER TURN")
+		coin_deck.reset_sigils()
+		current_turn = Turn.PLAYER
+		sound_manager.play_sound(TURN_PLAYER)
+		player.start_turn()
+	else:
+		check_defeat()
 			
 func start_enemy_turn():
-	check_defeat()
 	if enemy.coin > 0:
 		show_turn_ui("ENEMY'S TURN")
 		coin_deck.reset_sigils()
 		current_turn = Turn.ENEMY
 		sound_manager.play_sound(TURN_ENEMY)
 		await enemy.start_enemy_turn()
-		start_player_turn()
-
+		if enemy.coin > 0:
+			start_player_turn()
+		else:
+			check_defeat()
 
 func _on_endturn_pressed():
 	await player.end_turn()
@@ -338,6 +373,7 @@ func _on_endturn_pressed():
 			start_enemy_turn()
 			player.extra_turn_penalty = 1
 		else:
+			sound_manager.play_sound(EXTRA_TURN)
 			player.extra_turn()
 			player.has_extra_turn = false
 
@@ -397,6 +433,7 @@ func _on_flip_pressed():
 	
 func trigger_game_over(player_won: bool):
 	sound_manager.play_sound(DEATH)
+	sound_manager.stop_music()
 	if player_won:
 		enemy.max_playable_coins = 0
 		reward_manager.show_rewards()
@@ -486,7 +523,15 @@ func check_defeat():
 	return null
 
 func handle_victory_flow():
+	sound_manager.play_sound(VICTORY)
+	turn_calculation_box.exit()
 	await show_turn_ui("VICTORY")
+	sound_manager.play_sound(PASSIVE_SPARE_CHANGE)
+	var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
+	for c in reserved_coins:
+		player.coin += 1
+		c.queue_free()
+		player.current_reserve -= 1
 	
 	# Disable gameplay buttons
 	flip_button.disabled = true
@@ -514,18 +559,22 @@ func progression_after_victory():
 		current_room = 5
 		trigger_game_over(true)
 	elif current_room < 4:
+		sound_manager.stop_music()
+		sound_manager.play_music(PASSIVE_SELECTION)
 		await reward_manager.show_card_selection_async()
 		current_room += 1
-		if current_room == 4:
-			await shop_manager.show_shop_async(player)
-			current_room += 1
 			#map.background.global_position.y = 1000
 			#add_child(map)
 			#tween = create_tween()
 			#tween.tween_property(map,"position:y",0,0.4)
-		_play_progression_cutscene(current_room - 1, current_room)
-		proceed_to_next_enemy()
-		show_turn_ui("BATTLE START")
+		await _play_progression_cutscene(current_room - 1, current_room)
+		if current_room == 4:
+			await shop_manager.show_shop_async(player)
+			current_room += 1
+			await _play_progression_cutscene(current_room - 1, current_room)
+			proceed_to_next_enemy()
+		else:
+			proceed_to_next_enemy()
 		
 func _on_re_flip_pressed():
 	player.re_flip()
@@ -563,21 +612,39 @@ func update_player_coin():
 func update_enemy_coin():
 	enemy_health_label.text = "Coins: " + str(enemy.coin)
 	
-func update_player_gain_debt():
+func update_player_stacks():
+	player_debt_particles.emitting = false
+	player_gain_particles.emitting = false
+	player_thrift_particles.emitting = false
 	player_gain.text = ""
 	player_debt.text = ""
+	player_thrift.text = ""
 	if player.gain != 0:
-		player_gain.text = "GAIN: " + str(player.gain)
+		player_gain.text = str(player.gain)
+		player_gain_particles.emitting = true
 	if player.debt != 0:
+		player_debt_particles.emitting = true
 		player_debt.text = str(player.debt)
+	if player.thrift != 0:
+		player_thrift.text = str(player.thrift)
+		player_thrift_particles.emitting = true
 	
-func update_enemy_gain_debt():
+func update_enemy_stacks():
+	enemy_debt_particles.emitting = false
+	enemy_thrift_particles.emitting = false
+	enemy_gain_particles.emitting = false
 	enemy_gain.text = ""
 	enemy_debt.text = ""
+	enemy_thrift.text = ""
 	if enemy.gain != 0:
-		enemy_gain.text = "GAIN: " + str(enemy.gain)
+		enemy_gain.text = str(enemy.gain)
+		enemy_gain_particles.emitting = true
 	if enemy.debt != 0:
 		enemy_debt.text =str(enemy.debt)
+		enemy_debt_particles.emitting = true
+	if enemy.thrift != 0:
+		enemy_thrift.text = str(enemy.thrift)
+		enemy_thrift_particles.emitting = true
 
 func _on_restart_pressed():
 	await get_tree().create_timer(0.2).timeout
@@ -589,7 +656,7 @@ func proceed_to_next_enemy():
 		1:
 			current_enemy_index = randi_range(2,3)
 		2:
-			current_enemy_index = randi_range(4,5)
+			current_enemy_index = randi_range(4,4)
 		3:
 			current_enemy_index = randi_range(6,7)
 		4:
@@ -658,19 +725,21 @@ func _play_progression_cutscene(from_index: int, to_index: int) -> void:
 	var walk_tween = progression_map.create_tween()
 	
 	var distance = player_sprite.global_position.distance_to(map_markers[to_index].global_position)
-	var walk_duration = distance / 150.0 
+	var walk_duration = distance / 80.0 
 	
 	walk_tween.tween_property(player_sprite, "global_position", map_markers[to_index].global_position, walk_duration).set_trans(Tween.TRANS_LINEAR)
 	await walk_tween.finished
 
 	var dramatic_pause = progression_map.create_tween()
-	dramatic_pause.tween_interval(3.0)
+	dramatic_pause.tween_interval(1.0)
 	await dramatic_pause.finished
+	sound_manager.stop_music()
+	sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
 	
 	var slide_out = progression_map.create_tween()
 	slide_out.tween_property(progression_map, "offset:y", -screen_height, 0.8).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN)
 	await slide_out.finished
-	
+
 	progression_map.visible = false
 	get_tree().paused = false
 	
@@ -792,3 +861,13 @@ func show_all_passive_notifications():
 		add_passive_notification("loan_shark", "LOAN SHARK ACTIVE")
 	if player.has_lending_charge:
 		add_passive_notification("lending_charge", "LENDING CHARGE ACTIVE")
+		
+	# Banker
+	if player.has_withdraw:
+		add_passive_notification("withdraw", "WITHDRAW ACTIVE")
+	if player.has_deposit:
+		add_passive_notification("deposit", "DEPOSIT ACTIVE")
+	if player.has_dividend:
+		add_passive_notification("dividend", "DIVIDEND ACTIVE")
+	if player.has_cash_out:
+		add_passive_notification("cash_out", "CASH OUT ACTIVE")

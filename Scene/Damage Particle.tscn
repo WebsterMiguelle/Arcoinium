@@ -3,6 +3,13 @@
 [ext_resource type="Texture2D" uid="uid://dfxpsusewco7g" path="res://Assets/Coins/healthmodecoinbronze.png" id="1_58am7"]
 [ext_resource type="Script" uid="uid://b81y1v87st1oc" path="res://Scene/coin_add_particles.gd" id="1_duiq7"]
 
+[sub_resource type="Curve" id="Curve_58am7"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_poc8g"]
+curve = SubResource("Curve_58am7")
+
 [sub_resource type="Curve" id="Curve_fftk1"]
 _limits = [0.0, 3.0, 0.0, 1.0]
 _data = [Vector2(0, 0.85234904), 0.0, 0.0, 0, 0, Vector2(1, 0.53020144), 0.0, 0.0, 0, 0]
@@ -22,6 +29,7 @@ initial_velocity_max = 245.06
 gravity = Vector3(0, 400, 0)
 scale_min = 0.0
 scale_max = 6.74
+scale_curve = SubResource("CurveTexture_poc8g")
 scale_over_velocity_max = 201.15
 scale_over_velocity_curve = SubResource("CurveTexture_hijrn")
 

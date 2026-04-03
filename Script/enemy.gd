@@ -215,8 +215,8 @@ func setup(m,enemy):
 			has_midnight_curse = true
 			main.player.has_midnight_curse = true
 		Enemy.TWILIGHT_SAGE:
-			max_coin = 200
-			coin = 200
+			max_coin = 300
+			coin = 300
 			max_playable_coins = 4
 			silver_flip_rate = 0
 			gold_flip_rate = 1
@@ -332,14 +332,14 @@ func enemy_coin_calculation():
 			var right_coin
 			for coin in coins:
 				if coin.state == 0:
-					total_gain += 2
+					total_spend += 1
 				if is_left == true:
 					left_coin = coin
 				if is_left == false:
 					right_coin = coin			
 				if left_coin != null and right_coin != null:
 					if left_coin.state == 0 and right_coin.state == 0:
-						total_damage += (left_coin.base_value) + (right_coin.base_value)
+						total_damage += (left_coin.base_value)/2 + (right_coin.base_value)/2
 					left_coin = null
 					right_coin = null
 				else:
@@ -384,11 +384,11 @@ func enemy_coin_calculation():
 					elif left_coin.state == 0 and right_coin.state == 1:
 						total_damage += (left_coin.base_value / 2)
 						total_gain += (right_coin.base_value / 2)
-						total_debt += 3
+						total_debt += 4
 					else:
 						total_damage += (right_coin.base_value / 2)
 						total_gain += (left_coin.base_value / 2)
-						total_debt += 3
+						total_debt += 4
 					left_coin = null
 					right_coin = null
 				else:

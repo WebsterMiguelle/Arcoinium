@@ -37,7 +37,7 @@ scale_over_velocity_curve = SubResource("CurveTexture_hijrn")
 top_level = true
 
 [node name="DamageParticle" type="GPUParticles2D" parent="." unique_id=881501940]
-position = Vector2(72, 51)
+position = Vector2(61, 48)
 emitting = false
 amount = 12
 texture = ExtResource("1_58am7")

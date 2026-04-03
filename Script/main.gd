@@ -108,6 +108,10 @@ $"Progression Map/Boss"
 @onready var enemy_thrift_particles: GPUParticles2D = $"Enemy/Enemy Thrift Particles"
 @onready var enemy_gain_particles: GPUParticles2D = $"Enemy/Enemy Gain Particles"
 
+@onready var player_spend_particles: GPUParticles2D = $"Battle UI/Player Spend Particles"
+@onready var player_spend: Label = $"Battle UI/Player Spend"
+@onready var enemy_spend_particles: GPUParticles2D = $"Battle UI/Enemy Spend Particles"
+@onready var enemy_spend: Label = $"Battle UI/Enemy Spend"
 
 
 @onready var enemy_health_bar = $"Battle UI/EnemyHealthBar"
@@ -437,6 +441,8 @@ func _on_flip_pressed():
 	if current_turn != Turn.PLAYER:
 		return
 	player.flip()
+	if player.coin == 0:
+		check_defeat()
 
 	
 	
@@ -532,6 +538,7 @@ func check_defeat():
 	return null
 
 func handle_victory_flow():
+	player.gain_coin()
 	sound_manager.play_sound(VICTORY)
 	turn_calculation_box.exit()
 	await show_turn_ui("VICTORY")
@@ -624,9 +631,11 @@ func update_player_stacks():
 	player_debt_particles.emitting = false
 	player_gain_particles.emitting = false
 	player_thrift_particles.emitting = false
+	player_spend_particles.emitting = false
 	player_gain.text = ""
 	player_debt.text = ""
 	player_thrift.text = ""
+	player_spend.text = ""
 	if player.gain != 0:
 		player_gain.text = str(player.gain)
 		player_gain_particles.emitting = true
@@ -636,14 +645,19 @@ func update_player_stacks():
 	if player.thrift != 0:
 		player_thrift.text = str(player.thrift)
 		player_thrift_particles.emitting = true
+	if player.spend != 0:
+		player_spend.text = str(player.spend)
+		player_spend_particles.emitting = true
 	
 func update_enemy_stacks():
 	enemy_debt_particles.emitting = false
 	enemy_thrift_particles.emitting = false
 	enemy_gain_particles.emitting = false
+	enemy_spend_particles.emitting = false
 	enemy_gain.text = ""
 	enemy_debt.text = ""
 	enemy_thrift.text = ""
+	enemy_spend.text = ""
 	if enemy.gain != 0:
 		enemy_gain.text = str(enemy.gain)
 		enemy_gain_particles.emitting = true
@@ -653,6 +667,9 @@ func update_enemy_stacks():
 	if enemy.thrift != 0:
 		enemy_thrift.text = str(enemy.thrift)
 		enemy_thrift_particles.emitting = true
+	if enemy.spend != 0:
+		enemy_spend.text = str(enemy.spend)
+		enemy_spend_particles.emitting = true
 
 func _on_restart_pressed():
 	await get_tree().create_timer(0.2).timeout

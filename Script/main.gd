@@ -405,7 +405,7 @@ func show_enemy_passive(text: String, duration: float = 2.5) -> void:
 	enemy_notif_tween = create_tween()
 	enemy_notif_tween.parallel().tween_property(enemy_passive_label, "modulate:a", 1.0, 0.2)
 	enemy_notif_tween.parallel().tween_property(enemy_passive_bg, "modulate:a", 1.0, 0.2)
-	enemy_notif_tween.parallel().tween_property(enemy_passive_label, "position:y", enemy_notif_base_pos.y - 15, 0.2)
+	enemy_notif_tween.parallel().tween_property(enemy_passive_label, "position:y", enemy_notif_base_pos.y + 15, 0.2)
 	enemy_notif_tween.parallel().tween_property(enemy_passive_label, "scale", Vector2(1.05, 1.05), 0.2)
 	enemy_notif_tween.tween_property(enemy_passive_label, "scale", Vector2(1, 1), 0.1)
 	enemy_notif_tween.tween_interval(duration)

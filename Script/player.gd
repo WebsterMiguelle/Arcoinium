@@ -788,11 +788,10 @@ func toggle_button(btn: Button, make_disabled: bool) -> void:
 	btn.disabled = make_disabled
 	
 	if make_disabled:
-		btn.modulate = Color(0.5, 0.5, 0.5, 1.0) # Darken to 50%
+		btn.modulate = Color(0.5, 0.5, 0.5, 1.0)
 		
-		# NEW: If the button has a lifted coin, force it to drop!
 		if "lifted_slot" in btn and btn.lifted_slot != null:
 			btn._on_mouse_exited()
 			
 	else:
-		btn.modulate = Color(1.0, 1.0, 1.0, 1.0) # Restore to normal brightness
+		btn.modulate = Color(1.0, 1.0, 1.0, 1.0)

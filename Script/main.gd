@@ -298,9 +298,8 @@ func battle_start():
 		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_2)
 		
 	#Battle Start Passives
-	player.activate_pre_battle_passives()
+	await player.activate_pre_battle_passives()
 	player.player_turn_count = 0
-	show_turn_ui("BATTLE START")
 	start_player_turn()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -345,7 +344,6 @@ func _on_end_run_pressed():
 func start_player_turn():
 	if player.coin > 0:
 		show_turn_ui("PLAYER TURN")
-		coin_deck.reset_sigils()
 		current_turn = Turn.PLAYER
 		sound_manager.play_sound(TURN_PLAYER)
 		player.start_turn()
@@ -377,6 +375,7 @@ func _on_endturn_pressed():
 			player.extra_turn_penalty = 1
 		else:
 			sound_manager.play_sound(EXTRA_TURN)
+			show_turn_ui("EXTRA TURN")
 			player.extra_turn()
 			player.has_extra_turn = false
 
@@ -588,7 +587,6 @@ func reserve_left_over_coin():
 	var right_coin
 	var coins = get_tree().get_nodes_in_group("coins")
 	for coin in coins:
-		
 		if is_left == true:
 			left_coin = coin
 		if is_left == false:
@@ -659,7 +657,7 @@ func proceed_to_next_enemy():
 		1:
 			current_enemy_index = randi_range(2,3)
 		2:
-			current_enemy_index = randi_range(4,4)
+			current_enemy_index = randi_range(4,5)
 		3:
 			current_enemy_index = randi_range(6,7)
 		4:

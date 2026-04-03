@@ -729,17 +729,17 @@ vertical_alignment = 1
 offset_left = -3.0
 offset_top = 158.0
 offset_right = 311.0
-offset_bottom = 289.0
+offset_bottom = 305.0
 texture = SubResource("GradientTexture2D_2uk8d")
 script = ExtResource("26_2uk8d")
 
 [node name="Turn Calculation" type="Label" parent="Battle UI/Turn Calculation Box" unique_id=854498321]
 custom_minimum_size = Vector2(150, 40)
 layout_mode = 0
-offset_left = 87.0
-offset_top = -10.0
-offset_right = 237.0
-offset_bottom = 164.0
+offset_left = 103.00001
+offset_top = -11.0
+offset_right = 253.0
+offset_bottom = 163.0
 scale = Vector2(1.2137691, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 24

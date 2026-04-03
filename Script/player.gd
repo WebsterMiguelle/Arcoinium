@@ -34,6 +34,7 @@ const PASSIVE_SPARE_CHANGE = preload("uid://dc4ftba55c4w8")
 const PASSIVE_JAR_O_SAVINGS = preload("uid://ctageqytkfmgg")
 const DEBT = preload("uid://cuwgygacdm7dj")
 const PASSIVE_PAYBACK = preload("uid://bbsxs62yhirxa")
+const JAR_O_SAVINGS = preload("uid://cbg3ofct0pu0j")
 
 const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
 const THRIFT = preload("uid://b34wg18n8eb0t")
@@ -96,6 +97,8 @@ var payback_coins = 10
 var passive_income_used = false
 var pocket_money_coins = 6
 var previous_player_gain = 0
+var jar_o_savings_used = false
+var jar_o_savings_coins = 16
 
 var previous_player_flips = 0
 var player_turn_count = 0
@@ -103,6 +106,8 @@ var sun_count = 0
 var moon_count = 0
 var has_extra_turn = false
 var extra_turn_penalty = 1
+var thrifted_attack = 0
+var debted_attack = 0
 
 #GENERAL PASSIVES
 
@@ -136,8 +141,8 @@ var extra_turn_penalty = 1
 
 #INVESTOR PASSIVES
 
-@export var has_active_income = false
-@export var has_pocket_money = false
+@export var has_active_income = true
+@export var has_pocket_money = true
 @export var has_passive_income = false
 @export var has_simple_interest = false
 
@@ -187,7 +192,7 @@ func reset_stats():
 	max_coin = 500 #Max Coin Capacity
 	max_reserve = 4
 	current_reserve = 0
-	coin = 1
+	coin = 100
 	max_playable_coins = 16 #Max Flips Per Turn
 	current_played_coin = 0 #Current Flip Count
 	max_re_flip = 3 #Max Re-Flips Per Turn
@@ -207,7 +212,7 @@ func reset_stats():
 	#A-Rank
 	has_magic_trick = false
 	has_sleight_of_hand = false
-	has_piggy = false
+	has_piggy = true
 
 	#INNOVATOR PASSIVES
 
@@ -226,23 +231,25 @@ func reset_stats():
 	#INVESTOR PASSIVES
 
 	has_active_income = true
-	has_pocket_money = false
-	has_passive_income = false
+	has_pocket_money = true
+	has_passive_income = true
 	has_simple_interest = true
 
 	#DEBTOR PASSIVES
 
 	has_pay_down = false
-	has_reimbursement = false
+	has_reimbursement = true
 	has_loan_shark = false
 	has_lending_charge = false
 
-	has_cash_out = false
-	has_dividend = false
+	has_cash_out = true
+	has_dividend = true
 	has_withdraw = false
 	has_deposit = false
 
 func refresh_start_of_battle_stats():
+	thrifted_attack = 0
+	debted_attack = 0
 	has_extra_turn = false
 	extra_turn_penalty = 1
 	gain = 0
@@ -308,8 +315,10 @@ func coin_calculation():
 		else:
 			pass
 		is_left = !is_left
-	if has_active_income:
-		total_thrift += (total_gain/15 * 2)
+	if thrifted_attack != 0:
+		total_thrift += thrifted_attack
+	if debted_attack != 0:
+		total_debt += debted_attack	
 	var text = ""
 	if coins != null:
 		if total_damage != 0: 
@@ -389,7 +398,7 @@ func flip():
 	add_child(c)
 	if has_reimbursement:
 		var debt_chance = randf()
-		if debt_chance <= 0.3: main.enemy.debt += 1
+		if debt_chance <= 0.3: debted_attack += 1
 	if c.reserved == false:
 		latest_coin = c
 		main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,latest_coin.global_position)
@@ -465,7 +474,6 @@ func start_turn():
 	#Initialize Global Stats
 	flip_clicks = 0
 	latest_coin = null
-	current_played_coin = 0
 	
 	if thrift != 0:
 		main.sound_manager.play_sound(THRIFT_FLAME)
@@ -488,19 +496,23 @@ func start_turn():
 		gain_coin()
 
 	#Reset Player Stats
-	current_played_coin = 0
+	if has_pocket_money and player_turn_count == 1:
+		pass
+	else:
+		current_played_coin = 0
+		main.coin_deck.reset_sigils()
 	current_re_flip = 0
 	latest_coin = null
-	main.coin_deck.reset_sigils()
 
-	toggle_button(main.flip_button,false)
-	if current_played_coin == 0:
-		toggle_button(main.re_flip_button,true)
-		main.turn_calculation.text = ""
 	
 	#Activate Turn Start Passives
 	await activate_player_turn_start_passives()
 	
+	toggle_button(main.flip_button,false)
+	if current_played_coin == 0:
+		toggle_button(main.re_flip_button,true)
+		main.turn_calculation.text = ""
+
 	main.reflip_label.text = str(max_re_flip - current_re_flip)
 	current_reserve = 0
 	
@@ -511,6 +523,7 @@ func start_turn():
 		var has_withdraw_damage = false
 		var is_deck_full = false
 		for coin in coins:
+			print("coin!")
 			if coin.reserved:
 				toggle_button(main.re_flip_button,false)
 				var pos
@@ -529,8 +542,12 @@ func start_turn():
 				latest_coin = COIN.instantiate()
 				latest_coin.setup(coin.state,pos)
 				latest_coin.copy_coin(coin)
+				if is_deck_full:
+					latest_coin.reserved = true
+					latest_coin.add_to_group("reserved coins")
+				else:
+					latest_coin.add_to_group("coins")
 				coin.queue_free()
-				latest_coin.add_to_group("coins")
 				add_child(latest_coin)
 				
 				dividend_chance = randf()
@@ -548,17 +565,21 @@ func start_turn():
 					var dividend_coin = COIN.instantiate()
 					dividend_coin.setup(latest_coin.state,pos)
 					dividend_coin.copy_coin(latest_coin)
-					dividend_coin.add_to_group("coins")
+					if is_deck_full:
+						dividend_coin.reserved = true
+						dividend_coin.add_to_group("reserved coins")
+					else:
+						dividend_coin.add_to_group("coins")
 					add_child(dividend_coin)
 					if has_simple_interest: gain += 1
 					if has_withdraw:
-						main.enemy.take_damage(2)
+						main.enemy.take_damage(1)
 						has_withdraw_damage = true
 	
 					
 				if has_simple_interest: gain += 1
 				if has_withdraw: 
-					main.enemy.take_damage(2)
+					main.enemy.take_damage(1)
 					has_withdraw_damage = true
 				latest_coin.refresh_sprite()
 				if current_played_coin > 1:
@@ -601,9 +622,9 @@ func end_turn():
 
 	thrift = 0
 	particle_manager.despawn_emitting_particles()
-
-	main.reserve_left_over_coin()
+	max_playable_coins = initial_max_playable_coins
 	main.enemy.take_damage(turn_damage)
+	
 	if turn_damage == 0: pass
 	elif turn_damage <= 10: main.sound_manager.play_sound(DAMAGE_LIGHT)
 	elif turn_damage <= 20: main.sound_manager.play_sound(DAMAGE_MODERATE)
@@ -621,11 +642,17 @@ func end_turn():
 		
 	if main.enemy.type == Enemy.TWILIGHT_SAGE:
 		if has_dusk_stance:
-			main.enemy.gain += moon_count * 3
+			main.enemy_portrait_sprite.play("TWILIGHT_SAGE_DUSK")
+			thrift += moon_count
 		else:
 			main.enemy_portrait_sprite.play("TWILIGHT_SAGE_DAWN")
-			debt += sun_count * 3
+			thrift += sun_count
 
+	if thrifted_attack != 0:
+		thrifted_attack = 0
+	if debted_attack != 0:
+		debted_attack = 0
+	main.reserve_left_over_coin()
 	var coins = get_tree().get_nodes_in_group("coins")
 	var is_left = true
 	if has_piggy:
@@ -643,7 +670,22 @@ func end_turn():
 		if coin.reserved == false:
 			main.particle_manager.spawn_particle(COIN_PLAY_PARTICLE,coin.global_position)
 			coin.queue_free()
-	
+			
+	if has_piggy:
+		var type = latest_pair_left_coin.type
+		latest_pair_left_coin.setup(latest_pair_left_coin.state,main.coin_deck.get_reserve_slot())
+		latest_pair_left_coin.reserved = true
+		latest_pair_left_coin.type = type
+		latest_pair_left_coin.add_to_group("reserved coins")
+		add_child(latest_pair_left_coin)
+		
+		type = latest_pair_right_coin.type
+		latest_pair_right_coin.setup(latest_pair_right_coin.state,main.coin_deck.get_reserve_slot())
+		latest_pair_right_coin.reserved = true
+		latest_pair_right_coin.type = type
+		latest_pair_right_coin.add_to_group("reserved coins")
+		add_child(latest_pair_right_coin)
+
 	main.total_damage_dealt += turn_damage
 	if turn_damage > main.highest_damage_dealt:
 		main.highest_damage_dealt = turn_damage
@@ -652,30 +694,35 @@ func end_turn():
 	if turn_gain > main.highest_gain:
 		main.highest_gain = turn_gain
 
-	
-	if main.enemy.coin > 0 and has_cash_out and current_played_coin == max_playable_coins and current_reserve == max_reserve:
+	if has_active_income and turn_damage == 0 and !jar_o_savings_used:
+		jar_o_savings_used = true
 		has_extra_turn = true
-	max_playable_coins = initial_max_playable_coins
+		return
+
+	if main.enemy.coin > 0 and has_cash_out and current_reserve == max_reserve:
+		has_extra_turn = true
+
 	
 func activate_pre_battle_passives():
 	if has_value_added_tax:
 		debt += 5
 	passive_income_used = false
 	payback_used = false
+	jar_o_savings_used = false
+	jar_o_savings_coins = 16
 	payback_coins = 8
 	pocket_money_coins = 8
 	current_played_coin = 0
 	if has_pocket_money:
 		main.sound_manager.play_sound(COIN_FLIP)
-		while pocket_money_coins != -1:
+		while pocket_money_coins != 0:
 			var state = 1
 			current_played_coin += 1
 			var c = COIN.instantiate()
-			print("POCKET MONEY: " + str(pocket_money_coins))
+			print("POCKET MONEY: " + str(current_played_coin))
 			c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
 			
 			#Guaranteed Silver Flips
-			
 			c.upgrade_to_silver()
 			c.add_to_group("coins")
 			latest_coin = c
@@ -693,9 +740,49 @@ func activate_pre_battle_passives():
 
 func activate_player_turn_start_passives():
 	previous_player_flips = 0
-	if payback_used and payback_coins != 0:
+	
+	#JAR O SAVINGS
+	if has_active_income and jar_o_savings_used and jar_o_savings_coins != 0:
+		thrifted_attack = 16
+		jar_o_savings_coins = 16
+		main.sound_manager.play_sound(THRIFT)
+		toggle_button(main.flip_button,true)
+		toggle_button(main.re_flip_button,true)
+		main.sound_manager.play_sound(JAR_O_SAVINGS)
+		var is_deck_full = false
+		while jar_o_savings_coins != 0:
+			var state = 1
+			if current_played_coin == max_playable_coins: is_deck_full = true	
+			current_played_coin += 1
+			var c = COIN.instantiate()
+			if is_deck_full:
+				c.setup(state,main.coin_deck.get_reserve_slot())
+				c.reserved = true
+				current_reserve += 1
+				c.add_to_group("reserved coins")
+			else:
+				c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
+				c.add_to_group("coins")
+
+
+			add_child(c);
+			
+			latest_coin = c
+
+			main.sound_manager.play_sound(COIN_FLIP)
+			main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,c.global_position)
+			coin_calculation()
+			jar_o_savings_coins -= 1
+			await get_tree().create_timer(0.1).timeout
+			latest_coin = coin
+			
+		main.endTurn_button.disabled = false
+		toggle_button(main.re_flip_button,true)
+		
+	#PAYBACK
+	if has_payback and payback_used and payback_coins != 0:
+		thrifted_attack = 16
 		payback_coins = 8
-		main.enemy.thrift += 16
 		main.sound_manager.play_sound(THRIFT)
 		main.endTurn_button.disabled = true
 		toggle_button(main.re_flip_button,true)
@@ -715,12 +802,10 @@ func activate_player_turn_start_passives():
 				c.add_to_group("reserved coins")
 			else:
 				c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
-				c.upgrade_to_silver()
 				c.add_to_group("coins")
 
 			#Guaranteed Silver Flips
-			
-
+			c.upgrade_to_silver()
 			add_child(c);
 			
 			latest_coin = c
@@ -733,51 +818,10 @@ func activate_player_turn_start_passives():
 			payback_coins -= 1
 			await get_tree().create_timer(0.2).timeout
 			latest_coin = coin
+			
 		main.endTurn_button.disabled = false
 		toggle_button(main.re_flip_button,false)
 
-	#Piggy Passive
-	if latest_pair_left_coin != null and latest_pair_right_coin != null:
-		var left_coin = COIN.instantiate()
-		var pos
-		current_played_coin += 1
-		if current_played_coin >= max_playable_coins:
-			pos = main.coin_deck.get_reserve_slot()
-			left_coin.reserved = true
-			current_reserve += 1
-		else:
-			pos = main.coin_deck.get_vacant_slot(current_played_coin)
-			left_coin.reserved = false
-		toggle_button(main.re_flip_button,false)
-		left_coin.setup(latest_pair_left_coin.state,pos)
-		left_coin.copy_coin(latest_pair_left_coin)
-		left_coin.reserved = false
-		left_coin.add_to_group("coins")
-		add_child(left_coin);
-		main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,left_coin.global_position)
-		
-		var right_coin = COIN.instantiate()
-		current_played_coin += 1
-		if current_played_coin >= max_playable_coins:
-			pos = main.coin_deck.get_reserve_slot()
-			right_coin.reserved = true
-			current_reserve += 1
-		else:
-			pos = main.coin_deck.get_vacant_slot(current_played_coin)
-			right_coin.reserved = false
-		toggle_button(main.re_flip_button,false)
-		right_coin.setup(latest_pair_right_coin.state,pos)
-		right_coin.copy_coin(latest_pair_right_coin)
-		right_coin.reserved = false
-		right_coin.add_to_group("coins")
-		add_child(right_coin);
-		latest_coin = right_coin
-		main.sound_manager.play_sound(COIN_FLIP)
-		main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,right_coin.global_position)
-	latest_pair_left_coin = null
-	latest_pair_right_coin = null
-
-		
 
 func activate_player_turn_end_passives():
 	main.endTurn_button.disabled = true
@@ -829,12 +873,9 @@ func activate_player_turn_end_passives():
 		await get_tree().create_timer(1.0).timeout
 
 func extra_turn():
-	main.show_turn_ui("EXTRA TURN")
-	extra_turn_penalty = 1
-	start_turn()
-	toggle_button(main.flip_button,true)
-	current_re_flip = 0
+	await start_turn()
 	toggle_button(main.re_flip_button,true)
+	toggle_button(main.flip_button,true)
 	
 func toggle_button(btn: Button, make_disabled: bool) -> void:
 	btn.disabled = make_disabled

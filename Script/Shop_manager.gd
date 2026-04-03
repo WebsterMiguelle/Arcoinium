@@ -30,28 +30,28 @@ var all_cards = [
 	{"id": 5, "name": "Impromptu Flip", "rank": "B", "desc": "Upon ending the turn, the last coin on the Arcane Circle will be upgraded, and flipped to its other side."},
 	{"id": 6, "name": "Advanced Planning", "rank": "B", "desc": "The first 2 coins on the Arcane Circle will not be affected by Re-Flips. Upgrade these coins at the end of the turn."},
 	{"id": 7, "name": "Value Increase", "rank": "B", "desc": "Upgrade all reserved coins next turn."},
-	{"id": 8, "name": "Lending Charge", "rank": "B", "desc": "Each Sun-Moon Pairs played this turn applies 3 Debt to the enemy."},
+	{"id": 8, "name": "Lending Charge", "rank": "B", "desc": "Each Sun-Moon Pairs played this turn applies 3 DEBT to the enemy."},
 	{"id": 9, "name": "Coin Snipe", "rank": "B", "desc": "If Coin Caster flipped a Silver or Gold Coin, Deal 1 Damage to the enemy."},
 	{"id": 10, "name": "Simple Interest", "rank": "B", "desc": "For each reserved coin added to the Arcane Circle next turn, apply 1 Gain to self."},
 	{"id": 11, "name": "Lucky Pair", "rank": "A", "desc": "+10% Gold Flip Rate. The 7th and 8th Flipped Coin on every turn is guaranteed to be upgraded."},
 	{"id": 12, "name": "Sleight of Hand", "rank": "A", "desc": "+4 Extra Re-Flips."},
-	{"id": 13, "name": "Piggy", "rank": "A", "desc": "At the start of each turn, Piggy will generate the 1st Coin Pair on the Arcane Circle based on the previous turn’s Last Coin Pair."},
+	{"id": 13, "name": "Piggy", "rank": "A", "desc": "At the end of each turn, Piggy will duplicate your Last Coin Pair and add it to the Reserve."},
 	{"id": 14, "name": "Pocket Money", "rank": "A", "desc": "Start each battle with 8 Silver Moon Coins."},
 	{"id": 15, "name": "Passive Income", "rank": "A", "desc": "In every battle, the first enemy damage will be turned into Coins. (Caps at 30 Coin Gain)"},
 	{"id": 16, "name": "Magic Trick", "rank": "A", "desc": "Upon ending the turn with 8 or more Coins, the 1st Coin Pair will be copied to the 2nd, 3rd, and 4th Coin Pair."},
-	{"id": 17, "name": "Reimbursement", "rank": "A", "desc": "Each Flip and Re-Flip has a 30% Chance to apply 1 Debt."},
-	{"id": 18, "name": "Payback", "rank": "A", "desc": " If Coin Caster receives a killing blow, set Coin back to 1, Apply 16 Thrift to the Enemy, and immediately generate 8 Silver Sun Coins next turn. (One-Time per Battle)"},
-	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "At the start of the enemy’s turn, immediately deal damage based on half of the Enemy’s Debt."},
+	{"id": 17, "name": "Reimbursement", "rank": "A", "desc": "Each Flip and Re-Flip has a 30% Chance to apply 1 DEBT."},
+	{"id": 18, "name": "Payback", "rank": "A", "desc": " If Coin Caster receives a killing blow, set Coin back to 1, Apply 16 THRIFT to the Enemy, and immediately generate 8 Silver Sun Coins next turn. (One-Time per Battle)"},
+	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "At the start of the enemy’s turn, immediately deal damage based on half of the Enemy’s DEBT."},
 	{"id": 20, "name": "Spare Change", "rank": "A", "desc": "Upon a Re-Flip, retrieve all reserved coins on the deck."},
 	{"id": 21, "name": "Triple Nickel", "rank": "A", "desc": "+20% Silver Flip Rate. The first 3 Flips on every turn are guaranteed to be Silver Coins."},
 	{"id": 22, "name": "Inflation", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 30% chance for each coin on the Arcane Circle to upgrade every Re-Flip."},
-	{"id": 23, "name": "Jar'O Savings", "rank": "S", "desc":"For every 15 Gain, apply 2 Thrift to the Enemy."},
-	{"id": 24, "name": "Pay Down", "rank": "S", "desc": "Add 5 Debt at the end of the Enemy’s Turn. If Enemy Debt is greater than their Current Coins at the end of their turn, perish instantly."},
+	{"id": 23, "name": "Jar'O Savings", "rank": "S", "desc":"When Coin Caster deals 0 Damage this turn, gain an Extra Turn, apply 16 THRIFT to the enemy, and generate 16 Copper Moon Coins. Cannot Flip or Re-Flip during Extra Turns."},
+	{"id": 24, "name": "Pay Down", "rank": "S", "desc": "Add 5 DEBT at the end of the Enemy’s Turn. If Enemy DEBT is greater than their Current Coins at the end of their turn, perish instantly."},
 	{"id": 25, "name": "Refund", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 20% chance to retrieve all coins from the Arcane Circle upon a Re-Flip. Refresh Re-Flip Count afterwards."},
-	{"id": 26, "name": "Withdraw", "rank": "B", "desc": "For each reserved coin added to the Arcane Circle next turn, deal 2 Damage."},
+	{"id": 26, "name": "Withdraw", "rank": "B", "desc": "For each reserved coin added to the Arcane Circle next turn, deal 1 Damage."},
 	{"id": 27, "name": "Deposit", "rank": "A", "desc": "+4 Max Reserve."},
 	{"id": 28, "name": "Dividend", "rank": "A", "desc": "There is a 30% chance to duplicate each reserved coin on the next turn."},
-	{"id": 29, "name": "Cash Out", "rank": "S", "desc": " When Coin Caster flipped all playable and reservable coins, immediately gain an Extra Turn upon ending the current turn. Coin Caster cannot Flip or Re-Flip during Extra Turns."}
+	{"id": 29, "name": "Cash Out", "rank": "S", "desc": "When Coin Reserve is full at the end of the turn, immediately gain an Extra Turn. Coin Caster cannot Flip or Re-Flip during Extra Turns."}
 ]
 
 func show_shop_async(player):
@@ -97,8 +97,8 @@ func generate_shop():
 	
 	var selected_cards = []
 	selected_cards += draw_cards(b_pool, 1)
-	selected_cards += draw_cards(a_pool, 2)
-	selected_cards += draw_cards(s_pool, 3)
+	selected_cards += draw_cards(a_pool, 3)
+	selected_cards += draw_cards(s_pool, 2)
 
 	for data in selected_cards:
 		var card = Shop_card.instantiate()

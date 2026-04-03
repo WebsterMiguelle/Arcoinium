@@ -177,7 +177,7 @@ func setup(m,enemy):
 			main.player.thrift = 8
 		Enemy.ARISTOCRAT:
 			max_coin = 200
-			coin = 150
+			coin = 120
 			max_playable_coins = 16
 			silver_flip_rate = 1
 			gold_flip_rate = 0
@@ -206,8 +206,8 @@ func setup(m,enemy):
 			has_midnight_curse = true
 			main.player.has_midnight_curse = true
 		Enemy.TWILIGHT_SAGE:
-			max_coin = 200
-			coin = 200
+			max_coin = 250
+			coin = 250
 			max_playable_coins = 4
 			silver_flip_rate = 0
 			gold_flip_rate = 1
@@ -297,7 +297,7 @@ func enemy_coin_calculation():
 					right_coin = coin
 				if left_coin != null and right_coin != null:
 					if left_coin.state == 1 and right_coin.state == 1:
-						total_gain += (left_coin.base_value) + (right_coin.base_value)
+						total_gain += (left_coin.base_value / 2) + (right_coin.base_value / 2)
 					elif left_coin.state == 0 and right_coin.state == 0:
 						total_damage += (left_coin.base_value) + (right_coin.base_value)
 					else:
@@ -316,7 +316,7 @@ func enemy_coin_calculation():
 			var right_coin
 			for coin in coins:
 				if coin.state == 0:
-					total_debt += coin.base_value / 2
+					total_gain += coin.base_value / 2
 				if is_left == true:
 					left_coin = coin
 				if is_left == false:
@@ -335,7 +335,7 @@ func enemy_coin_calculation():
 			var right_coin
 			for coin in coins:
 				if coin.state == 1:
-					total_thrift += 1
+					total_debt += coin.base_value / 2
 				if is_left == true:
 					left_coin = coin
 				if is_left == false:
@@ -368,9 +368,11 @@ func enemy_coin_calculation():
 					elif left_coin.state == 0 and right_coin.state == 1:
 						total_damage += (left_coin.base_value / 2)
 						total_gain += (right_coin.base_value / 2)
+						total_debt += 6
 					else:
 						total_damage += (right_coin.base_value / 2)
 						total_gain += (left_coin.base_value / 2)
+						total_debt += 6
 					left_coin = null
 					right_coin = null
 				else:
@@ -484,6 +486,8 @@ func end_enemy_turn():
 		main.turn_calculation.text = ""
 		main.turn_calculation_box.exit()
 
+	if current_played_coin > 0:
+		main.sound_manager.play_sound(COIN_ENDTURN)
 	if turn_damage != 0: 
 		main.sound_manager.play_sound(COIN_ATTACK_PARTICLE)
 		particle_manager.play_attack_animation(main.coin_deck, main.player_portrait, turn_damage)

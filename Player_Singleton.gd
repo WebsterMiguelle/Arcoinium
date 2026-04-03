@@ -30,6 +30,9 @@ var gain = 0: #Coin to be gained next turn
 var debt = 0: #Gain Blocked
 	set(value):
 		debt = clamp(value,0,1000) 
+var thrift = 0: #Reduced Playable Coins
+	set(value):
+		thrift = clamp(value,0,16) 
 
 #PASSIVES
 
@@ -116,6 +119,7 @@ func save_stats(player):
 	gold_flip_rate = player.gold_flip_rate
 	gain = player.gain
 	debt = player.debt
+	thrift = player.thrift
 	
 	#B-Rank
 	has_wishbone = player.has_wishbone
@@ -177,6 +181,7 @@ func load_stats(player):
 	player.gold_flip_rate = gold_flip_rate
 	player.gain = gain
 	player.debt = debt
+	player.thrift = thrift
 	
 	#B-Rank
 	player.has_wishbone = has_wishbone

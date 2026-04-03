@@ -129,7 +129,7 @@ var active_temp_notifs: Array = []
 var recent_triggers: Dictionary = {}
 var active_temp_ids: Dictionary = {}
 var passive_order: Array = []
-var max_visible_passives = 5
+var max_visible_passives = 10
 var overflow_notif: Control = null
 
 	
@@ -774,13 +774,13 @@ func _show_temporary_passive(id: String, text: String, duration: float = 1.5):
 	
 	# Start off-screen
 	var container_width = passive_label.get_rect().size.x
-	notif.position = Vector2(container_width + 200, 0)
+	notif.position = Vector2(container_width + 200, 40)
 	
 	# Slide in and fade in
 	var tween = create_tween()
-	tween.parallel().tween_property(notif, "position:x", 0, 0.35).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tween.parallel().tween_property(notif, "modulate:a", 1.0, 0.35)
-	tween.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.35)
+	tween.parallel().tween_property(notif, "position:x", 0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(notif, "modulate:a", 1.0, 0.2)
+	tween.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.2)
 	await tween.finished
 	
 	# Wait duration
@@ -788,7 +788,7 @@ func _show_temporary_passive(id: String, text: String, duration: float = 1.5):
 	
 	# Fade out
 	var tween_out = create_tween()
-	tween_out.tween_property(notif, "modulate:a", 0.0, 0.4)
+	tween_out.tween_property(notif, "modulate:a", 0.0, 0.2)
 	tween_out.tween_callback(func():
 		if is_instance_valid(notif):
 			active_temp_notifs.erase(notif)
@@ -817,9 +817,9 @@ func _restack_passives():
 			notif.visible = true
 		
 			var target_y = index * spacing
-			tween.parallel().tween_property(notif, "position:y", target_y, 0.25)
-			tween.parallel().tween_property(notif, "modulate:a", 1.0, 0.25)
-			tween.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.25)
+			tween.parallel().tween_property(notif, "position:y", target_y, 0.2)
+			tween.parallel().tween_property(notif, "modulate:a", 1.0, 0.2)
+			tween.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.2)
 		
 			index += 1
 		else:
@@ -841,9 +841,9 @@ func _restack_passives():
 		overflow_notif.setup("+" + str(hidden_count) + " more...")
 	
 		var target_y = index * spacing
-		tween.parallel().tween_property(overflow_notif, "position:y", target_y, 0.25)
-		tween.parallel().tween_property(overflow_notif, "modulate:a", 0.6, 0.25)
-		tween.parallel().tween_property(overflow_notif, "scale", Vector2(0.85, 0.85), 0.25)
+		tween.parallel().tween_property(overflow_notif, "position:y", target_y, 0.2)
+		tween.parallel().tween_property(overflow_notif, "modulate:a", 0.6, 0.2)
+		tween.parallel().tween_property(overflow_notif, "scale", Vector2(0.85, 0.85), 0.2)
 	
 		index += 1
 	else:
@@ -860,29 +860,29 @@ func _restack_passives():
 		
 func show_all_passive_notifications():
 	if player.has_wishbone:
-		trigger_passive("wishbone", "WISH BONE ACTIVE")
+		trigger_passive("wishbone", "WISH BONE")
 		
 	if player.has_golden_clover:
-		trigger_passive("golden_clover", "GOLDEN CLOVER ACTIVE")
+		trigger_passive("golden_clover", "GOLDEN CLOVER")
 		
 	if player.has_sleight_of_hand:
-		trigger_passive("sleight_of_hand", "SLEIGHT OF HAND ACTIVE")
+		trigger_passive("sleight_of_hand", "SLEIGHT OF HAND")
 		
 	if player.has_pocket_money:
-		trigger_passive("pocket_money", "POCKET MONEY ACTIVE")
+		trigger_passive("pocket_money", "POCKET MONEY")
 		
-	if player.has_passive_income:
-		trigger_passive("passive_income", "PASSIVE INCOME ACTIVE")
+	if player.has_inflation:
+		trigger_passive("inflation", "INFLATION")
 		
 	if player.has_lending_charge:
-		trigger_passive("lending_charge", "LENDING CHARGE ACTIVE")
-		
-	if player.has_reimbursement:
-		trigger_passive("reimbursement", "REIMBURSEMENT ACTIVE")
+		trigger_passive("lending_charge", "LENDING CHARGE")
+
+	if player.has_deposit:
+		trigger_passive("deposit", "DEPOSIT")
 
 	# --- SHOP PASSIVE (PERSISTENT) ---
 	if player.has_merchant_scroll:
-		trigger_passive("merchant_scroll", "MERCHANT SCROLL ACTIVE")
+		trigger_passive("merchant_scroll", "MERCHANT SCROLL")
 
 
 		
@@ -893,18 +893,19 @@ enum PassiveDisplayType {
 
 var passive_display_type = {
 	# --- PERSISTENT ---
-	"wishbone": PassiveDisplayType.PERSISTENT,
-	"golden_clover": PassiveDisplayType.PERSISTENT,
-	"deposit": PassiveDisplayType.PERSISTENT,
-	"sleight_of_hand": PassiveDisplayType.PERSISTENT,
-	"pocket_money": PassiveDisplayType.PERSISTENT,
-	"passive_income": PassiveDisplayType.PERSISTENT,
-	"lending_charge": PassiveDisplayType.PERSISTENT,
-	"reimbursement": PassiveDisplayType.PERSISTENT,
-	"merchant_scroll": PassiveDisplayType.PERSISTENT,
+	"wishbone": PassiveDisplayType.TEMPORARY,
+	"golden_clover": PassiveDisplayType.TEMPORARY,
+	"deposit": PassiveDisplayType.TEMPORARY,
+	"sleight_of_hand": PassiveDisplayType.TEMPORARY,
+	"pocket_money": PassiveDisplayType.TEMPORARY,
+	"passive_income": PassiveDisplayType.TEMPORARY,
+	"lending_charge": PassiveDisplayType.TEMPORARY,
+	"reimbursement": PassiveDisplayType.TEMPORARY,
+	"merchant_scroll": PassiveDisplayType.TEMPORARY,
 
 	# --- TEMPORARY ---
 	"piggy": PassiveDisplayType.TEMPORARY,
+	"advanced_planning": PassiveDisplayType.TEMPORARY,
 	"value_increase": PassiveDisplayType.TEMPORARY,
 	"simple_interest": PassiveDisplayType.TEMPORARY,
 	"jar_o_savings": PassiveDisplayType.TEMPORARY,
@@ -936,7 +937,7 @@ func trigger_passive_notification(id: String, text: String):
 		PassiveDisplayType.PERSISTENT:
 			_add_persistent_passive(id, text)
 		PassiveDisplayType.TEMPORARY:
-			_show_temporary_passive(id, text, 1.5)
+			_show_temporary_passive(id, text, 2)
 			
 func _add_persistent_passive(id: String, text: String,):
 	if active_passive_notifs.has(id):
@@ -956,9 +957,9 @@ func _add_persistent_passive(id: String, text: String,):
 	var container_width = passive_label.get_rect().size.x
 	notif.position = Vector2(container_width + 200, 0)
 	var tween = create_tween()
-	tween.parallel().tween_property(notif, "position:x", 0, 0.35).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tween.parallel().tween_property(notif, "modulate:a", 1.0, 0.35)
-	tween.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.35)
+	tween.parallel().tween_property(notif, "position:x", 0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(notif, "modulate:a", 1.0, 0.2)
+	tween.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.2)
 	
 	_restack_passives()
 	

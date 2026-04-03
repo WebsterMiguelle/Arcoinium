@@ -131,7 +131,7 @@ func setup(m,enemy):
 	match enemy:
 		Enemy.MAGE:
 			max_coin = 200
-			coin = 10
+			coin = 200
 			max_playable_coins = 1
 			silver_flip_rate = 0.0
 			gold_flip_rate = 0.0
@@ -139,7 +139,7 @@ func setup(m,enemy):
 			type = Enemy.MAGE
 		Enemy.DWARF:
 			max_coin = 200
-			coin = 12
+			coin = 200
 			max_playable_coins = 2
 			silver_flip_rate = 0.0
 			gold_flip_rate = 0.0
@@ -446,6 +446,7 @@ func start_enemy_turn():
 	if main.player.has_loan_shark and debt > 1:
 		var loan_damage = debt / 2
 		take_damage(loan_damage)
+		main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
 
@@ -495,6 +496,7 @@ func end_enemy_turn():
 		await get_tree().create_timer(1.0).timeout
 		if main.player.has_passive_income and !main.player.passive_income_used:
 			main.player.passive_income_used = true
+			main.player.trigger_temp_passive("passive_income","PASSIVE INCOME")
 			if turn_damage >= 30:
 				turn_damage = 30
 			main.player.coin += turn_damage
@@ -521,6 +523,7 @@ func end_enemy_turn():
 		if debt > coin:
 			coin = 0
 			main.sound_manager.play_sound(PASSIVE_PAYDOWN)
+			main.player.trigger_temp_passive("pay_down","PAY DOWN")
 		else:
 			debt += 5
 		

@@ -23,11 +23,6 @@ PlayerSingleton="*uid://okw61psq4rl4"
 [display]
 
 window/size/mode=2
-window/stretch/mode="canvas_items"
-
-[display]
-
-window/size/mode=2
 window/stretch/mode="viewport"
 
 [gui]

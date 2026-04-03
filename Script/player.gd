@@ -14,8 +14,11 @@ enum Enemy{
 
 signal hp_changed(new_hp)
 @onready var player_portrait: AnimatedSprite2D = $Player_Portrait
+@onready var passives_bar: GridContainer = $"../Battle UI/PassivesBar"
 
 #SCENES
+const PASSIVE_BAR_ICON = preload("res://Scene/Passive_Bar_Icon.tscn")
+
 const COIN = preload("uid://ddet242jm5v23")
 var main
 @onready var particle_manager: Node2D = $"../ParticleManager"
@@ -141,8 +144,8 @@ var debted_attack = 0
 
 #INVESTOR PASSIVES
 
-@export var has_active_income = true
-@export var has_pocket_money = true
+@export var has_active_income = false
+@export var has_pocket_money = false
 @export var has_passive_income = false
 @export var has_simple_interest = false
 
@@ -155,10 +158,10 @@ var debted_attack = 0
 
 #BANKER PASSIVES
 
-@export var has_cash_out = true
-@export var has_dividend = true
-@export var has_withdraw = true
-@export var has_deposit = true
+@export var has_cash_out = false
+@export var has_dividend = false
+@export var has_withdraw = false
+@export var has_deposit = false
 
 #ENEMY PASSIVES
 
@@ -212,12 +215,12 @@ func reset_stats():
 	#A-Rank
 	has_magic_trick = false
 	has_sleight_of_hand = false
-	has_piggy = true
+	has_piggy = false
 
 	#INNOVATOR PASSIVES
 
 	has_inflation = false
-	has_payback = true
+	has_payback = false
 	has_lucky_pair = false
 	has_value_increase = false
 
@@ -230,20 +233,20 @@ func reset_stats():
 
 	#INVESTOR PASSIVES
 
-	has_active_income = true
-	has_pocket_money = true
-	has_passive_income = true
-	has_simple_interest = true
+	has_active_income = false
+	has_pocket_money = false
+	has_passive_income = false
+	has_simple_interest = false
 
 	#DEBTOR PASSIVES
 
 	has_pay_down = false
-	has_reimbursement = true
+	has_reimbursement = false
 	has_loan_shark = false
 	has_lending_charge = false
 
-	has_cash_out = true
-	has_dividend = true
+	has_cash_out = false
+	has_dividend = false
 	has_withdraw = false
 	has_deposit = false
 
@@ -704,6 +707,7 @@ func end_turn():
 
 	
 func activate_pre_battle_passives():
+	
 	if has_value_added_tax:
 		debt += 5
 	passive_income_used = false

@@ -101,6 +101,10 @@ $"Progression Map/Boss"
 @onready var player_health_label = $"Battle UI/HealthLabel"
 @onready var player_thrift: Label = $"Player/Player Thrift"
 
+const PLAYER_INFORMATION_DISPLAY = preload("uid://c61s4yrsvak0l")
+var player_info_menu: Node = null
+
+
 @onready var player_gain_particles: GPUParticles2D = $"Player/Player Gain Particles"
 @onready var player_debt_particles: GPUParticles2D = $"Player/Player Debt Particles"
 @onready var enemy_debt_particles: GPUParticles2D = $"Enemy/Enemy Debt Particles"
@@ -872,3 +876,21 @@ func show_all_passive_notifications():
 		add_passive_notification("dividend", "DIVIDEND ACTIVE")
 	if player.has_cash_out:
 		add_passive_notification("cash_out", "CASH OUT ACTIVE")
+
+
+func _on_player_info_button_pressed() -> void:
+
+	if is_instance_valid(player_info_menu):
+		if not player_info_menu.is_closing:
+			player_info_menu.close()
+			
+	else:
+		player_info_menu = PLAYER_INFORMATION_DISPLAY.instantiate()
+		$"Battle UI".add_child(player_info_menu)
+		
+		player_info_menu.size = Vector2(1069, 649)
+		player_info_menu.global_position = Vector2(158, 34)
+		player_info_menu.scale = Vector2(0.915, 0.91)
+		
+		
+		player_info_menu.open()

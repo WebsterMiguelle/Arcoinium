@@ -42,6 +42,7 @@
 [ext_resource type="Texture2D" uid="uid://ba7v6aaoo0irq" path="res://Assets/mapIconElite.png" id="38_cr44a"]
 [ext_resource type="Texture2D" uid="uid://4aebywoijoue" path="res://Assets/mapIconShop.png" id="39_tcekk"]
 [ext_resource type="Texture2D" uid="uid://fl7tmytwihia" path="res://Assets/mapIconBoss.png" id="40_1bveb"]
+[ext_resource type="PackedScene" uid="uid://c61s4yrsvak0l" path="res://Scene/PlayerInformationDisplay.tscn" id="43_tcekk"]
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]
 
@@ -570,6 +571,18 @@ text = "30"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="PlayerInfoButton" type="Button" parent="Player" unique_id=747601259]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 504.0
+offset_right = 142.0
+offset_bottom = 636.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "PRESS FOR INFO"
+
 [node name="Enemy" type="Node2D" parent="." unique_id=651932115]
 script = ExtResource("3_lquwl")
 
@@ -691,6 +704,7 @@ offset_bottom = 37.0
 theme_override_colors/font_color = Color(0.9214317, 0.6317199, 0, 1)
 theme_override_fonts/font = ExtResource("7_3pt4j")
 theme_override_font_sizes/font_size = 22
+text = "Coins:"
 
 [node name="Re-Flip" type="Button" parent="Battle UI" unique_id=1181793745]
 self_modulate = Color(1, 1, 1, 0)
@@ -793,6 +807,13 @@ offset_bottom = -31.0
 grow_horizontal = 0
 grow_vertical = 0
 alignment = 2
+
+[node name="PlayerInformationDisplay2" parent="Battle UI" unique_id=2082350649 instance=ExtResource("43_tcekk")]
+offset_left = 158.00002
+offset_top = 33.999996
+offset_right = 1227.0
+offset_bottom = 683.0
+scale = Vector2(0.915, 0.91)
 
 [node name="Game Over UI" type="CanvasLayer" parent="." unique_id=994626979]
 visible = false
@@ -1173,7 +1194,8 @@ scale = Vector2(2, 2.5)
 sprite_frames = SubResource("SpriteFrames_f043x")
 
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
-position = Vector2(576, 321)
+visible = false
+position = Vector2(576, 324)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.90334755, 0.5628785, 0.61960787)
 energy = 1.05
@@ -1181,8 +1203,10 @@ texture = SubResource("GradientTexture2D_c2iwn")
 texture_scale = 0.46
 
 [node name="Vignette" type="CanvasModulate" parent="." unique_id=1590582319]
+visible = false
 color = Color(0.6964535, 0.6192358, 0.67436445, 1)
 
+[connection signal="pressed" from="Player/PlayerInfoButton" to="." method="_on_player_info_button_pressed"]
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_exited"]
 [connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]

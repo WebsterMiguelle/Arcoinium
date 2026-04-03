@@ -14,7 +14,7 @@ enum Enemy{
 
 signal hp_changed(new_hp)
 @onready var player_portrait: AnimatedSprite2D = $Player_Portrait
-
+var active_temp_ids: Dictionary = {}
 #SCENES
 const COIN = preload("uid://ddet242jm5v23")
 var main
@@ -888,3 +888,18 @@ func toggle_button(btn: Button, make_disabled: bool) -> void:
 			
 	else:
 		btn.modulate = Color(1.0, 1.0, 1.0, 1.0)
+
+
+func trigger_temp_passive(id: String, text: String):
+	if not main:
+		return
+		
+	if active_temp_ids.has(id):
+		return
+	
+	active_temp_ids[id] = true
+	
+	main.trigger_passive(id, text)
+	
+	await get_tree().create_timer(1.5).timeout
+	active_temp_ids.erase(id)

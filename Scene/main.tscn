@@ -34,8 +34,10 @@
 [ext_resource type="Texture2D" uid="uid://c1oyqjdr6wop8" path="res://Assets/animated_reflipbutton-Sheet.png" id="26_wimqa"]
 [ext_resource type="FontFile" uid="uid://drm3kueev5jxy" path="res://Assets/Fonts/OXYGENE1.TTF" id="27_t372l"]
 [ext_resource type="FontFile" uid="uid://cmvd7gycedmwg" path="res://Assets/Fonts/GothicByte.ttf" id="30_cr44a"]
+[ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="30_tcekk"]
 [ext_resource type="Texture2D" uid="uid://0of51v86402w" path="res://Assets/mapBackground.png" id="34_2oiod"]
 [ext_resource type="Texture2D" uid="uid://bj5nyxg8bmc1k" path="res://Assets/backgroundBanner.png" id="35_8bkap"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="36_1bveb"]
 [ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="36_b0nqf"]
 [ext_resource type="Texture2D" uid="uid://bvlc07v3u1brg" path="res://Assets/mapIconEnemy.png" id="37_2uk8d"]
 [ext_resource type="Texture2D" uid="uid://2mfylmq5p56b" path="res://Assets/miniCoinCaster-Sheet.png" id="37_ot48q"]
@@ -824,13 +826,14 @@ script = ExtResource("26_2uk8d")
 [node name="Turn Calculation" type="Label" parent="Battle UI/Turn Calculation Box" unique_id=854498321]
 custom_minimum_size = Vector2(150, 40)
 layout_mode = 0
-offset_left = 103.00001
+offset_left = 116.0
 offset_top = -11.0
-offset_right = 253.0
+offset_right = 276.65662
 offset_bottom = 163.0
 scale = Vector2(1.2137691, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 24
+theme_override_fonts/font = ExtResource("36_1bveb")
+theme_override_font_sizes/font_size = 36
 text = "Turn"
 
 [node name="Turn UI" type="ColorRect" parent="Battle UI" unique_id=566011376]
@@ -1005,10 +1008,22 @@ offset_left = 64.0
 offset_top = 542.0
 offset_right = 1088.0
 offset_bottom = 615.0
-theme_override_fonts/font = ExtResource("30_cr44a")
+theme_override_fonts/font = ExtResource("30_tcekk")
 theme_override_font_sizes/font_size = 30
 text = "
 "
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="CardManager_Header" type="Label" parent="CardManager" unique_id=1369484248]
+offset_left = 64.0
+offset_top = 43.0
+offset_right = 1088.0
+offset_bottom = 128.0
+theme_override_fonts/font = ExtResource("30_tcekk")
+theme_override_font_sizes/font_size = 52
+text = "CHOOSE 2 SCROLLS"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
@@ -1146,7 +1161,7 @@ offset_left = 32.0
 offset_top = 64.0
 offset_right = 160.0
 offset_bottom = 576.0
-theme_override_fonts/font = ExtResource("30_cr44a")
+theme_override_fonts/font = ExtResource("36_1bveb")
 theme_override_font_sizes/font_size = 24
 horizontal_alignment = 1
 autowrap_mode = 3

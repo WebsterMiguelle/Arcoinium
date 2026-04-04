@@ -418,26 +418,37 @@ func show_passive_notification(text: String, duration: float = 1.5) -> void:
 			
 		await get_tree().create_timer(duration).timeout
 	
-func show_enemy_passive(text: String, duration: float = 1.5) -> void:
+func show_enemy_passive(text: String, duration: float = 2.5) -> void:
 	if not is_instance_valid(enemy_passive_label):
 		return
 		
+	if enemy_notif_base_pos == Vector2.ZERO:
+		enemy_notif_base_pos = enemy_passive_bg.position
+	
+	# Kill previous animation (IMPORTANT)
+	if enemy_notif_tween and enemy_notif_tween.is_running():
+		enemy_notif_tween.kill()
+	
 	enemy_passive_label.text = text
 	enemy_passive_label.visible = true
+	enemy_passive_bg.visible = true
 	enemy_passive_label.modulate.a = 0.0
-	enemy_passive_label.z_index = 100
+	enemy_passive_bg.modulate.a = 0.0
+	enemy_passive_label.scale = Vector2(0.9, 0.9)
+
 	
-	var tween = create_tween()
-	tween.parallel().tween_property(enemy_passive_label, "modulate:a", 1.0, 0.2)
-	tween.parallel().tween_property(enemy_passive_label, "position:y", enemy_passive_label.position.y - 20, 0.2)
-	tween.parallel().tween_property(enemy_passive_label, "scale", Vector2(1, 1), 0.2)
-	
-	
-	var tween_out = create_tween()
-	tween_out.tween_property(enemy_passive_label, "modulate:a", 0.0, 0.5).set_delay(duration)
-	tween_out.tween_callback(func():
+	enemy_notif_tween = create_tween()
+	enemy_notif_tween.parallel().tween_property(enemy_passive_label, "modulate:a", 1.0, 0.2)
+	enemy_notif_tween.parallel().tween_property(enemy_passive_bg, "modulate:a", 1.0, 0.2)
+	enemy_notif_tween.parallel().tween_property(enemy_passive_label, "position:y", enemy_notif_base_pos.y + 15, 0.2)
+	enemy_notif_tween.parallel().tween_property(enemy_passive_label, "scale", Vector2(1.05, 1.05), 0.2)
+	enemy_notif_tween.tween_property(enemy_passive_label, "scale", Vector2(1, 1), 0.1)
+	enemy_notif_tween.tween_interval(duration)
+	enemy_notif_tween.tween_property(enemy_passive_label, "modulate:a", 0.0, 0.4)
+	enemy_notif_tween.tween_property(enemy_passive_bg,	 "modulate:a", 0.0, 0.4)
+	enemy_notif_tween.tween_callback(func():
 		enemy_passive_label.visible = false
-		enemy_passive_label.modulate.a = 1.0 
+		enemy_passive_bg.visible = false
 	)
 	
 

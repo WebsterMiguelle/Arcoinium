@@ -601,3 +601,8 @@ func toggle_button(btn: Button, make_disabled: bool) -> void:
 			
 	else:
 		btn.modulate = Color(1.0, 1.0, 1.0, 1.0) # Restore to normal brightness
+
+
+func trigger_enemy_passive(text: String, duration: float = 1.5):
+	if main:
+		main.show_enemy_passive(text, duration) 

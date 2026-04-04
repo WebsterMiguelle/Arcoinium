@@ -309,8 +309,8 @@ func enemy_coin_calculation():
 					right_coin = coin			
 				if left_coin != null and right_coin != null:
 					if left_coin.state != right_coin.state:
-						total_damage += (left_coin.base_value)
-						total_gain += (right_coin.base_value)
+						total_damage += (left_coin.base_value) / 2
+						total_debt += (right_coin.base_value) / 2
 					left_coin = null
 					right_coin = null
 				else:

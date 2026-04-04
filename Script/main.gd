@@ -101,6 +101,10 @@ $"Progression Map/Boss"
 @onready var player_health_label = $"Battle UI/HealthLabel"
 @onready var player_thrift: Label = $"Player/Player Thrift"
 
+const PLAYER_INFORMATION_DISPLAY = preload("uid://c61s4yrsvak0l")
+var player_info_menu: Node = null
+
+
 @onready var player_gain_particles: GPUParticles2D = $"Player/Player Gain Particles"
 @onready var player_debt_particles: GPUParticles2D = $"Player/Player Debt Particles"
 @onready var enemy_debt_particles: GPUParticles2D = $"Enemy/Enemy Debt Particles"

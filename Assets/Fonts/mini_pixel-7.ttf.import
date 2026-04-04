@@ -2,19 +2,19 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://cmvd7gycedmwg"
-path="res://.godot/imported/GothicByte.ttf-07eaed36f02d45f696344599566a2f16.fontdata"
+uid="uid://b3lddibi6eqi3"
+path="res://.godot/imported/mini_pixel-7.ttf-d2f560e574774fa72017f9bed97cded6.fontdata"
 
 [deps]
 
-source_file="res://Assets/Fonts/GothicByte.ttf"
-dest_files=["res://.godot/imported/GothicByte.ttf-07eaed36f02d45f696344599566a2f16.fontdata"]
+source_file="res://Assets/Fonts/mini_pixel-7.ttf"
+dest_files=["res://.godot/imported/mini_pixel-7.ttf-d2f560e574774fa72017f9bed97cded6.fontdata"]
 
 [params]
 
 Rendering=null
 antialiasing=0
-generate_mipmaps=false
+generate_mipmaps=true
 disable_embedded_bitmaps=false
 multichannel_signed_distance_field=false
 msdf_pixel_range=8
@@ -24,7 +24,7 @@ force_autohinter=false
 modulate_color_glyphs=false
 hinting=0
 subpixel_positioning=0
-keep_rounding_remainders=true
+keep_rounding_remainders=false
 oversampling=0.0
 Fallbacks=null
 fallbacks=[]

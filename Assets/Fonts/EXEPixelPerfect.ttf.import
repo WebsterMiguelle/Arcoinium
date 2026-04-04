@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://cmvd7gycedmwg"
-path="res://.godot/imported/GothicByte.ttf-07eaed36f02d45f696344599566a2f16.fontdata"
+uid="uid://dcixbp31txpfs"
+path="res://.godot/imported/EXEPixelPerfect.ttf-003f28dea2bc494ef9080fc70dd57391.fontdata"
 
 [deps]
 
-source_file="res://Assets/Fonts/GothicByte.ttf"
-dest_files=["res://.godot/imported/GothicByte.ttf-07eaed36f02d45f696344599566a2f16.fontdata"]
+source_file="res://Assets/Fonts/EXEPixelPerfect.ttf"
+dest_files=["res://.godot/imported/EXEPixelPerfect.ttf-003f28dea2bc494ef9080fc70dd57391.fontdata"]
 
 [params]
 
@@ -24,12 +24,12 @@ force_autohinter=false
 modulate_color_glyphs=false
 hinting=0
 subpixel_positioning=0
-keep_rounding_remainders=true
+keep_rounding_remainders=false
 oversampling=0.0
 Fallbacks=null
 fallbacks=[]
 Compress=null
-compress=false
+compress=true
 preload=[]
 language_support={}
 script_support={}

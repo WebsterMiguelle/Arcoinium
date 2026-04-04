@@ -15,7 +15,11 @@ enum Enemy{
 signal hp_changed(new_hp)
 @onready var player_portrait: AnimatedSprite2D = $Player_Portrait
 var active_temp_ids: Dictionary = {}
+@onready var passives_bar: GridContainer = $"../Battle UI/PassivesBar"
+
 #SCENES
+const PASSIVE_BAR_ICON = preload("res://Scene/Passive_Bar_Icon.tscn")
+
 const COIN = preload("uid://ddet242jm5v23")
 var main
 @onready var particle_manager: Node2D = $"../ParticleManager"
@@ -152,8 +156,8 @@ var spended_attack = 0
 
 #INVESTOR PASSIVES
 
-@export var has_active_income = true
-@export var has_pocket_money = true
+@export var has_active_income = false
+@export var has_pocket_money = false
 @export var has_passive_income = false
 @export var has_simple_interest = false
 
@@ -166,10 +170,10 @@ var spended_attack = 0
 
 #BANKER PASSIVES
 
-@export var has_cash_out = true
-@export var has_dividend = true
-@export var has_withdraw = true
-@export var has_deposit = true
+@export var has_cash_out = false
+@export var has_dividend = false
+@export var has_withdraw = false
+@export var has_deposit = false
 
 #ENEMY PASSIVES
 
@@ -774,6 +778,7 @@ func end_turn():
 
 	
 func activate_pre_battle_passives():
+	
 	if has_value_added_tax:
 		debt += 5
 	passive_income_used = false

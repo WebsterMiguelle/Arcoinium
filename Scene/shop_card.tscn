@@ -206,9 +206,21 @@ animations = [{
 atlas = ExtResource("3_bku1w")
 region = Rect2(192, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_bku1w"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(128, 64, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_igsup"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(320, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_23lek"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(384, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5k1i"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(352, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s4jp2"]
 atlas = ExtResource("3_bku1w")
@@ -306,6 +318,10 @@ region = Rect2(224, 0, 32, 32)
 atlas = ExtResource("3_bku1w")
 region = Rect2(0, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_jodkd"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(352, 0, 32, 32)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_u5k1i"]
 animations = [{
 "frames": [{
@@ -318,10 +334,34 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_bku1w")
+}],
+"loop": true,
+"name": &"Cash Out",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_igsup")
 }],
 "loop": false,
 "name": &"Coin Snipe",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_23lek")
+}],
+"loop": true,
+"name": &"Deposit",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u5k1i")
+}],
+"loop": true,
+"name": &"Dividend",
 "speed": 5.0
 }, {
 "frames": [{
@@ -515,6 +555,14 @@ animations = [{
 "loop": false,
 "name": &"Wish Bone",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jodkd")
+}],
+"loop": true,
+"name": &"Withdraw",
+"speed": 5.0
 }]
 
 [node name="ShopCard" type="Button" unique_id=1944982988]
@@ -549,13 +597,14 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_nn8ao")
 position = Vector2(76, 115.5)
 scale = Vector2(3.059, 2.9375)
 sprite_frames = SubResource("SpriteFrames_23lek")
-animation = &"B"
+animation = &"unfurl-down"
+frame = 4
 
 [node name="Icon" type="AnimatedSprite2D" parent="." unique_id=1661363716]
-position = Vector2(77, 71.00001)
-scale = Vector2(2.9864998, 2.9375)
+position = Vector2(76, 71)
+scale = Vector2(3.0625002, 2.9375)
 sprite_frames = SubResource("SpriteFrames_u5k1i")
-animation = &"Pay Down"
+animation = &"Withdraw"
 
 [node name="Label" type="Label" parent="." unique_id=594536539]
 layout_mode = 0

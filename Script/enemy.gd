@@ -23,7 +23,13 @@ const PASSIVE_PAYDOWN = preload("uid://djv3lp0l3aftb")
 const THRIFT = preload("uid://b34wg18n8eb0t")
 const THRIFT_FLAME = preload("uid://kld7c6qpdho7")
 
-const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
+const DEBT_EFFECT = preload("uid://d18qgeounkatf")
+const GAIN_EFFECT = preload("uid://cr366klr6aivy")
+const SPENDED_FLIP = preload("uid://dgu0hy8kwo343")
+const SPEND = preload("uid://bvbtrait4prdi")
+
+
+
 
 #PARTICLES
 const COIN_ADD_PARTICLE = preload("uid://s6va71jul34t")
@@ -31,7 +37,11 @@ const COIN_PLAY_PARTICLE = preload("uid://w5jgphq268vx")
 const DAMAGE_PARTICLE = preload("uid://q4hytnmn2fbt")
 const SINGLE_DAMAGE_PARTICLE = preload("uid://dgeahqxig4fqa")
 const THRIFT_PARTICLE = preload("uid://b5x6b2q8jvqa5")
-
+const GAIN_EFFECT_PARTICLE = preload("uid://c5py6ekby1mnm")
+const DEBT_EFFECT_PARTICLE = preload("uid://c52tpyupg2ynl")
+const SPEND_EFFECT_PARTICLE = preload("uid://m3n67qiuvr7i")
+const SPEND_EXPLOSION_PARTICLE = preload("uid://bgfgq2kw3njao")
+const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
 
 enum Enemy{
 	MAGE,
@@ -77,7 +87,10 @@ var debt = 0: #Gain Blocked
 var thrift = 0: #Reduced Playable Coins
 	set(value):
 		thrift = clamp(value,0,16) 
-
+var spend = 0: #Block Coin Flips
+	set(value):
+		spend = clamp(value,0,1000) 
+		
 func take_damage(amount):
 	coin-= amount
 	coin = max(coin, 0)
@@ -115,6 +128,7 @@ func refresh_start_of_battle_stats():
 	gain = 0
 	debt = 0
 	thrift = 0
+	spend = 0
 	current_played_coin = 0
 
 func gain_coin():
@@ -122,6 +136,12 @@ func gain_coin():
 	gain -= debt
 	debt -= temp
 	coin += gain
+	if gain > 0:
+		particle_manager.spawn_particle(GAIN_EFFECT_PARTICLE,main.enemy_gain.global_position)
+		main.sound_manager.play_sound(GAIN_EFFECT)
+	elif debt > 0:
+		particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,main.enemy_debt.global_position)
+		main.sound_manager.play_sound(DEBT_EFFECT)
 	gain = 0
 	print("Player HP: ", coin)
 
@@ -206,11 +226,11 @@ func setup(m,enemy):
 			has_midnight_curse = true
 			main.player.has_midnight_curse = true
 		Enemy.TWILIGHT_SAGE:
-			max_coin = 250
-			coin = 250
+			max_coin = 300
+			coin = 300
 			max_playable_coins = 4
-			silver_flip_rate = 0
-			gold_flip_rate = 1
+			silver_flip_rate = 1
+			gold_flip_rate = 0.6
 			bounty = 200
 			type = Enemy.TWILIGHT_SAGE
 			has_dusk_stance = true
@@ -225,7 +245,17 @@ func flip():
 		state = 1
 
 	take_damage(1)
-
+	if spend > 0:
+		spend -= 1
+		take_damage(1)
+		main.sound_manager.play_sound(DAMAGE_LIGHT)
+		particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
+		if spend == 0:
+			main.sound_manager.play_sound(SPEND)
+			particle_manager.spawn_particle(SPEND_EXPLOSION_PARTICLE,main.enemy_spend.global_position)
+		else:
+			particle_manager.spawn_particle(SPEND_EFFECT_PARTICLE,main.enemy_spend.global_position)
+			main.sound_manager.play_sound(SPENDED_FLIP)
 	
 	current_played_coin += 1
 	var coin = COIN.instantiate()
@@ -245,18 +275,21 @@ func flip():
 	add_child(coin);
 	main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,coin.global_position)
 
+
 func enemy_coin_calculation():
 	print("Calculating DMG and Gain of Enemy")
 	var total_damage = 0
 	var total_gain = 0
 	var total_debt = 0
 	var total_thrift = 0
+	var total_spend = 0
 	var type = type
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
 	match type:
 		Enemy.MAGE:
 			for coin in coins:
-				if coin.state == 0: total_damage += coin.base_value
+				if coin.state == 0: 
+					total_damage += coin.base_value
 		Enemy.DWARF:
 			var can_attack = true
 			var current_played_coin = 0
@@ -276,8 +309,8 @@ func enemy_coin_calculation():
 					right_coin = coin			
 				if left_coin != null and right_coin != null:
 					if left_coin.state != right_coin.state:
-						total_damage += (left_coin.base_value)
-						total_gain += (right_coin.base_value)
+						total_damage += (left_coin.base_value) / 2
+						total_debt += (right_coin.base_value) / 2
 					left_coin = null
 					right_coin = null
 				else:
@@ -285,7 +318,7 @@ func enemy_coin_calculation():
 				is_left = !is_left
 		Enemy.TRADER:
 			for coin in coins:
-				if coin.state == 0: total_damage += coin.base_value / 2
+				if coin.state == 0: total_spend += coin.base_value / 2
 		Enemy.THRIFTER:
 			var is_left = true # true - Left Coin, false - Right Coin
 			var left_coin
@@ -316,14 +349,14 @@ func enemy_coin_calculation():
 			var right_coin
 			for coin in coins:
 				if coin.state == 0:
-					total_gain += coin.base_value / 2
+					total_spend += 1
 				if is_left == true:
 					left_coin = coin
 				if is_left == false:
 					right_coin = coin			
 				if left_coin != null and right_coin != null:
 					if left_coin.state == 0 and right_coin.state == 0:
-						total_damage += (left_coin.base_value) + (right_coin.base_value)
+						total_damage += (left_coin.base_value)/2 + (right_coin.base_value)/2
 					left_coin = null
 					right_coin = null
 				else:
@@ -360,19 +393,15 @@ func enemy_coin_calculation():
 				if left_coin != null and right_coin != null and left_coin.reserved == false and right_coin.reserved == false:
 					# 1. HEAD-HEAD PAIR
 					if left_coin.state == 0 and right_coin.state == 0:
-						total_damage += (left_coin.base_value + right_coin.base_value)
+						total_damage += (left_coin.base_value + right_coin.base_value) 
 					# 2. TAIL-TAIL PAIR
 					elif left_coin.state == 1 and right_coin.state == 1:
 						total_gain += (left_coin.base_value + right_coin.base_value)
 					# 3. HEAD-TAIL PAIR
 					elif left_coin.state == 0 and right_coin.state == 1:
-						total_damage += (left_coin.base_value / 2)
-						total_gain += (right_coin.base_value / 2)
-						total_debt += 6
+						total_debt +=  (left_coin.base_value/2 + right_coin.base_value/2)
 					else:
-						total_damage += (right_coin.base_value / 2)
-						total_gain += (left_coin.base_value / 2)
-						total_debt += 6
+						total_debt +=  (left_coin.base_value/2 + right_coin.base_value/2)
 					left_coin = null
 					right_coin = null
 				else:
@@ -381,18 +410,20 @@ func enemy_coin_calculation():
 	var text = ""
 	if coins != null:
 		if total_damage != 0: 
-			text += "\nDMG: " + str(total_damage)
+			text += "\nDAMAGE: " + str(total_damage)
 		if total_gain != 0:
 			text += "\nGAIN: " + str(total_gain)
 		if total_debt != 0:
 			text += "\nDEBT: " + str(total_debt)
 		if total_thrift != 0:
 			text += "\nTHRIFT: " + str(total_thrift)
+		if total_spend != 0:
+			text += "\nSPEND: " + str(total_spend)
 		main.turn_calculation.text = text
 		main.turn_calculation.add_theme_color_override("font_color", Color.WHITE)
 	if text != "":
 		main.turn_calculation_box.entrance(true)
-	return [total_damage,total_gain,total_debt,total_thrift]
+	return [total_damage,total_gain,total_debt,total_thrift,total_spend]
 
 func start_enemy_turn():
 	toggle_button(main.flip_button,true)
@@ -446,6 +477,7 @@ func start_enemy_turn():
 	if main.player.has_loan_shark and debt > 1:
 		var loan_damage = debt / 2
 		take_damage(loan_damage)
+		main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
 
@@ -477,12 +509,14 @@ func end_enemy_turn():
 	var turn_gain = calculations[1]
 	var turn_debt = calculations[2]
 	var turn_thrift = calculations[3]
+	var turn_spend = calculations[4]
 	
 	if coin == 0:
 		turn_damage = 0
 		turn_gain = 0
 		turn_debt = 0
 		turn_thrift = 0
+		turn_spend = 0
 		main.turn_calculation.text = ""
 		main.turn_calculation_box.exit()
 
@@ -495,6 +529,7 @@ func end_enemy_turn():
 		await get_tree().create_timer(1.0).timeout
 		if main.player.has_passive_income and !main.player.passive_income_used:
 			main.player.passive_income_used = true
+			main.player.trigger_temp_passive("passive_income","PASSIVE INCOME")
 			if turn_damage >= 30:
 				turn_damage = 30
 			main.player.coin += turn_damage
@@ -511,8 +546,12 @@ func end_enemy_turn():
 	if turn_thrift != 0:
 		main.player.thrift += turn_thrift
 		main.sound_manager.play_sound(THRIFT)
+	if turn_spend != 0:
+		main.player.spend += turn_spend
+		main.sound_manager.play_sound(SPEND)
 		
 	thrift = 0
+	spend = 0
 	max_playable_coins = initial_max_playable_coins
 	particle_manager.despawn_emitting_particles()
 	
@@ -521,6 +560,7 @@ func end_enemy_turn():
 		if debt > coin:
 			coin = 0
 			main.sound_manager.play_sound(PASSIVE_PAYDOWN)
+			main.player.trigger_temp_passive("pay_down","PAY DOWN")
 		else:
 			debt += 5
 		

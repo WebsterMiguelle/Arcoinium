@@ -9,8 +9,8 @@ func _ready() -> void:
 	target_x = global_position.x
 
 func entrance(is_calcu):
+	visible = true
 	if !is_already_calculating:
-		visible = true
 		global_position.x = target_x - 10
 		modulate.a = 0
 		

@@ -8,8 +8,14 @@ colors = PackedColorArray(0.60784316, 0.75686276, 1, 0.72156864, 1, 1, 1, 0.6588
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_02dq5"]
 gradient = SubResource("Gradient_7fe2u")
 
+[sub_resource type="Curve" id="Curve_trgx6"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [sub_resource type="CurveTexture" id="CurveTexture_7fe2u"]
 texture_mode = 1
+curve = SubResource("Curve_trgx6")
 
 [sub_resource type="Curve" id="Curve_7fe2u"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]

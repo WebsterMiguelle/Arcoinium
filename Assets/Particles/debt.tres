@@ -7,12 +7,12 @@ colors = PackedColorArray(0.39676642, 0.0013769246, 0.6118785, 1, 0.8032628, 0.0
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_cr44a"]
 gradient = SubResource("Gradient_2uk8d")
 
-[sub_resource type="Curve" id="Curve_2uk8d"]
+[sub_resource type="Curve" id="Curve_n7vvl"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_cr44a"]
-curve = SubResource("Curve_2uk8d")
+[sub_resource type="CurveTexture" id="CurveTexture_mlc74"]
+curve = SubResource("Curve_n7vvl")
 
 [resource]
 particle_flag_disable_z = true
@@ -27,7 +27,7 @@ initial_velocity_max = 73.799995
 gravity = Vector3(0, 0, 0)
 scale_min = 0.0
 scale_max = 35.28
-scale_curve = SubResource("CurveTexture_cr44a")
+scale_curve = SubResource("CurveTexture_mlc74")
 scale_over_velocity_min = 107.84
 scale_over_velocity_max = 196.06999
 color = Color(0.7682126, 0.0005047953, 0.7783489, 1)

@@ -24,7 +24,7 @@
 [ext_resource type="Texture2D" uid="uid://bikjuk8fgo6p2" path="res://Assets/moonCaster-Sheet.png" id="13_pqe63"]
 [ext_resource type="Texture2D" uid="uid://di37676qo0yu4" path="res://Assets/sunCaster-Recovered-Sheet.png" id="14_aam5o"]
 [ext_resource type="Script" uid="uid://cbrncrbtg7emf" path="res://Script/pause_menu.gd" id="14_hspdg"]
-[ext_resource type="Texture2D" uid="uid://ce2isyeu1yhmy" path="res://Assets/thrifter.png" id="15_nyb1q"]
+[ext_resource type="Texture2D" uid="uid://csb6cbe5uwx3c" path="res://Assets/thrifter.png" id="15_nyb1q"]
 [ext_resource type="Script" uid="uid://c4nmeg7fuu34n" path="res://Script/passive_manager.gd" id="16_6njx3"]
 [ext_resource type="Texture2D" uid="uid://dprlqvclal2j" path="res://Assets/trader.png" id="16_xw8bv"]
 [ext_resource type="Script" uid="uid://cjx7ln7nt56ad" path="res://Scene/particle_manager.gd" id="17_2ix4a"]
@@ -360,6 +360,54 @@ scale_over_velocity_max = 196.06999
 color = Color(0.9999996, 0.9053559, 0.81244224, 1)
 color_ramp = SubResource("GradientTexture1D_mlc74")
 
+[sub_resource type="Gradient" id="Gradient_tcekk"]
+offsets = PackedFloat32Array(0.41107383, 0.57214767)
+colors = PackedColorArray(0.53781253, 0, 0.17483732, 0.69411767, 0.903585, 0.76905644, 1.1551381e-06, 0.5921569)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1bveb"]
+gradient = SubResource("Gradient_tcekk")
+
+[sub_resource type="Curve" id="Curve_n7vvl"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_mlc74"]
+curve = SubResource("Curve_n7vvl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5qrjd"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(26.73, 44.435, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(100, 0, 0)
+spread = 29.663
+initial_velocity_max = 40.0
+gravity = Vector3(250, 0, 0)
+scale_min = 0.0
+scale_max = 35.28
+scale_curve = SubResource("CurveTexture_mlc74")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color = Color(0.9990863, 0.5328238, 0.47796938, 1)
+color_ramp = SubResource("GradientTexture1D_1bveb")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_n7vvl"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(26.73, 44.435, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(-100, 0, 0)
+spread = 29.663
+initial_velocity_max = 40.0
+gravity = Vector3(-250, 0, 0)
+scale_min = 0.0
+scale_max = 35.28
+scale_curve = SubResource("CurveTexture_mlc74")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color = Color(0.99995714, 0.5935204, 0.54001546, 1)
+color_ramp = SubResource("GradientTexture1D_1bveb")
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_cr44a"]
 atlas = ExtResource("26_wimqa")
 region = Rect2(0, 0, 32, 32)
@@ -676,6 +724,26 @@ theme_override_colors/font_color = Color(1, 0.8500227, 0.484913, 1)
 theme_override_font_sizes/font_size = 22
 text = "Coins:"
 
+[node name="Player Spend Particles" type="GPUParticles2D" parent="Battle UI" unique_id=1888397502]
+position = Vector2(161, 579)
+amount = 64
+lifetime = 2.0
+process_material = SubResource("ParticleProcessMaterial_5qrjd")
+
+[node name="Player Spend" type="Label" parent="Battle UI" unique_id=70835638]
+offset_left = 171.0
+offset_top = 568.0
+offset_right = 201.0
+offset_bottom = 593.0
+theme_override_colors/font_color = Color(1, 0.43951198, 0.40865377, 1)
+theme_override_colors/font_outline_color = Color(0.5314025, 0, 0.023994911, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 24
+text = "30"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="EnemyHealthBar" parent="Battle UI" unique_id=1945687937 instance=ExtResource("6_c2iwn")]
 offset_left = 1005.0
 offset_top = 104.0
@@ -691,6 +759,26 @@ offset_bottom = 37.0
 theme_override_colors/font_color = Color(0.9214317, 0.6317199, 0, 1)
 theme_override_fonts/font = ExtResource("7_3pt4j")
 theme_override_font_sizes/font_size = 22
+
+[node name="Enemy Spend Particles" type="GPUParticles2D" parent="Battle UI" unique_id=862086434]
+position = Vector2(984, 74)
+amount = 64
+lifetime = 2.0
+process_material = SubResource("ParticleProcessMaterial_n7vvl")
+
+[node name="Enemy Spend" type="Label" parent="Battle UI" unique_id=1980570160]
+offset_left = 953.0
+offset_top = 59.0
+offset_right = 983.0
+offset_bottom = 84.0
+theme_override_colors/font_color = Color(1, 0.43951198, 0.40865377, 1)
+theme_override_colors/font_outline_color = Color(0.5314025, 0, 0.023994911, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 24
+text = "30"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Re-Flip" type="Button" parent="Battle UI" unique_id=1181793745]
 self_modulate = Color(1, 1, 1, 0)
@@ -787,7 +875,7 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -214.0
-offset_top = -191.0
+offset_top = -421.0
 offset_right = -14.0
 offset_bottom = -31.0
 grow_horizontal = 0
@@ -1173,7 +1261,7 @@ scale = Vector2(2, 2.5)
 sprite_frames = SubResource("SpriteFrames_f043x")
 
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
-position = Vector2(576, 321)
+position = Vector2(572, 329)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.90334755, 0.5628785, 0.61960787)
 energy = 1.05

@@ -1,6 +1,8 @@
 extends CanvasLayer
 @onready var main = get_node("/root/Main")
 @onready var passive_manager = get_node("/root/Main/PassiveManager")
+@onready var sound_manager: Node2D = $"../SoundManager"
+
 @onready var card_container = $Background/CenterContainer/VBoxContainer/CardContainer
 #@onready var refresh_button = $Background/CenterContainer/VBoxContainer/Refresh
 const CARD_SCENE = preload("res://Scene/reward_card.tscn")
@@ -9,37 +11,41 @@ const CARD_SCENE = preload("res://Scene/reward_card.tscn")
 @onready var card_description: Label = $Background/Card_Description
 
 
+const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
+const SCROLL_HOVERED = preload("uid://dpcddmlbji61k")
+
+
 var all_cards = [
 	{"id": 0, "name": "Solar Coin", "rank": "B", "desc": "Guarantee that the 1st and 3rd coin flip is a Sun."},
 	{"id": 1, "name": "Lunar Coin", "rank": "B", "desc": "Guarantee that the 2nd and 4th coin flip is a Moon."},
 	{"id": 2, "name": "Wish Bone", "rank": "B", "desc": "Raise chances of flipping a Silver Coin by 20%."},
 	{"id": 3, "name": "Golden Clover", "rank": "B", "desc": "Raise chances of flipping a Gold Coin by 10%."},
 	{"id": 4, "name": "Merchant's Scroll", "rank": "B", "desc": "25% Shop Discount."},
-	{"id": 5, "name": "Impromptu Flip", "rank": "B", "desc": "Upon ending the turn, the last coin on the Arcane Circle will be flipped, switching its side."},
-	{"id": 6, "name": "Advanced Planning", "rank": "B", "desc": "The first 2 coins on the Arcane Circle will not be affected by Re-Flips."},
+	{"id": 5, "name": "Impromptu Flip", "rank": "B", "desc": "Upon ending the turn, the last coin on the Arcane Circle will be upgraded, and flipped to its other side."},
+	{"id": 6, "name": "Advanced Planning", "rank": "B", "desc": "The first 2 coins on the Arcane Circle will not be affected by Re-Flips. Upgrade these coins at the end of the turn."},
 	{"id": 7, "name": "Value Increase", "rank": "B", "desc": "Upgrade all reserved coins next turn."},
-	{"id": 8, "name": "Lending Charge", "rank": "B", "desc": "Each Sun-Moon Pairs played this turn applies 3 Debt to the enemy."},
+	{"id": 8, "name": "Lending Charge", "rank": "B", "desc": "Each Sun-Moon Pairs played this turn applies 3 DEBT to the enemy."},
 	{"id": 9, "name": "Coin Snipe", "rank": "B", "desc": "If Coin Caster flipped a Silver or Gold Coin, Deal 1 Damage to the enemy."},
 	{"id": 10, "name": "Simple Interest", "rank": "B", "desc": "For each reserved coin added to the Arcane Circle next turn, apply 1 Gain to self."},
 	{"id": 11, "name": "Lucky Pair", "rank": "A", "desc": "+10% Gold Flip Rate. The 7th and 8th Flipped Coin on every turn is guaranteed to be upgraded."},
-	{"id": 12, "name": "Sleight of Hand", "rank": "A", "desc": "+3 Extra Re-Flips."},
-	{"id": 13, "name": "Piggy", "rank": "A", "desc": "At the start of each turn, Piggy will generate the 1st Coin Pair on the Arcane Circle based on the previous turn’s Last Coin Pair."},
+	{"id": 12, "name": "Sleight of Hand", "rank": "A", "desc": "+4 Extra Re-Flips."},
+	{"id": 13, "name": "Piggy", "rank": "A", "desc": "At the end of each turn, Piggy will duplicate your Last Coin Pair and add it to the Reserve."},
 	{"id": 14, "name": "Pocket Money", "rank": "A", "desc": "Start each battle with 8 Silver Moon Coins."},
 	{"id": 15, "name": "Passive Income", "rank": "A", "desc": "In every battle, the first enemy damage will be turned into Coins. (Caps at 30 Coin Gain)"},
-	{"id": 16, "name": "Magic Trick", "rank": "A", "desc": "Upon ending the turn with 6 or more Coins, the 1st Coin Pair will be copied to the 2nd and 3rd Coin Pair."},
-	{"id": 17, "name": "Reimbursement", "rank": "A", "desc": "Each Flip and Re-Flip has a 50% Chance to apply 1 Debt."},
-	{"id": 18, "name": "Payback", "rank": "A", "desc": "If Coin Caster receives a killing blow, set Coin back to 1, and immediately generate 12 Gold Sun Coins on the Arcane Circle next turn. (One-Time per Battle)"},
-	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "At the start of the enemy’s turn, immediately deal damage based on half of the Enemy’s Debt."},
+	{"id": 16, "name": "Magic Trick", "rank": "A", "desc": "Upon ending the turn with 8 or more Coins, the 1st Coin Pair will be copied to the 2nd, 3rd, and 4th Coin Pair."},
+	{"id": 17, "name": "Reimbursement", "rank": "A", "desc": "Each Flip and Re-Flip has a 30% Chance to apply 1 DEBT."},
+	{"id": 18, "name": "Payback", "rank": "A", "desc": " If Coin Caster receives a killing blow, set Coin back to 1, Apply 16 THRIFT to the Enemy, and immediately generate 8 Silver Sun Coins next turn. (One-Time per Battle)"},
+	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "At the start of the enemy’s turn, immediately deal damage based on half of the Enemy’s DEBT."},
 	{"id": 20, "name": "Spare Change", "rank": "A", "desc": "Upon a Re-Flip, retrieve all reserved coins on the deck."},
 	{"id": 21, "name": "Triple Nickel", "rank": "A", "desc": "+20% Silver Flip Rate. The first 3 Flips on every turn are guaranteed to be Silver Coins."},
-	{"id": 22, "name": "Inflation", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 30% chance for each coin on the deck to upgrade every Re-Flip."},
-	{"id": 23, "name": "Jar'O Savings", "rank": "S", "desc": "At the start of each turn, if Coin Caster has 30 or more gained coins, cleanse all Debt Stacks and immediately deal 100% of Gain as damage."},
-	{"id": 24, "name": "Pay Down", "rank": "S", "desc": "Add 5 Debt at the end of the Enemy’s Turn. If Enemy Debt is greater than their Current Coins at the end of their turn, perish instantly."},
-	{"id": 25, "name": "Refund", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 10% chance to retrieve all coins from the Arcane Circle upon a Re-Flip. Refresh Re-Flip Count afterwards."},
+	{"id": 22, "name": "Inflation", "rank": "S", "desc": "There is a 50% chance for each coin on the Arcane Circle to upgrade every Re-Flip. For every Gold Coin played, apply 1 SPEND to Enemy."},
+	{"id": 23, "name": "Jar'O Savings", "rank": "S", "desc":"When Coin Caster deals 0 Damage this turn, gain an Extra Turn, apply 16 THRIFT to the enemy, and generate 16 Silver Moon Coins. Cannot Flip or Re-Flip during Extra Turns."},
+	{"id": 24, "name": "Pay Down", "rank": "S", "desc": "Add 5 DEBT at the end of the Enemy’s Turn. If Enemy DEBT is greater than their Current Coins at the end of their turn, perish instantly."},
+	{"id": 25, "name": "Refund", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 20% chance to retrieve all coins from the Arcane Circle upon a Re-Flip. If Successful, apply 4 THRIFT to Enemy."},
 	{"id": 26, "name": "Withdraw", "rank": "B", "desc": "For each reserved coin added to the Arcane Circle next turn, deal 1 Damage."},
-	{"id": 27, "name": "Deposit", "rank": "A", "desc": "+6 Max Reserve."},
+	{"id": 27, "name": "Deposit", "rank": "A", "desc": "+4 Max Reserve."},
 	{"id": 28, "name": "Dividend", "rank": "A", "desc": "There is a 30% chance to duplicate each reserved coin on the next turn."},
-	{"id": 29, "name": "Cash Out", "rank": "S", "desc": "When both the Arcane Circle and Reserve are full at the end of this turn, immediately gain an Extra Turn. (Extra Turn: DMG, Gain and Debt is halved. Cannot Flip or Re-Flip this turn.)"}
+	{"id": 29, "name": "Cash Out", "rank": "S", "desc": "When Coin Reserve is full at the end of the turn, immediately gain an Extra Turn. Coin Caster cannot Flip or Re-Flip during Extra Turns."}
 ]
 
 var picked_cards = []
@@ -58,6 +64,7 @@ func draw_cards(from_pool: Array, amount: int) -> Array:
 		return result
 		
 func show_rewards():
+	main.sound_manager.play_sound(SCROLL_OPEN)
 	visible = true
 	clear_cards()
 	
@@ -74,16 +81,17 @@ func show_rewards():
 
 	match main.current_room:
 		0:
-			b_count = 4
+			b_count = 5
 		1:
-			b_count = 3
+			b_count = 4
 			a_count = 1
 		2:
-			b_count = 1
+			b_count = 2
 			a_count = 3
 		3:
-			a_count = 2
-			s_count = 2
+			b_count = 1
+			a_count = 3
+			s_count = 1
 		_:
 			b_count = 2
 			a_count = 2
@@ -94,7 +102,7 @@ func show_rewards():
 	selected_cards += draw_cards(a_pool, a_count)
 	selected_cards += draw_cards(s_pool, s_count)
 	
-	var remaining = 4 - selected_cards.size()
+	var remaining = 5 - selected_cards.size()
 	if remaining > 0:
 		var fallback_pool = pool.duplicate()
 		for card in selected_cards:
@@ -128,7 +136,7 @@ func create_card(data):
 	
 	card.card_hovered.connect(self._on_card_hovered)
 	card.card_unhovered.connect(self._on_card_unhovered)
-	
+	card.setup(main)
 	card_container.add_child(card)
 
 func clear_cards():
@@ -199,7 +207,7 @@ func apply_reward(card_id):
 		12:
 			print("A-Rank: Sleight of Hand")
 			main.player.has_sleight_of_hand = true
-			main.player.max_re_flip += 3
+			main.player.max_re_flip += 4
 		13:
 			print("A-Rank: Piggy")
 			main.player.has_piggy = true
@@ -231,7 +239,6 @@ func apply_reward(card_id):
 		22:
 			print("S-Rank: Inflation")
 			main.player.has_inflation = true
-			main.player.max_re_flip += 1
 		23:
 			print("S-Rank: Active Income")
 			main.player.has_active_income = true
@@ -248,7 +255,7 @@ func apply_reward(card_id):
 		27:
 			print("A-Rank: Deposit")
 			main.player.has_deposit = true
-			main.player.max_reserve += 6
+			main.player.max_reserve += 4
 		28:
 			print("A-Rank: Dividend")
 			main.player.has_dividend = true
@@ -326,6 +333,7 @@ func is_card_owned(card_id: int) -> bool:
 
 func _on_card_hovered(description_text: String) -> void:
 	# Add [center] tags if you want the text to always be centered!
+	main.sound_manager.play_sound(SCROLL_HOVERED)
 	card_description.text = description_text
 
 func _on_card_unhovered() -> void:

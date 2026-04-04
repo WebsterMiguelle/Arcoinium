@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://dldde8yrawlpn"]
+
+[ext_resource type="Script" uid="uid://boqi0q0j687xl" path="res://Script/passive_bar_icon.gd" id="1_xkq2p"]
+[ext_resource type="SpriteFrames" uid="uid://dafl661xkwq8o" path="res://Assets/PassivesIcons.tres" id="2_a4je1"]
+
+[node name="PassiveIcon" type="Control" unique_id=1789334303]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -15.0
+offset_right = -1136.0
+offset_bottom = -631.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xkq2p")
+
+[node name="Icons" type="AnimatedSprite2D" parent="." unique_id=1922908527]
+position = Vector2(15.999999, 15.999999)
+scale = Vector2(1.3, 1.3)
+sprite_frames = ExtResource("2_a4je1")

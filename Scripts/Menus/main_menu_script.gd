@@ -6,7 +6,6 @@ extends Node
 @onready var main_game_title: Label = $"Main Game Title"
 @onready var sound_manager: Node2D = $SoundManager
 
-# NEW: Reference your Glow Panel here! Update the path if you named it differently.
 @onready var glow_panel: Panel = $Glow
 
 const COIN_FLIP = preload("uid://bmscttmxwr782")
@@ -57,7 +56,6 @@ func _on_button_exited() -> void:
 		
 func _on_button_pressed() -> void:
 	sound_manager.play_sound(COIN_FLIP)
-	sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
 	button.disabled = true
 	
 	is_waiting_to_stop = false

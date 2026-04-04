@@ -1,0 +1,343 @@
+[gd_scene format=3 uid="uid://c61s4yrsvak0l"]
+
+[ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="1_5ndr3"]
+[ext_resource type="Script" uid="uid://bclkv37ea106b" path="res://Script/player_information_display.gd" id="1_sry02"]
+[ext_resource type="FontFile" uid="uid://cmvd7gycedmwg" path="res://Assets/Fonts/GothicByte.ttf" id="2_1nu5n"]
+[ext_resource type="Texture2D" uid="uid://b26gbj0tgcnn" path="res://Assets/16bitcoins.png" id="3_1nu5n"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="3_6esm0"]
+[ext_resource type="PackedScene" uid="uid://dldde8yrawlpn" path="res://Scene/Passive_Bar_Icon.tscn" id="4_5jg2k"]
+[ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="6_jpy41"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hhsno"]
+bg_color = Color(0.12835406, 0.13816993, 0.12315822, 0.90000004)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.12156863, 0.09803922, 0.09803922, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+anti_aliasing = false
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5jg2k"]
+atlas = ExtResource("3_1nu5n")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sry02"]
+atlas = ExtResource("3_1nu5n")
+region = Rect2(16, 0, 16, 16)
+
+[node name="PlayerInformationDisplay" type="HBoxContainer" unique_id=2082350649]
+offset_right = 1073.0
+offset_bottom = 649.0
+theme_override_constants/separation = 10
+script = ExtResource("1_sry02")
+
+[node name="StatsBoxPanel" type="PanelContainer" parent="." unique_id=401102771]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_hhsno")
+
+[node name="MarginContainer" type="MarginContainer" parent="StatsBoxPanel" unique_id=77883903]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StatsBoxPanel/MarginContainer" unique_id=1181417655]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Stats" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=517925706]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("1_5ndr3")
+theme_override_font_sizes/font_size = 46
+text = "Stats:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Coins" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=1862259072]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("3_6esm0")
+theme_override_font_sizes/font_size = 30
+text = "Coins:
+Silver Flip Rate:
+Gold Flip Rate:
+Max Playable Coins:
+Max Reflips:
+Max Reserve:"
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=656651868]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Spells" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=2064010057]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("1_5ndr3")
+theme_override_font_sizes/font_size = 40
+text = "Spells"
+vertical_alignment = 1
+
+[node name="DamageSpell" type="HBoxContainer" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=895182880]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Sun" type="TextureRect" parent="StatsBoxPanel/MarginContainer/VBoxContainer/DamageSpell" unique_id=1628890604]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = SubResource("AtlasTexture_5jg2k")
+
+[node name="+" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer/DamageSpell" unique_id=1446838416]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("6_jpy41")
+theme_override_font_sizes/font_size = 30
+text = "+"
+vertical_alignment = 1
+
+[node name="Sun2" type="TextureRect" parent="StatsBoxPanel/MarginContainer/VBoxContainer/DamageSpell" unique_id=46176760]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = SubResource("AtlasTexture_5jg2k")
+
+[node name="=" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer/DamageSpell" unique_id=1072868632]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("2_1nu5n")
+theme_override_font_sizes/font_size = 30
+text = "= 4 Dmg"
+vertical_alignment = 1
+
+[node name="GainSpell" type="HBoxContainer" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=806876311]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Moon2" type="TextureRect" parent="StatsBoxPanel/MarginContainer/VBoxContainer/GainSpell" unique_id=2117161901]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = SubResource("AtlasTexture_sry02")
+
+[node name="+" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer/GainSpell" unique_id=1880036945]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("6_jpy41")
+theme_override_font_sizes/font_size = 30
+text = "+"
+vertical_alignment = 1
+
+[node name="Moon" type="TextureRect" parent="StatsBoxPanel/MarginContainer/VBoxContainer/GainSpell" unique_id=1219175316]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = SubResource("AtlasTexture_sry02")
+
+[node name="=" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer/GainSpell" unique_id=946686827]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("2_1nu5n")
+theme_override_font_sizes/font_size = 30
+text = "= 4 Gain"
+vertical_alignment = 1
+
+[node name="NeutralSpell" type="HBoxContainer" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=1519057528]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Sun" type="TextureRect" parent="StatsBoxPanel/MarginContainer/VBoxContainer/NeutralSpell" unique_id=1188944898]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = SubResource("AtlasTexture_5jg2k")
+
+[node name="+" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer/NeutralSpell" unique_id=220635062]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("6_jpy41")
+theme_override_font_sizes/font_size = 30
+text = "+"
+vertical_alignment = 1
+
+[node name="Moon" type="TextureRect" parent="StatsBoxPanel/MarginContainer/VBoxContainer/NeutralSpell" unique_id=840620235]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = SubResource("AtlasTexture_sry02")
+
+[node name="=" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer/NeutralSpell" unique_id=157917252]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("2_1nu5n")
+theme_override_font_sizes/font_size = 30
+text = "= 1 Dmg
+   1 Gain"
+vertical_alignment = 1
+
+[node name="StatusEffectsPanel" type="PanelContainer" parent="." unique_id=710897952]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_hhsno")
+
+[node name="MarginContainer" type="MarginContainer" parent="StatusEffectsPanel" unique_id=1235637992]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StatusEffectsPanel/MarginContainer" unique_id=539274188]
+layout_mode = 2
+theme_override_constants/separation = 65
+
+[node name="StatusEffects" type="Label" parent="StatusEffectsPanel/MarginContainer/VBoxContainer" unique_id=133481273]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("1_5ndr3")
+theme_override_font_sizes/font_size = 46
+text = "Status Effects:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GainBox" type="VBoxContainer" parent="StatusEffectsPanel/MarginContainer/VBoxContainer" unique_id=776654019]
+layout_mode = 2
+
+[node name="Gain" type="Label" parent="StatusEffectsPanel/MarginContainer/VBoxContainer/GainBox" unique_id=1114232208]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("1_5ndr3")
+theme_override_font_sizes/font_size = 40
+text = "Gain ( )"
+
+[node name="GainInfo" type="Label" parent="StatusEffectsPanel/MarginContainer/VBoxContainer/GainBox" unique_id=1945498317]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("3_6esm0")
+theme_override_font_sizes/font_size = 32
+text = "Gain x coins next turn."
+
+[node name="DebtBox" type="VBoxContainer" parent="StatusEffectsPanel/MarginContainer/VBoxContainer" unique_id=233705118]
+layout_mode = 2
+
+[node name="Debt" type="Label" parent="StatusEffectsPanel/MarginContainer/VBoxContainer/DebtBox" unique_id=463933079]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("1_5ndr3")
+theme_override_font_sizes/font_size = 40
+text = "Debt ( )"
+
+[node name="DebtInfo" type="Label" parent="StatusEffectsPanel/MarginContainer/VBoxContainer/DebtBox" unique_id=1824784883]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("3_6esm0")
+theme_override_font_sizes/font_size = 32
+text = "Receive x Damage next turn"
+autowrap_mode = 2
+
+[node name="ThriftBox" type="VBoxContainer" parent="StatusEffectsPanel/MarginContainer/VBoxContainer" unique_id=1001523064]
+layout_mode = 2
+
+[node name="Thrift" type="Label" parent="StatusEffectsPanel/MarginContainer/VBoxContainer/ThriftBox" unique_id=208306955]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("1_5ndr3")
+theme_override_font_sizes/font_size = 40
+text = "Thrift ( )"
+
+[node name="ThriftInfo" type="Label" parent="StatusEffectsPanel/MarginContainer/VBoxContainer/ThriftBox" unique_id=2113023572]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("3_6esm0")
+theme_override_font_sizes/font_size = 32
+text = "Receive x Damage next turn"
+autowrap_mode = 2
+
+[node name="PassivesPanel" type="PanelContainer" parent="." unique_id=1386994785]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_hhsno")
+
+[node name="MarginContainer" type="MarginContainer" parent="PassivesPanel" unique_id=863420057]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PassivesPanel/MarginContainer" unique_id=459575857]
+layout_mode = 2
+theme_override_constants/separation = 37
+
+[node name="Passives" type="Label" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=968639581]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("1_5ndr3")
+theme_override_font_sizes/font_size = 46
+text = "Passives:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=256021586]
+layout_mode = 2
+theme_override_constants/h_separation = 44
+theme_override_constants/v_separation = 44
+columns = 7
+
+[node name="PassiveIcon" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=1789334303 instance=ExtResource("4_5jg2k")]
+layout_mode = 2
+
+[node name="PassiveIcon2" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=6649267 instance=ExtResource("4_5jg2k")]
+layout_mode = 2
+
+[node name="PassiveIcon3" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=1092914595 instance=ExtResource("4_5jg2k")]
+layout_mode = 2
+
+[node name="PassiveIcon4" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=2131454705 instance=ExtResource("4_5jg2k")]
+layout_mode = 2
+
+[node name="PassiveIcon5" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=758278 instance=ExtResource("4_5jg2k")]
+layout_mode = 2
+
+[node name="PassiveIcon6" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=408761049 instance=ExtResource("4_5jg2k")]
+layout_mode = 2
+
+[node name="PassiveIcon7" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=1163163583 instance=ExtResource("4_5jg2k")]
+layout_mode = 2
+
+[node name="PassiveIcon8" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=155102171 instance=ExtResource("4_5jg2k")]
+layout_mode = 2
+
+[node name="PassiveIcon9" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=547252680 instance=ExtResource("4_5jg2k")]
+layout_mode = 2
+
+[node name="PassiveIcon10" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=396352497 instance=ExtResource("4_5jg2k")]
+layout_mode = 2
+
+[node name="PassiveIcon11" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=665953377 instance=ExtResource("4_5jg2k")]
+layout_mode = 2
+
+[node name="PassiveIcon12" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=1515414395 instance=ExtResource("4_5jg2k")]
+layout_mode = 2
+
+[node name="PassiveIcon13" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=844214814 instance=ExtResource("4_5jg2k")]
+layout_mode = 2
+
+[node name="PassiveIcon14" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=640506584 instance=ExtResource("4_5jg2k")]
+layout_mode = 2
+
+[node name="Separator" type="Control" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=706675745]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=1237834155]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("3_6esm0")
+theme_override_font_sizes/font_size = 44
+text = "Information about the passive here "
+autowrap_mode = 3

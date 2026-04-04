@@ -34,7 +34,6 @@ const SINGLE_DAMAGE_PARTICLE = preload("res://Scene/Single Damage Particle.tscn"
 #SFX
 const COIN_ENDTURN = preload("uid://bfruqunt0uyuj")
 const COIN_FLIP = preload("uid://bmscttmxwr782")
-const COIN_GAIN = preload("uid://c3v64vs2uqtik")
 const COIN_REFLIP = preload("uid://qtxsmuntihe3")
 const DAMAGE_HEAVY = preload("uid://b8us2t16pmggo")
 const DAMAGE_LIGHT = preload("uid://ds0jngoq17iij")
@@ -42,6 +41,7 @@ const DAMAGE_MODERATE = preload("uid://b2rf2iy046cx2")
 const TURN_ENEMY = preload("uid://rncriov1quyx")
 const TURN_PLAYER = preload("uid://dk7433d32rg52")
 const TURN_REVEAL = preload("uid://boyjppal62qns")
+const VICTORY = preload("uid://bu3c18dhngcvw")
 
 const PASSIVE_PASSIVE_INCOME = preload("uid://cl4xnombcshkv")
 const PASSIVE_PAYBACK = preload("uid://bbsxs62yhirxa")
@@ -55,7 +55,16 @@ const PASSIVE_LOAN_SHARK = preload("uid://6xxw4avoncr8")
 const PASSIVE_PAYDOWN = preload("uid://djv3lp0l3aftb")
 const DEATH = preload("uid://bx1ttmouolx2q")
 
+const BATTLE_START = preload("uid://whq12p7mykru")
+const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
+const EXTRA_TURN = preload("uid://yp1dxyml8rna")
 
+#MUSIC
+
+const PASSIVE_SELECTION = preload("uid://cfm3uhjitv627")
+const TWILIGHT_SAGE = preload("uid://dh7vynnxrbqwa")
+const TWILIGHT_ZONE___BATTLE_THEME_1 = preload("uid://b8go57qfww8el")
+const TWILIGHT_ZONE___BATTLE_THEME_2 = preload("uid://byxwfs5g71s5x")
 
 #@onready var player_portrait: ColorRect = $Player/Player_Portrait
 #@onready var enemy_portrait: ColorRect = $Enemy/Enemy_Portrait
@@ -68,7 +77,6 @@ const DEATH = preload("uid://bx1ttmouolx2q")
 @onready var player_sprite: AnimatedSprite2D = $"Progression Map/Player_Sprite"
 @onready var banner: TextureRect = $"Progression Map/MapBackground/Banner"
 
-# Put your markers in the exact order they should be visited
 @onready var map_markers: Array[Node] = [
 $"Progression Map/Enemy 1", 
 $"Progression Map/Enemy 2", 
@@ -83,17 +91,39 @@ $"Progression Map/Boss"
 @onready var re_flip_button: Button = $"Battle UI/Re-Flip"
 @onready var reflip_sprite: AnimatedSprite2D = $"Battle UI/Re-Flip/Reflip_Sprite"
 @onready var reflip_label: Label = $"Battle UI/Re-Flip/Reflip_Label"
-@onready var turn_calculation: Label = $"Battle UI/Turn Calculation"
+@onready var turn_calculation: Label = $"Battle UI/Turn Calculation Box/Turn Calculation"
+@onready var turn_calculation_box: TextureRect = $"Battle UI/Turn Calculation Box"
+
 
 @onready var player_health_bar = $"Battle UI/PlayerHealthBar2"
 @onready var player_gain: Label = $"Player/Player Gain"
 @onready var player_debt: Label = $"Player/Player Debt"
 @onready var player_health_label = $"Battle UI/HealthLabel"
+@onready var player_thrift: Label = $"Player/Player Thrift"
+
+const PLAYER_INFORMATION_DISPLAY = preload("uid://c61s4yrsvak0l")
+var player_info_menu: Node = null
+
+
+@onready var player_gain_particles: GPUParticles2D = $"Player/Player Gain Particles"
+@onready var player_debt_particles: GPUParticles2D = $"Player/Player Debt Particles"
+@onready var enemy_debt_particles: GPUParticles2D = $"Enemy/Enemy Debt Particles"
+@onready var player_thrift_particles: GPUParticles2D = $"Player/Player Thrift Particles"
+@onready var enemy_thrift_particles: GPUParticles2D = $"Enemy/Enemy Thrift Particles"
+@onready var enemy_gain_particles: GPUParticles2D = $"Enemy/Enemy Gain Particles"
+
+@onready var player_spend_particles: GPUParticles2D = $"Battle UI/Player Spend Particles"
+@onready var player_spend: Label = $"Battle UI/Player Spend"
+@onready var enemy_spend_particles: GPUParticles2D = $"Battle UI/Enemy Spend Particles"
+@onready var enemy_spend: Label = $"Battle UI/Enemy Spend"
+
 
 @onready var enemy_health_bar = $"Battle UI/EnemyHealthBar"
 @onready var enemy_health_label: Label = $"Battle UI/EnemyHealthLabel"
 @onready var enemy_gain: Label = $"Enemy/Enemy Gain"
 @onready var enemy_debt: Label = $"Enemy/Enemy Debt"
+@onready var enemy_thrift: Label = $"Enemy/Enemy Thrift"
+
 
 @onready var turn_ui: ColorRect = $"Battle UI/Turn UI"
 @onready var turn_ui_label: Label = $"Battle UI/Turn UI/Turn UI Label"
@@ -103,7 +133,14 @@ $"Progression Map/Boss"
 @onready var enemy_passive_label = $"Battle UI/EnemyLabelNotification"
 
 var active_passive_notifs: Dictionary = {}
+var active_temp_notifs: Array = []
+var recent_triggers: Dictionary = {}
+var active_temp_ids: Dictionary = {}
+var passive_order: Array = []
+var max_visible_passives = 10
+var overflow_notif: Control = null
 
+	
 const PASSIVE_SCENE = preload("res://Scene/passsive_notification.tscn")
 
 @onready var game_over_ui: CanvasLayer = $"Game Over UI"
@@ -154,7 +191,6 @@ var event_maps = [
    # preload("res://Events/###.tscn")
 ]
 
-
 var current_enemy_index
 var current_room
 @onready var shop_manager: CanvasLayer = $ShopManager
@@ -163,13 +199,14 @@ func _on_item_purchased(card_id,price):
 	update_player_coin()
 	if shop_manager.visible:
 		shop_manager.coin_label.text = "Coins: " + str(player.coin)
-	
+
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	await get_tree().create_timer(0.4).timeout
 	await _play_fake_coin_intro()
+	turn_calculation_box.visible = false
 	turn_ui.visible = false
 	current_room = 0
 	current_enemy_index = randi_range(0,1)
@@ -225,10 +262,8 @@ func battle_start():
 	show_all_passive_notifications()
 
 	coin_deck.reset_sigils()
-	update_enemy_gain_debt()
-	update_player_gain_debt()
 	reflip_label.text = str(player.max_re_flip - player.current_re_flip)
-	
+
 	randomize()
 	
 	flip_button.pressed.connect(_on_flip_pressed)
@@ -268,9 +303,17 @@ func battle_start():
 	update_enemy_coin()
 	update_player_coin()
 	flip_button.disabled = false
-	
+	sound_manager.play_sound(BATTLE_START)
+	var bgm_rand = randi_range(0,1)
+	if current_enemy_index == 8:
+		sound_manager.play_music(TWILIGHT_SAGE)
+	elif bgm_rand == 1: 
+		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_1)
+	else:
+		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_2)
+		
 	#Battle Start Passives
-	player.activate_pre_battle_passives()
+	await player.activate_pre_battle_passives()
 	player.player_turn_count = 0
 	start_player_turn()
 
@@ -278,8 +321,8 @@ func battle_start():
 func _process(delta: float) -> void:
 	update_player_coin()
 	update_enemy_coin()
-	update_player_gain_debt()
-	update_enemy_gain_debt()
+	update_player_stacks()
+	update_enemy_stacks()
 
 func show_turn_ui(text):
 	sound_manager.play_sound(TURN_REVEAL)
@@ -314,25 +357,31 @@ func _on_end_run_pressed():
 	trigger_game_over(false)
 	
 func start_player_turn():
-	show_turn_ui("PLAYER TURN")
-	coin_deck.reset_sigils()
-	current_turn = Turn.PLAYER
-	sound_manager.play_sound(TURN_PLAYER)
-	player.start_turn()
+	if player.coin > 0:
+		show_turn_ui("PLAYER TURN")
+		current_turn = Turn.PLAYER
+		sound_manager.play_sound(TURN_PLAYER)
+		player.start_turn()
+		if enemy.coin == 0:
+			check_defeat()
+	else:
+		check_defeat()
 			
 func start_enemy_turn():
-	check_defeat()
 	if enemy.coin > 0:
 		show_turn_ui("ENEMY'S TURN")
 		coin_deck.reset_sigils()
 		current_turn = Turn.ENEMY
 		sound_manager.play_sound(TURN_ENEMY)
 		await enemy.start_enemy_turn()
-		start_player_turn()
-
+		if enemy.coin > 0:
+			start_player_turn()
+		else:
+			check_defeat()
 
 func _on_endturn_pressed():
 	await player.end_turn()
+	turn_calculation_box.exit()
 	var defeat = await check_defeat()
 	if defeat == null:
 		await get_tree().create_timer(1.0).timeout
@@ -340,6 +389,8 @@ func _on_endturn_pressed():
 			start_enemy_turn()
 			player.extra_turn_penalty = 1
 		else:
+			sound_manager.play_sound(EXTRA_TURN)
+			show_turn_ui("EXTRA TURN")
 			player.extra_turn()
 			player.has_extra_turn = false
 
@@ -394,11 +445,14 @@ func _on_flip_pressed():
 	if current_turn != Turn.PLAYER:
 		return
 	player.flip()
+	if player.coin == 0:
+		check_defeat()
 
 	
 	
 func trigger_game_over(player_won: bool):
 	sound_manager.play_sound(DEATH)
+	sound_manager.stop_music()
 	if player_won:
 		enemy.max_playable_coins = 0
 		reward_manager.show_rewards()
@@ -488,7 +542,17 @@ func check_defeat():
 	return null
 
 func handle_victory_flow():
+	player.gain_coin()
+	sound_manager.play_sound(VICTORY)
+	turn_calculation_box.exit()
+	particle_manager.despawn_emitting_particles()
 	await show_turn_ui("VICTORY")
+	sound_manager.play_sound(PASSIVE_SPARE_CHANGE)
+	var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
+	for c in reserved_coins:
+		player.coin += 1
+		c.queue_free()
+		player.current_reserve -= 1
 	
 	# Disable gameplay buttons
 	flip_button.disabled = true
@@ -516,22 +580,25 @@ func progression_after_victory():
 		current_room = 5
 		trigger_game_over(true)
 	elif current_room < 4:
+		sound_manager.stop_music()
+		sound_manager.play_music(PASSIVE_SELECTION)
 		await reward_manager.show_card_selection_async()
 		current_room += 1
-		if current_room == 4:
-			await shop_manager.show_shop_async(player)
-			current_room += 1
 			#map.background.global_position.y = 1000
 			#add_child(map)
 			#tween = create_tween()
 			#tween.tween_property(map,"position:y",0,0.4)
-		_play_progression_cutscene(current_room - 1, current_room)
-		proceed_to_next_enemy()
-		show_turn_ui("BATTLE START")
+		await _play_progression_cutscene(current_room - 1, current_room)
+		if current_room == 4:
+			await shop_manager.show_shop_async(player)
+			current_room += 1
+			await _play_progression_cutscene(current_room - 1, current_room)
+			proceed_to_next_enemy()
+		else:
+			proceed_to_next_enemy()
 		
 func _on_re_flip_pressed():
 	player.re_flip()
-
 
 func reserve_left_over_coin():
 	var is_left = true # true - Left Coin, false - Right Coin
@@ -539,7 +606,6 @@ func reserve_left_over_coin():
 	var right_coin
 	var coins = get_tree().get_nodes_in_group("coins")
 	for coin in coins:
-		
 		if is_left == true:
 			left_coin = coin
 		if is_left == false:
@@ -566,21 +632,49 @@ func update_player_coin():
 func update_enemy_coin():
 	enemy_health_label.text = "Coins: " + str(enemy.coin)
 	
-func update_player_gain_debt():
+func update_player_stacks():
+	player_debt_particles.emitting = false
+	player_gain_particles.emitting = false
+	player_thrift_particles.emitting = false
+	player_spend_particles.emitting = false
 	player_gain.text = ""
 	player_debt.text = ""
+	player_thrift.text = ""
+	player_spend.text = ""
 	if player.gain != 0:
-		player_gain.text = "GAIN: " + str(player.gain)
+		player_gain.text = str(player.gain)
+		player_gain_particles.emitting = true
 	if player.debt != 0:
-		player_debt.text = "DEBT: " + str(player.debt)
+		player_debt_particles.emitting = true
+		player_debt.text = str(player.debt)
+	if player.thrift != 0:
+		player_thrift.text = str(player.thrift)
+		player_thrift_particles.emitting = true
+	if player.spend != 0:
+		player_spend.text = str(player.spend)
+		player_spend_particles.emitting = true
 	
-func update_enemy_gain_debt():
+func update_enemy_stacks():
+	enemy_debt_particles.emitting = false
+	enemy_thrift_particles.emitting = false
+	enemy_gain_particles.emitting = false
+	enemy_spend_particles.emitting = false
 	enemy_gain.text = ""
 	enemy_debt.text = ""
+	enemy_thrift.text = ""
+	enemy_spend.text = ""
 	if enemy.gain != 0:
-		enemy_gain.text = "GAIN: " + str(enemy.gain)
+		enemy_gain.text = str(enemy.gain)
+		enemy_gain_particles.emitting = true
 	if enemy.debt != 0:
-		enemy_debt.text = "DEBT: " + str(enemy.debt)
+		enemy_debt.text =str(enemy.debt)
+		enemy_debt_particles.emitting = true
+	if enemy.thrift != 0:
+		enemy_thrift.text = str(enemy.thrift)
+		enemy_thrift_particles.emitting = true
+	if enemy.spend != 0:
+		enemy_spend.text = str(enemy.spend)
+		enemy_spend_particles.emitting = true
 
 func _on_restart_pressed():
 	await get_tree().create_timer(0.2).timeout
@@ -601,10 +695,6 @@ func proceed_to_next_enemy():
 	print("I AM RWADY TO BATTLE")
 
 
-
-
-
-	
 func _on_refresh_pressed() -> void:
 	pass # Replace with function body.
 
@@ -665,137 +755,247 @@ func _play_progression_cutscene(from_index: int, to_index: int) -> void:
 	var walk_tween = progression_map.create_tween()
 	
 	var distance = player_sprite.global_position.distance_to(map_markers[to_index].global_position)
-	var walk_duration = distance / 150.0 
+	var walk_duration = distance / 80.0 
 	
 	walk_tween.tween_property(player_sprite, "global_position", map_markers[to_index].global_position, walk_duration).set_trans(Tween.TRANS_LINEAR)
 	await walk_tween.finished
 
 	var dramatic_pause = progression_map.create_tween()
-	dramatic_pause.tween_interval(3.0)
+	dramatic_pause.tween_interval(1.0)
 	await dramatic_pause.finished
+	sound_manager.stop_music()
+	sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
 	
 	var slide_out = progression_map.create_tween()
 	slide_out.tween_property(progression_map, "offset:y", -screen_height, 0.8).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN)
 	await slide_out.finished
-	
+
 	progression_map.visible = false
 	get_tree().paused = false
 	
-func add_passive_notification(id: String, text: String):
-	if active_passive_notifs.has(id):
+
+
+func _show_temporary_passive(id: String, text: String, duration: float = 1.5):
+	
+	if active_temp_ids.has(id):
 		return
 	
-	var notif = PASSIVE_SCENE.instantiate()
+	active_temp_ids[id] = true
+	
+	
+	var notif: Control = PASSIVE_SCENE.instantiate()
 	passive_label.add_child(notif)
 	notif.setup(text)
-	
-	#var start_x = get_viewport_rect().size.x + 100
-	notif.position = Vector2(passive_label.size.x + 200, 0)
-	
-	notif.modulate.a = 0.0     
+	notif.modulate.a = 0.0
 	notif.scale = Vector2(0.9, 0.9)
-	active_passive_notifs.erase(id)
-	active_passive_notifs[id] = notif
+	notif.z_index = 200 # above persistent passives
 	
-	var tween = create_tween()
-	tween.set_parallel(true)
-	tween.tween_property(notif, "position:x", 0, 0.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tween.tween_property(notif, "modulate:a", 1.0, 0.3)
-	tween.tween_property(notif, "scale", Vector2(1, 1), 0.3)
+	active_temp_notifs.append(notif)
+	
 	_restack_passives()
 	
-func remove_passive_notification(id: String):
-	if not active_passive_notifs.has(id):
-		return
-		
-	var notif = active_passive_notifs[id]
-	active_passive_notifs.erase(id)
+	# Start off-screen
+	var container_width = passive_label.get_rect().size.x
+	notif.position = Vector2(container_width + 200, 40)
+	
+	# Slide in and fade in
 	var tween = create_tween()
-	tween.tween_property(notif, "modulate:a", 0.0, 0.4)
-	tween.tween_callback(func():
-		notif.queue_free()
-		_restack_passives()
+	tween.parallel().tween_property(notif, "position:x", 0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(notif, "modulate:a", 1.0, 0.2)
+	tween.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.2)
+	await tween.finished
+	
+	# Wait duration
+	await get_tree().create_timer(duration).timeout
+	
+	# Fade out
+	var tween_out = create_tween()
+	tween_out.tween_property(notif, "modulate:a", 0.0, 0.2)
+	tween_out.tween_callback(func():
+		if is_instance_valid(notif):
+			active_temp_notifs.erase(notif)
+			active_temp_ids.erase(id)
+			notif.queue_free()
+			_restack_passives()
 	)
 
 func _restack_passives():
 	var spacing = 40
 	var index = 0
 	
-	var keys = active_passive_notifs.keys()
-	keys.reverse()
+	var tween = create_tween()
 	
-	for id in keys:
+	# Persistent passives
+	var hidden_count = 0
+	
+	for i in range(passive_order.size()):
+		var id = passive_order[i]
 		var notif = active_passive_notifs[id]
-		
+	
 		if not is_instance_valid(notif):
 			continue
+	
+		if index < max_visible_passives:
+			notif.visible = true
+		
+			var target_y = index * spacing
+			tween.parallel().tween_property(notif, "position:y", target_y, 0.2)
+			tween.parallel().tween_property(notif, "modulate:a", 1.0, 0.2)
+			tween.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.2)
+		
+			index += 1
+		else:
+			notif.visible = false
+			hidden_count += 1
 			
+	if hidden_count > 0:
+		if overflow_notif == null or !is_instance_valid(overflow_notif):
+			overflow_notif = PASSIVE_SCENE.instantiate()
+			passive_label.add_child(overflow_notif)
+			
+			overflow_notif.gui_input.connect(func(event):
+				if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+					max_visible_passives = min(max_visible_passives + 3, passive_order.size())
+					_restack_passives()
+	)
+	
+		overflow_notif.visible = true
+		overflow_notif.setup("+" + str(hidden_count) + " more...")
+	
 		var target_y = index * spacing
-		var tween = create_tween()
+		tween.parallel().tween_property(overflow_notif, "position:y", target_y, 0.2)
+		tween.parallel().tween_property(overflow_notif, "modulate:a", 0.6, 0.2)
+		tween.parallel().tween_property(overflow_notif, "scale", Vector2(0.85, 0.85), 0.2)
+	
+		index += 1
+	else:
+		if overflow_notif != null and is_instance_valid(overflow_notif):
+			overflow_notif.visible = false
+			
+	# Temporary passives
+	for notif in active_temp_notifs:
+		if not is_instance_valid(notif):
+			continue
+		var target_y = index * spacing
 		tween.tween_property(notif, "position:y", target_y, 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 		index += 1
 		
-		
 func show_all_passive_notifications():
 	if player.has_wishbone:
-		add_passive_notification("wishbone", "WISH BONE ACTIVE")
+		trigger_passive("wishbone", "WISH BONE")
+		
 	if player.has_golden_clover:
-		add_passive_notification("golden_clover", "GOLDEN CLOVER ACTIVE")
-	if player.has_solar_coin:
-		add_passive_notification("solar_coin", "SOLAR COIN ACTIVE")
-	if player.has_lunar_coin:
-		add_passive_notification("lunar_coin", "LUNAR COIN ACTIVE")
-	if player.has_merchant_scroll:
-		add_passive_notification("merchant_scroll", "MERCHANT SCROLL ACTIVE")
-	if player.has_impromptu_flip:
-		add_passive_notification("impromptu_flip", "IMPROMPTU FLIP ACTIVE")
-	if player.has_advanced_planning:
-		add_passive_notification("advanced_planning", "ADVANCED PLANNING ACTIVE")
-
-	# A-Rank
-	if player.has_magic_trick:
-		add_passive_notification("magic_trick", "MAGIC TRICK ACTIVE")
+		trigger_passive("golden_clover", "GOLDEN CLOVER")
+		
 	if player.has_sleight_of_hand:
-		add_passive_notification("sleight_of_hand", "SLEIGHT OF HAND ACTIVE")
-	if player.has_piggy:
-		add_passive_notification("piggy", "PIGGY ACTIVE")
-
-	# Innovator
-	if player.has_inflation:
-		add_passive_notification("inflation", "INFLATION ACTIVE")
-	if player.has_payback:
-		add_passive_notification("payback", "PAYBACK READY")
-	if player.has_lucky_pair:
-		add_passive_notification("lucky_pair", "LUCKY PAIR ACTIVE")
-	if player.has_value_increase:
-		add_passive_notification("value_increase", "VALUE INCREASE ACTIVE")
-
-	# Shooter
-	if player.has_spare_change:
-		add_passive_notification("spare_change", "SPARE CHANGE ACTIVE")
-	if player.has_triple_nickel:
-		add_passive_notification("triple_nickel", "TRIPLE NICKEL ACTIVE")
-	if player.has_refund:
-		add_passive_notification("refund", "REFUND ACTIVE")
-	if player.has_coin_snipe:
-		add_passive_notification("coin_snipe", "COIN SNIPE ACTIVE")
-
-	# Investor
-	if player.has_active_income:
-		add_passive_notification("active_income", "ACTIVE INCOME READY")
+		trigger_passive("sleight_of_hand", "SLEIGHT OF HAND")
+		
 	if player.has_pocket_money:
-		add_passive_notification("pocket_money", "POCKET MONEY ACTIVE")
-	if player.has_passive_income:
-		add_passive_notification("passive_income", "PASSIVE INCOME ACTIVE")
-	if player.has_simple_interest:
-		add_passive_notification("simple_interest", "SIMPLE INTEREST ACTIVE")
-
-	# Debtor
-	if player.has_pay_down:
-		add_passive_notification("pay_down", "PAY DOWN ACTIVE")
-	if player.has_reimbursement:
-		add_passive_notification("reimbursement", "REIMBURSEMENT ACTIVE")
-	if player.has_loan_shark:
-		add_passive_notification("loan_shark", "LOAN SHARK ACTIVE")
+		trigger_passive("pocket_money", "POCKET MONEY")
+		
+	if player.has_inflation:
+		trigger_passive("inflation", "INFLATION")
+		
 	if player.has_lending_charge:
-		add_passive_notification("lending_charge", "LENDING CHARGE ACTIVE")
+		trigger_passive("lending_charge", "LENDING CHARGE")
+
+	if player.has_deposit:
+		trigger_passive("deposit", "DEPOSIT")
+
+	# --- SHOP PASSIVE (PERSISTENT) ---
+	if player.has_merchant_scroll:
+		trigger_passive("merchant_scroll", "MERCHANT SCROLL")
+
+
+		
+enum PassiveDisplayType {
+	PERSISTENT,
+	TEMPORARY
+}
+
+var passive_display_type = {
+	# --- PERSISTENT ---
+	"wishbone": PassiveDisplayType.TEMPORARY,
+	"golden_clover": PassiveDisplayType.TEMPORARY,
+	"deposit": PassiveDisplayType.TEMPORARY,
+	"sleight_of_hand": PassiveDisplayType.TEMPORARY,
+	"pocket_money": PassiveDisplayType.TEMPORARY,
+	"passive_income": PassiveDisplayType.TEMPORARY,
+	"lending_charge": PassiveDisplayType.TEMPORARY,
+	"reimbursement": PassiveDisplayType.TEMPORARY,
+	"merchant_scroll": PassiveDisplayType.TEMPORARY,
+
+	# --- TEMPORARY ---
+	"piggy": PassiveDisplayType.TEMPORARY,
+	"advanced_planning": PassiveDisplayType.TEMPORARY,
+	"value_increase": PassiveDisplayType.TEMPORARY,
+	"simple_interest": PassiveDisplayType.TEMPORARY,
+	"jar_o_savings": PassiveDisplayType.TEMPORARY,
+	"withdraw": PassiveDisplayType.TEMPORARY,
+	"dividend": PassiveDisplayType.TEMPORARY,
+	"payback": PassiveDisplayType.TEMPORARY,
+	"cash_out": PassiveDisplayType.TEMPORARY,
+	"triple_nickel": PassiveDisplayType.TEMPORARY,
+	"solar_coin": PassiveDisplayType.TEMPORARY,
+	"lunar_coin": PassiveDisplayType.TEMPORARY,
+	"lucky_pair": PassiveDisplayType.TEMPORARY,
+	"refund": PassiveDisplayType.TEMPORARY,
+	"spare_change": PassiveDisplayType.TEMPORARY,
+	"coin_snipe": PassiveDisplayType.TEMPORARY,
+	"inflation": PassiveDisplayType.TEMPORARY,
+	"active_income": PassiveDisplayType.TEMPORARY,
+	"impromptu_flip": PassiveDisplayType.TEMPORARY,
+	"magic_trick": PassiveDisplayType.TEMPORARY,
+	"loan_shark": PassiveDisplayType.TEMPORARY,
+	"pay_down": PassiveDisplayType.TEMPORARY
+}
+
+func trigger_passive_notification(id: String, text: String):
+	if not passive_display_type.has(id):
+		print("⚠ Missing passive display type for: ", id)
+		return
+	
+	match passive_display_type[id]:
+		PassiveDisplayType.PERSISTENT:
+			_add_persistent_passive(id, text)
+		PassiveDisplayType.TEMPORARY:
+			_show_temporary_passive(id, text, 2)
+			
+func _add_persistent_passive(id: String, text: String,):
+	if active_passive_notifs.has(id):
+		return
+	
+	var notif: Control = PASSIVE_SCENE.instantiate()
+	passive_label.add_child(notif)
+	notif.setup(text)
+	notif.modulate.a = 0.0
+	notif.scale = Vector2(0.9, 0.9)
+	notif.z_index = 100
+	
+	active_passive_notifs[id] = notif
+	passive_order.append(id)
+	
+	# Slide in
+	var container_width = passive_label.get_rect().size.x
+	notif.position = Vector2(container_width + 200, 0)
+	var tween = create_tween()
+	tween.parallel().tween_property(notif, "position:x", 0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(notif, "modulate:a", 1.0, 0.2)
+	tween.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.2)
+	
+	_restack_passives()
+	
+func trigger_passive(id: String, text: String):
+	var time = Time.get_ticks_msec()
+	
+	# Prevent spam (200ms window)
+	if recent_triggers.has(id):
+		if time - recent_triggers[id] < 200:
+			return
+	
+	recent_triggers[id] = time
+	
+	trigger_passive_notification(id, text)
+
+func trigger_passive_effect(text: String):
+	show_passive_notification(text, 1.5)

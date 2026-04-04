@@ -39,6 +39,10 @@ const JAR_O_SAVINGS = preload("uid://cbg3ofct0pu0j")
 const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
 const THRIFT = preload("uid://b34wg18n8eb0t")
 const THRIFT_FLAME = preload("uid://kld7c6qpdho7")
+const SPEND = preload("uid://bvbtrait4prdi")
+const SPENDED_FLIP = preload("uid://dgu0hy8kwo343")
+const GAIN_EFFECT = preload("uid://cr366klr6aivy")
+const DEBT_EFFECT = preload("uid://d18qgeounkatf")
 
 
 #PARTICLES
@@ -49,6 +53,8 @@ const COIN_ADD_PARTICLE = preload("uid://s6va71jul34t")
 const THRIFT_PARTICLE = preload("uid://b5x6b2q8jvqa5")
 const GAIN_EFFECT_PARTICLE = preload("uid://c5py6ekby1mnm")
 const DEBT_EFFECT_PARTICLE = preload("uid://c52tpyupg2ynl")
+const SPEND_EFFECT_PARTICLE = preload("uid://m3n67qiuvr7i")
+const SPEND_EXPLOSION_PARTICLE = preload("uid://bgfgq2kw3njao")
 
 #PLAYER STATS
 var max_coin = 1000 #Max Coin Capacity
@@ -192,8 +198,10 @@ func gain_coin():
 	coin += gain
 	if gain > 0:
 		particle_manager.spawn_particle(GAIN_EFFECT_PARTICLE,main.player_gain.global_position)
+		main.sound_manager.play_sound(GAIN_EFFECT)
 	elif debt > 0:
 		particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,main.player_debt.global_position)
+		main.sound_manager.play_sound(DEBT_EFFECT)
 	gain = 0
 	print("Player HP: ", coin)
 
@@ -201,7 +209,7 @@ func reset_stats():
 	max_coin = 500 #Max Coin Capacity
 	max_reserve = 4
 	current_reserve = 0
-	coin = 10
+	coin = 15
 	max_playable_coins = 16 #Max Flips Per Turn
 	current_played_coin = 0 #Current Flip Count
 	max_re_flip = 3 #Max Re-Flips Per Turn
@@ -354,88 +362,97 @@ func coin_calculation():
 	return [total_damage,total_gain,total_debt,total_thrift, total_spend]
 
 func flip():
-	if spend == 0:
-		var is_deck_full = false
-		main.sound_manager.play_sound(COIN_FLIP)
-		print("FLIP")
-		flip_clicks += 1
-		if current_re_flip != max_re_flip: 
-			toggle_button(main.re_flip_button,false)
-			
-		var state = randi() % 2
-		
-		if has_sunlit_curse:
-			state = 0
-		if has_midnight_curse:
-			state = 1
-			
-		if (flip_clicks == 1 or flip_clicks == 3) and has_solar_coin:
-			state = 0;
-			trigger_temp_passive("solar_coin","SOLAR COIN")
-		if (flip_clicks == 2 or flip_clicks == 4) and has_lunar_coin:
-			state = 1;
-			trigger_temp_passive("lunar_coin","LUNAR COIN")
-		
-		if current_played_coin == max_playable_coins: is_deck_full = true	
-		current_played_coin += 1
-		var c = COIN.instantiate()
-		if is_deck_full:
-			c.setup(state,main.coin_deck.get_reserve_slot())
-			c.reserved = true
-			current_reserve += 1
-			c.add_to_group("reserved coins")
-		else:
-			c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
-			c.add_to_group("coins")
 
-		#Silver/Gold Flip Rate
+	var is_deck_full = false
+	main.sound_manager.play_sound(COIN_FLIP)
+	print("FLIP")
+	flip_clicks += 1
+	if current_re_flip != max_re_flip: 
+		toggle_button(main.re_flip_button,false)
 		
-		var upgrade_chance = randf()
-
-		if upgrade_chance <= silver_flip_rate:
-			c.upgrade_to_silver()
-			
-		upgrade_chance = randf() 
-		if upgrade_chance <= gold_flip_rate:
-			c.upgrade_to_gold()
+	var state = randi() % 2
+	
+	if has_sunlit_curse:
+		state = 0
+	if has_midnight_curse:
+		state = 1
 		
-		if has_lucky_pair and (flip_clicks == 7 or flip_clicks == 8):
-			c.upgrade()
-			trigger_temp_passive("lucky_pair","LUCKY PAIR")
-			
-		
-		if flip_clicks <= 3 and has_triple_nickel:
-			trigger_temp_passive("triple_nickel","TRIPLE NICKEL")
-			c.upgrade_to_silver()
-			
-		if c.base_value > 2:
-			main.sound_manager.play_sound(COIN_UPGRADE)
-			if has_coin_snipe:
-				trigger_temp_passive("coin_snipe","COIN SNIPE")
-				main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
-				main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
-				main.enemy.take_damage(1)
-
-		take_damage(1)
-		add_child(c)
-		if has_reimbursement:
-			var debt_chance = randf()
-			if debt_chance <= 0.3: 
-				debted_attack += 1
-				trigger_temp_passive("reimbursement","REIMBURSEMENT")
-		if c.reserved == false:
-			latest_coin = c
-			main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,latest_coin.global_position)
-
-		print(current_played_coin)
-		if (current_played_coin == max_playable_coins and current_reserve == max_reserve) or coin == 1:
-			toggle_button(main.flip_button,true)
-		coin_calculation()
-		main.check_defeat()
+	if (flip_clicks == 1 or flip_clicks == 3) and has_solar_coin:
+		state = 0;
+		trigger_temp_passive("solar_coin","SOLAR COIN")
+	if (flip_clicks == 2 or flip_clicks == 4) and has_lunar_coin:
+		state = 1;
+		trigger_temp_passive("lunar_coin","LUNAR COIN")
+	
+	if current_played_coin == max_playable_coins: is_deck_full = true	
+	current_played_coin += 1
+	var c = COIN.instantiate()
+	if is_deck_full:
+		c.setup(state,main.coin_deck.get_reserve_slot())
+		c.reserved = true
+		current_reserve += 1
+		c.add_to_group("reserved coins")
 	else:
+		c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
+		c.add_to_group("coins")
+
+	#Silver/Gold Flip Rate
+	
+	var upgrade_chance = randf()
+
+	if upgrade_chance <= silver_flip_rate:
+		c.upgrade_to_silver()
+		
+	upgrade_chance = randf() 
+	if upgrade_chance <= gold_flip_rate:
+		c.upgrade_to_gold()
+	
+	if has_lucky_pair and (flip_clicks == 7 or flip_clicks == 8):
+		c.upgrade()
+		trigger_temp_passive("lucky_pair","LUCKY PAIR")
+		
+	
+	if flip_clicks <= 3 and has_triple_nickel:
+		trigger_temp_passive("triple_nickel","TRIPLE NICKEL")
+		c.upgrade_to_silver()
+		
+	if c.base_value > 2:
+		main.sound_manager.play_sound(COIN_UPGRADE)
+		if has_coin_snipe:
+			trigger_temp_passive("coin_snipe","COIN SNIPE")
+			main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
+			main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
+			main.enemy.take_damage(1)
+
+	take_damage(1)
+	if spend > 0:
 		spend -= 1
 		take_damage(1)
 		main.sound_manager.play_sound(DAMAGE_LIGHT)
+		particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.player_portrait.global_position)
+		if spend == 0:
+			main.sound_manager.play_sound(SPEND)
+			particle_manager.spawn_particle(SPEND_EXPLOSION_PARTICLE,main.player_spend.global_position)
+		else:
+			particle_manager.spawn_particle(SPEND_EFFECT_PARTICLE,main.player_spend.global_position)
+			main.sound_manager.play_sound(SPENDED_FLIP)
+	add_child(c)
+	if has_reimbursement:
+		var debt_chance = randf()
+		if debt_chance <= 0.3: 
+			debted_attack += 1
+			trigger_temp_passive("reimbursement","REIMBURSEMENT")
+	if c.reserved == false:
+		latest_coin = c
+		main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,latest_coin.global_position)
+
+	print(current_played_coin)
+	if (current_played_coin == max_playable_coins and current_reserve == max_reserve) or coin == 1:
+		toggle_button(main.flip_button,true)
+	coin_calculation()
+	main.check_defeat()
+
+
 
 func re_flip():
 
@@ -686,7 +703,7 @@ func end_turn():
 		main.sound_manager.play_sound(THRIFT)
 	if turn_spend != 0:
 		main.enemy.spend += turn_spend
-		#main.sound_manager.play_sound(THRIFT)
+		main.sound_manager.play_sound(SPEND)
 		
 	if main.enemy.type == Enemy.TWILIGHT_SAGE:
 		if main.enemy.has_dusk_stance:

@@ -23,7 +23,13 @@ const PASSIVE_PAYDOWN = preload("uid://djv3lp0l3aftb")
 const THRIFT = preload("uid://b34wg18n8eb0t")
 const THRIFT_FLAME = preload("uid://kld7c6qpdho7")
 
-const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
+const DEBT_EFFECT = preload("uid://d18qgeounkatf")
+const GAIN_EFFECT = preload("uid://cr366klr6aivy")
+const SPENDED_FLIP = preload("uid://dgu0hy8kwo343")
+const SPEND = preload("uid://bvbtrait4prdi")
+
+
+
 
 #PARTICLES
 const COIN_ADD_PARTICLE = preload("uid://s6va71jul34t")
@@ -33,6 +39,9 @@ const SINGLE_DAMAGE_PARTICLE = preload("uid://dgeahqxig4fqa")
 const THRIFT_PARTICLE = preload("uid://b5x6b2q8jvqa5")
 const GAIN_EFFECT_PARTICLE = preload("uid://c5py6ekby1mnm")
 const DEBT_EFFECT_PARTICLE = preload("uid://c52tpyupg2ynl")
+const SPEND_EFFECT_PARTICLE = preload("uid://m3n67qiuvr7i")
+const SPEND_EXPLOSION_PARTICLE = preload("uid://bgfgq2kw3njao")
+const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
 
 enum Enemy{
 	MAGE,
@@ -129,8 +138,10 @@ func gain_coin():
 	coin += gain
 	if gain > 0:
 		particle_manager.spawn_particle(GAIN_EFFECT_PARTICLE,main.enemy_gain.global_position)
+		main.sound_manager.play_sound(GAIN_EFFECT)
 	elif debt > 0:
 		particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,main.enemy_debt.global_position)
+		main.sound_manager.play_sound(DEBT_EFFECT)
 	gain = 0
 	print("Player HP: ", coin)
 
@@ -225,39 +236,45 @@ func setup(m,enemy):
 			has_dusk_stance = true
 
 func flip():
-	if spend == 0:
-		main.sound_manager.play_sound(COIN_FLIP)
-		var state = randi() % 2
-		
-		if type == Enemy.SUN_CASTER and main.player.sun_count >= 9:
-			state = 0
-		if type == Enemy.MOON_CASTER and main.player.moon_count >= 9:
-			state = 1
+	main.sound_manager.play_sound(COIN_FLIP)
+	var state = randi() % 2
+	
+	if type == Enemy.SUN_CASTER and main.player.sun_count >= 9:
+		state = 0
+	if type == Enemy.MOON_CASTER and main.player.moon_count >= 9:
+		state = 1
 
-		take_damage(1)
-
-		
-		current_played_coin += 1
-		var coin = COIN.instantiate()
-		coin.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
-		
-		#Silver/Gold Flip Rate
-		
-		var upgrade_chance = randf()
-		if upgrade_chance <= silver_flip_rate:
-			coin.upgrade_to_silver()
-		
-		upgrade_chance = randf()  
-		if upgrade_chance <= gold_flip_rate:
-			coin.upgrade_to_gold()
-
-		coin.add_to_group("enemy_coins")
-		add_child(coin);
-		main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,coin.global_position)
-	else:
+	take_damage(1)
+	if spend > 0:
 		spend -= 1
 		take_damage(1)
 		main.sound_manager.play_sound(DAMAGE_LIGHT)
+		particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
+		if spend == 0:
+			main.sound_manager.play_sound(SPEND)
+			particle_manager.spawn_particle(SPEND_EXPLOSION_PARTICLE,main.enemy_spend.global_position)
+		else:
+			particle_manager.spawn_particle(SPEND_EFFECT_PARTICLE,main.enemy_spend.global_position)
+			main.sound_manager.play_sound(SPENDED_FLIP)
+	
+	current_played_coin += 1
+	var coin = COIN.instantiate()
+	coin.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
+	
+	#Silver/Gold Flip Rate
+	
+	var upgrade_chance = randf()
+	if upgrade_chance <= silver_flip_rate:
+		coin.upgrade_to_silver()
+	
+	upgrade_chance = randf()  
+	if upgrade_chance <= gold_flip_rate:
+		coin.upgrade_to_gold()
+
+	coin.add_to_group("enemy_coins")
+	add_child(coin);
+	main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,coin.global_position)
+
 
 func enemy_coin_calculation():
 	print("Calculating DMG and Gain of Enemy")
@@ -301,7 +318,7 @@ func enemy_coin_calculation():
 				is_left = !is_left
 		Enemy.TRADER:
 			for coin in coins:
-				if coin.state == 0: total_damage += coin.base_value / 2
+				if coin.state == 0: total_spend += coin.base_value / 2
 		Enemy.THRIFTER:
 			var is_left = true # true - Left Coin, false - Right Coin
 			var left_coin
@@ -376,7 +393,7 @@ func enemy_coin_calculation():
 				if left_coin != null and right_coin != null and left_coin.reserved == false and right_coin.reserved == false:
 					# 1. HEAD-HEAD PAIR
 					if left_coin.state == 0 and right_coin.state == 0:
-						total_damage += (left_coin.base_value/2 + right_coin.base_value/2) 
+						total_damage += (left_coin.base_value + right_coin.base_value) 
 					# 2. TAIL-TAIL PAIR
 					elif left_coin.state == 1 and right_coin.state == 1:
 						total_gain += (left_coin.base_value/2 + right_coin.base_value/2)
@@ -535,7 +552,7 @@ func end_enemy_turn():
 		main.sound_manager.play_sound(THRIFT)
 	if turn_spend != 0:
 		main.player.spend += turn_spend
-		#main.sound_manager.play_sound(THRIFT)
+		main.sound_manager.play_sound(SPEND)
 		
 	thrift = 0
 	spend = 0

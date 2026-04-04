@@ -44,10 +44,10 @@ var all_cards = [
 	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "At the start of the enemy’s turn, immediately deal damage based on half of the Enemy’s DEBT."},
 	{"id": 20, "name": "Spare Change", "rank": "A", "desc": "Upon a Re-Flip, retrieve all reserved coins on the deck."},
 	{"id": 21, "name": "Triple Nickel", "rank": "A", "desc": "+20% Silver Flip Rate. The first 3 Flips on every turn are guaranteed to be Silver Coins."},
-	{"id": 22, "name": "Inflation", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 30% chance for each coin on the Arcane Circle to upgrade every Re-Flip."},
-	{"id": 23, "name": "Jar'O Savings", "rank": "S", "desc":"When Coin Caster deals 0 Damage this turn, gain an Extra Turn, apply 16 THRIFT to the enemy, and generate 16 Copper Moon Coins. Cannot Flip or Re-Flip during Extra Turns."},
+	{"id": 22, "name": "Inflation", "rank": "S", "desc": "There is a 50% chance for each coin on the Arcane Circle to upgrade every Re-Flip. For every Gold Coin played, apply 1 SPEND to Enemy."},
+	{"id": 23, "name": "Jar'O Savings", "rank": "S", "desc":"When Coin Caster deals 0 Damage this turn, gain an Extra Turn, apply 16 THRIFT to the enemy, and generate 16 Silver Moon Coins. Cannot Flip or Re-Flip during Extra Turns."},
 	{"id": 24, "name": "Pay Down", "rank": "S", "desc": "Add 5 DEBT at the end of the Enemy’s Turn. If Enemy DEBT is greater than their Current Coins at the end of their turn, perish instantly."},
-	{"id": 25, "name": "Refund", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 20% chance to retrieve all coins from the Arcane Circle upon a Re-Flip. Refresh Re-Flip Count afterwards."},
+	{"id": 25, "name": "Refund", "rank": "S", "desc": "+1 Extra Re-Flip. There is a 20% chance to retrieve all coins from the Arcane Circle upon a Re-Flip. If Successful, apply 4 THRIFT to Enemy."},
 	{"id": 26, "name": "Withdraw", "rank": "B", "desc": "For each reserved coin added to the Arcane Circle next turn, deal 1 Damage."},
 	{"id": 27, "name": "Deposit", "rank": "A", "desc": "+4 Max Reserve."},
 	{"id": 28, "name": "Dividend", "rank": "A", "desc": "There is a 30% chance to duplicate each reserved coin on the next turn."},
@@ -239,7 +239,6 @@ func apply_item(card_id):
 		22:
 			print("S-Rank: Inflation")
 			main.player.has_inflation = true
-			main.player.max_re_flip += 1
 		23:
 			print("S-Rank: Active Income")
 			main.player.has_active_income = true

@@ -12,6 +12,9 @@ enum Enemy{
 	TWILIGHT_SAGE
 }
 
+var vignette_default = '#bdabb8'
+var vignetter_default = '#ffe6909e'
+
 signal hp_changed(new_hp)
 @onready var player_portrait: AnimatedSprite2D = $Player_Portrait
 var active_temp_ids: Dictionary = {}
@@ -213,7 +216,7 @@ func reset_stats():
 	max_coin = 500 #Max Coin Capacity
 	max_reserve = 4
 	current_reserve = 0
-	coin = 15
+	coin = 150
 	max_playable_coins = 16 #Max Flips Per Turn
 	current_played_coin = 0 #Current Flip Count
 	max_re_flip = 3 #Max Re-Flips Per Turn
@@ -881,7 +884,7 @@ func activate_player_turn_start_passives():
 				c.add_to_group("coins")
 
 			#Guaranteed Silver Flips
-			c.upgrade_to_silver()
+			c.upgrade_to_gold()
 			add_child(c);
 			
 			latest_coin = c

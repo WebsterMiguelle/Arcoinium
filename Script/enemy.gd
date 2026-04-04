@@ -4,6 +4,8 @@ extends Node
 var main
 
 @onready var particle_manager: Node2D = $"../ParticleManager"
+@onready var vignette: CanvasModulate = $"../Vignette"
+@onready var vignetter: PointLight2D = $"../Vignetter"
 
 const COIN = preload("uid://ddet242jm5v23")
 
@@ -54,6 +56,7 @@ enum Enemy{
 	MOON_CASTER,
 	TWILIGHT_SAGE
 }
+
 
 #ENEMY STATS
 var bounty = 0 #Coin Drop on Death
@@ -107,11 +110,31 @@ var has_sunlit_curse = false
 var has_midnight_curse = false
 var has_dusk_stance = false
 
+
+var vignette_default = '#bdabb8'
+var vignetter_default = '#ffe6909e'
+var sun_caster_color = '#e56400'
+var moon_caster_color = '#1a54fb'
+var dawn_stance = '#ffcda0'
+var dusk_stance = '#8dacf7'
+@onready var battle_particles: GPUParticles2D = $"../ParticleManager/Battle Particles"
+@onready var dusk_particles: GPUParticles2D = $"../ParticleManager/Dusk Particles"
+@onready var dawn_particles: GPUParticles2D = $"../ParticleManager/Dawn Particles"
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
 
+func switch_vignette_color(to,duration):
+	var tween = create_tween()
+	tween.tween_property(vignette,"color",Color.from_string(to,Color.WHITE),duration)
+
+func switch_vignetter_color(to,duration):
+	var tween = create_tween()
+	tween.tween_property(vignetter,"color",Color.from_string(to,Color.WHITE),duration)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+@warning_ignore("unused_parameter")
 func _process(delta: float) -> void:
 	pass
 
@@ -175,6 +198,7 @@ func setup(m,enemy):
 			type = Enemy.COLLECTOR
 			has_value_added_tax = true
 			main.player.has_value_added_tax = true
+			trigger_enemy_passive("The Tax Collector immediately applied 5 DEBT.", 3.0)
 		Enemy.TRADER:
 			max_coin = 200
 			coin = 40
@@ -184,6 +208,7 @@ func setup(m,enemy):
 			bounty = 40
 			type = Enemy.TRADER
 			has_fair_trade = true
+			trigger_enemy_passive("The Trader will Copy your Number of Played Coins.", 3.0)
 		Enemy.THRIFTER:
 			max_coin = 200
 			coin = 60
@@ -195,6 +220,7 @@ func setup(m,enemy):
 			has_learn_to_save = true
 			main.player.has_learn_to_save = true
 			main.player.thrift = 8
+			trigger_enemy_passive("The Thrifter immediately applied 8 THRIFT.", 3.0)
 		Enemy.ARISTOCRAT:
 			max_coin = 200
 			coin = 120
@@ -205,6 +231,7 @@ func setup(m,enemy):
 			type = Enemy.ARISTOCRAT
 			has_fully_paid = true
 			debt = 100
+			trigger_enemy_passive("When The Aristocrat settled all her DEBT, Deal 100 Damage.", 3.0)
 		Enemy.SUN_CASTER:
 			max_coin = 200
 			coin = 120
@@ -215,6 +242,7 @@ func setup(m,enemy):
 			type = Enemy.SUN_CASTER
 			has_sunlit_curse = true
 			main.player.has_sunlit_curse = true
+			trigger_enemy_passive("You Have Guaranteed Sun Flips. Avoid Playing 9 or More Sun Coins.", 5.0)
 		Enemy.MOON_CASTER:
 			max_coin = 200
 			coin = 100
@@ -225,6 +253,7 @@ func setup(m,enemy):
 			type = Enemy.MOON_CASTER
 			has_midnight_curse = true
 			main.player.has_midnight_curse = true
+			trigger_enemy_passive("You Have Guaranteed Moon Flips. Avoid Playing 9 or More Moon Coins.", 5.0)
 		Enemy.TWILIGHT_SAGE:
 			max_coin = 300
 			coin = 300
@@ -233,7 +262,12 @@ func setup(m,enemy):
 			gold_flip_rate = 0.6
 			bounty = 200
 			type = Enemy.TWILIGHT_SAGE
-			has_dusk_stance = true
+			has_dusk_stance = false
+			battle_particles.emitting = false
+			dawn_particles.emitting = true
+			switch_vignette_color(dawn_stance,0.4)
+			trigger_enemy_passive("DAWN STANCE: Avoid Playing Sun Coins.", 3.0)
+
 
 func flip():
 	main.sound_manager.play_sound(COIN_FLIP)
@@ -258,6 +292,7 @@ func flip():
 			main.sound_manager.play_sound(SPENDED_FLIP)
 	
 	current_played_coin += 1
+	@warning_ignore("shadowed_variable")
 	var coin = COIN.instantiate()
 	coin.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
 	
@@ -283,6 +318,7 @@ func enemy_coin_calculation():
 	var total_debt = 0
 	var total_thrift = 0
 	var total_spend = 0
+	@warning_ignore("confusable_local_usage", "shadowed_variable")
 	var type = type
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
 	match type:
@@ -429,20 +465,26 @@ func start_enemy_turn():
 	toggle_button(main.flip_button,true)
 	toggle_button(main.re_flip_button,true)
 	main.endTurn_button.disabled = true
-	
+
+
 	if has_fair_trade:
+		trigger_enemy_passive("The Trader will play " + str(main.player.previous_player_flips) + " Coins.", 2.0)
 		max_playable_coins = main.player.previous_player_flips
 		main.player.previous_player_flips = 0
 
 	if type == Enemy.SUN_CASTER:
 		if main.player.sun_count >= 9:
 			gold_flip_rate = 1
+			switch_vignetter_color(sun_caster_color,0.4)
+			trigger_enemy_passive("You played " + str(main.player.sun_count) + " Sun Coins. Sun Caster powered up!", 3.0)
 		else:
 			gold_flip_rate = 0
 
 	if type == Enemy.MOON_CASTER:
 		if main.player.moon_count >= 9:
 			gold_flip_rate = 1
+			switch_vignetter_color(moon_caster_color,0.4)
+			trigger_enemy_passive("You played " + str(main.player.moon_count) + " Moon Coins. Moon Caster powered up!", 3.0)
 		else:
 			gold_flip_rate = 0
 	
@@ -468,6 +510,13 @@ func start_enemy_turn():
 	max_playable_coins -= thrift
 	#Coin Gain Triggers
 	gain_coin()
+	
+	if has_fully_paid:
+		if debt > 0:
+			trigger_enemy_passive("Remaining DEBT: " + str(debt), 2.0)
+		else:
+			trigger_enemy_passive("FULLY PAID!", 2.0)
+	
 	if has_fully_paid and debt == 0:
 		particle_manager.play_attack_animation(main.coin_deck, main.player_portrait, turn_damage)
 		await get_tree().create_timer(1.0).timeout
@@ -578,15 +627,26 @@ func end_enemy_turn():
 		
 	if main.player.coin > 0:
 		await get_tree().create_timer(1.0).timeout
+		has_dusk_stance = !has_dusk_stance
 		if type == Enemy.TWILIGHT_SAGE:
 			if has_dusk_stance == true:
+				dawn_particles.emitting = false
+				dusk_particles.emitting = true
+				switch_vignette_color(dusk_stance,0.4)
+				trigger_enemy_passive("DUSK STANCE: Avoid Playing Moon Coins.", 3.0)
 				main.enemy_portrait_sprite.play("TWILIGHT_SAGE_DUSK")
 			else:
+				dawn_particles.emitting = true
+				dusk_particles.emitting = false
+				switch_vignette_color(dawn_stance,0.4)
+				trigger_enemy_passive("DAWN STANCE: Avoid Playing Sun Coins.", 3.0)
 				main.enemy_portrait_sprite.play("TWILIGHT_SAGE_DAWN")	
-			has_dusk_stance = !has_dusk_stance
 			max_playable_coins += 4
 	
+	if type == Enemy.MOON_CASTER or type == Enemy.SUN_CASTER:
+		switch_vignetter_color(vignetter_default,0.4)
 	
+
 	main.coin_deck.sigil_unlight_()
 	
 func toggle_button(btn: Button, make_disabled: bool) -> void:
@@ -604,5 +664,5 @@ func toggle_button(btn: Button, make_disabled: bool) -> void:
 
 
 func trigger_enemy_passive(text: String, duration: float = 1.5):
-	if main:
-		main.show_enemy_passive(text, duration) 
+	main.show_enemy_passive(text, duration)
+	print("Hello") 

@@ -21,6 +21,19 @@ enum Enemy{
 @onready var player = $Player
 @onready var enemy = $Enemy
 
+var vignette_default = '#bdabb8'
+var vignetter_default = '#ffe6909e'
+var sun_caster_color = '#e56400'
+var moon_caster_color = '#1a54fb'
+var dawn_stance = '#ffcda0'
+var dusk_stance = '#8dacf7'
+@onready var battle_particles: GPUParticles2D = $"ParticleManager/Battle Particles"
+@onready var dusk_particles: GPUParticles2D = $"ParticleManager/Dusk Particles"
+@onready var dawn_particles: GPUParticles2D = $"ParticleManager/Dawn Particles"
+
+@onready var vignette: CanvasModulate = $"../Vignette"
+@onready var vignetter: PointLight2D = $"../Vignetter"
+
 #PARTICLES
 const COIN_ADD_PARTICLE = preload("res://Scene/Coin Add Particle.tscn")
 const COIN_PLAY_PARTICLE = preload("res://Scene/Coin Play Particle.tscn")
@@ -124,13 +137,16 @@ var player_info_menu: Node = null
 @onready var enemy_debt: Label = $"Enemy/Enemy Debt"
 @onready var enemy_thrift: Label = $"Enemy/Enemy Thrift"
 
+@onready var enemy_passive_label = $"Battle UI/CenterContainer/Background/EnemyLabelNotification"
+@onready var enemy_passive_bg = $"Battle UI/CenterContainer/Background"
+var enemy_notif_tween: Tween = null
+var enemy_notif_base_pos: Vector2
 
 @onready var turn_ui: ColorRect = $"Battle UI/Turn UI"
 @onready var turn_ui_label: Label = $"Battle UI/Turn UI/Turn UI Label"
 
 @onready var passive_manager = $PassiveManager
 @onready var passive_label = $"Battle UI/PassiveContainer"
-@onready var enemy_passive_label = $"Battle UI/EnemyLabelNotification"
 
 var active_passive_notifs: Dictionary = {}
 var active_temp_notifs: Array = []
@@ -200,7 +216,13 @@ func _on_item_purchased(card_id,price):
 	if shop_manager.visible:
 		shop_manager.coin_label.text = "Coins: " + str(player.coin)
 
+func switch_vignette_color(to,duration):
+	var tween = create_tween()
+	tween.tween_property(vignette,"color",Color.from_string(to,Color.WHITE),duration)
 
+func switch_vignetter_color(to,duration):
+	var tween = create_tween()
+	tween.tween_property(vignetter,"color",Color.from_string(to,Color.WHITE),duration)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -212,8 +234,7 @@ func _ready():
 	current_enemy_index = randi_range(0,1)
 	passive_manager.setup(self)
 	player.setup(self)
-	#show_passive_notification("PASSIVE APPEAR HERE", 3.0)
-	show_enemy_passive("", 3.0)
+	#show_enemy_passive("Hello!", 3.0)
 	game_over_ui.visible = false
 	pause_menu.visible = false
 	turn_ui.visible = false
@@ -239,6 +260,12 @@ func toggle_pause():
 	pause_menu.visible = get_tree().paused
 	
 func battle_start():
+	switch_vignetter_color(vignetter_default,0.1)
+	switch_vignette_color(vignette_default,0.1)
+	battle_particles.emitting = true
+	dawn_particles.emitting = false
+	dusk_particles.emitting = false
+	
 	turn_ui.visible = false
 	var coins = get_tree().get_nodes_in_group("enemy coins")
 	for coin in coins:
@@ -297,7 +324,7 @@ func battle_start():
 			enemy_portrait_sprite.play("MOON_CASTER")
 		8:
 			enemy.setup(self,Enemy.TWILIGHT_SAGE)
-			enemy_portrait_sprite.play("TWILIGHT_SAGE_DUSK")
+			enemy_portrait_sprite.play("TWILIGHT_SAGE_DAWN")
 
 	
 	update_enemy_coin()
@@ -553,6 +580,11 @@ func check_defeat():
 	return null
 
 func handle_victory_flow():
+	switch_vignetter_color(vignetter_default,1.0)
+	switch_vignette_color(vignette_default,1.0)
+	battle_particles.emitting = true
+	dusk_particles.emitting = false
+	dawn_particles.emitting = false
 	player.gain_coin()
 	sound_manager.play_sound(VICTORY)
 	turn_calculation_box.exit()

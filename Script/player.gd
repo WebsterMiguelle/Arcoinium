@@ -473,8 +473,8 @@ func re_flip():
 	var coins = get_tree().get_nodes_in_group("coins")
 	var index = 0
 	var refund_chance = randf()
-	if has_refund and refund_chance <= 0.3:
-		thrifted_attack += 2
+	if has_refund and refund_chance <= 0.2:
+		thrifted_attack += 4
 		trigger_temp_passive("refund","REFUND")
 		main.sound_manager.play_sound(PASSIVE_REFUND)
 		main.turn_calculation_box.exit()
@@ -489,7 +489,7 @@ func re_flip():
 				if upgrade_chance <= 0.5:
 					c.upgrade()
 				c.re_flip()
-			if has_refund and refund_chance <= 0.3:
+			if has_refund and refund_chance <= 0.2:
 				coin += 1
 				current_played_coin -= 1
 				c.queue_free()

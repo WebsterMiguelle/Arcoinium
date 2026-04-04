@@ -229,8 +229,8 @@ func setup(m,enemy):
 			max_coin = 300
 			coin = 300
 			max_playable_coins = 4
-			silver_flip_rate = 0
-			gold_flip_rate = 1
+			silver_flip_rate = 1
+			gold_flip_rate = 0.6
 			bounty = 200
 			type = Enemy.TWILIGHT_SAGE
 			has_dusk_stance = true
@@ -396,16 +396,12 @@ func enemy_coin_calculation():
 						total_damage += (left_coin.base_value + right_coin.base_value) 
 					# 2. TAIL-TAIL PAIR
 					elif left_coin.state == 1 and right_coin.state == 1:
-						total_gain += (left_coin.base_value/2 + right_coin.base_value/2)
+						total_gain += (left_coin.base_value + right_coin.base_value)
 					# 3. HEAD-TAIL PAIR
 					elif left_coin.state == 0 and right_coin.state == 1:
-						total_damage += (left_coin.base_value / 2)
-						total_gain += (right_coin.base_value / 2)
-						total_debt += 4
+						total_debt +=  (left_coin.base_value/2 + right_coin.base_value/2)
 					else:
-						total_damage += (right_coin.base_value / 2)
-						total_gain += (left_coin.base_value / 2)
-						total_debt += 4
+						total_debt +=  (left_coin.base_value/2 + right_coin.base_value/2)
 					left_coin = null
 					right_coin = null
 				else:

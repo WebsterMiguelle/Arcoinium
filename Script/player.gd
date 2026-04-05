@@ -263,7 +263,7 @@ func reset_stats():
 
 	has_pay_down = false
 	has_reimbursement = false
-	has_loan_shark = false
+	has_loan_shark = true
 	has_lending_charge = false
 
 	has_cash_out = false
@@ -504,15 +504,29 @@ func re_flip():
 			else:
 				c.re_flip()
 	if has_spare_change:
+		var has_withdraw_damage = false
 		var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
 		if reserved_coins.size() != 0:
 			trigger_temp_passive("spare_change","SPARE CHANGE")
 			main.sound_manager.play_sound(PASSIVE_SPARE_CHANGE)
+			if has_simple_interest: 
+				trigger_temp_passive("simple_interest","SIMPLE INTEREST")
+			if has_withdraw: 
+				trigger_temp_passive("withdraw","WITHDRAW")
 		for c in reserved_coins:
 			coin += 1
 			c.queue_free()
 			toggle_button(main.flip_button,false)
 			current_reserve -= 1
+			if has_simple_interest: 
+				gain += 1
+			if has_withdraw: 
+				main.enemy.take_damage(1)
+				has_withdraw_damage = true
+		if has_withdraw_damage:
+			main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
+			main.sound_manager.play_sound(DAMAGE_MODERATE)	
+			main.check_defeat()
 			
 	if has_reimbursement:
 		var debt_chance = randf()

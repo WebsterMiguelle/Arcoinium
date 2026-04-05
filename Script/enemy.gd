@@ -525,6 +525,7 @@ func start_enemy_turn():
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.player_portrait.global_position)
 	if main.player.has_loan_shark and debt > 1:
 		var loan_damage = debt / 2
+		debt /= 2
 		take_damage(loan_damage)
 		main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)

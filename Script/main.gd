@@ -580,6 +580,7 @@ func check_defeat():
 	return null
 
 func handle_victory_flow():
+	endTurn_button.disabled = true
 	switch_vignetter_color(vignetter_default,1.0)
 	switch_vignette_color(vignette_default,1.0)
 	battle_particles.emitting = true

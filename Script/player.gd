@@ -11,7 +11,7 @@ enum Enemy{
 	MOON_CASTER,
 	TWILIGHT_SAGE
 }
-
+@onready var all_in: Label = $"../Battle UI/All In"
 var vignette_default = '#bdabb8'
 var vignetter_default = '#ffe6909e'
 @onready var sun_moon_count: Label = $"../Battle UI/Turn Calculation Box/Sun Moon Count"
@@ -252,7 +252,7 @@ func reset_stats():
 	has_spare_change = false
 	has_triple_nickel = false
 	has_refund = true
-	has_coin_snipe = true
+	has_coin_snipe = false
 
 	#INVESTOR PASSIVES
 
@@ -274,6 +274,7 @@ func reset_stats():
 	has_deposit = false
 
 func refresh_start_of_battle_stats():
+	all_in.text = "ALL IN"
 	has_all_in = false
 	thrifted_attack = 0
 	debted_attack = 0
@@ -302,6 +303,7 @@ func refresh_start_of_battle_stats():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	player_portrait.play("default")
+	all_in.text = ""
 
 func coin_calculation():
 	var is_left = true # true - Left Coin, false - Right Coin
@@ -373,7 +375,7 @@ func coin_calculation():
 	return [total_damage,total_gain,total_debt,total_thrift, total_spend]
 
 func flip():
-
+	
 	var is_deck_full = false
 	main.sound_manager.play_sound(COIN_FLIP)
 	print("FLIP")
@@ -468,6 +470,8 @@ func flip():
 	coin_calculation()
 	if main.enemy.coin > 0:
 		main.check_defeat()
+	if current_played_coin != 0 and has_refund:
+		all_in.text = ""
 
 
 
@@ -671,8 +675,13 @@ func start_turn():
 				#reserved_coin.queue_free()
 	if coin == 1 or current_reserve >= max_reserve:
 		toggle_button(main.flip_button,true)
+	if current_played_coin == 0:
+		if has_refund:
+			all_in.text = "ALL IN"
+		toggle_button(main.re_flip_button,true)
 
 func end_turn():
+	all_in.text = ""
 	toggle_button(main.re_flip_button,true)
 	main.endTurn_button.disabled = true
 	main.coin_deck.sigil_pressed();

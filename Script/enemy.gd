@@ -175,7 +175,7 @@ func setup(m,enemy):
 	match enemy:
 		Enemy.MAGE:
 			max_coin = 200
-			coin = 10
+			coin = 12
 			max_playable_coins = 1
 			silver_flip_rate = 0.0
 			gold_flip_rate = 0.0
@@ -256,8 +256,8 @@ func setup(m,enemy):
 			main.player.has_midnight_curse = true
 			trigger_enemy_passive("You Have Guaranteed Moon Flips. Avoid Playing 9 or More Moon Coins.", 5.0)
 		Enemy.TWILIGHT_SAGE:
-			max_coin = 350
-			coin = 350
+			max_coin = 250
+			coin = 250
 			max_playable_coins = 4
 			silver_flip_rate = 1
 			gold_flip_rate = 0.8

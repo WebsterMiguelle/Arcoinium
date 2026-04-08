@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://cq10yywodq6bn"]
+
+[ext_resource type="Script" uid="uid://cvieeuxw2n7gl" path="res://Scene/tutorial.gd" id="1_dmkc7"]
+[ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="2_ntsqm"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="3_c07v8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h2smw"]
+bg_color = Color(0.12835406, 0.13816993, 0.12315822, 0.90000004)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.12156863, 0.09803922, 0.09803922, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+anti_aliasing = false
+
+[node name="Tutorial" type="Node2D" unique_id=1678281989]
+top_level = true
+script = ExtResource("1_dmkc7")
+
+[node name="Tutorial Panel" type="PanelContainer" parent="." unique_id=1443554992]
+offset_right = 343.0
+offset_bottom = 127.0
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_h2smw")
+
+[node name="MarginContainer" type="MarginContainer" parent="Tutorial Panel" unique_id=858318713]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Tutorial Panel/MarginContainer" unique_id=743307827]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Tutorial Name" type="Label" parent="Tutorial Panel/MarginContainer/VBoxContainer" unique_id=878848219]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("2_ntsqm")
+theme_override_font_sizes/font_size = 40
+text = "Flipping A Coin"
+vertical_alignment = 1
+
+[node name="Tutorial Info" type="Label" parent="Tutorial Panel/MarginContainer/VBoxContainer" unique_id=460021205]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("3_c07v8")
+theme_override_font_sizes/font_size = 30
+text = "Press your Coin Bar to flip 1 Coin."
+vertical_alignment = 1

@@ -18,6 +18,21 @@ enum Enemy{
 }
 
 #USER INTERFACE
+const TUTORIAL = preload("uid://cq10yywodq6bn")
+var current_tutorial = null
+var has_encountered_flip = false
+var has_encountered_spells = false
+var has_encountered_reflip = false
+var has_encountered_endturn = false
+var has_encountered_reserve = false
+var has_encountered_coin_health = false
+@onready var tutorial_area: Marker2D = $"Tutorial Area"
+
+var has_encountered_damage_gain = false
+var has_encountered_debt = false
+var has_encountered_spend = false
+var has_encountered_thrift = false
+
 @onready var player = $Player
 @onready var enemy = $Enemy
 
@@ -383,13 +398,38 @@ func _on_end_run_pressed():
 	get_tree().paused = false
 	pause_menu.visible = false
 	trigger_game_over(false)
+
+func create_tutorial(title, text, pos, y_offset):
+	var tutorial = TUTORIAL.instantiate()
+	tutorial.setup(title,text,pos,y_offset)
+	add_child(tutorial)
+	return tutorial
 	
 func start_player_turn():
 	if player.coin > 0:
 		show_turn_ui("PLAYER TURN")
 		current_turn = Turn.PLAYER
 		sound_manager.play_sound(TURN_PLAYER)
-		player.start_turn()
+		await player.start_turn()
+		if !has_encountered_flip:
+			current_tutorial = create_tutorial("Coin Flipping", "Press your Coin Bar to Flip a Coin.",player_health_bar.global_position,-100)
+			endTurn_button.disabled = true
+		player.toggle_button(re_flip_button,true)
+		if !has_encountered_reflip and player.player_turn_count == 2:
+			current_tutorial = create_tutorial("Re-Flip", "If there are coins on the Arcane Circle, \nPress Re-Flip to flip all coins again.",re_flip_button.global_position,-100)
+			endTurn_button.disabled = true
+		if !has_encountered_debt:
+			if player.debt > 0:
+				has_encountered_debt = true
+				current_tutorial = create_tutorial("DEBT", "Each Stack of DEBT reduces 1 GAIN next turn.",tutorial_area.global_position,-50)
+		if !has_encountered_thrift:
+			if player.thrift > 0:
+				has_encountered_thrift = true
+				current_tutorial = create_tutorial("THRIFT", "Each Stack of THRIFT blocks\n 1 vacant slot on the Arcane Circle.",tutorial_area.global_position,-50)
+		if !has_encountered_spend:
+			if player.spend > 0:
+				has_encountered_spend = true
+				current_tutorial = create_tutorial("SPEND", "While having SPEND, each Coin Flip costs 2 Coins.",tutorial_area.global_position,-50)
 		if enemy.coin == 0:
 			check_defeat()
 	else:
@@ -401,26 +441,41 @@ func start_enemy_turn():
 		coin_deck.reset_sigils()
 		current_turn = Turn.ENEMY
 		sound_manager.play_sound(TURN_ENEMY)
+		if !has_encountered_debt:
+			if enemy.debt > 0:
+				has_encountered_debt = true
+				current_tutorial = create_tutorial("DEBT", "Each Stack of DEBT reduces 1 GAIN next turn.",tutorial_area.global_position,-50)
+		if !has_encountered_thrift:
+			if enemy.thrift > 0:
+				has_encountered_thrift = true
+				current_tutorial = create_tutorial("THRIFT", "Each Stack of THRIFT blocks\n 1 vacant slot on the Arcane Circle.",tutorial_area.global_position,-50)
+		if !has_encountered_spend:
+			if enemy.spend > 0:
+				has_encountered_spend = true
+				current_tutorial = create_tutorial("SPEND", "While having SPEND, each Coin Flip costs 2 Coins.",tutorial_area.global_position,-50)
 		await enemy.start_enemy_turn()
 		if enemy.coin > 0:
+			if current_tutorial != null: current_tutorial.close()
 			start_player_turn()
 		else:
 			check_defeat()
 
 func _on_endturn_pressed():
-	await player.end_turn()
-	turn_calculation_box.exit()
-	var defeat = await check_defeat()
-	if defeat == null:
-		await get_tree().create_timer(1.0).timeout
-		if !player.has_extra_turn:
-			start_enemy_turn()
-			player.extra_turn_penalty = 1
-		else:
-			sound_manager.play_sound(EXTRA_TURN)
-			show_turn_ui("EXTRA TURN")
-			player.extra_turn()
-			player.has_extra_turn = false
+	if has_encountered_endturn:
+		if current_tutorial != null: current_tutorial.close()
+		await player.end_turn()
+		turn_calculation_box.exit()
+		var defeat = await check_defeat()
+		if defeat == null:
+			await get_tree().create_timer(1.0).timeout
+			if !player.has_extra_turn:
+				start_enemy_turn()
+				player.extra_turn_penalty = 1
+			else:
+				sound_manager.play_sound(EXTRA_TURN)
+				show_turn_ui("EXTRA TURN")
+				player.extra_turn()
+				player.has_extra_turn = false
 
 func show_passive_notification(text: String, duration: float = 1.5) -> void:
 	var notif = PASSIVE_SCENE.instantiate()
@@ -484,6 +539,23 @@ func _on_flip_pressed():
 	if current_turn != Turn.PLAYER:
 		return
 	player.flip()
+	if has_encountered_reflip and !has_encountered_reserve and player.current_played_coin >= 8:
+		if current_tutorial != null: current_tutorial.close()
+		has_encountered_reserve = true
+		current_tutorial = create_tutorial("Coin Reserve", "If Arcane Circle overflows with coins, \nadd it to the Reserve.",tutorial_area.global_position,-300)
+	if !has_encountered_flip:
+		has_encountered_flip = true
+		current_tutorial.close()
+		current_tutorial = create_tutorial("Coin Spells","Sun Pairs deal More DAMAGE. \nMoon Pairs apply more GAIN.",turn_calculation.global_position,200)
+		has_encountered_spells = true
+	
+	if has_encountered_spells and !has_encountered_endturn and player.current_played_coin > 3:
+		has_encountered_endturn = true
+		player.toggle_button(re_flip_button,true)
+		player.toggle_button(flip_button,true)
+		current_tutorial.close()
+		current_tutorial = create_tutorial("End Turn","Press the Center of the Arcane Circle\nto end your turn.",endTurn_button.global_position,-100)
+		
 	if player.coin == 0:
 		check_defeat()
 
@@ -581,6 +653,8 @@ func check_defeat():
 	return null
 
 func handle_victory_flow():
+	if !has_encountered_reflip:
+		has_encountered_reflip = true
 	endTurn_button.disabled = true
 	switch_vignetter_color(vignetter_default,1.0)
 	switch_vignette_color(vignette_default,1.0)
@@ -599,6 +673,7 @@ func handle_victory_flow():
 		c.queue_free()
 		player.current_reserve -= 1
 	
+	if current_tutorial != null: current_tutorial.close()
 	# Disable gameplay buttons
 	flip_button.disabled = true
 	re_flip_button.disabled = true
@@ -643,6 +718,9 @@ func progression_after_victory():
 			proceed_to_next_enemy()
 		
 func _on_re_flip_pressed():
+	if !has_encountered_reflip:
+		has_encountered_reflip = true
+		current_tutorial.close()
 	player.re_flip()
 
 func reserve_left_over_coin():

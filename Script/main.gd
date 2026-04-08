@@ -30,6 +30,7 @@ var dusk_stance = '#8dacf7'
 @onready var battle_particles: GPUParticles2D = $"ParticleManager/Battle Particles"
 @onready var dusk_particles: GPUParticles2D = $"ParticleManager/Dusk Particles"
 @onready var dawn_particles: GPUParticles2D = $"ParticleManager/Dawn Particles"
+@onready var player_reserve: Label = $"Battle UI/Player Reserve"
 
 @onready var vignette: CanvasModulate = $"../Vignette"
 @onready var vignetter: PointLight2D = $"../Vignetter"
@@ -350,6 +351,7 @@ func _process(delta: float) -> void:
 	update_enemy_coin()
 	update_player_stacks()
 	update_enemy_stacks()
+	update_player_reserve()
 
 func show_turn_ui(text):
 	sound_manager.play_sound(TURN_REVEAL)
@@ -375,7 +377,6 @@ func show_turn_ui(text):
 			await get_tree().create_timer(1.0).timeout
 		endTurn_button.disabled = false
 	await get_tree().create_timer(1.0).timeout
-	turn_ui.visible = false
 	
 func _on_end_run_pressed():
 	print("Main Script: Received End Run")
@@ -669,9 +670,13 @@ func reserve_left_over_coin():
 		tween.tween_property(left_coin,"position:x",target_pos[0],0.2)
 		tween.tween_property(left_coin,"position:y",target_pos[1],0.2)
 		left_coin.add_to_group("reserved coins")
+		player.current_reserve += 1
 
 func update_player_coin():
 	player_health_label.text = "Coins: " + str(player.coin)
+	
+func update_player_reserve():
+	player_reserve.text = "Reserve: " + str(player.current_reserve) + "/" + str(player.max_reserve)
 	
 func update_enemy_coin():
 	enemy_health_label.text = "Coins: " + str(enemy.coin)

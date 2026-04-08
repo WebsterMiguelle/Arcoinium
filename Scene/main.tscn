@@ -755,6 +755,18 @@ vertical_alignment = 1
 
 [node name="Battle UI" type="Node" parent="." unique_id=1754841999]
 
+[node name="Player Reserve" type="Label" parent="Battle UI" unique_id=15672962]
+custom_minimum_size = Vector2(150, 40)
+offset_left = 895.0
+offset_top = 512.0
+offset_right = 1056.4805
+offset_bottom = 554.0
+scale = Vector2(1.2137691, 1)
+theme_override_colors/font_color = Color(0.34331307, 8.018583e-05, 0.34331056, 1)
+theme_override_fonts/font = ExtResource("36_1bveb")
+theme_override_font_sizes/font_size = 31
+text = "Reserve: 0/4"
+
 [node name="PlayerHealthBar2" parent="Battle UI" unique_id=1546897993 instance=ExtResource("5_1xcnr")]
 offset_left = 146.0
 offset_top = 548.0
@@ -882,8 +894,21 @@ offset_bottom = 163.0
 scale = Vector2(1.2137691, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("36_1bveb")
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 30
 text = "Turn"
+
+[node name="Sun Moon Count" type="Label" parent="Battle UI/Turn Calculation Box" unique_id=2073248223]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 0
+offset_left = 107.99999
+offset_top = -39.0
+offset_right = 258.0
+offset_bottom = 1.0
+scale = Vector2(1.2137691, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("7_3pt4j")
+theme_override_font_sizes/font_size = 24
+text = "𖤓8 ☾9"
 
 [node name="Turn UI" type="ColorRect" parent="Battle UI" unique_id=566011376]
 visible = false

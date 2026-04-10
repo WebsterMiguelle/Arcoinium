@@ -94,6 +94,7 @@ const PASSIVE_SELECTION = preload("uid://cfm3uhjitv627")
 const TWILIGHT_SAGE = preload("uid://dh7vynnxrbqwa")
 const TWILIGHT_ZONE___BATTLE_THEME_1 = preload("uid://b8go57qfww8el")
 const TWILIGHT_ZONE___BATTLE_THEME_2 = preload("uid://byxwfs5g71s5x")
+const TWILIGHT_ZONE___BATTLE_THEME_3 = preload("uid://bivy2e314q2fa")
 
 #@onready var player_portrait: ColorRect = $Player/Player_Portrait
 #@onready var enemy_portrait: ColorRect = $Enemy/Enemy_Portrait
@@ -347,13 +348,15 @@ func battle_start():
 	update_player_coin()
 	flip_button.disabled = false
 	sound_manager.play_sound(BATTLE_START)
-	var bgm_rand = randi_range(0,1)
+	var bgm_rand = randi_range(0,2)
 	if current_enemy_index == 8:
 		sound_manager.play_music(TWILIGHT_SAGE)
-	elif bgm_rand == 1: 
+	elif bgm_rand == 0: 
 		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_1)
-	else:
+	elif bgm_rand == 1:
 		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_2)
+	else:
+		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_3)
 		
 	#Battle Start Passives
 	await player.activate_pre_battle_passives()
@@ -414,7 +417,7 @@ func start_player_turn():
 		if !has_encountered_flip:
 			current_tutorial = create_tutorial("Coin Flipping", "Press your Coin Bar to Flip a Coin.",player_health_bar.global_position,-100)
 			endTurn_button.disabled = true
-		player.toggle_button(re_flip_button,true)
+			player.toggle_button(re_flip_button,true)
 		if !has_encountered_reflip and player.player_turn_count == 2:
 			current_tutorial = create_tutorial("Re-Flip", "If there are coins on the Arcane Circle, \nPress Re-Flip to flip all coins again.",re_flip_button.global_position,-100)
 			endTurn_button.disabled = true
@@ -539,10 +542,10 @@ func _on_flip_pressed():
 	if current_turn != Turn.PLAYER:
 		return
 	player.flip()
-	if has_encountered_reflip and !has_encountered_reserve and player.current_played_coin >= 8:
+	if has_encountered_reflip and !has_encountered_reserve and player.current_played_coin >= 16:
 		if current_tutorial != null: current_tutorial.close()
 		has_encountered_reserve = true
-		current_tutorial = create_tutorial("Coin Reserve", "If Arcane Circle overflows with coins, \nadd it to the Reserve.",tutorial_area.global_position,-300)
+		current_tutorial = create_tutorial("Coin Reserve", "If Arcane Circle overflows with coins, \nadd it to the Reserve.",tutorial_area.global_position,-400)
 	if !has_encountered_flip:
 		has_encountered_flip = true
 		current_tutorial.close()
@@ -720,7 +723,7 @@ func progression_after_victory():
 func _on_re_flip_pressed():
 	if !has_encountered_reflip:
 		has_encountered_reflip = true
-		current_tutorial.close()
+		if current_tutorial != null: current_tutorial.close()
 	player.re_flip()
 
 func reserve_left_over_coin():

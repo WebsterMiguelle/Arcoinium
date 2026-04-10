@@ -274,7 +274,6 @@ func reset_stats():
 	has_deposit = false
 
 func refresh_start_of_battle_stats():
-	all_in.text = "ALL IN"
 	has_all_in = false
 	thrifted_attack = 0
 	debted_attack = 0
@@ -675,7 +674,7 @@ func start_turn():
 				#reserved_coin.queue_free()
 	if coin == 1 or current_reserve >= max_reserve:
 		toggle_button(main.flip_button,true)
-	if current_played_coin == 0:
+	if current_played_coin == 0 :
 		if has_refund:
 			all_in.text = "ALL IN"
 		toggle_button(main.re_flip_button,true)
@@ -944,7 +943,7 @@ func activate_player_turn_end_passives():
 		main.show_turn_ui("ALL IN")
 		trigger_temp_passive("refund","ALL IN")
 		has_all_in = true
-		var all_in_coin = 30
+		var all_in_coin = 24
 		main.sound_manager.play_sound(PASSIVE_PAYBACK)
 		while main.enemy.coin > 0 and all_in_coin != 0 and coin > 1:
 			flip()

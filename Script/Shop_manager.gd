@@ -47,7 +47,7 @@ var all_cards = [
 	{"id": 22, "name": "Inflation", "rank": "S", "desc": "There is a 50% chance for each coin on the Arcane Circle to upgrade every Re-Flip. For every Gold Coin played, apply 1 SPEND to Enemy."},
 	{"id": 23, "name": "Jar'O Savings", "rank": "S", "desc":"At the end of the 1st Turn, gain an EXTRA TURN, apply 16 THRIFT to the enemy, and generate 16 Silver Moon Coins. Cannot Flip or Re-Flip during Extra Turns. (One-Time per Battle)"},
 	{"id": 24, "name": "Pay Down", "rank": "S", "desc": "Add 5 DEBT at the end of the Enemy’s Turn. If Enemy DEBT is greater than their Current Coins at the end of their turn, perish instantly."},
-	{"id": 25, "name": "All In", "rank": "S", "desc": "If there are no coins on the Arcane Circle at the end of the turn, Automatically Flip 30 Upgraded Coins."},
+	{"id": 25, "name": "All In", "rank": "S", "desc": "If there are no coins on the Arcane Circle at the end of the turn, Automatically Flip 24 Upgraded Coins."},
 	{"id": 26, "name": "Withdraw", "rank": "B", "desc": "For each Reserved Coin removed, deal 1 Damage."},
 	{"id": 27, "name": "Deposit", "rank": "A", "desc": "+4 Max Reserve."},
 	{"id": 28, "name": "Dividend", "rank": "A", "desc": "There is a 30% chance to duplicate each reserved coin on the next turn."},

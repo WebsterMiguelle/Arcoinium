@@ -23,11 +23,12 @@ func spawn_emitting_particle(p,pos):
 
 func despawn_emitting_particles():
 	var particles = get_tree().get_nodes_in_group("particles")
-	for p in particles:
-		p.get_child(0).emitting = false
-	await get_tree().create_timer(2.0).timeout
-	for p in particles:
-		p.queue_free()
+	if particles.size() > 0:
+		for p in particles:
+			p.get_child(0).emitting = false
+		await get_tree().create_timer(2.0).timeout
+		for p in particles:
+			p.queue_free()
 
 func play_attack_animation(start_node: Node, target_node: Node, damage: int) -> void:
 	var start_pos = start_node.global_position

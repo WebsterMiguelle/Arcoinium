@@ -4,6 +4,9 @@ extends Node
 var main
 
 @onready var particle_manager: Node2D = $"../ParticleManager"
+@onready var vignette: CanvasModulate = $"../Vignette"
+@onready var vignetter: PointLight2D = $"../Vignetter"
+@onready var sun_moon_count: Label = $"../Battle UI/Turn Calculation Box/Sun Moon Count"
 
 const COIN = preload("uid://ddet242jm5v23")
 
@@ -54,6 +57,7 @@ enum Enemy{
 	MOON_CASTER,
 	TWILIGHT_SAGE
 }
+
 
 #ENEMY STATS
 var bounty = 0 #Coin Drop on Death
@@ -107,11 +111,31 @@ var has_sunlit_curse = false
 var has_midnight_curse = false
 var has_dusk_stance = false
 
+
+var vignette_default = '#bdabb8'
+var vignetter_default = '#ffe6909e'
+var sun_caster_color = '#e56400'
+var moon_caster_color = '#1a54fb'
+var dawn_stance = '#ffcda0'
+var dusk_stance = '#8dacf7'
+@onready var battle_particles: GPUParticles2D = $"../ParticleManager/Battle Particles"
+@onready var dusk_particles: GPUParticles2D = $"../ParticleManager/Dusk Particles"
+@onready var dawn_particles: GPUParticles2D = $"../ParticleManager/Dawn Particles"
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
 
+func switch_vignette_color(to,duration):
+	var tween = create_tween()
+	tween.tween_property(vignette,"color",Color.from_string(to,Color.WHITE),duration)
+
+func switch_vignetter_color(to,duration):
+	var tween = create_tween()
+	tween.tween_property(vignetter,"color",Color.from_string(to,Color.WHITE),duration)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+@warning_ignore("unused_parameter")
 func _process(delta: float) -> void:
 	pass
 
@@ -151,11 +175,11 @@ func setup(m,enemy):
 	match enemy:
 		Enemy.MAGE:
 			max_coin = 200
-			coin = 10
+			coin = 12
 			max_playable_coins = 1
 			silver_flip_rate = 0.0
 			gold_flip_rate = 0.0
-			bounty = 20
+			bounty = 25
 			type = Enemy.MAGE
 		Enemy.DWARF:
 			max_coin = 200
@@ -163,7 +187,7 @@ func setup(m,enemy):
 			max_playable_coins = 2
 			silver_flip_rate = 0.0
 			gold_flip_rate = 0.0
-			bounty = 20
+			bounty = 25
 			type = Enemy.DWARF
 		Enemy.COLLECTOR:
 			max_coin = 200
@@ -171,69 +195,80 @@ func setup(m,enemy):
 			max_playable_coins = 6
 			silver_flip_rate = 0.1
 			gold_flip_rate = 0.0
-			bounty = 40
+			bounty = 50
 			type = Enemy.COLLECTOR
 			has_value_added_tax = true
 			main.player.has_value_added_tax = true
+			trigger_enemy_passive("The Tax Collector immediately applied 5 DEBT.", 3.0)
 		Enemy.TRADER:
 			max_coin = 200
 			coin = 40
 			max_playable_coins = 2
 			silver_flip_rate = 0.05
 			gold_flip_rate = 0.0
-			bounty = 40
+			bounty = 50
 			type = Enemy.TRADER
 			has_fair_trade = true
+			trigger_enemy_passive("The Trader will Copy your Number of Played Coins.", 3.0)
 		Enemy.THRIFTER:
 			max_coin = 200
-			coin = 60
+			coin = 90
 			max_playable_coins = 8
 			silver_flip_rate = 0.3
 			gold_flip_rate = 0
-			bounty = 60
+			bounty = 75
 			type = Enemy.THRIFTER
 			has_learn_to_save = true
 			main.player.has_learn_to_save = true
 			main.player.thrift = 8
+			trigger_enemy_passive("The Thrifter immediately applied 8 THRIFT.", 3.0)
 		Enemy.ARISTOCRAT:
 			max_coin = 200
 			coin = 120
 			max_playable_coins = 16
 			silver_flip_rate = 1
 			gold_flip_rate = 0
-			bounty = 60
+			bounty = 75
 			type = Enemy.ARISTOCRAT
 			has_fully_paid = true
 			debt = 100
+			trigger_enemy_passive("When The Aristocrat settled all her DEBT, Deal 100 Damage.", 3.0)
 		Enemy.SUN_CASTER:
 			max_coin = 200
 			coin = 120
 			max_playable_coins = 12
 			silver_flip_rate = 1
 			gold_flip_rate = 0
-			bounty = 80
+			bounty = 100
 			type = Enemy.SUN_CASTER
 			has_sunlit_curse = true
 			main.player.has_sunlit_curse = true
+			trigger_enemy_passive("You Have Guaranteed Sun Flips. Avoid Playing 9 or More Sun Coins.", 5.0)
 		Enemy.MOON_CASTER:
 			max_coin = 200
 			coin = 100
 			max_playable_coins = 12
 			silver_flip_rate = 1
 			gold_flip_rate = 0
-			bounty = 80
+			bounty = 100
 			type = Enemy.MOON_CASTER
 			has_midnight_curse = true
 			main.player.has_midnight_curse = true
+			trigger_enemy_passive("You Have Guaranteed Moon Flips. Avoid Playing 9 or More Moon Coins.", 5.0)
 		Enemy.TWILIGHT_SAGE:
-			max_coin = 300
-			coin = 300
+			max_coin = 250
+			coin = 250
 			max_playable_coins = 4
 			silver_flip_rate = 1
-			gold_flip_rate = 0.6
-			bounty = 200
+			gold_flip_rate = 0.8
+			bounty = 0
 			type = Enemy.TWILIGHT_SAGE
-			has_dusk_stance = true
+			has_dusk_stance = false
+			battle_particles.emitting = false
+			dawn_particles.emitting = true
+			switch_vignette_color(dawn_stance,0.4)
+			trigger_enemy_passive("DAWN STANCE: Play as Many Moon Coins.", 3.0)
+
 
 func flip():
 	main.sound_manager.play_sound(COIN_FLIP)
@@ -258,6 +293,7 @@ func flip():
 			main.sound_manager.play_sound(SPENDED_FLIP)
 	
 	current_played_coin += 1
+	@warning_ignore("shadowed_variable")
 	var coin = COIN.instantiate()
 	coin.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
 	
@@ -283,13 +319,20 @@ func enemy_coin_calculation():
 	var total_debt = 0
 	var total_thrift = 0
 	var total_spend = 0
+	var sun_count = 0
+	var moon_count = 0
+	@warning_ignore("confusable_local_usage", "shadowed_variable")
 	var type = type
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
 	match type:
+
 		Enemy.MAGE:
 			for coin in coins:
 				if coin.state == 0: 
 					total_damage += coin.base_value
+					sun_count +=1
+				else:
+					moon_count +=1
 		Enemy.DWARF:
 			var can_attack = true
 			var current_played_coin = 0
@@ -297,12 +340,18 @@ func enemy_coin_calculation():
 				current_played_coin += 1
 				if coin.state == 1: 
 					can_attack = false
+					moon_count += 1
+				else: sun_count += 1
 			if can_attack and current_played_coin == 2: total_damage += 4
 		Enemy.COLLECTOR:
 			var is_left = true # true - Left Coin, false - Right Coin
 			var left_coin
 			var right_coin
 			for coin in coins:
+				if coin.state == 0:
+					sun_count +=1
+				else: 
+					moon_count += 1
 				if is_left == true:
 					left_coin = coin
 				if is_left == false:
@@ -318,12 +367,20 @@ func enemy_coin_calculation():
 				is_left = !is_left
 		Enemy.TRADER:
 			for coin in coins:
-				if coin.state == 0: total_spend += coin.base_value / 2
+				if coin.state == 0: 
+					total_spend += coin.base_value / 2
+					sun_count +=1
+				else:
+					moon_count +=1
 		Enemy.THRIFTER:
 			var is_left = true # true - Left Coin, false - Right Coin
 			var left_coin
 			var right_coin
 			for coin in coins:
+				if coin.state == 0:
+					sun_count +=1
+				else: 
+					moon_count += 1
 				if is_left == true:
 					left_coin = coin
 				if is_left == false:
@@ -342,7 +399,11 @@ func enemy_coin_calculation():
 				is_left = !is_left
 		Enemy.ARISTOCRAT:
 			for coin in coins:
-				if coin.state == 1: total_gain += coin.base_value
+				if coin.state == 1: 
+					total_gain += coin.base_value
+					moon_count +=1
+				else:
+					sun_count +=1
 		Enemy.SUN_CASTER:
 			var is_left = true # true - Left Coin, false - Right Coin
 			var left_coin
@@ -350,6 +411,9 @@ func enemy_coin_calculation():
 			for coin in coins:
 				if coin.state == 0:
 					total_spend += 1
+					sun_count += 1
+				else:
+					moon_count +=1
 				if is_left == true:
 					left_coin = coin
 				if is_left == false:
@@ -369,6 +433,9 @@ func enemy_coin_calculation():
 			for coin in coins:
 				if coin.state == 1:
 					total_debt += coin.base_value / 2
+					moon_count += 1
+				else:
+					sun_count += 1
 				if is_left == true:
 					left_coin = coin
 				if is_left == false:
@@ -386,6 +453,10 @@ func enemy_coin_calculation():
 			var left_coin
 			var right_coin
 			for coin in coins:
+				if coin.state == 0:
+					sun_count +=1
+				else: 
+					moon_count += 1
 				if is_left == true:
 					left_coin = coin
 				if is_left == false:
@@ -422,6 +493,7 @@ func enemy_coin_calculation():
 		main.turn_calculation.text = text
 		main.turn_calculation.add_theme_color_override("font_color", Color.WHITE)
 	if text != "":
+		sun_moon_count.text = "𖤓 " + str(sun_count) + " ☾ " + str(moon_count)
 		main.turn_calculation_box.entrance(true)
 	return [total_damage,total_gain,total_debt,total_thrift,total_spend]
 
@@ -429,20 +501,26 @@ func start_enemy_turn():
 	toggle_button(main.flip_button,true)
 	toggle_button(main.re_flip_button,true)
 	main.endTurn_button.disabled = true
-	
+
+
 	if has_fair_trade:
+		trigger_enemy_passive("The Trader will play " + str(main.player.previous_player_flips) + " Coins.", 2.0)
 		max_playable_coins = main.player.previous_player_flips
 		main.player.previous_player_flips = 0
 
 	if type == Enemy.SUN_CASTER:
 		if main.player.sun_count >= 9:
 			gold_flip_rate = 1
+			switch_vignetter_color(sun_caster_color,0.4)
+			trigger_enemy_passive("You played " + str(main.player.sun_count) + " Sun Coins. Sun Caster powered up!", 3.0)
 		else:
 			gold_flip_rate = 0
 
 	if type == Enemy.MOON_CASTER:
 		if main.player.moon_count >= 9:
 			gold_flip_rate = 1
+			switch_vignetter_color(moon_caster_color,0.4)
+			trigger_enemy_passive("You played " + str(main.player.moon_count) + " Moon Coins. Moon Caster powered up!", 3.0)
 		else:
 			gold_flip_rate = 0
 	
@@ -468,6 +546,13 @@ func start_enemy_turn():
 	max_playable_coins -= thrift
 	#Coin Gain Triggers
 	gain_coin()
+	
+	if has_fully_paid:
+		if debt > 0:
+			trigger_enemy_passive("Remaining DEBT: " + str(debt), 2.0)
+		else:
+			trigger_enemy_passive("FULLY PAID!", 2.0)
+	
 	if has_fully_paid and debt == 0:
 		particle_manager.play_attack_animation(main.coin_deck, main.player_portrait, turn_damage)
 		await get_tree().create_timer(1.0).timeout
@@ -476,6 +561,7 @@ func start_enemy_turn():
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.player_portrait.global_position)
 	if main.player.has_loan_shark and debt > 1:
 		var loan_damage = debt / 2
+		debt /= 2
 		take_damage(loan_damage)
 		main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
@@ -578,15 +664,26 @@ func end_enemy_turn():
 		
 	if main.player.coin > 0:
 		await get_tree().create_timer(1.0).timeout
+		has_dusk_stance = !has_dusk_stance
 		if type == Enemy.TWILIGHT_SAGE:
 			if has_dusk_stance == true:
+				dawn_particles.emitting = false
+				dusk_particles.emitting = true
+				switch_vignette_color(dusk_stance,0.4)
+				trigger_enemy_passive("DUSK STANCE: Play As Many Sun Coins.", 3.0)
 				main.enemy_portrait_sprite.play("TWILIGHT_SAGE_DUSK")
 			else:
+				dawn_particles.emitting = true
+				dusk_particles.emitting = false
+				switch_vignette_color(dawn_stance,0.4)
+				trigger_enemy_passive("DAWN STANCE: Play as Many Moon Coins.", 3.0)
 				main.enemy_portrait_sprite.play("TWILIGHT_SAGE_DAWN")	
-			has_dusk_stance = !has_dusk_stance
 			max_playable_coins += 4
 	
+	if type == Enemy.MOON_CASTER or type == Enemy.SUN_CASTER:
+		switch_vignetter_color(vignetter_default,0.4)
 	
+
 	main.coin_deck.sigil_unlight_()
 	
 func toggle_button(btn: Button, make_disabled: bool) -> void:
@@ -601,3 +698,8 @@ func toggle_button(btn: Button, make_disabled: bool) -> void:
 			
 	else:
 		btn.modulate = Color(1.0, 1.0, 1.0, 1.0) # Restore to normal brightness
+
+
+func trigger_enemy_passive(text: String, duration: float = 1.5):
+	main.show_enemy_passive(text, duration)
+	print("Hello") 

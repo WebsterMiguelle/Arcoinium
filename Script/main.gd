@@ -18,8 +18,37 @@ enum Enemy{
 }
 
 #USER INTERFACE
+const TUTORIAL = preload("uid://cq10yywodq6bn")
+var current_tutorial = null
+var has_encountered_flip = false
+var has_encountered_spells = false
+var has_encountered_reflip = false
+var has_encountered_endturn = false
+var has_encountered_reserve = false
+var has_encountered_coin_health = false
+@onready var tutorial_area: Marker2D = $"Tutorial Area"
+
+var has_encountered_damage_gain = false
+var has_encountered_debt = false
+var has_encountered_spend = false
+var has_encountered_thrift = false
+
 @onready var player = $Player
 @onready var enemy = $Enemy
+
+var vignette_default = '#bdabb8'
+var vignetter_default = '#ffe6909e'
+var sun_caster_color = '#e56400'
+var moon_caster_color = '#1a54fb'
+var dawn_stance = '#ffcda0'
+var dusk_stance = '#8dacf7'
+@onready var battle_particles: GPUParticles2D = $"ParticleManager/Battle Particles"
+@onready var dusk_particles: GPUParticles2D = $"ParticleManager/Dusk Particles"
+@onready var dawn_particles: GPUParticles2D = $"ParticleManager/Dawn Particles"
+@onready var player_reserve: Label = $"Battle UI/Player Reserve"
+
+@onready var vignette: CanvasModulate = $"../Vignette"
+@onready var vignetter: PointLight2D = $"../Vignetter"
 
 #PARTICLES
 const COIN_ADD_PARTICLE = preload("res://Scene/Coin Add Particle.tscn")
@@ -65,6 +94,7 @@ const PASSIVE_SELECTION = preload("uid://cfm3uhjitv627")
 const TWILIGHT_SAGE = preload("uid://dh7vynnxrbqwa")
 const TWILIGHT_ZONE___BATTLE_THEME_1 = preload("uid://b8go57qfww8el")
 const TWILIGHT_ZONE___BATTLE_THEME_2 = preload("uid://byxwfs5g71s5x")
+const TWILIGHT_ZONE___BATTLE_THEME_3 = preload("uid://bivy2e314q2fa")
 
 #@onready var player_portrait: ColorRect = $Player/Player_Portrait
 #@onready var enemy_portrait: ColorRect = $Enemy/Enemy_Portrait
@@ -124,13 +154,16 @@ var player_info_menu: Node = null
 @onready var enemy_debt: Label = $"Enemy/Enemy Debt"
 @onready var enemy_thrift: Label = $"Enemy/Enemy Thrift"
 
+@onready var enemy_passive_label = $"Battle UI/CenterContainer/Background/EnemyLabelNotification"
+@onready var enemy_passive_bg = $"Battle UI/CenterContainer/Background"
+var enemy_notif_tween: Tween = null
+var enemy_notif_base_pos: Vector2
 
 @onready var turn_ui: ColorRect = $"Battle UI/Turn UI"
 @onready var turn_ui_label: Label = $"Battle UI/Turn UI/Turn UI Label"
 
 @onready var passive_manager = $PassiveManager
 @onready var passive_label = $"Battle UI/PassiveContainer"
-@onready var enemy_passive_label = $"Battle UI/EnemyLabelNotification"
 
 var active_passive_notifs: Dictionary = {}
 var active_temp_notifs: Array = []
@@ -200,7 +233,13 @@ func _on_item_purchased(card_id,price):
 	if shop_manager.visible:
 		shop_manager.coin_label.text = "Coins: " + str(player.coin)
 
+func switch_vignette_color(to,duration):
+	var tween = create_tween()
+	tween.tween_property(vignette,"color",Color.from_string(to,Color.WHITE),duration)
 
+func switch_vignetter_color(to,duration):
+	var tween = create_tween()
+	tween.tween_property(vignetter,"color",Color.from_string(to,Color.WHITE),duration)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -212,8 +251,7 @@ func _ready():
 	current_enemy_index = randi_range(0,1)
 	passive_manager.setup(self)
 	player.setup(self)
-	#show_passive_notification("PASSIVE APPEAR HERE", 3.0)
-	show_enemy_passive("", 3.0)
+	#show_enemy_passive("Hello!", 3.0)
 	game_over_ui.visible = false
 	pause_menu.visible = false
 	turn_ui.visible = false
@@ -239,6 +277,12 @@ func toggle_pause():
 	pause_menu.visible = get_tree().paused
 	
 func battle_start():
+	switch_vignetter_color(vignetter_default,0.1)
+	switch_vignette_color(vignette_default,0.1)
+	battle_particles.emitting = true
+	dawn_particles.emitting = false
+	dusk_particles.emitting = false
+	
 	turn_ui.visible = false
 	var coins = get_tree().get_nodes_in_group("enemy coins")
 	for coin in coins:
@@ -297,20 +341,22 @@ func battle_start():
 			enemy_portrait_sprite.play("MOON_CASTER")
 		8:
 			enemy.setup(self,Enemy.TWILIGHT_SAGE)
-			enemy_portrait_sprite.play("TWILIGHT_SAGE_DUSK")
+			enemy_portrait_sprite.play("TWILIGHT_SAGE_DAWN")
 
 	
 	update_enemy_coin()
 	update_player_coin()
 	flip_button.disabled = false
 	sound_manager.play_sound(BATTLE_START)
-	var bgm_rand = randi_range(0,1)
+	var bgm_rand = randi_range(0,2)
 	if current_enemy_index == 8:
 		sound_manager.play_music(TWILIGHT_SAGE)
-	elif bgm_rand == 1: 
+	elif bgm_rand == 0: 
 		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_1)
-	else:
+	elif bgm_rand == 1:
 		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_2)
+	else:
+		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_3)
 		
 	#Battle Start Passives
 	await player.activate_pre_battle_passives()
@@ -323,6 +369,7 @@ func _process(delta: float) -> void:
 	update_enemy_coin()
 	update_player_stacks()
 	update_enemy_stacks()
+	update_player_reserve()
 
 func show_turn_ui(text):
 	sound_manager.play_sound(TURN_REVEAL)
@@ -348,20 +395,44 @@ func show_turn_ui(text):
 			await get_tree().create_timer(1.0).timeout
 		endTurn_button.disabled = false
 	await get_tree().create_timer(1.0).timeout
-	turn_ui.visible = false
 	
 func _on_end_run_pressed():
 	print("Main Script: Received End Run")
 	get_tree().paused = false
 	pause_menu.visible = false
 	trigger_game_over(false)
+
+func create_tutorial(title, text, pos, y_offset):
+	var tutorial = TUTORIAL.instantiate()
+	tutorial.setup(title,text,pos,y_offset)
+	add_child(tutorial)
+	return tutorial
 	
 func start_player_turn():
 	if player.coin > 0:
 		show_turn_ui("PLAYER TURN")
 		current_turn = Turn.PLAYER
 		sound_manager.play_sound(TURN_PLAYER)
-		player.start_turn()
+		await player.start_turn()
+		if !has_encountered_flip:
+			current_tutorial = create_tutorial("Coin Flipping", "Press your Coin Bar to Flip a Coin.",player_health_bar.global_position,-100)
+			endTurn_button.disabled = true
+			player.toggle_button(re_flip_button,true)
+		if !has_encountered_reflip and player.player_turn_count == 2:
+			current_tutorial = create_tutorial("Re-Flip", "If there are coins on the Arcane Circle, \nPress Re-Flip to flip all coins again.",re_flip_button.global_position,-100)
+			endTurn_button.disabled = true
+		if !has_encountered_debt:
+			if player.debt > 0:
+				has_encountered_debt = true
+				current_tutorial = create_tutorial("DEBT", "Each Stack of DEBT reduces 1 GAIN next turn.",tutorial_area.global_position,-50)
+		if !has_encountered_thrift:
+			if player.thrift > 0:
+				has_encountered_thrift = true
+				current_tutorial = create_tutorial("THRIFT", "Each Stack of THRIFT blocks\n 1 vacant slot on the Arcane Circle.",tutorial_area.global_position,-50)
+		if !has_encountered_spend:
+			if player.spend > 0:
+				has_encountered_spend = true
+				current_tutorial = create_tutorial("SPEND", "While having SPEND, each Coin Flip costs 2 Coins.",tutorial_area.global_position,-50)
 		if enemy.coin == 0:
 			check_defeat()
 	else:
@@ -373,26 +444,41 @@ func start_enemy_turn():
 		coin_deck.reset_sigils()
 		current_turn = Turn.ENEMY
 		sound_manager.play_sound(TURN_ENEMY)
+		if !has_encountered_debt:
+			if enemy.debt > 0:
+				has_encountered_debt = true
+				current_tutorial = create_tutorial("DEBT", "Each Stack of DEBT reduces 1 GAIN next turn.",tutorial_area.global_position,-50)
+		if !has_encountered_thrift:
+			if enemy.thrift > 0:
+				has_encountered_thrift = true
+				current_tutorial = create_tutorial("THRIFT", "Each Stack of THRIFT blocks\n 1 vacant slot on the Arcane Circle.",tutorial_area.global_position,-50)
+		if !has_encountered_spend:
+			if enemy.spend > 0:
+				has_encountered_spend = true
+				current_tutorial = create_tutorial("SPEND", "While having SPEND, each Coin Flip costs 2 Coins.",tutorial_area.global_position,-50)
 		await enemy.start_enemy_turn()
 		if enemy.coin > 0:
+			if current_tutorial != null: current_tutorial.close()
 			start_player_turn()
 		else:
 			check_defeat()
 
 func _on_endturn_pressed():
-	await player.end_turn()
-	turn_calculation_box.exit()
-	var defeat = await check_defeat()
-	if defeat == null:
-		await get_tree().create_timer(1.0).timeout
-		if !player.has_extra_turn:
-			start_enemy_turn()
-			player.extra_turn_penalty = 1
-		else:
-			sound_manager.play_sound(EXTRA_TURN)
-			show_turn_ui("EXTRA TURN")
-			player.extra_turn()
-			player.has_extra_turn = false
+	if has_encountered_endturn:
+		if current_tutorial != null: current_tutorial.close()
+		await player.end_turn()
+		turn_calculation_box.exit()
+		var defeat = await check_defeat()
+		if defeat == null:
+			await get_tree().create_timer(1.0).timeout
+			if !player.has_extra_turn:
+				start_enemy_turn()
+				player.extra_turn_penalty = 1
+			else:
+				sound_manager.play_sound(EXTRA_TURN)
+				show_turn_ui("EXTRA TURN")
+				player.extra_turn()
+				player.has_extra_turn = false
 
 func show_passive_notification(text: String, duration: float = 1.5) -> void:
 	var notif = PASSIVE_SCENE.instantiate()
@@ -418,26 +504,37 @@ func show_passive_notification(text: String, duration: float = 1.5) -> void:
 			
 		await get_tree().create_timer(duration).timeout
 	
-func show_enemy_passive(text: String, duration: float = 1.5) -> void:
+func show_enemy_passive(text: String, duration: float = 2.5) -> void:
 	if not is_instance_valid(enemy_passive_label):
 		return
 		
+	if enemy_notif_base_pos == Vector2.ZERO:
+		enemy_notif_base_pos = enemy_passive_bg.position
+	
+	# Kill previous animation (IMPORTANT)
+	if enemy_notif_tween and enemy_notif_tween.is_running():
+		enemy_notif_tween.kill()
+	
 	enemy_passive_label.text = text
 	enemy_passive_label.visible = true
+	enemy_passive_bg.visible = true
 	enemy_passive_label.modulate.a = 0.0
-	enemy_passive_label.z_index = 100
+	enemy_passive_bg.modulate.a = 0.0
+	enemy_passive_label.scale = Vector2(0.9, 0.9)
+
 	
-	var tween = create_tween()
-	tween.parallel().tween_property(enemy_passive_label, "modulate:a", 1.0, 0.2)
-	tween.parallel().tween_property(enemy_passive_label, "position:y", enemy_passive_label.position.y - 20, 0.2)
-	tween.parallel().tween_property(enemy_passive_label, "scale", Vector2(1, 1), 0.2)
-	
-	
-	var tween_out = create_tween()
-	tween_out.tween_property(enemy_passive_label, "modulate:a", 0.0, 0.5).set_delay(duration)
-	tween_out.tween_callback(func():
+	enemy_notif_tween = create_tween()
+	enemy_notif_tween.parallel().tween_property(enemy_passive_label, "modulate:a", 1.0, 0.2)
+	enemy_notif_tween.parallel().tween_property(enemy_passive_bg, "modulate:a", 1.0, 0.2)
+	enemy_notif_tween.parallel().tween_property(enemy_passive_label, "position:y", enemy_notif_base_pos.y + 15, 0.2)
+	enemy_notif_tween.parallel().tween_property(enemy_passive_label, "scale", Vector2(1.05, 1.05), 0.2)
+	enemy_notif_tween.tween_property(enemy_passive_label, "scale", Vector2(1, 1), 0.1)
+	enemy_notif_tween.tween_interval(duration)
+	enemy_notif_tween.tween_property(enemy_passive_label, "modulate:a", 0.0, 0.4)
+	enemy_notif_tween.tween_property(enemy_passive_bg,	 "modulate:a", 0.0, 0.4)
+	enemy_notif_tween.tween_callback(func():
 		enemy_passive_label.visible = false
-		enemy_passive_label.modulate.a = 1.0 
+		enemy_passive_bg.visible = false
 	)
 	
 
@@ -445,6 +542,23 @@ func _on_flip_pressed():
 	if current_turn != Turn.PLAYER:
 		return
 	player.flip()
+	if has_encountered_reflip and !has_encountered_reserve and player.current_played_coin >= 16:
+		if current_tutorial != null: current_tutorial.close()
+		has_encountered_reserve = true
+		current_tutorial = create_tutorial("Coin Reserve", "If Arcane Circle overflows with coins, \nadd it to the Reserve.",tutorial_area.global_position,-400)
+	if !has_encountered_flip:
+		has_encountered_flip = true
+		current_tutorial.close()
+		current_tutorial = create_tutorial("Coin Spells","Sun Pairs deal More DAMAGE. \nMoon Pairs apply more GAIN.",turn_calculation.global_position,200)
+		has_encountered_spells = true
+	
+	if has_encountered_spells and !has_encountered_endturn and player.current_played_coin > 3:
+		has_encountered_endturn = true
+		player.toggle_button(re_flip_button,true)
+		player.toggle_button(flip_button,true)
+		current_tutorial.close()
+		current_tutorial = create_tutorial("End Turn","Press the Center of the Arcane Circle\nto end your turn.",endTurn_button.global_position,-100)
+		
 	if player.coin == 0:
 		check_defeat()
 
@@ -542,6 +656,14 @@ func check_defeat():
 	return null
 
 func handle_victory_flow():
+	if !has_encountered_reflip:
+		has_encountered_reflip = true
+	endTurn_button.disabled = true
+	switch_vignetter_color(vignetter_default,1.0)
+	switch_vignette_color(vignette_default,1.0)
+	battle_particles.emitting = true
+	dusk_particles.emitting = false
+	dawn_particles.emitting = false
 	player.gain_coin()
 	sound_manager.play_sound(VICTORY)
 	turn_calculation_box.exit()
@@ -554,6 +676,7 @@ func handle_victory_flow():
 		c.queue_free()
 		player.current_reserve -= 1
 	
+	if current_tutorial != null: current_tutorial.close()
 	# Disable gameplay buttons
 	flip_button.disabled = true
 	re_flip_button.disabled = true
@@ -598,6 +721,9 @@ func progression_after_victory():
 			proceed_to_next_enemy()
 		
 func _on_re_flip_pressed():
+	if !has_encountered_reflip:
+		has_encountered_reflip = true
+		if current_tutorial != null: current_tutorial.close()
 	player.re_flip()
 
 func reserve_left_over_coin():
@@ -625,9 +751,13 @@ func reserve_left_over_coin():
 		tween.tween_property(left_coin,"position:x",target_pos[0],0.2)
 		tween.tween_property(left_coin,"position:y",target_pos[1],0.2)
 		left_coin.add_to_group("reserved coins")
+		player.current_reserve += 1
 
 func update_player_coin():
 	player_health_label.text = "Coins: " + str(player.coin)
+	
+func update_player_reserve():
+	player_reserve.text = "Reserve: " + str(player.current_reserve) + "/" + str(player.max_reserve)
 	
 func update_enemy_coin():
 	enemy_health_label.text = "Coins: " + str(enemy.coin)

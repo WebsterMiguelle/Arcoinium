@@ -1219,7 +1219,7 @@ theme_override_constants/separation = 16
 layout_mode = 2
 theme_override_constants/h_separation = 60
 theme_override_constants/v_separation = 83
-columns = 3
+columns = 4
 
 [node name="Back" type="Button" parent="ShopManager/Background" unique_id=1330755300]
 layout_mode = 0

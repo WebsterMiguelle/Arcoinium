@@ -11,6 +11,8 @@ enum Enemy{
 	MOON_CASTER,
 	TWILIGHT_SAGE
 }
+
+const FLOATING_LABEL = preload("uid://dwf6g2wuj1oe3")
 @onready var all_in: Label = $"../Battle UI/All In"
 var vignette_default = '#bdabb8'
 var vignetter_default = '#ffe6909e'
@@ -192,7 +194,18 @@ var has_dusk_stance = false
 
 var reflip_tween: Tween
 var base_reflip_scale: Vector2
-	
+
+func create_floating_label(value,type, ent):
+	var label = FLOATING_LABEL.instantiate()
+	var pos
+	if ent == "PLAYER":
+		pos = main.player_portrait.global_position
+		#pos = main.tutorial_area.global_position
+	else:
+		#pos = main.tutorial_area.global_position
+		pos = main.enemy_portrait.global_position
+	label.setup(value,type,ent,pos)
+	add_child(label)
 func setup(m):
 	main = m
 	base_reflip_scale = main.reflip_sprite.scale
@@ -211,6 +224,7 @@ func gain_coin():
 			main.enemy.gain += temp2
 		particle_manager.spawn_particle(GAIN_EFFECT_PARTICLE,main.player_gain.global_position)
 		main.sound_manager.play_sound(GAIN_EFFECT)
+		create_floating_label(gain,"GAIN","PLAYER")
 	elif debt > 0:
 		if has_value_added_tax:
 			main.enemy.gain += temp
@@ -439,6 +453,7 @@ func flip():
 			main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 			main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
 			main.enemy.take_damage(1)
+			create_floating_label(1,"DAMAGE","ENEMY")
 
 	take_damage(1)
 	if spend > 0:
@@ -446,6 +461,7 @@ func flip():
 		take_damage(1)
 		main.sound_manager.play_sound(DAMAGE_LIGHT)
 		particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.player_portrait.global_position)
+		create_floating_label(1,"DAMAGE","PLAYER")
 		if spend == 0:
 			main.sound_manager.play_sound(SPEND)
 			particle_manager.spawn_particle(SPEND_EXPLOSION_PARTICLE,main.player_spend.global_position)
@@ -521,6 +537,7 @@ func re_flip():
 			if has_simple_interest: 
 				gain += 1
 			if has_withdraw: 
+				create_floating_label(1,"DAMAGE","ENEMY")
 				main.enemy.take_damage(1)
 				has_withdraw_damage = true
 		if has_withdraw_damage:
@@ -621,6 +638,7 @@ func start_turn():
 					coin.reserved = false
 					if has_simple_interest: gain += 1
 					if has_withdraw: 
+						create_floating_label(1,"DAMAGE","ENEMY")
 						main.enemy.take_damage(1)
 						has_withdraw_damage = true
 				if has_value_increase:
@@ -651,6 +669,7 @@ func start_turn():
 						coin.reserved = false
 						if has_simple_interest: gain += 1
 						if has_withdraw:
+							create_floating_label(1,"DAMAGE","ENEMY")
 							main.enemy.take_damage(1)
 							has_withdraw_damage = true
 					var dividend_coin = COIN.instantiate()
@@ -709,6 +728,7 @@ func end_turn():
 		particle_manager.play_attack_animation(main.coin_deck, main.enemy_portrait, turn_damage)
 		main.turn_calculation_box.exit()
 		await get_tree().create_timer(1.0).timeout
+		create_floating_label(turn_damage,"DAMAGE","ENEMY")
 
 	thrift = 0
 	spend = 0
@@ -725,12 +745,15 @@ func end_turn():
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 	gain += turn_gain
 	if turn_debt != 0: 
+		create_floating_label(turn_debt,"DEBT","ENEMY")
 		main.sound_manager.play_sound(DEBT)
 		main.enemy.debt += turn_debt
 	if turn_thrift != 0:
+		create_floating_label(turn_thrift,"THRIFT","ENEMY")
 		main.enemy.thrift += turn_thrift
 		main.sound_manager.play_sound(THRIFT)
 	if turn_spend != 0:
+		create_floating_label(turn_spend,"SPEND","ENEMY")
 		main.enemy.spend += turn_spend
 		main.sound_manager.play_sound(SPEND)
 		
@@ -832,6 +855,7 @@ func activate_pre_battle_passives():
 				main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 				main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
 				main.enemy.take_damage(1)
+				create_floating_label(1,"DAMAGE","ENEMY")
 			
 			if (current_played_coin == max_playable_coins and current_reserve == max_reserve) or coin == 1:
 				toggle_button(main.flip_button,true)
@@ -875,6 +899,7 @@ func activate_player_turn_start_passives():
 				main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 				main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
 				main.enemy.take_damage(1)
+				create_floating_label(1,"DAMAGE","ENEMY")
 
 			main.sound_manager.play_sound(COIN_FLIP)
 			main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,c.global_position)
@@ -926,6 +951,7 @@ func activate_player_turn_start_passives():
 				main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 				main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
 				main.enemy.take_damage(1)
+				create_floating_label(1,"DAMAGE","ENEMY")
 			coin_calculation()
 			payback_coins -= 1
 			await get_tree().create_timer(0.2).timeout

@@ -2,6 +2,7 @@
 extends Node
 
 var main
+const FLOATING_LABEL = preload("uid://dwf6g2wuj1oe3")
 
 @onready var particle_manager: Node2D = $"../ParticleManager"
 @onready var vignette: CanvasModulate = $"../Vignette"
@@ -123,6 +124,18 @@ var dusk_stance = '#8dacf7'
 @onready var dawn_particles: GPUParticles2D = $"../ParticleManager/Dawn Particles"
 
 # Called when the node enters the scene tree for the first time.
+func create_floating_label(value,type, ent):
+	var label = FLOATING_LABEL.instantiate()
+	var pos
+	if ent == "PLAYER":
+		pos = main.player_portrait.global_position
+		#pos = main.tutorial_area.global_position
+	else:
+		#pos = main.tutorial_area.global_position
+		pos = main.enemy_portrait.global_position
+	label.setup(value,type,ent,pos)
+	add_child(label)
+
 func _ready():
 	pass
 
@@ -163,6 +176,7 @@ func gain_coin():
 	if gain > 0:
 		particle_manager.spawn_particle(GAIN_EFFECT_PARTICLE,main.enemy_gain.global_position)
 		main.sound_manager.play_sound(GAIN_EFFECT)
+		create_floating_label(gain,"GAIN","ENEMY")
 	elif debt > 0:
 		particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,main.enemy_debt.global_position)
 		main.sound_manager.play_sound(DEBT_EFFECT)
@@ -254,8 +268,8 @@ func setup(m,enemy):
 			main.player.has_midnight_curse = true
 			trigger_enemy_passive("Avoid Playing 9 or More MOON Coins.", 5.0)
 		Enemy.TWILIGHT_SAGE:
-			max_coin = 250
-			coin = 250
+			max_coin = 300
+			coin = 300
 			max_playable_coins = 4
 			silver_flip_rate = 1
 			gold_flip_rate = 0.8
@@ -283,6 +297,7 @@ func flip():
 		take_damage(1)
 		main.sound_manager.play_sound(DAMAGE_LIGHT)
 		particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
+		create_floating_label(1,"DAMAGE","ENEMY")
 		if spend == 0:
 			main.sound_manager.play_sound(SPEND)
 			particle_manager.spawn_particle(SPEND_EXPLOSION_PARTICLE,main.enemy_spend.global_position)
@@ -390,7 +405,7 @@ func enemy_coin_calculation():
 					elif left_coin.state == 0 and right_coin.state == 0:
 						total_damage += (left_coin.base_value) + (right_coin.base_value)
 					else:
-						total_thrift += 4
+						total_thrift += 3
 					left_coin = null
 					right_coin = null
 				else:
@@ -441,7 +456,7 @@ func enemy_coin_calculation():
 					right_coin = coin			
 				if left_coin != null and right_coin != null:
 					if left_coin.state == 1 and right_coin.state == 1:
-						total_damage += left_coin.base_value / 2 + right_coin.base_value / 2 
+						total_damage += left_coin.base_value/2 + right_coin.base_value/2
 					left_coin = null
 					right_coin = null
 				else:
@@ -562,6 +577,7 @@ func start_enemy_turn():
 		var loan_damage = debt / 2
 		debt /= 2
 		take_damage(loan_damage)
+		create_floating_label(loan_damage,"DAMAGE","ENEMY")
 		main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
@@ -620,18 +636,22 @@ func end_enemy_turn():
 			main.player.coin += turn_damage
 			main.sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
 		else:
+			create_floating_label(turn_damage,"DAMAGE","PLAYER")
 			if turn_damage <= 10: main.sound_manager.play_sound(DAMAGE_LIGHT)
 			elif turn_damage <= 20: main.sound_manager.play_sound(DAMAGE_MODERATE)
 			else: main.sound_manager.play_sound(DAMAGE_HEAVY)
 			main.player.take_damage(turn_damage)
 			main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.player_portrait.global_position)
 	if turn_debt != 0:
+		create_floating_label(turn_debt,"DEBT","PLAYER")
 		main.player.debt += turn_debt
 		main.sound_manager.play_sound(DEBT)
 	if turn_thrift != 0:
+		create_floating_label(turn_thrift,"THRIFT","PLAYER")
 		main.player.thrift += turn_thrift
 		main.sound_manager.play_sound(THRIFT)
 	if turn_spend != 0:
+		create_floating_label(turn_spend,"SPEND","PLAYER")
 		main.player.spend += turn_spend
 		main.sound_manager.play_sound(SPEND)
 		
@@ -643,12 +663,13 @@ func end_enemy_turn():
 	gain += turn_gain
 	if main.player.has_pay_down:
 		if debt > coin:
+			create_floating_label(debt,"DAMAGE","ENEMY")
 			coin = 0
 			main.sound_manager.play_sound(PASSIVE_PAYDOWN)
 			main.player.trigger_temp_passive("pay_down","PAY DOWN")
 		else:
 			debt += 5
-		
+			create_floating_label(5,"DEBT","ENEMY")
 
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
 	for coin in coins:

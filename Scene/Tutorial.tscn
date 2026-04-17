@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cvieeuxw2n7gl" path="res://Scene/tutorial.gd" id="1_dmkc7"]
 [ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="2_ntsqm"]
-[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="3_c07v8"]
+[ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="3_dmkc7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h2smw"]
 bg_color = Color(0.12835406, 0.13816993, 0.12315822, 0.90000004)
@@ -49,7 +49,7 @@ vertical_alignment = 1
 [node name="Tutorial Info" type="Label" parent="Tutorial Panel/MarginContainer/VBoxContainer" unique_id=460021205]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
-theme_override_fonts/font = ExtResource("3_c07v8")
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_dmkc7")
+theme_override_font_sizes/font_size = 20
 text = "Press your Coin Bar to flip 1 Coin."
 vertical_alignment = 1

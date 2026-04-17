@@ -202,13 +202,18 @@ func take_damage(amount):
 
 func gain_coin():
 	var temp = gain
+	var temp2 = debt
 	gain -= debt
 	debt -= temp
 	coin += gain
 	if gain > 0:
+		if has_value_added_tax:
+			main.enemy.gain += temp2
 		particle_manager.spawn_particle(GAIN_EFFECT_PARTICLE,main.player_gain.global_position)
 		main.sound_manager.play_sound(GAIN_EFFECT)
 	elif debt > 0:
+		if has_value_added_tax:
+			main.enemy.gain += temp
 		particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,main.player_debt.global_position)
 		main.sound_manager.play_sound(DEBT_EFFECT)
 	gain = 0
@@ -248,10 +253,9 @@ func reset_stats():
 	has_value_increase = false
 
 	#SHOOTER PASSIVES
-
 	has_spare_change = false
 	has_triple_nickel = false
-	has_refund = true
+	has_refund = false
 	has_coin_snipe = false
 
 	#INVESTOR PASSIVES
@@ -383,11 +387,6 @@ func flip():
 		toggle_button(main.re_flip_button,false)
 		
 	var state = randi() % 2
-	
-	if has_sunlit_curse:
-		state = 0
-	if has_midnight_curse:
-		state = 1
 		
 	if (flip_clicks == 1 or flip_clicks == 3) and has_solar_coin:
 		state = 0;
@@ -806,8 +805,6 @@ func end_turn():
 	
 func activate_pre_battle_passives():
 	
-	if has_value_added_tax:
-		debt += 5
 	passive_income_used = false
 	payback_used = false
 	jar_o_savings_used = false

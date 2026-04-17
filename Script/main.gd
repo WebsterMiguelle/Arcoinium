@@ -277,6 +277,12 @@ func toggle_pause():
 	pause_menu.visible = get_tree().paused
 	
 func battle_start():
+	if current_room == 0:
+		re_flip_button.visible = false
+		player_reserve.visible = false
+	else:
+		re_flip_button.visible = true
+		player_reserve.visible = true
 	switch_vignetter_color(vignetter_default,0.1)
 	switch_vignette_color(vignette_default,0.1)
 	battle_particles.emitting = true
@@ -418,7 +424,7 @@ func start_player_turn():
 			current_tutorial = create_tutorial("Coin Flipping", "Press your Coin Bar to Flip a Coin.",player_health_bar.global_position,-100)
 			endTurn_button.disabled = true
 			player.toggle_button(re_flip_button,true)
-		if !has_encountered_reflip and player.player_turn_count == 2:
+		if !has_encountered_reflip and current_room == 1:
 			current_tutorial = create_tutorial("Re-Flip", "If there are coins on the Arcane Circle, \nPress Re-Flip to flip all coins again.",re_flip_button.global_position,-100)
 			endTurn_button.disabled = true
 		if !has_encountered_debt:
@@ -466,6 +472,7 @@ func start_enemy_turn():
 func _on_endturn_pressed():
 	if has_encountered_endturn:
 		if current_tutorial != null: current_tutorial.close()
+		if !has_encountered_reflip and current_room == 1: has_encountered_reflip = true
 		await player.end_turn()
 		turn_calculation_box.exit()
 		var defeat = await check_defeat()
@@ -546,13 +553,12 @@ func _on_flip_pressed():
 		if current_tutorial != null: current_tutorial.close()
 		has_encountered_reserve = true
 		current_tutorial = create_tutorial("Coin Reserve", "If Arcane Circle overflows with coins, \nadd it to the Reserve.",tutorial_area.global_position,-400)
-	if !has_encountered_flip:
+	if !has_encountered_flip and player.current_played_coin > 1:
 		has_encountered_flip = true
 		current_tutorial.close()
-		current_tutorial = create_tutorial("Coin Spells","Sun Pairs deal More DAMAGE. \nMoon Pairs apply more GAIN.",turn_calculation.global_position,200)
+		current_tutorial = create_tutorial("Coin Spells","𖤓 + 𖤓 = More DAMAGE \n☾ + ☾ = More GAIN \n𖤓 + ☾ = Low DAMAGE and Low GAIN",player_health_bar.global_position,-200)
 		has_encountered_spells = true
-	
-	if has_encountered_spells and !has_encountered_endturn and player.current_played_coin > 3:
+	if has_encountered_spells and !has_encountered_endturn and player.current_played_coin > 5:
 		has_encountered_endturn = true
 		player.toggle_button(re_flip_button,true)
 		player.toggle_button(flip_button,true)
@@ -656,8 +662,6 @@ func check_defeat():
 	return null
 
 func handle_victory_flow():
-	if !has_encountered_reflip:
-		has_encountered_reflip = true
 	endTurn_button.disabled = true
 	switch_vignetter_color(vignetter_default,1.0)
 	switch_vignette_color(vignette_default,1.0)

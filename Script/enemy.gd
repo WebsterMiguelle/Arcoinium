@@ -191,20 +191,20 @@ func setup(m,enemy):
 			type = Enemy.DWARF
 		Enemy.COLLECTOR:
 			max_coin = 200
-			coin = 36
-			max_playable_coins = 6
-			silver_flip_rate = 0.1
+			coin = 48
+			max_playable_coins = 8
+			silver_flip_rate = 0.3
 			gold_flip_rate = 0.0
 			bounty = 50
 			type = Enemy.COLLECTOR
 			has_value_added_tax = true
 			main.player.has_value_added_tax = true
-			trigger_enemy_passive("The Tax Collector immediately applied 5 DEBT.", 3.0)
+			trigger_enemy_passive("The Collector will apply 1 GAIN to self for each DEBT you settled.", 5.0)
 		Enemy.TRADER:
 			max_coin = 200
-			coin = 40
+			coin = 48
 			max_playable_coins = 2
-			silver_flip_rate = 0.05
+			silver_flip_rate = 0.1
 			gold_flip_rate = 0.0
 			bounty = 50
 			type = Enemy.TRADER
@@ -212,16 +212,14 @@ func setup(m,enemy):
 			trigger_enemy_passive("The Trader will Copy your Number of Played Coins.", 3.0)
 		Enemy.THRIFTER:
 			max_coin = 200
-			coin = 90
+			coin = 70
 			max_playable_coins = 8
-			silver_flip_rate = 0.3
-			gold_flip_rate = 0
+			silver_flip_rate = 0.5
+			gold_flip_rate = 0.1
 			bounty = 75
 			type = Enemy.THRIFTER
 			has_learn_to_save = true
 			main.player.has_learn_to_save = true
-			main.player.thrift = 8
-			trigger_enemy_passive("The Thrifter immediately applied 8 THRIFT.", 3.0)
 		Enemy.ARISTOCRAT:
 			max_coin = 200
 			coin = 120
@@ -232,7 +230,7 @@ func setup(m,enemy):
 			type = Enemy.ARISTOCRAT
 			has_fully_paid = true
 			debt = 100
-			trigger_enemy_passive("When The Aristocrat settled all her DEBT, Deal 100 Damage.", 3.0)
+			trigger_enemy_passive("When The Aristocrat settled all her DEBT, Deal 100 Damage.", 4.0)
 		Enemy.SUN_CASTER:
 			max_coin = 200
 			coin = 120
@@ -243,10 +241,10 @@ func setup(m,enemy):
 			type = Enemy.SUN_CASTER
 			has_sunlit_curse = true
 			main.player.has_sunlit_curse = true
-			trigger_enemy_passive("You Have Guaranteed Sun Flips. Avoid Playing 9 or More Sun Coins.", 5.0)
+			trigger_enemy_passive("Avoid Playing 9 or More SUN Coins.", 5.0)
 		Enemy.MOON_CASTER:
 			max_coin = 200
-			coin = 100
+			coin = 120
 			max_playable_coins = 12
 			silver_flip_rate = 1
 			gold_flip_rate = 0
@@ -254,7 +252,7 @@ func setup(m,enemy):
 			type = Enemy.MOON_CASTER
 			has_midnight_curse = true
 			main.player.has_midnight_curse = true
-			trigger_enemy_passive("You Have Guaranteed Moon Flips. Avoid Playing 9 or More Moon Coins.", 5.0)
+			trigger_enemy_passive("Avoid Playing 9 or More MOON Coins.", 5.0)
 		Enemy.TWILIGHT_SAGE:
 			max_coin = 250
 			coin = 250
@@ -267,7 +265,7 @@ func setup(m,enemy):
 			battle_particles.emitting = false
 			dawn_particles.emitting = true
 			switch_vignette_color(dawn_stance,0.4)
-			trigger_enemy_passive("DAWN STANCE: Play as Many Moon Coins.", 3.0)
+			trigger_enemy_passive("DAWN STANCE: Play as Many MOON Coins.", 5.0)
 
 
 func flip():
@@ -358,8 +356,8 @@ func enemy_coin_calculation():
 					right_coin = coin			
 				if left_coin != null and right_coin != null:
 					if left_coin.state != right_coin.state:
-						total_damage += (left_coin.base_value) / 2
-						total_debt += (right_coin.base_value) / 2
+						total_damage += (left_coin.base_value)
+						total_debt += (right_coin.base_value)
 					left_coin = null
 					right_coin = null
 				else:
@@ -368,9 +366,10 @@ func enemy_coin_calculation():
 		Enemy.TRADER:
 			for coin in coins:
 				if coin.state == 0: 
-					total_spend += coin.base_value / 2
+					total_damage += coin.base_value / 2
 					sun_count +=1
 				else:
+					total_gain += coin.base_value / 2
 					moon_count +=1
 		Enemy.THRIFTER:
 			var is_left = true # true - Left Coin, false - Right Coin
@@ -391,7 +390,7 @@ func enemy_coin_calculation():
 					elif left_coin.state == 0 and right_coin.state == 0:
 						total_damage += (left_coin.base_value) + (right_coin.base_value)
 					else:
-						total_thrift += 2
+						total_thrift += 4
 					left_coin = null
 					right_coin = null
 				else:
@@ -410,7 +409,7 @@ func enemy_coin_calculation():
 			var right_coin
 			for coin in coins:
 				if coin.state == 0:
-					total_spend += 1
+					total_spend += 2
 					sun_count += 1
 				else:
 					moon_count +=1
@@ -670,13 +669,13 @@ func end_enemy_turn():
 				dawn_particles.emitting = false
 				dusk_particles.emitting = true
 				switch_vignette_color(dusk_stance,0.4)
-				trigger_enemy_passive("DUSK STANCE: Play As Many Sun Coins.", 3.0)
+				trigger_enemy_passive("DUSK STANCE: Play As Many SUN Coins.", 5.0)
 				main.enemy_portrait_sprite.play("TWILIGHT_SAGE_DUSK")
 			else:
 				dawn_particles.emitting = true
 				dusk_particles.emitting = false
 				switch_vignette_color(dawn_stance,0.4)
-				trigger_enemy_passive("DAWN STANCE: Play as Many Moon Coins.", 3.0)
+				trigger_enemy_passive("DAWN STANCE: Play as Many MOON Coins.", 5.0)
 				main.enemy_portrait_sprite.play("TWILIGHT_SAGE_DAWN")	
 			max_playable_coins += 4
 	

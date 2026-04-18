@@ -67,7 +67,9 @@ const SPEND_EFFECT_PARTICLE = preload("uid://m3n67qiuvr7i")
 const SPEND_EXPLOSION_PARTICLE = preload("uid://bgfgq2kw3njao")
 
 #PLAYER STATS
+var greed = false
 var max_coin = 1000 #Max Coin Capacity
+var initial_max_reserve
 var max_reserve = 6
 var current_reserve = 0
 var coin = 100:
@@ -91,7 +93,8 @@ var gold_flip_rate = 0.05: #Chance to Flip a Gold Coin
 		gold_flip_rate = clamp(value,0.0,100.0) 
 
 #STATUS EFFECTS
-
+var lock = false #Reserve is Locked
+var slow = false #Re-Flip on each Coin only works 50% at a time.
 var gain = 0: #Coin to be gained next turn
 	set(value):
 		gain = clamp(value,0,1000) 
@@ -220,7 +223,7 @@ func gain_coin():
 	debt -= temp
 	coin += gain
 	if gain > 0:
-		if has_value_added_tax:
+		if temp2 != 0 and has_value_added_tax:
 			main.enemy.gain += temp2
 		particle_manager.spawn_particle(GAIN_EFFECT_PARTICLE,main.player_gain.global_position)
 		main.sound_manager.play_sound(GAIN_EFFECT)
@@ -234,6 +237,7 @@ func gain_coin():
 	print("Player HP: ", coin)
 
 func reset_stats():
+	greed = PlayerSingleton.greed
 	max_coin = 500 #Max Coin Capacity
 	max_reserve = 4
 	current_reserve = 0
@@ -292,6 +296,9 @@ func reset_stats():
 	has_deposit = false
 
 func refresh_start_of_battle_stats():
+	initial_max_reserve = max_reserve
+	lock = false
+	slow = false
 	has_all_in = false
 	thrifted_attack = 0
 	debted_attack = 0
@@ -401,7 +408,10 @@ func flip():
 		toggle_button(main.re_flip_button,false)
 		
 	var state = randi() % 2
-		
+	
+	if greed and has_sunlit_curse: state = 0
+	if greed and has_midnight_curse: state = 1
+
 	if (flip_clicks == 1 or flip_clicks == 3) and has_solar_coin:
 		state = 0;
 		trigger_temp_passive("solar_coin","SOLAR COIN")
@@ -506,12 +516,17 @@ func re_flip():
 	main.reflip_label.text = str(max_re_flip - current_re_flip)
 	var coins = get_tree().get_nodes_in_group("coins")
 	var index = 0
+	var slow_chance
 	for c in coins:
 		if !c.reserved:
 			index += 1
 		if index <= 2 and has_advanced_planning:
 			pass
 		else:
+			if slow:
+				slow_chance = randf()
+				if slow_chance <= 0.5:
+					continue
 			if has_inflation:
 				var upgrade_chance = randf()
 				if upgrade_chance <= 0.5:
@@ -519,7 +534,7 @@ func re_flip():
 				c.re_flip()
 			else:
 				c.re_flip()
-	if has_spare_change:
+	if !lock and has_spare_change:
 		var has_withdraw_damage = false
 		var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
 		if reserved_coins.size() != 0:
@@ -559,6 +574,8 @@ func re_flip():
 	
 	
 func start_turn():
+	if lock:
+		max_reserve = 0
 	player_turn_count += 1
 	
 	#Initialize Global Stats
@@ -606,10 +623,12 @@ func start_turn():
 
 	main.reflip_label.text = str(max_re_flip - current_re_flip)
 	current_reserve = 0
+
+	#Check Coin Reserve
 	
-	if player_turn_count != 1:
-		#Check Coin Reserve
+	if !lock and player_turn_count != 1:
 		var coins = get_tree().get_nodes_in_group("reserved coins")
+		current_reserve = coins.size()
 		var dividend_chance
 		var has_withdraw_damage = false
 		var is_deck_full = false
@@ -631,6 +650,7 @@ func start_turn():
 					pos = main.coin_deck.get_reserve_slot()
 					current_reserve += 1
 				else:
+					current_reserve -= 1
 					current_played_coin += 1
 					pos = main.coin_deck.get_vacant_slot(current_played_coin)
 					coin.global_position.x = pos[0]
@@ -690,12 +710,13 @@ func start_turn():
 			main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 			main.sound_manager.play_sound(DAMAGE_MODERATE)	
 				#reserved_coin.queue_free()
-	if coin == 1 or current_reserve >= max_reserve:
+	if !lock and (coin == 1 or current_reserve >= max_reserve):
 		toggle_button(main.flip_button,true)
 	if current_played_coin == 0 :
 		if has_refund:
 			all_in.text = "ALL IN"
 		toggle_button(main.re_flip_button,true)
+	print(max_reserve)
 
 func end_turn():
 	all_in.text = ""
@@ -745,8 +766,13 @@ func end_turn():
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 	gain += turn_gain
 	if turn_debt != 0: 
-		create_floating_label(turn_debt,"DEBT","ENEMY")
-		main.sound_manager.play_sound(DEBT)
+		if (main.enemy.type == Enemy.COLLECTOR or main.enemy.type == Enemy.ARISTOCRAT) and greed:
+			turn_debt = 0
+			create_floating_label("DEBT","IMMUNE","ENEMY")
+			main.sound_manager.play_sound(PASSIVE_REFUND)
+		else:
+			create_floating_label(turn_debt,"DEBT","ENEMY")
+			main.sound_manager.play_sound(DEBT)
 		main.enemy.debt += turn_debt
 	if turn_thrift != 0:
 		create_floating_label(turn_thrift,"THRIFT","ENEMY")
@@ -820,11 +846,15 @@ func end_turn():
 
 	print(current_reserve)
 	print(max_reserve)
-	if main.enemy.coin > 0 and has_cash_out and current_reserve >= max_reserve:
+	if !lock and main.enemy.coin > 0 and has_cash_out and current_reserve >= max_reserve:
 		trigger_temp_passive("cash_out","CASH OUT")
 		has_extra_turn = true
 	
-
+	if lock:	
+		lock = false
+		max_reserve = initial_max_reserve
+	if slow:
+		slow = false
 	
 func activate_pre_battle_passives():
 	
@@ -1010,13 +1040,13 @@ func activate_player_turn_end_passives():
 			if index == 1: first_coin = coin
 			if index == 2: second_coin = coin
 			if index == 3 or index == 5 or index == 7:
-				coin.copy_coin(first_coin)
+				coin.state = first_coin.state
 				coin.refresh_sprite()
 				main.sound_manager.play_sound(COIN_FLIP)
 				coin_calculation()
 				await get_tree().create_timer(0.1).timeout
 			if index == 4 or index == 6 or index == 8:
-				coin.copy_coin(second_coin)
+				coin.state = second_coin.state
 				coin.refresh_sprite()
 				main.sound_manager.play_sound(COIN_FLIP)
 				coin_calculation()

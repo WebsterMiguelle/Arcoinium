@@ -26,12 +26,12 @@ const PASSIVE_PASSIVE_INCOME = preload("uid://cl4xnombcshkv")
 const PASSIVE_PAYDOWN = preload("uid://djv3lp0l3aftb")
 const THRIFT = preload("uid://b34wg18n8eb0t")
 const THRIFT_FLAME = preload("uid://kld7c6qpdho7")
-
+const RESERVE_LOCK = preload("uid://4lh30crpkf58")
 const DEBT_EFFECT = preload("uid://d18qgeounkatf")
 const GAIN_EFFECT = preload("uid://cr366klr6aivy")
 const SPENDED_FLIP = preload("uid://dgu0hy8kwo343")
 const SPEND = preload("uid://bvbtrait4prdi")
-
+const SLOW = preload("uid://f5jmno7qyhek")
 
 
 
@@ -61,6 +61,7 @@ enum Enemy{
 
 
 #ENEMY STATS
+var greed = false
 var bounty = 0 #Coin Drop on Death
 var type #Enemy Type
 var max_coin = 0 #Max Coin Capacity
@@ -188,98 +189,196 @@ func setup(m,enemy):
 	print("Hello" + str(enemy))
 	match enemy:
 		Enemy.MAGE:
-			max_coin = 200
-			coin = 12
-			max_playable_coins = 1
-			silver_flip_rate = 0.0
-			gold_flip_rate = 0.0
-			bounty = 25
+			if !greed:
+				max_coin = 200
+				coin = 12
+				max_playable_coins = 1
+				silver_flip_rate = 0.0
+				gold_flip_rate = 0.0
+				bounty = 25
+			else:
+				max_coin = 200
+				coin = 40
+				max_playable_coins = 6
+				silver_flip_rate = 0.0
+				gold_flip_rate = 0.0
+				bounty = 50
 			type = Enemy.MAGE
 		Enemy.DWARF:
-			max_coin = 200
-			coin = 12
-			max_playable_coins = 2
-			silver_flip_rate = 0.0
-			gold_flip_rate = 0.0
-			bounty = 25
+			if !greed:
+				max_coin = 200
+				coin = 12
+				max_playable_coins = 2
+				silver_flip_rate = 0.0
+				gold_flip_rate = 0.0
+				bounty = 25
+			else:
+				max_coin = 200
+				coin = 50
+				max_playable_coins = 12
+				silver_flip_rate = 0.0
+				gold_flip_rate = 0.0
+				bounty = 50
 			type = Enemy.DWARF
 		Enemy.COLLECTOR:
-			max_coin = 200
-			coin = 48
-			max_playable_coins = 8
-			silver_flip_rate = 0.3
-			gold_flip_rate = 0.0
-			bounty = 50
 			type = Enemy.COLLECTOR
-			has_value_added_tax = true
-			main.player.has_value_added_tax = true
-			trigger_enemy_passive("The Collector will apply 1 GAIN to self for each DEBT you settled.", 5.0)
+			if !greed:
+				max_coin = 200
+				coin = 48
+				max_playable_coins = 8
+				silver_flip_rate = 0.5
+				gold_flip_rate = 0.2
+				bounty = 50
+				has_value_added_tax = true
+				main.player.has_value_added_tax = true
+				trigger_enemy_passive("The Collector will apply 1 GAIN to self for each DEBT you settled.", 5.0)
+			else:
+				max_coin = 80
+				coin = 80
+				max_playable_coins = 16
+				silver_flip_rate = 0.8
+				gold_flip_rate = 0.0
+				bounty = 100
+				has_value_added_tax = true
+				main.player.has_value_added_tax = true
+				trigger_enemy_passive("The Collector will apply 1 GAIN to self for each DEBT you settled.", 5.0)
 		Enemy.TRADER:
-			max_coin = 200
-			coin = 48
-			max_playable_coins = 2
-			silver_flip_rate = 0.1
-			gold_flip_rate = 0.0
-			bounty = 50
-			type = Enemy.TRADER
-			has_fair_trade = true
-			trigger_enemy_passive("The Trader will Copy your Number of Played Coins.", 3.0)
+			if !greed:
+				max_coin = 200
+				coin = 48
+				max_playable_coins = 2
+				silver_flip_rate = 0.1
+				gold_flip_rate = 0.0
+				bounty = 50
+				type = Enemy.TRADER
+				has_fair_trade = true
+				trigger_enemy_passive("The Trader will Copy your Number of Played Coins.", 3.0)
+			else:
+				max_coin = 200
+				coin = 100
+				max_playable_coins = 2
+				silver_flip_rate = 1.0
+				gold_flip_rate = 0.0
+				bounty = 100
+				type = Enemy.TRADER
+				has_fair_trade = true
+				trigger_enemy_passive("The Trader will Copy your Number of Played Coins.", 3.0)
 		Enemy.THRIFTER:
-			max_coin = 200
-			coin = 70
-			max_playable_coins = 8
-			silver_flip_rate = 0.5
-			gold_flip_rate = 0.1
-			bounty = 75
-			type = Enemy.THRIFTER
-			has_learn_to_save = true
-			main.player.has_learn_to_save = true
+			if !greed:
+				max_coin = 200
+				coin = 70
+				max_playable_coins = 8
+				silver_flip_rate = 0.5
+				gold_flip_rate = 0.1
+				bounty = 75
+				type = Enemy.THRIFTER
+				has_learn_to_save = true
+				main.player.has_learn_to_save = true
+			else:
+				max_coin = 200
+				coin = 150
+				max_playable_coins = 12
+				silver_flip_rate = 0
+				gold_flip_rate = 1
+				bounty = 150
+				type = Enemy.THRIFTER
+				has_learn_to_save = true
+				main.player.has_learn_to_save = true
 		Enemy.ARISTOCRAT:
-			max_coin = 200
-			coin = 120
-			max_playable_coins = 16
-			silver_flip_rate = 1
-			gold_flip_rate = 0
-			bounty = 75
-			type = Enemy.ARISTOCRAT
-			has_fully_paid = true
-			debt = 100
-			trigger_enemy_passive("When The Aristocrat settled all her DEBT, Deal 100 Damage.", 4.0)
+			if !greed:
+				max_coin = 200
+				coin = 120
+				max_playable_coins = 16
+				silver_flip_rate = 1
+				gold_flip_rate = 0
+				bounty = 75
+				type = Enemy.ARISTOCRAT
+				has_fully_paid = true
+				debt = 100
+				trigger_enemy_passive("When The Aristocrat settled all her DEBT, Deal 100 Damage.", 4.0)
+			else:
+				max_coin = 180
+				coin = 180
+				max_playable_coins = 16
+				silver_flip_rate = 0
+				gold_flip_rate = 1
+				bounty = 150
+				type = Enemy.ARISTOCRAT
+				has_fully_paid = true
+				debt = 200
+				trigger_enemy_passive("When The Aristocrat settled all her DEBT, Deal 500 Damage.", 4.0)
 		Enemy.SUN_CASTER:
-			max_coin = 200
-			coin = 120
-			max_playable_coins = 12
-			silver_flip_rate = 1
-			gold_flip_rate = 0
-			bounty = 100
-			type = Enemy.SUN_CASTER
-			has_sunlit_curse = true
-			main.player.has_sunlit_curse = true
-			trigger_enemy_passive("Avoid Playing 9 or More SUN Coins.", 5.0)
+			if !greed:
+				max_coin = 200
+				coin = 150
+				max_playable_coins = 12
+				silver_flip_rate = 1
+				gold_flip_rate = 0
+				bounty = 100
+				type = Enemy.SUN_CASTER
+				has_sunlit_curse = true
+				trigger_enemy_passive("Avoid Playing 9 or More SUN Coins.", 5.0)
+			else:
+				max_coin = 200
+				coin = 200
+				max_playable_coins = 16
+				silver_flip_rate = 1
+				gold_flip_rate = 0.5
+				bounty = 200
+				type = Enemy.SUN_CASTER
+				has_sunlit_curse = true
+				main.player.has_sunlit_curse = true
+				trigger_enemy_passive("You have GUARANTEED SUN FLIPS. Avoid Playing 9 or More SUN Coins.", 5.0)
 		Enemy.MOON_CASTER:
-			max_coin = 200
-			coin = 120
-			max_playable_coins = 12
-			silver_flip_rate = 1
-			gold_flip_rate = 0
-			bounty = 100
-			type = Enemy.MOON_CASTER
-			has_midnight_curse = true
-			main.player.has_midnight_curse = true
-			trigger_enemy_passive("Avoid Playing 9 or More MOON Coins.", 5.0)
+			if !greed:
+				max_coin = 200
+				coin = 150
+				max_playable_coins = 12
+				silver_flip_rate = 1
+				gold_flip_rate = 0
+				bounty = 100
+				type = Enemy.MOON_CASTER
+				has_midnight_curse = true
+				trigger_enemy_passive("Avoid Playing 9 or More MOON Coins.", 5.0)
+			else:
+				max_coin = 200
+				coin = 200
+				max_playable_coins = 16
+				silver_flip_rate = 1
+				gold_flip_rate = 0.5
+				bounty = 200
+				type = Enemy.MOON_CASTER
+				has_midnight_curse = true
+				main.player.has_midnight_curse = true
+				trigger_enemy_passive("You have GUARANTEED MOON FLIPS. Avoid Playing 9 or More MOON Coins.", 5.0)
 		Enemy.TWILIGHT_SAGE:
-			max_coin = 300
-			coin = 300
-			max_playable_coins = 4
-			silver_flip_rate = 1
-			gold_flip_rate = 0.8
-			bounty = 0
-			type = Enemy.TWILIGHT_SAGE
-			has_dusk_stance = false
-			battle_particles.emitting = false
-			dawn_particles.emitting = true
-			switch_vignette_color(dawn_stance,0.4)
-			trigger_enemy_passive("DAWN STANCE: Play as Many MOON Coins.", 5.0)
+			if !greed:
+				max_coin = 250
+				coin = 250
+				max_playable_coins = 4
+				silver_flip_rate = 1
+				gold_flip_rate = 0.8
+				bounty = 0
+				type = Enemy.TWILIGHT_SAGE
+				has_dusk_stance = false
+				battle_particles.emitting = false
+				dawn_particles.emitting = true
+				switch_vignette_color(dawn_stance,0.4)
+				trigger_enemy_passive("DAWN STANCE: Play as Many MOON Coins.", 5.0)
+			else:
+				max_coin = 300
+				coin = 300
+				max_playable_coins = 8
+				silver_flip_rate = 0
+				gold_flip_rate = 1
+				bounty = 0
+				type = Enemy.TWILIGHT_SAGE
+				has_dusk_stance = false
+				battle_particles.emitting = false
+				dawn_particles.emitting = true
+				switch_vignette_color(dawn_stance,0.4)
+				trigger_enemy_passive("DAWN STANCE: Play as Many MOON Coins.", 5.0)
+				
 
 
 func flip():
@@ -334,6 +433,8 @@ func enemy_coin_calculation():
 	var total_spend = 0
 	var sun_count = 0
 	var moon_count = 0
+	var activate_lock = false
+	var activate_slow = false
 	@warning_ignore("confusable_local_usage", "shadowed_variable")
 	var type = type
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
@@ -343,19 +444,32 @@ func enemy_coin_calculation():
 			for coin in coins:
 				if coin.state == 0: 
 					total_damage += coin.base_value
+					if greed: total_spend += 1
 					sun_count +=1
 				else:
 					moon_count +=1
 		Enemy.DWARF:
-			var can_attack = true
-			var current_played_coin = 0
+			var is_left = true # true - Left Coin, false - Right Coin
+			var left_coin
+			var right_coin
 			for coin in coins:
-				current_played_coin += 1
-				if coin.state == 1: 
-					can_attack = false
+				if coin.state == 0:
+					sun_count +=1
+				else: 
+					if greed: total_thrift += 1
 					moon_count += 1
-				else: sun_count += 1
-			if can_attack and current_played_coin == 2: total_damage += 4
+				if is_left == true:
+					left_coin = coin
+				if is_left == false:
+					right_coin = coin			
+				if left_coin != null and right_coin != null:
+					if left_coin.state == 0 and right_coin.state == 0:
+						total_damage += (left_coin.base_value)
+					left_coin = null
+					right_coin = null
+				else:
+					pass
+				is_left = !is_left
 		Enemy.COLLECTOR:
 			var is_left = true # true - Left Coin, false - Right Coin
 			var left_coin
@@ -386,6 +500,8 @@ func enemy_coin_calculation():
 				else:
 					total_gain += coin.base_value / 2
 					moon_count +=1
+			if greed and current_played_coin == 16:
+				activate_lock = true
 		Enemy.THRIFTER:
 			var is_left = true # true - Left Coin, false - Right Coin
 			var left_coin
@@ -405,7 +521,14 @@ func enemy_coin_calculation():
 					elif left_coin.state == 0 and right_coin.state == 0:
 						total_damage += (left_coin.base_value) + (right_coin.base_value)
 					else:
-						total_thrift += 3
+						if greed:
+							total_thrift += 1
+						else:
+							total_thrift += 3
+					if total_thrift <= 6:
+						activate_lock = true
+					else:
+						activate_lock = false
 					left_coin = null
 					right_coin = null
 				else:
@@ -418,6 +541,8 @@ func enemy_coin_calculation():
 					moon_count +=1
 				else:
 					sun_count +=1
+				if current_played_coin == 16:
+					activate_slow = true
 		Enemy.SUN_CASTER:
 			var is_left = true # true - Left Coin, false - Right Coin
 			var left_coin
@@ -426,6 +551,10 @@ func enemy_coin_calculation():
 				if coin.state == 0:
 					total_spend += 2
 					sun_count += 1
+					if greed:
+						total_damage += coin.base_value / 2
+						if sun_count >= 8:
+							activate_lock = true
 				else:
 					moon_count +=1
 				if is_left == true:
@@ -448,6 +577,10 @@ func enemy_coin_calculation():
 				if coin.state == 1:
 					total_debt += coin.base_value / 2
 					moon_count += 1
+					if greed:
+						total_damage += coin.base_value / 2
+						if moon_count >= 8:
+							activate_slow = true
 				else:
 					sun_count += 1
 				if is_left == true:
@@ -468,9 +601,17 @@ func enemy_coin_calculation():
 			var right_coin
 			for coin in coins:
 				if coin.state == 0:
+					if greed:
+						total_damage += 1
 					sun_count +=1
 				else: 
+					if greed:
+						total_gain += 1
 					moon_count += 1
+				if sun_count >= 8:
+					activate_lock = true
+				if moon_count >= 8:
+					activate_slow = true
 				if is_left == true:
 					left_coin = coin
 				if is_left == false:
@@ -504,12 +645,16 @@ func enemy_coin_calculation():
 			text += "\nTHRIFT: " + str(total_thrift)
 		if total_spend != 0:
 			text += "\nSPEND: " + str(total_spend)
+		if activate_lock:
+			text += "\nCan LOCK"
+		if activate_slow:
+			text += "\nCan SLOW"
 		main.turn_calculation.text = text
 		main.turn_calculation.add_theme_color_override("font_color", Color.WHITE)
 	if text != "":
 		sun_moon_count.text = "𖤓 " + str(sun_count) + " ☾ " + str(moon_count)
 		main.turn_calculation_box.entrance(true)
-	return [total_damage,total_gain,total_debt,total_thrift,total_spend]
+	return [total_damage,total_gain,total_debt,total_thrift,total_spend,activate_lock,activate_slow]
 
 func start_enemy_turn():
 	toggle_button(main.flip_button,true)
@@ -518,7 +663,10 @@ func start_enemy_turn():
 
 
 	if has_fair_trade:
-		trigger_enemy_passive("The Trader will play " + str(main.player.previous_player_flips) + " Coins.", 2.0)
+		if greed and main.player.previous_player_flips == 16:
+			trigger_enemy_passive("Playing " + str(main.player.previous_player_flips) + " Coins will also apply LOCK.", 2.0)
+		else:
+			trigger_enemy_passive("The Trader will play " + str(main.player.previous_player_flips) + " Coins.", 2.0)
 		max_playable_coins = main.player.previous_player_flips
 		main.player.previous_player_flips = 0
 
@@ -570,8 +718,11 @@ func start_enemy_turn():
 	if has_fully_paid and debt == 0:
 		particle_manager.play_attack_animation(main.coin_deck, main.player_portrait, turn_damage)
 		await get_tree().create_timer(1.0).timeout
-		
-		main.player.take_damage(100)
+		if greed:
+			main.player.take_damage(500)
+		else:
+			main.player.take_damage(100)
+		main.sound_manager.play_sound(DAMAGE_HEAVY)
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.player_portrait.global_position)
 	if main.player.has_loan_shark and debt > 1:
 		var loan_damage = debt / 2
@@ -587,8 +738,12 @@ func start_enemy_turn():
 	current_played_coin = 0
 	
 	main.turn_calculation.text = ""
-
+	
+	var flip_speed = 0.4
+	if greed: flip_speed = 0.2
 	#FLIP COINS
+	if main.player.coin == 0:
+		return
 	if coin > 0:
 		await get_tree().create_timer(1.0).timeout
 		while current_played_coin != max_playable_coins:
@@ -598,7 +753,7 @@ func start_enemy_turn():
 			else:
 				main.sound_manager.play_sound(DEATH)
 				break
-			await get_tree().create_timer(0.4).timeout
+			await get_tree().create_timer(flip_speed).timeout
 		await get_tree().create_timer(1.0).timeout
 		await end_enemy_turn()
 
@@ -611,12 +766,16 @@ func end_enemy_turn():
 	var turn_debt = calculations[2]
 	var turn_thrift = calculations[3]
 	var turn_spend = calculations[4]
+	var turn_lock = calculations[5]
+	var turn_slow = calculations[6]
 	
 	if coin == 0:
 		turn_damage = 0
 		turn_gain = 0
 		turn_debt = 0
 		turn_thrift = 0
+		turn_lock = false
+		turn_slow = false
 		turn_spend = 0
 		main.turn_calculation.text = ""
 		main.turn_calculation_box.exit()
@@ -654,6 +813,14 @@ func end_enemy_turn():
 		create_floating_label(turn_spend,"SPEND","PLAYER")
 		main.player.spend += turn_spend
 		main.sound_manager.play_sound(SPEND)
+	if turn_lock:
+		create_floating_label("","LOCK","PLAYER")
+		main.player.lock = true
+		main.sound_manager.play_sound(RESERVE_LOCK)
+	if turn_slow:
+		main.sound_manager.play_sound(SLOW)
+		main.player.slow = true
+		create_floating_label("","SLOW","PLAYER")
 		
 	thrift = 0
 	spend = 0

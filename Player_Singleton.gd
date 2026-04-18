@@ -1,6 +1,8 @@
 extends Node
 
+
 #PLAYER STATS
+var greed = false
 var max_coin = 1000 #Max Coin Capacity
 var max_reserve = 6
 var current_reserve = 0
@@ -46,6 +48,8 @@ var payback_coins = 10
 var passive_income_used = false
 var pocket_money_coins = 6
 var previous_player_gain = 0
+var jar_o_savings_used = false
+var jar_o_savings_coins = 16
 
 var previous_player_flips = 0
 var player_turn_count = 0
@@ -53,6 +57,10 @@ var sun_count = 0
 var moon_count = 0
 var has_extra_turn = false
 var extra_turn_penalty = 1
+var thrifted_attack = 0
+var debted_attack = 0
+var spended_attack = 0
+var has_all_in = false
 
 #GENERAL PASSIVES
 

@@ -20,6 +20,7 @@ enum Enemy{
 #USER INTERFACE
 const TUTORIAL = preload("uid://cq10yywodq6bn")
 var current_tutorial = null
+var tutorial_enabled = true
 var has_encountered_flip = false
 var has_encountered_spells = false
 var has_encountered_reflip = false
@@ -35,7 +36,8 @@ var has_encountered_thrift = false
 
 @onready var player = $Player
 @onready var enemy = $Enemy
-
+@onready var main: TextureRect = $"."
+var greed_color = '#ffa889'
 var vignette_default = '#bdabb8'
 var vignetter_default = '#ffe6909e'
 var sun_caster_color = '#e56400'
@@ -130,11 +132,14 @@ $"Progression Map/Boss"
 @onready var player_debt: Label = $"Player/Player Debt"
 @onready var player_health_label = $"Battle UI/HealthLabel"
 @onready var player_thrift: Label = $"Player/Player Thrift"
-
+@onready var player_lock: Label = $"Player/Player Lock"
+@onready var player_slow: Label = $"Battle UI/Re-Flip/Player Slow"
+@onready var player_slow_particles: GPUParticles2D = $"Battle UI/Re-Flip/Player Slow Particles"
+var slow_color = "#43a563"
 const PLAYER_INFORMATION_DISPLAY = preload("uid://c61s4yrsvak0l")
 var player_info_menu: Node = null
 
-
+@onready var player_lock_particles: GPUParticles2D = $"Player/Player Lock Particles"
 @onready var player_gain_particles: GPUParticles2D = $"Player/Player Gain Particles"
 @onready var player_debt_particles: GPUParticles2D = $"Player/Player Debt Particles"
 @onready var enemy_debt_particles: GPUParticles2D = $"Enemy/Enemy Debt Particles"
@@ -243,6 +248,7 @@ func switch_vignetter_color(to,duration):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+
 	await get_tree().create_timer(0.4).timeout
 	await _play_fake_coin_intro()
 	turn_calculation_box.visible = false
@@ -257,6 +263,16 @@ func _ready():
 	turn_ui.visible = false
 	print(reward_manager)
 	player.reset_stats()
+	
+	#GREED MODE
+	if player.greed: 
+		main.self_modulate = Color(greed_color)
+		tutorial_enabled = false
+		enemy.greed = true
+		player.coin += 15
+		player.silver_flip_rate += 0.4
+		player.gold_flip_rate += 0.2
+	else: main.self_modulate = Color.WHITE
 	shop_manager.item_purchased.connect(_on_item_purchased)
 	
 	if not pause_menu.end_run_pressed.is_connected(_on_end_run_pressed):
@@ -277,7 +293,7 @@ func toggle_pause():
 	pause_menu.visible = get_tree().paused
 	
 func battle_start():
-	if current_room == 0:
+	if tutorial_enabled and current_room == 0:
 		re_flip_button.visible = false
 		player_reserve.visible = false
 	else:
@@ -375,7 +391,7 @@ func _process(delta: float) -> void:
 	update_enemy_coin()
 	update_player_stacks()
 	update_enemy_stacks()
-	update_player_reserve()
+	update_player_reflip_and_reserve()
 
 func show_turn_ui(text):
 	sound_manager.play_sound(TURN_REVEAL)
@@ -420,22 +436,22 @@ func start_player_turn():
 		current_turn = Turn.PLAYER
 		sound_manager.play_sound(TURN_PLAYER)
 		await player.start_turn()
-		if !has_encountered_flip:
+		if tutorial_enabled and !has_encountered_flip:
 			current_tutorial = create_tutorial("Coin Flipping", "Press your Coin Bar to Flip a Coin.",player_health_bar.global_position,-100)
 			endTurn_button.disabled = true
 			player.toggle_button(re_flip_button,true)
-		if !has_encountered_reflip and current_room == 1:
+		if tutorial_enabled and !has_encountered_reflip and current_room == 1:
 			current_tutorial = create_tutorial("Re-Flip", "If there are coins on the Arcane Circle, \nPress Re-Flip to flip all coins again.",re_flip_button.global_position,-100)
 			endTurn_button.disabled = true
-		if !has_encountered_debt:
+		if tutorial_enabled and !has_encountered_debt:
 			if player.debt > 0:
 				has_encountered_debt = true
 				current_tutorial = create_tutorial("DEBT", "Each Stack of DEBT reduces 1 GAIN next turn.",tutorial_area.global_position,-50)
-		if !has_encountered_thrift:
+		if tutorial_enabled and !has_encountered_thrift:
 			if player.thrift > 0:
 				has_encountered_thrift = true
 				current_tutorial = create_tutorial("THRIFT", "Each Stack of THRIFT blocks\n 1 vacant slot on the Arcane Circle.",tutorial_area.global_position,-50)
-		if !has_encountered_spend:
+		if tutorial_enabled and !has_encountered_spend:
 			if player.spend > 0:
 				has_encountered_spend = true
 				current_tutorial = create_tutorial("SPEND", "While having SPEND, each Coin Flip costs 2 Coins.",tutorial_area.global_position,-50)
@@ -450,15 +466,15 @@ func start_enemy_turn():
 		coin_deck.reset_sigils()
 		current_turn = Turn.ENEMY
 		sound_manager.play_sound(TURN_ENEMY)
-		if !has_encountered_debt:
+		if tutorial_enabled and !has_encountered_debt:
 			if enemy.debt > 0:
 				has_encountered_debt = true
 				current_tutorial = create_tutorial("DEBT", "Each Stack of DEBT reduces 1 GAIN next turn.",tutorial_area.global_position,-50)
-		if !has_encountered_thrift:
+		if tutorial_enabled and !has_encountered_thrift:
 			if enemy.thrift > 0:
 				has_encountered_thrift = true
 				current_tutorial = create_tutorial("THRIFT", "Each Stack of THRIFT blocks\n 1 vacant slot on the Arcane Circle.",tutorial_area.global_position,-50)
-		if !has_encountered_spend:
+		if tutorial_enabled and !has_encountered_spend:
 			if enemy.spend > 0:
 				has_encountered_spend = true
 				current_tutorial = create_tutorial("SPEND", "While having SPEND, each Coin Flip costs 2 Coins.",tutorial_area.global_position,-50)
@@ -470,9 +486,24 @@ func start_enemy_turn():
 			check_defeat()
 
 func _on_endturn_pressed():
-	if has_encountered_endturn:
-		if current_tutorial != null: current_tutorial.close()
-		if !has_encountered_reflip and current_room == 1: has_encountered_reflip = true
+	if tutorial_enabled:
+		if has_encountered_endturn:
+			if tutorial_enabled and current_tutorial != null: current_tutorial.close()
+			if tutorial_enabled and !has_encountered_reflip and current_room == 1: has_encountered_reflip = true
+			await player.end_turn()
+			turn_calculation_box.exit()
+			var defeat = await check_defeat()
+			if defeat == null:
+				await get_tree().create_timer(1.0).timeout
+				if !player.has_extra_turn:
+					start_enemy_turn()
+					player.extra_turn_penalty = 1
+				else:
+					sound_manager.play_sound(EXTRA_TURN)
+					show_turn_ui("EXTRA TURN")
+					player.extra_turn()
+					player.has_extra_turn = false
+	else:
 		await player.end_turn()
 		turn_calculation_box.exit()
 		var defeat = await check_defeat()
@@ -549,23 +580,23 @@ func _on_flip_pressed():
 	if current_turn != Turn.PLAYER:
 		return
 	player.flip()
-	if has_encountered_reflip and !has_encountered_reserve and player.current_played_coin >= 16:
+	if tutorial_enabled and has_encountered_reflip and !has_encountered_reserve and player.current_played_coin >= 16:
 		if current_tutorial != null: current_tutorial.close()
 		has_encountered_reserve = true
 		current_tutorial = create_tutorial("Coin Reserve", "If Arcane Circle overflows with coins, \nadd it to the Reserve.",tutorial_area.global_position,-400)
-	if !has_encountered_flip and player.current_played_coin > 1:
+	if tutorial_enabled and !has_encountered_flip and player.current_played_coin > 1:
 		has_encountered_flip = true
 		current_tutorial.close()
 		current_tutorial = create_tutorial("Coin Spells","𖤓 + 𖤓 = More DAMAGE \n☾ + ☾ = More GAIN \n𖤓 + ☾ = Low DAMAGE and Low GAIN",player_health_bar.global_position,-200)
 		has_encountered_spells = true
-	if has_encountered_spells and !has_encountered_endturn and player.current_played_coin > 5:
+	if tutorial_enabled and has_encountered_spells and !has_encountered_endturn and player.current_played_coin > 5:
 		has_encountered_endturn = true
 		player.toggle_button(re_flip_button,true)
 		player.toggle_button(flip_button,true)
 		current_tutorial.close()
 		current_tutorial = create_tutorial("End Turn","Press the Center of the Arcane Circle\nto end your turn.",endTurn_button.global_position,-100)
 		
-	if player.coin == 0:
+	if player.coin == 0 or enemy.coin == 0:
 		check_defeat()
 
 	
@@ -662,6 +693,11 @@ func check_defeat():
 	return null
 
 func handle_victory_flow():
+	player.lock = false
+	player.slow = false
+	var coins = get_tree().get_nodes_in_group("reserved coins")
+	player.current_reserve = coins.size()
+	player.max_reserve = player.initial_max_reserve
 	endTurn_button.disabled = true
 	switch_vignetter_color(vignetter_default,1.0)
 	switch_vignette_color(vignette_default,1.0)
@@ -755,13 +791,27 @@ func reserve_left_over_coin():
 		tween.tween_property(left_coin,"position:x",target_pos[0],0.2)
 		tween.tween_property(left_coin,"position:y",target_pos[1],0.2)
 		left_coin.add_to_group("reserved coins")
-		player.current_reserve += 1
+		coins = get_tree().get_nodes_in_group("reserved coins")
+		player.current_reserve = coins.size()
 
 func update_player_coin():
 	player_health_label.text = "Coins: " + str(player.coin)
 	
-func update_player_reserve():
-	player_reserve.text = "Reserve: " + str(player.current_reserve) + "/" + str(player.max_reserve)
+func update_player_reflip_and_reserve():
+	if player.slow:
+		player_slow_particles.emitting = true
+		player_slow.visible = true
+	else:
+		player_slow_particles.emitting = false
+		player_slow.visible = false
+	if player.lock:
+		player_reserve.text = ""
+		player_lock.visible = true
+		player_lock_particles.emitting = true
+	else:
+		player_lock.visible = false
+		player_lock_particles.emitting = false
+		player_reserve.text = "Reserve: " + str(player.current_reserve) + "/" + str(player.max_reserve)
 	
 func update_enemy_coin():
 	enemy_health_label.text = "Coins: " + str(enemy.coin)

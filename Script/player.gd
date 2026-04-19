@@ -271,9 +271,9 @@ func reset_stats():
 	has_value_increase = false
 
 	#SHOOTER PASSIVES
-	has_spare_change = true
+	has_spare_change = false
 	has_triple_nickel = false
-	has_refund = true
+	has_refund = false
 	has_coin_snipe = false
 
 	#INVESTOR PASSIVES

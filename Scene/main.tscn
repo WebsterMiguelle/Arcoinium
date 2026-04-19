@@ -606,7 +606,6 @@ scale_curve = SubResource("CurveTexture_885bo")
 color = Color(1, 0.7902349, 0.605322, 0.8627451)
 
 [node name="Main" type="TextureRect" unique_id=975709238]
-process_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -829,15 +828,17 @@ vertical_alignment = 1
 
 [node name="Player Reserve" type="Label" parent="Battle UI" unique_id=15672962]
 custom_minimum_size = Vector2(150, 40)
-offset_left = 895.0
-offset_top = 512.0
-offset_right = 1056.4805
-offset_bottom = 554.0
+offset_left = 874.93463
+offset_top = 502.0
+offset_right = 1024.9346
+offset_bottom = 542.0
 scale = Vector2(1.2137691, 1)
 theme_override_colors/font_color = Color(0.34331307, 8.018583e-05, 0.34331056, 1)
 theme_override_fonts/font = ExtResource("36_1bveb")
 theme_override_font_sizes/font_size = 31
 text = "Reserve: 0/4"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="PlayerHealthBar2" parent="Battle UI" unique_id=1546897993 instance=ExtResource("5_1xcnr")]
 offset_left = 146.0
@@ -1107,10 +1108,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 14.5
-offset_top = 67.0
-offset_right = 214.5
-offset_bottom = 127.0
+offset_left = -113.5
+offset_top = 53.0
+offset_right = 86.5
+offset_bottom = 113.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Restart"
@@ -1122,10 +1123,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -40.5
-offset_top = -43.0
-offset_right = 258.5
-offset_bottom = 40.0
+offset_left = -149.5
+offset_top = -41.5
+offset_right = 149.5
+offset_bottom = 41.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 60
@@ -1139,10 +1140,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -89.5
-offset_top = -129.0
-offset_right = 310.5
-offset_bottom = -46.0
+offset_left = -214.5
+offset_top = -133.0
+offset_right = 185.5
+offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 60
@@ -1469,7 +1470,7 @@ scale = Vector2(2, 2.5)
 sprite_frames = SubResource("SpriteFrames_f043x")
 
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
-position = Vector2(577, 324)
+position = Vector2(577, 318)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.9019608, 0.5647059, 0.61960787)
 energy = 1.05
@@ -1483,7 +1484,6 @@ color = Color(0.7411765, 0.67058825, 0.72156864, 1)
 script = ExtResource("17_2ix4a")
 
 [node name="Battle Particles" type="GPUParticles2D" parent="ParticleManager" unique_id=1039306359]
-process_mode = 3
 position = Vector2(608, 693)
 amount = 30
 lifetime = 6.92

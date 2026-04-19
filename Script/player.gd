@@ -401,7 +401,6 @@ func coin_calculation():
 func flip():
 	
 	var is_deck_full = false
-	main.sound_manager.play_sound(COIN_FLIP)
 	print("FLIP")
 	flip_clicks += 1
 	if current_re_flip != max_re_flip: 
@@ -418,11 +417,16 @@ func flip():
 	if (flip_clicks == 2 or flip_clicks == 4) and has_lunar_coin:
 		state = 1;
 		trigger_temp_passive("lunar_coin","LUNAR COIN")
+	if state == 0:
+		main.total_heads += 1
+	else:
+		main.total_tails += 1
 	
 	if current_played_coin == max_playable_coins: is_deck_full = true	
 	current_played_coin += 1
 	var c = COIN.instantiate()
 	if is_deck_full:
+		if lock: return
 		c.setup(state,main.coin_deck.get_reserve_slot())
 		c.reserved = true
 		current_reserve += 1
@@ -430,7 +434,7 @@ func flip():
 	else:
 		c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
 		c.add_to_group("coins")
-
+	main.sound_manager.play_sound(COIN_FLIP)
 	#Silver/Gold Flip Rate
 	
 	var upgrade_chance = randf()
@@ -537,6 +541,7 @@ func re_flip():
 	if !lock and has_spare_change:
 		var has_withdraw_damage = false
 		var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
+		current_reserve = reserved_coins.size()
 		if reserved_coins.size() != 0:
 			trigger_temp_passive("spare_change","SPARE CHANGE")
 			main.sound_manager.play_sound(PASSIVE_SPARE_CHANGE)
@@ -853,6 +858,8 @@ func end_turn():
 	if lock:	
 		lock = false
 		max_reserve = initial_max_reserve
+		coins = get_tree().get_nodes_in_group("reserved coins")
+		current_reserve = coins.size()
 	if slow:
 		slow = false
 	

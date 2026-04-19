@@ -215,7 +215,7 @@ func setup(m,enemy):
 			else:
 				max_coin = 200
 				coin = 50
-				max_playable_coins = 12
+				max_playable_coins = 8
 				silver_flip_rate = 0.0
 				gold_flip_rate = 0.0
 				bounty = 50
@@ -275,8 +275,8 @@ func setup(m,enemy):
 				has_learn_to_save = true
 				main.player.has_learn_to_save = true
 			else:
-				max_coin = 200
-				coin = 150
+				max_coin = 100
+				coin = 100
 				max_playable_coins = 12
 				silver_flip_rate = 0
 				gold_flip_rate = 1
@@ -310,7 +310,7 @@ func setup(m,enemy):
 		Enemy.SUN_CASTER:
 			if !greed:
 				max_coin = 200
-				coin = 150
+				coin = 120
 				max_playable_coins = 12
 				silver_flip_rate = 1
 				gold_flip_rate = 0
@@ -332,7 +332,7 @@ func setup(m,enemy):
 		Enemy.MOON_CASTER:
 			if !greed:
 				max_coin = 200
-				coin = 150
+				coin = 120
 				max_playable_coins = 12
 				silver_flip_rate = 1
 				gold_flip_rate = 0
@@ -366,8 +366,8 @@ func setup(m,enemy):
 				switch_vignette_color(dawn_stance,0.4)
 				trigger_enemy_passive("DAWN STANCE: Play as Many MOON Coins.", 5.0)
 			else:
-				max_coin = 300
-				coin = 300
+				max_coin = 400
+				coin = 400
 				max_playable_coins = 8
 				silver_flip_rate = 0
 				gold_flip_rate = 1
@@ -464,7 +464,7 @@ func enemy_coin_calculation():
 					right_coin = coin			
 				if left_coin != null and right_coin != null:
 					if left_coin.state == 0 and right_coin.state == 0:
-						total_damage += (left_coin.base_value)
+						total_damage += (left_coin.base_value) + (right_coin.base_value)
 					left_coin = null
 					right_coin = null
 				else:
@@ -522,10 +522,10 @@ func enemy_coin_calculation():
 						total_damage += (left_coin.base_value) + (right_coin.base_value)
 					else:
 						if greed:
-							total_thrift += 1
+							total_thrift += 2
 						else:
 							total_thrift += 3
-					if total_thrift <= 6:
+					if greed and total_thrift <= 6:
 						activate_lock = true
 					else:
 						activate_lock = false
@@ -541,7 +541,7 @@ func enemy_coin_calculation():
 					moon_count +=1
 				else:
 					sun_count +=1
-				if current_played_coin == 16:
+				if greed and current_played_coin == 16:
 					activate_slow = true
 		Enemy.SUN_CASTER:
 			var is_left = true # true - Left Coin, false - Right Coin
@@ -608,9 +608,9 @@ func enemy_coin_calculation():
 					if greed:
 						total_gain += 1
 					moon_count += 1
-				if sun_count >= 8:
+				if greed and sun_count >= 8:
 					activate_lock = true
-				if moon_count >= 8:
+				if greed and moon_count >= 8:
 					activate_slow = true
 				if is_left == true:
 					left_coin = coin
@@ -817,8 +817,10 @@ func end_enemy_turn():
 		create_floating_label("","LOCK","PLAYER")
 		main.player.lock = true
 		main.sound_manager.play_sound(RESERVE_LOCK)
+		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
 	if turn_slow:
 		main.sound_manager.play_sound(SLOW)
+		main.sound_manager.play_sound(DEBT_EFFECT)
 		main.player.slow = true
 		create_floating_label("","SLOW","PLAYER")
 		
@@ -848,6 +850,11 @@ func end_enemy_turn():
 		main.player.coin = 1
 		main.player.payback_used = true
 		main.player.payback_coins = 12
+		main.player.debt = 0
+		main.player.spend = 0
+		main.player.thrift = 0
+		main.player.lock = false
+		main.player.slow = false
 		
 	if main.player.coin > 0:
 		await get_tree().create_timer(1.0).timeout

@@ -1,7 +1,71 @@
 [gd_scene format=3 uid="uid://dnrmyxh5i5e13"]
 
 [ext_resource type="Texture2D" uid="uid://dj416vdonsfos" path="res://Assets/Spend_Sprite.png" id="1_oa2ey"]
+[ext_resource type="Script" uid="uid://b81y1v87st1oc" path="res://Scene/coin_add_particles.gd" id="2_ge576"]
+
+[sub_resource type="Gradient" id="Gradient_igets"]
+offsets = PackedFloat32Array(0.15806451, 0.58387095)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ge576"]
+gradient = SubResource("Gradient_igets")
+fill = 1
+fill_from = Vector2(0.51276594, 0.48723406)
+
+[sub_resource type="Gradient" id="Gradient_0k347"]
+colors = PackedColorArray(1, 0.6611983, 0.4228364, 0.72156864, 1, 1, 1, 0.65882355)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_f8y6v"]
+gradient = SubResource("Gradient_0k347")
+
+[sub_resource type="Curve" id="Curve_7pfr0"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_7fe2u"]
+texture_mode = 1
+curve = SubResource("Curve_7pfr0")
+
+[sub_resource type="Curve" id="Curve_2njvn"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_02dq5"]
+curve = SubResource("Curve_2njvn")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_e022w"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(3.745, 3.955, 1)
+angle_min = 124.20001
+angle_max = 281.7
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 74.76
+initial_velocity_max = 106.829994
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_max = 24.24
+scale_curve = SubResource("CurveTexture_02dq5")
+color = Color(0.53333336, 0.105882354, 0, 0.6117647)
+color_ramp = SubResource("GradientTexture1D_f8y6v")
+hue_variation_curve = SubResource("CurveTexture_7fe2u")
 
 [node name="SpendAttackParticles" type="Sprite2D" unique_id=1026553237]
-scale = Vector2(8, 8)
+self_modulate = Color(1, 0.6174683, 0.03776146, 1)
+scale = Vector2(3.609375, 3.5346985)
 texture = ExtResource("1_oa2ey")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1503441324]
+position = Vector2(0, -0.28290957)
+scale = Vector2(0.14082912, 0.14388737)
+color = Color(0.7852676, 0, 0.12629297, 1)
+energy = 1.45
+texture = SubResource("GradientTexture2D_ge576")
+
+[node name="SpendedParticle" type="GPUParticles2D" parent="." unique_id=92383302]
+position = Vector2(0.36781502, -4.172325e-07)
+amount = 24
+lifetime = 0.35000000000000003
+process_material = SubResource("ParticleProcessMaterial_e022w")
+script = ExtResource("2_ge576")

@@ -1,7 +1,71 @@
 [gd_scene format=3 uid="uid://d2aewh2qfs501"]
 
 [ext_resource type="Texture2D" uid="uid://cd8xw5pvgktgo" path="res://Assets/Thrift_Sprite.png" id="1_34oft"]
+[ext_resource type="Script" uid="uid://b81y1v87st1oc" path="res://Scene/coin_add_particles.gd" id="2_igets"]
+
+[sub_resource type="Gradient" id="Gradient_wcw6e"]
+colors = PackedColorArray(7.70092e-07, 0.59457076, 0.8763453, 0.72156864, 1, 1, 1, 0.65882355)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_d0cvg"]
+gradient = SubResource("Gradient_wcw6e")
+
+[sub_resource type="Curve" id="Curve_e6asc"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_oa8h8"]
+texture_mode = 1
+curve = SubResource("Curve_e6asc")
+
+[sub_resource type="Curve" id="Curve_p4kr1"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_rgd73"]
+curve = SubResource("Curve_p4kr1")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_u2mcw"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(31.16, 15.08, 1)
+angle_min = 124.20001
+angle_max = 281.7
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_max = 20.41
+gravity = Vector3(0, -200, 0)
+scale_min = 0.0
+scale_max = 33.34
+scale_curve = SubResource("CurveTexture_rgd73")
+color = Color(0.7730757, 0.87525856, 1, 1)
+color_ramp = SubResource("GradientTexture1D_d0cvg")
+hue_variation_curve = SubResource("CurveTexture_oa8h8")
+
+[sub_resource type="Gradient" id="Gradient_igets"]
+offsets = PackedFloat32Array(0.15806451, 0.58387095)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wcw6e"]
+gradient = SubResource("Gradient_igets")
+fill = 1
+fill_from = Vector2(0.51276594, 0.48723406)
 
 [node name="ThriftAttackParticles" type="Sprite2D" unique_id=1750470975]
-scale = Vector2(5, 5)
+modulate = Color(0, 0.5529412, 0.83137256, 1)
+self_modulate = Color(1, 1, 1, 0.7372549)
+scale = Vector2(4, 4)
 texture = ExtResource("1_34oft")
+
+[node name="ThriftParticle" type="GPUParticles2D" parent="." unique_id=957036984]
+position = Vector2(0.25, 0.5)
+amount = 48
+lifetime = 0.54
+process_material = SubResource("ParticleProcessMaterial_u2mcw")
+script = ExtResource("2_igets")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1840674463]
+position = Vector2(0.25, 1.1920929e-07)
+scale = Vector2(0.3708496, 0.3408203)
+color = Color(0, 0.42756134, 0.72989565, 1)
+energy = 1.23
+texture = SubResource("GradientTexture2D_wcw6e")

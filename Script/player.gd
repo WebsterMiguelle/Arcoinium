@@ -53,6 +53,9 @@ const SPEND = preload("uid://bvbtrait4prdi")
 const SPENDED_FLIP = preload("uid://dgu0hy8kwo343")
 const GAIN_EFFECT = preload("uid://cr366klr6aivy")
 const DEBT_EFFECT = preload("uid://d18qgeounkatf")
+const DEBTED_ATTACK = preload("uid://ddf31ka4126fv")
+const SPENDED_ATTACK = preload("uid://lfprp4w7saas")
+const THRIFTED_ATTACK = preload("uid://dtx4a0j6atomh")
 
 
 #PARTICLES
@@ -723,6 +726,8 @@ func start_turn():
 			all_in.text = "ALL IN"
 		toggle_button(main.re_flip_button,true)
 	print(max_reserve)
+	if main.enemy.coin == 0:
+		main.check_defeat()
 
 func end_turn():
 	all_in.text = ""
@@ -760,11 +765,6 @@ func end_turn():
 	if debted_attack != 0: debted_attack = 0
 	if spended_attack != 0: spended_attack = 0
 
-	# 2. Apply Stats to Enemy
-	main.enemy.take_damage(turn_damage)
-	main.enemy.debt += actual_debt_applied
-	main.enemy.thrift += turn_thrift
-	main.enemy.spend += turn_spend
 	
 	# 3. Twilight Sage Logic
 	if main.enemy.type == Enemy.TWILIGHT_SAGE:
@@ -812,24 +812,6 @@ func end_turn():
 		add_child(latest_pair_right_coin)
 		current_reserve += 2
 
-	# 6. Extra Turn Checks
-	if has_active_income and player_turn_count == 1 and !jar_o_savings_used:
-		jar_o_savings_used = true
-		has_extra_turn = true
-		return
-
-	if !lock and main.enemy.coin > 0 and has_cash_out and current_reserve >= max_reserve:
-		trigger_temp_passive("cash_out","CASH OUT")
-		has_extra_turn = true
-	
-	if lock:	
-		lock = false
-		max_reserve = initial_max_reserve
-		coins = get_tree().get_nodes_in_group("reserved coins")
-		current_reserve = coins.size()
-	if slow: slow = false
-
-
 	# ==========================================
 	# PHASE 2: VISUALS & ANIMATIONS (Play all the eye-candy!)
 	# ==========================================
@@ -837,8 +819,8 @@ func end_turn():
 	main.sound_manager.play_sound(COIN_ENDTURN)
 	particle_manager.despawn_emitting_particles()
 	
-	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0:
-		main.turn_calculation_box.exit()
+	
+	main.turn_calculation_box.exit()
 
 	# -- 1. Trigger Simultaneous Firing (Shooting out of the deck) --
 	if turn_damage > 0:
@@ -847,17 +829,16 @@ func end_turn():
 		# I removed the hit particles and sound effects from here!
 
 	if turn_debt > 0:
-		if not is_debt_immune:
-			main.sound_manager.play_sound(DEBT)
-			particle_manager.trigger_attack(main.coin_deck, main.enemy_portrait, turn_debt, "DEBT")
+		main.sound_manager.play_sound(DEBTED_ATTACK)
+		particle_manager.trigger_attack(main.coin_deck, main.enemy_portrait, turn_debt, "DEBT")
 		# I moved the IMMUNE label to the bottom!
 
 	if turn_thrift > 0:
-		main.sound_manager.play_sound(THRIFT)
+		main.sound_manager.play_sound(THRIFTED_ATTACK)
 		particle_manager.trigger_attack(main.coin_deck, main.enemy_portrait, turn_thrift, "THRIFT")
 
 	if turn_spend > 0:
-		main.sound_manager.play_sound(SPEND)
+		main.sound_manager.play_sound(SPENDED_ATTACK)
 		particle_manager.trigger_attack(main.coin_deck, main.enemy_portrait, turn_spend, "SPEND")
 		
 	# -- The Pause --
@@ -880,13 +861,40 @@ func end_turn():
 			create_floating_label("DEBT","IMMUNE","ENEMY")
 			main.sound_manager.play_sound(PASSIVE_REFUND)
 		else:
+			main.sound_manager.play_sound(DEBT)
 			create_floating_label(actual_debt_applied,"DEBT","ENEMY")
 			
 	if turn_thrift > 0:
+		main.sound_manager.play_sound(THRIFT)
 		create_floating_label(turn_thrift,"THRIFT","ENEMY")
 		
 	if turn_spend > 0:
+		main.sound_manager.play_sound(SPEND)
 		create_floating_label(turn_spend,"SPEND","ENEMY")
+	
+	
+	# 2. Apply Stats to Enemy
+	main.enemy.take_damage(turn_damage)
+	main.enemy.debt += actual_debt_applied
+	main.enemy.thrift += turn_thrift
+	main.enemy.spend += turn_spend
+	
+	# 6. Extra Turn Checks
+	if has_active_income and player_turn_count == 1 and !jar_o_savings_used:
+		jar_o_savings_used = true
+		has_extra_turn = true
+		return
+
+	if !lock and main.enemy.coin > 0 and has_cash_out and current_reserve >= max_reserve:
+		trigger_temp_passive("cash_out","CASH OUT")
+		has_extra_turn = true
+	
+	if lock:	
+		lock = false
+		max_reserve = initial_max_reserve
+		coins = get_tree().get_nodes_in_group("reserved coins")
+		current_reserve = coins.size()
+	if slow: slow = false
 	
 func activate_pre_battle_passives():
 	

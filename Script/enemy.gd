@@ -522,10 +522,10 @@ func enemy_coin_calculation():
 						total_damage += (left_coin.base_value) + (right_coin.base_value)
 					else:
 						if greed:
-							total_thrift += 1
+							total_thrift += 2
 						else:
 							total_thrift += 3
-					if total_thrift <= 6:
+					if greed and total_thrift <= 6:
 						activate_lock = true
 					else:
 						activate_lock = false
@@ -541,7 +541,7 @@ func enemy_coin_calculation():
 					moon_count +=1
 				else:
 					sun_count +=1
-				if current_played_coin == 16:
+				if greed and current_played_coin == 16:
 					activate_slow = true
 		Enemy.SUN_CASTER:
 			var is_left = true # true - Left Coin, false - Right Coin
@@ -608,9 +608,9 @@ func enemy_coin_calculation():
 					if greed:
 						total_gain += 1
 					moon_count += 1
-				if sun_count >= 8:
+				if greed and sun_count >= 8:
 					activate_lock = true
-				if moon_count >= 8:
+				if greed and moon_count >= 8:
 					activate_slow = true
 				if is_left == true:
 					left_coin = coin

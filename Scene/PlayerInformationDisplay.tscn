@@ -270,7 +270,7 @@ theme_override_constants/margin_bottom = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PassivesPanel/MarginContainer" unique_id=459575857]
 layout_mode = 2
-theme_override_constants/separation = 37
+theme_override_constants/separation = 18
 
 [node name="Passives" type="Label" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=968639581]
 layout_mode = 2
@@ -283,9 +283,9 @@ vertical_alignment = 1
 
 [node name="GridContainer" type="GridContainer" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=256021586]
 layout_mode = 2
-theme_override_constants/h_separation = 44
-theme_override_constants/v_separation = 44
-columns = 7
+theme_override_constants/h_separation = 89
+theme_override_constants/v_separation = 67
+columns = 4
 
 [node name="PassiveIcon" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=1789334303 instance=ExtResource("4_5jg2k")]
 layout_mode = 2
@@ -327,6 +327,12 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="PassiveIcon14" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=640506584 instance=ExtResource("4_5jg2k")]
+layout_mode = 2
+
+[node name="PassiveIcon15" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=124628295 instance=ExtResource("4_5jg2k")]
+layout_mode = 2
+
+[node name="PassiveIcon16" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=925526618 instance=ExtResource("4_5jg2k")]
 layout_mode = 2
 
 [node name="Separator" type="Control" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=706675745]

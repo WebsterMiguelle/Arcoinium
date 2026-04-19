@@ -376,7 +376,9 @@ func coin_calculation():
 	if thrifted_attack != 0:
 		total_thrift += thrifted_attack
 	if debted_attack != 0:
-		total_debt += debted_attack	
+		total_debt += debted_attack
+	if spended_attack != 0:
+		total_spend += spended_attack
 	var text = ""
 	if coins != null:
 		if total_damage != 0: 
@@ -583,6 +585,9 @@ func start_turn():
 	has_all_in = false
 	flip_clicks = 0
 	latest_coin = null
+	#debted_attack = 10
+	#thrifted_attack = 5
+	#spended_attack = 10
 	
 	if thrift != 0:
 		main.sound_manager.play_sound(THRIFT_FLAME)
@@ -722,80 +727,57 @@ func start_turn():
 func end_turn():
 	all_in.text = ""
 	toggle_button(main.re_flip_button,true)
-	main.endTurn_button.disabled = true
+	toggle_button(main.endTurn_button, true)
 	main.coin_deck.sigil_pressed();
 	previous_player_flips = current_played_coin
-	
 
-	
-
-	#Activate End Turn Passives
 	await activate_player_turn_end_passives()
 
 	if main.enemy.coin == 0: return
 
-	main.sound_manager.play_sound(COIN_ENDTURN)
-	
+	# ==========================================
+	# PHASE 1: MATH & LOGIC (Instantly calculate everything)
+	# ==========================================
 	var calculations = coin_calculation()
-	print(calculations)
 	var turn_damage = calculations[0]
 	var turn_gain = calculations[1]
 	var turn_debt = calculations[2]
 	var turn_thrift = calculations[3]
 	var turn_spend = calculations[4]
-	previous_player_gain = 0
+	previous_player_gain = turn_gain
 	
-	if turn_damage > 0:
-		main.sound_manager.play_sound(COIN_ATTACK_PARTICLE)
-		particle_manager.play_attack_animation(main.coin_deck, main.enemy_portrait, turn_damage)
-		main.turn_calculation_box.exit()
-		await get_tree().create_timer(1.0).timeout
-		create_floating_label(turn_damage,"DAMAGE","ENEMY")
+	# Determine if enemy is immune to debt before applying
+	var is_debt_immune = (main.enemy.type == Enemy.COLLECTOR or main.enemy.type == Enemy.ARISTOCRAT) and greed
+	var actual_debt_applied = 0 if is_debt_immune else turn_debt
 
+	# 1. Apply Stats to Player
 	thrift = 0
 	spend = 0
-	particle_manager.despawn_emitting_particles()
-	max_playable_coins = initial_max_playable_coins
-	main.enemy.take_damage(turn_damage)
-	
-	if turn_damage == 0: pass
-	elif turn_damage <= 10: main.sound_manager.play_sound(DAMAGE_LIGHT)
-	elif turn_damage <= 20: main.sound_manager.play_sound(DAMAGE_MODERATE)
-	else: main.sound_manager.play_sound(DAMAGE_HEAVY)
-	previous_player_gain = turn_gain
-	if turn_damage != 0: 
-		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 	gain += turn_gain
-	if turn_debt != 0: 
-		if (main.enemy.type == Enemy.COLLECTOR or main.enemy.type == Enemy.ARISTOCRAT) and greed:
-			turn_debt = 0
-			create_floating_label("DEBT","IMMUNE","ENEMY")
-			main.sound_manager.play_sound(PASSIVE_REFUND)
-		else:
-			create_floating_label(turn_debt,"DEBT","ENEMY")
-			main.sound_manager.play_sound(DEBT)
-		main.enemy.debt += turn_debt
-	if turn_thrift != 0:
-		create_floating_label(turn_thrift,"THRIFT","ENEMY")
-		main.enemy.thrift += turn_thrift
-		main.sound_manager.play_sound(THRIFT)
-	if turn_spend != 0:
-		create_floating_label(turn_spend,"SPEND","ENEMY")
-		main.enemy.spend += turn_spend
-		main.sound_manager.play_sound(SPEND)
-		
-	if main.enemy.type == Enemy.TWILIGHT_SAGE:
-		if main.enemy.has_dusk_stance:
-			spend += moon_count
-		else:
-			thrift += sun_count
+	max_playable_coins = initial_max_playable_coins
+	
+	if thrifted_attack != 0: thrifted_attack = 0
+	if debted_attack != 0: debted_attack = 0
+	if spended_attack != 0: spended_attack = 0
 
-	if thrifted_attack != 0:
-		thrifted_attack = 0
-	if debted_attack != 0:
-		debted_attack = 0
-	if spended_attack != 0:
-		spended_attack = 0
+	# 2. Apply Stats to Enemy
+	main.enemy.take_damage(turn_damage)
+	main.enemy.debt += actual_debt_applied
+	main.enemy.thrift += turn_thrift
+	main.enemy.spend += turn_spend
+	
+	# 3. Twilight Sage Logic
+	if main.enemy.type == Enemy.TWILIGHT_SAGE:
+		if main.enemy.has_dusk_stance: spend += moon_count
+		else: thrift += sun_count
+
+	# 4. Tracking / High Scores
+	main.total_damage_dealt += turn_damage
+	if turn_damage > main.highest_damage_dealt: main.highest_damage_dealt = turn_damage
+	main.total_gain += turn_gain
+	if turn_gain > main.highest_gain: main.highest_gain = turn_gain
+
+	# 5. Piggy & Reserve Logic
 	main.reserve_left_over_coin()
 	var coins = get_tree().get_nodes_in_group("coins")
 	var is_left = true
@@ -806,11 +788,9 @@ func end_turn():
 		if has_piggy and is_left and !coin.reserved:
 			latest_pair_left_coin.copy_coin(coin)
 			is_left = false
-			print("Piggy Copying 1")
 		elif has_piggy and !is_left and !coin.reserved:
 			latest_pair_right_coin.copy_coin(coin)
 			is_left = true
-			print("Piggy Copying 2")
 		if coin.reserved == false:
 			main.particle_manager.spawn_particle(COIN_PLAY_PARTICLE,coin.global_position)
 			coin.queue_free()
@@ -832,21 +812,12 @@ func end_turn():
 		add_child(latest_pair_right_coin)
 		current_reserve += 2
 
-	main.total_damage_dealt += turn_damage
-	if turn_damage > main.highest_damage_dealt:
-		main.highest_damage_dealt = turn_damage
-		
-	main.total_gain += turn_gain
-	if turn_gain > main.highest_gain:
-		main.highest_gain = turn_gain
-
+	# 6. Extra Turn Checks
 	if has_active_income and player_turn_count == 1 and !jar_o_savings_used:
 		jar_o_savings_used = true
 		has_extra_turn = true
 		return
 
-	print(current_reserve)
-	print(max_reserve)
 	if !lock and main.enemy.coin > 0 and has_cash_out and current_reserve >= max_reserve:
 		trigger_temp_passive("cash_out","CASH OUT")
 		has_extra_turn = true
@@ -856,8 +827,66 @@ func end_turn():
 		max_reserve = initial_max_reserve
 		coins = get_tree().get_nodes_in_group("reserved coins")
 		current_reserve = coins.size()
-	if slow:
-		slow = false
+	if slow: slow = false
+
+
+	# ==========================================
+	# PHASE 2: VISUALS & ANIMATIONS (Play all the eye-candy!)
+	# ==========================================
+	
+	main.sound_manager.play_sound(COIN_ENDTURN)
+	particle_manager.despawn_emitting_particles()
+	
+	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0:
+		main.turn_calculation_box.exit()
+
+	# -- 1. Trigger Simultaneous Firing (Shooting out of the deck) --
+	if turn_damage > 0:
+		main.sound_manager.play_sound(COIN_ATTACK_PARTICLE)
+		particle_manager.trigger_attack(main.coin_deck, main.enemy_portrait, turn_damage, "")
+		# I removed the hit particles and sound effects from here!
+
+	if turn_debt > 0:
+		if not is_debt_immune:
+			main.sound_manager.play_sound(DEBT)
+			particle_manager.trigger_attack(main.coin_deck, main.enemy_portrait, turn_debt, "DEBT")
+		# I moved the IMMUNE label to the bottom!
+
+	if turn_thrift > 0:
+		main.sound_manager.play_sound(THRIFT)
+		particle_manager.trigger_attack(main.coin_deck, main.enemy_portrait, turn_thrift, "THRIFT")
+
+	if turn_spend > 0:
+		main.sound_manager.play_sound(SPEND)
+		particle_manager.trigger_attack(main.coin_deck, main.enemy_portrait, turn_spend, "SPEND")
+		
+	# -- The Pause --
+	# Wait 1 second for the particles to fly across the screen BEFORE showing the impacts
+	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0:
+		await get_tree().create_timer(1.0).timeout
+
+	# -- 2. Final Hit Impacts & Floating Labels (The runes have arrived!) --
+	if turn_damage > 0:
+		# I pasted the hit particles and sounds here!
+		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
+		if turn_damage <= 10: main.sound_manager.play_sound(DAMAGE_LIGHT)
+		elif turn_damage <= 20: main.sound_manager.play_sound(DAMAGE_MODERATE)
+		else: main.sound_manager.play_sound(DAMAGE_HEAVY)
+		
+		create_floating_label(turn_damage,"DAMAGE","ENEMY")
+		
+	if turn_debt > 0:
+		if is_debt_immune:
+			create_floating_label("DEBT","IMMUNE","ENEMY")
+			main.sound_manager.play_sound(PASSIVE_REFUND)
+		else:
+			create_floating_label(actual_debt_applied,"DEBT","ENEMY")
+			
+	if turn_thrift > 0:
+		create_floating_label(turn_thrift,"THRIFT","ENEMY")
+		
+	if turn_spend > 0:
+		create_floating_label(turn_spend,"SPEND","ENEMY")
 	
 func activate_pre_battle_passives():
 	
@@ -941,7 +970,7 @@ func activate_player_turn_start_passives():
 			await get_tree().create_timer(0.1).timeout
 			latest_coin = c
 
-		main.endTurn_button.disabled = false
+		toggle_button(main.endTurn_button, false)
 		toggle_button(main.re_flip_button,true)
 		
 	#PAYBACK

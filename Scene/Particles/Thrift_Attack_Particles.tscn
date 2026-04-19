@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://d2aewh2qfs501"]
+
+[ext_resource type="Texture2D" uid="uid://cd8xw5pvgktgo" path="res://Assets/Thrift_Sprite.png" id="1_34oft"]
+
+[node name="ThriftAttackParticles" type="Sprite2D" unique_id=1750470975]
+scale = Vector2(5, 5)
+texture = ExtResource("1_34oft")

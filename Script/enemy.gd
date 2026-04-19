@@ -696,6 +696,7 @@ func start_enemy_turn():
 	#THRIFT
 	if thrift != 0:
 		main.sound_manager.play_sound(THRIFT_FLAME)
+		
 		var index = 16
 		var current_thrift = thrift
 		while current_thrift != 0:
@@ -716,7 +717,7 @@ func start_enemy_turn():
 			trigger_enemy_passive("FULLY PAID!", 2.0)
 	
 	if has_fully_paid and debt == 0:
-		particle_manager.play_attack_animation(main.coin_deck, main.player_portrait, turn_damage)
+		particle_manager.trigger_attack(main.coin_deck, main.player_portrait, turn_damage, "")
 		await get_tree().create_timer(1.0).timeout
 		if greed:
 			main.player.take_damage(500)
@@ -760,6 +761,10 @@ func start_enemy_turn():
 
 func end_enemy_turn():
 	main.coin_deck.sigil_pressed()
+	
+	# ==========================================
+	# PHASE 1: MATH & LOGIC (Instantly calculate everything)
+	# ==========================================
 	var calculations = enemy_coin_calculation()
 	var turn_damage = calculations[0]
 	var turn_gain = calculations[1]
@@ -769,84 +774,52 @@ func end_enemy_turn():
 	var turn_lock = calculations[5]
 	var turn_slow = calculations[6]
 	
-	if coin == 0:
-		turn_damage = 0
-		turn_gain = 0
-		turn_debt = 0
-		turn_thrift = 0
-		turn_lock = false
-		turn_slow = false
-		turn_spend = 0
+	# Check if Enemy is already dead
+	if coin <= 0:
+		turn_damage = 0; turn_gain = 0; turn_debt = 0; turn_thrift = 0
+		turn_spend = 0; turn_lock = false; turn_slow = false
 		main.turn_calculation.text = ""
-		main.turn_calculation_box.exit()
 
-	if current_played_coin > 0:
-		main.sound_manager.play_sound(COIN_ENDTURN)
-	if turn_damage != 0: 
-		main.sound_manager.play_sound(COIN_ATTACK_PARTICLE)
-		particle_manager.play_attack_animation(main.coin_deck, main.player_portrait, turn_damage)
-		main.turn_calculation_box.exit()
-		await get_tree().create_timer(1.0).timeout
+	# 1. Player Passive Income Check
+	var passive_income_triggered = false
+	var converted_income = 0
+	if turn_damage > 0:
 		if main.player.has_passive_income and !main.player.passive_income_used:
 			main.player.passive_income_used = true
-			main.player.trigger_temp_passive("passive_income","PASSIVE INCOME")
-			if turn_damage >= 30:
-				turn_damage = 30
-			main.player.coin += turn_damage
-			main.sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
+			passive_income_triggered = true
+			converted_income = turn_damage
+			if converted_income >= 30:
+				converted_income = 30
+			main.player.coin += converted_income
 		else:
-			create_floating_label(turn_damage,"DAMAGE","PLAYER")
-			if turn_damage <= 10: main.sound_manager.play_sound(DAMAGE_LIGHT)
-			elif turn_damage <= 20: main.sound_manager.play_sound(DAMAGE_MODERATE)
-			else: main.sound_manager.play_sound(DAMAGE_HEAVY)
 			main.player.take_damage(turn_damage)
-			main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.player_portrait.global_position)
-	if turn_debt != 0:
-		create_floating_label(turn_debt,"DEBT","PLAYER")
-		main.player.debt += turn_debt
-		main.sound_manager.play_sound(DEBT)
-	if turn_thrift != 0:
-		create_floating_label(turn_thrift,"THRIFT","PLAYER")
-		main.player.thrift += turn_thrift
-		main.sound_manager.play_sound(THRIFT)
-	if turn_spend != 0:
-		create_floating_label(turn_spend,"SPEND","PLAYER")
-		main.player.spend += turn_spend
-		main.sound_manager.play_sound(SPEND)
-	if turn_lock:
-		create_floating_label("","LOCK","PLAYER")
-		main.player.lock = true
-		main.sound_manager.play_sound(RESERVE_LOCK)
-		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
-	if turn_slow:
-		main.sound_manager.play_sound(SLOW)
-		main.sound_manager.play_sound(DEBT_EFFECT)
-		main.player.slow = true
-		create_floating_label("","SLOW","PLAYER")
-		
+
+	# 2. Apply Status Effects to Player
+	if turn_debt != 0: main.player.debt += turn_debt
+	if turn_thrift != 0: main.player.thrift += turn_thrift
+	if turn_spend != 0: main.player.spend += turn_spend
+	if turn_lock: main.player.lock = true
+	if turn_slow: main.player.slow = true
+
+	# 3. Apply Stats to Enemy
 	thrift = 0
 	spend = 0
 	max_playable_coins = initial_max_playable_coins
-	particle_manager.despawn_emitting_particles()
-	
 	gain += turn_gain
+
+	# 4. Player 'Pay Down' Passive Check
+	var pay_down_killed = false
+	var pay_down_debt_added = false
 	if main.player.has_pay_down:
 		if debt > coin:
-			create_floating_label(debt,"DAMAGE","ENEMY")
 			coin = 0
-			main.sound_manager.play_sound(PASSIVE_PAYDOWN)
-			main.player.trigger_temp_passive("pay_down","PAY DOWN")
+			pay_down_killed = true
 		else:
 			debt += 5
-			create_floating_label(5,"DEBT","ENEMY")
+			pay_down_debt_added = true
 
-	var coins = get_tree().get_nodes_in_group("enemy_coins")
-	for coin in coins:
-		main.particle_manager.spawn_particle(COIN_PLAY_PARTICLE,coin.global_position)
-		coin.queue_free()
-	
-	#ACTIVATE PAYBACK
-	if main.player.has_payback and !main.player.payback_used and main.player.coin == 0: 
+	# 5. Player 'Payback' Revive Check
+	if main.player.has_payback and !main.player.payback_used and main.player.coin <= 0: 
 		main.player.coin = 1
 		main.player.payback_used = true
 		main.player.payback_coins = 12
@@ -855,29 +828,116 @@ func end_enemy_turn():
 		main.player.thrift = 0
 		main.player.lock = false
 		main.player.slow = false
-		
+
+	# 6. Twilight Sage Pre-Calc
 	if main.player.coin > 0:
-		await get_tree().create_timer(1.0).timeout
 		has_dusk_stance = !has_dusk_stance
+		if type == Enemy.TWILIGHT_SAGE:
+			max_playable_coins += 4
+
+
+	# ==========================================
+	# PHASE 2: VISUALS & ANIMATIONS (Play all the eye-candy!)
+	# ==========================================
+	
+	if current_played_coin > 0:
+		main.sound_manager.play_sound(COIN_ENDTURN)
+
+	particle_manager.despawn_emitting_particles()
+	
+	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0 or turn_lock or turn_slow:
+		main.turn_calculation_box.exit()
+	elif coin <= 0 and !pay_down_killed:
+		# I combined your double-exit check here so the box doesn't glitch by trying to close twice!
+		main.turn_calculation_box.exit()
+
+	# -- Trigger Simultaneous Attacks (Firing out of the deck) --
+	if turn_damage > 0:
+		main.sound_manager.play_sound(COIN_ATTACK_PARTICLE) # The firing sound
+		particle_manager.trigger_attack(main.coin_deck, main.player_portrait, turn_damage, "")
+		
+		# Passive income heal happens instantly upon firing
+		if passive_income_triggered:
+			main.player.trigger_temp_passive("passive_income","PASSIVE INCOME")
+			main.sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
+
+	if turn_debt != 0: 
+		main.sound_manager.play_sound(DEBT)
+		particle_manager.trigger_attack(main.coin_deck,main.player_portrait, turn_debt, "DEBT")
+	if turn_thrift != 0: 
+		main.sound_manager.play_sound(THRIFT)
+		particle_manager.trigger_attack(main.coin_deck, main.player_portrait, turn_thrift, "THRIFT")
+	if turn_spend != 0: 
+		main.sound_manager.play_sound(SPEND)
+		particle_manager.trigger_attack(main.coin_deck, main.player_portrait, turn_spend, "SPEND")
+	
+	
+	if turn_lock:
+		main.sound_manager.play_sound(RESERVE_LOCK)
+		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
+	
+	if turn_slow:
+		main.sound_manager.play_sound(SLOW)
+		main.sound_manager.play_sound(DEBT_EFFECT)
+
+	if pay_down_killed:
+		main.sound_manager.play_sound(PASSIVE_PAYDOWN)
+		main.player.trigger_temp_passive("pay_down","PAY DOWN")
+
+	# Clean up the played coins visually
+	var coins = get_tree().get_nodes_in_group("enemy_coins")
+	for c in coins:
+		main.particle_manager.spawn_particle(COIN_PLAY_PARTICLE, c.global_position)
+		c.queue_free()
+
+	# -- The Pause --
+	# Wait for the attack runes to travel across the screen
+	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0 or turn_lock or turn_slow or pay_down_killed or pay_down_debt_added:
+		await get_tree().create_timer(1.0).timeout
+
+	# -- Final Hit Impacts & Floating Labels (The runes have arrived!) --
+	if turn_damage > 0:
+		if passive_income_triggered:
+			pass 
+		else:
+			# I MOVED THE HIT PARTICLES AND SOUNDS HERE!
+			main.particle_manager.spawn_particle(DAMAGE_PARTICLE, main.player_portrait.global_position)
+			if turn_damage <= 10: main.sound_manager.play_sound(DAMAGE_LIGHT)
+			elif turn_damage <= 20: main.sound_manager.play_sound(DAMAGE_MODERATE)
+			else: main.sound_manager.play_sound(DAMAGE_HEAVY)
+			
+			create_floating_label(turn_damage, "DAMAGE", "PLAYER")
+			
+	if turn_debt != 0: create_floating_label(turn_debt, "DEBT", "PLAYER")
+	if turn_thrift != 0: create_floating_label(turn_thrift, "THRIFT", "PLAYER")
+	if turn_spend != 0: create_floating_label(turn_spend, "SPEND", "PLAYER")
+	if turn_lock: create_floating_label("", "LOCK", "PLAYER")
+	if turn_slow: create_floating_label("", "SLOW", "PLAYER")
+	
+	if pay_down_killed:
+		create_floating_label(debt, "DAMAGE", "ENEMY")
+	elif pay_down_debt_added:
+		create_floating_label(5, "DEBT", "ENEMY")
+
+	# -- Post-Turn Enemy Visuals (Stances & Vignettes) --
+	if main.player.coin > 0:
 		if type == Enemy.TWILIGHT_SAGE:
 			if has_dusk_stance == true:
 				dawn_particles.emitting = false
 				dusk_particles.emitting = true
-				switch_vignette_color(dusk_stance,0.4)
+				switch_vignette_color(dusk_stance, 0.4)
 				trigger_enemy_passive("DUSK STANCE: Play As Many SUN Coins.", 5.0)
 				main.enemy_portrait_sprite.play("TWILIGHT_SAGE_DUSK")
 			else:
 				dawn_particles.emitting = true
 				dusk_particles.emitting = false
-				switch_vignette_color(dawn_stance,0.4)
+				switch_vignette_color(dawn_stance, 0.4)
 				trigger_enemy_passive("DAWN STANCE: Play as Many MOON Coins.", 5.0)
 				main.enemy_portrait_sprite.play("TWILIGHT_SAGE_DAWN")	
-			max_playable_coins += 4
-	
+				
 	if type == Enemy.MOON_CASTER or type == Enemy.SUN_CASTER:
-		switch_vignetter_color(vignetter_default,0.4)
+		switch_vignetter_color(vignetter_default, 0.4)
 	
-
 	main.coin_deck.sigil_unlight_()
 	
 func toggle_button(btn: Button, make_disabled: bool) -> void:

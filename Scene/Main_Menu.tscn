@@ -65,6 +65,38 @@ region = Rect2(32, 0, 16, 16)
 atlas = ExtResource("1_s7vc7")
 region = Rect2(112, 0, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_vyihv"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lngom"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hlnrm"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bp1oj"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(48, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rbbaj"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(64, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r4o7e"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(80, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dam3f"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(96, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yjix4"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(112, 16, 16, 16)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_i4xaw"]
 animations = [{
 "frames": [{
@@ -112,6 +144,35 @@ animations = [{
 "loop": true,
 "name": &"coin_flipping",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_vyihv")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_lngom")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_hlnrm")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_bp1oj")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_rbbaj")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_r4o7e")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_dam3f")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_yjix4")
+}],
+"loop": true,
+"name": &"gold_coin_flip",
+"speed": 5.0
 }]
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_eslk0"]
@@ -120,16 +181,23 @@ animations = [{
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 871.0
+offset_top = -94.0
+offset_right = 871.0
+offset_bottom = -94.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 script = ExtResource("1_sjmou")
 
+[node name="Camera2D" type="Camera2D" parent="." unique_id=254091799]
+position = Vector2(576, 324)
+
 [node name="Glow" type="Panel" parent="." unique_id=712917737]
 layout_mode = 0
-offset_left = 568.0
-offset_top = 440.0
-offset_right = 584.0
+offset_left = 423.0
+offset_top = 439.0
+offset_right = 439.0
 offset_bottom = 456.0
 pivot_offset = Vector2(-5, 5)
 mouse_filter = 2
@@ -141,15 +209,15 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 512.0
-offset_top = 384.0
-offset_right = -512.0
-offset_bottom = -136.0
+offset_left = 371.0
+offset_top = 386.0
+offset_right = -653.0
+offset_bottom = -134.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Coin" type="AnimatedSprite2D" parent="." unique_id=1128530618]
-position = Vector2(576, 448)
+position = Vector2(433, 449)
 rotation = 1.5707964
 scale = Vector2(8, 8)
 sprite_frames = SubResource("SpriteFrames_i4xaw")
@@ -157,12 +225,13 @@ animation = &"coin_flip_up"
 
 [node name="Main Game Title" type="Label" parent="." unique_id=1408840644]
 layout_mode = 0
-offset_left = 128.0
-offset_top = 128.0
-offset_right = 1024.0
-offset_bottom = 320.0
+offset_left = -77.0
+offset_top = 95.0
+offset_right = 2609.0
+offset_bottom = 367.0
+scale = Vector2(0.5, 0.5)
 theme_override_fonts/font = ExtResource("5_yf7ie")
-theme_override_font_sizes/font_size = 123
+theme_override_font_sizes/font_size = 272
 text = "A r c o i n i u m"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -170,12 +239,13 @@ vertical_alignment = 1
 [node name="Flip Coin to Start" type="Label" parent="." unique_id=287850024]
 self_modulate = Color(0.86610603, 0.86610603, 0.86610603, 1)
 layout_mode = 0
-offset_left = 440.0
-offset_top = 560.0
-offset_right = 712.0
-offset_bottom = 616.0
-theme_override_font_sizes/font_size = 31
-text = "FLIP COIN TO START"
+offset_left = 478.0
+offset_top = 568.0
+offset_right = 883.0
+offset_bottom = 632.0
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/font_size = 63
+text = "FLIP TO START"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -186,3 +256,95 @@ script = ExtResource("6_uyvy5")
 
 [node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1088019939]
 stream = SubResource("AudioStreamPolyphonic_eslk0")
+
+[node name="Greed Glow" type="Panel" parent="." unique_id=1203397006]
+self_modulate = Color(0.9999998, 0.8607578, 0.4857236, 1)
+layout_mode = 0
+offset_left = 709.0
+offset_top = 444.0
+offset_right = 725.0
+offset_bottom = 460.0
+pivot_offset = Vector2(-5, 5)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_uyvy5")
+
+[node name="Greed Coin" type="AnimatedSprite2D" parent="." unique_id=1228548389]
+position = Vector2(716, 452)
+rotation = 1.5707964
+scale = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_i4xaw")
+animation = &"gold_coin_flip"
+
+[node name="GreedButton" type="Button" parent="." unique_id=1229254374]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 653.0
+offset_top = 389.0
+offset_right = -371.0
+offset_bottom = -131.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NORMAL" type="Label" parent="." unique_id=1582131222]
+visible = false
+self_modulate = Color(0.86610603, 0.86610603, 0.86610603, 1)
+layout_mode = 0
+offset_left = 81.0
+offset_top = 410.0
+offset_right = 603.0
+offset_bottom = 541.0
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/font_size = 63
+text = "NORMAL MODE
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NORMAL" type="Label" parent="NORMAL" unique_id=987742484]
+self_modulate = Color(0.86610603, 0.86610603, 0.86610603, 1)
+layout_mode = 0
+offset_left = 94.0
+offset_top = 96.0
+offset_right = 730.0
+offset_bottom = 227.0
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/font_size = 63
+text = "- Standard Experience
+- Start With 15 Coins
+- For New Players"
+vertical_alignment = 1
+
+[node name="GREED" type="Label" parent="." unique_id=715473414]
+visible = false
+self_modulate = Color(0.86610603, 0.86610603, 0.86610603, 1)
+layout_mode = 0
+offset_left = 818.0
+offset_top = 407.0
+offset_right = 1294.0
+offset_bottom = 538.0
+scale = Vector2(0.5, 0.5)
+theme_override_colors/font_color = Color(0.9999998, 0.73395246, 0.10155413, 1)
+theme_override_font_sizes/font_size = 63
+text = "GREED MODE
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GREED" type="Label" parent="GREED" unique_id=307475919]
+self_modulate = Color(0.86610603, 0.86610603, 0.86610603, 1)
+layout_mode = 0
+offset_left = 58.0
+offset_top = 106.0
+offset_right = 805.0
+offset_bottom = 304.0
+scale = Vector2(0.5, 0.5)
+theme_override_colors/font_color = Color(0.9999998, 0.73395246, 0.10155413, 1)
+theme_override_font_sizes/font_size = 63
+text = "- Enemies Greatly Enhanced
+- Start With 30 Coins
+- Silver/Gold Flip Rate is Higher
+- For Experienced Players
+"

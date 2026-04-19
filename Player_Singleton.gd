@@ -1,6 +1,8 @@
 extends Node
 
+
 #PLAYER STATS
+var greed = false
 var max_coin = 1000 #Max Coin Capacity
 var max_reserve = 6
 var current_reserve = 0
@@ -30,6 +32,9 @@ var gain = 0: #Coin to be gained next turn
 var debt = 0: #Gain Blocked
 	set(value):
 		debt = clamp(value,0,1000) 
+var thrift = 0: #Reduced Playable Coins
+	set(value):
+		thrift = clamp(value,0,16) 
 
 #PASSIVES
 
@@ -43,6 +48,8 @@ var payback_coins = 10
 var passive_income_used = false
 var pocket_money_coins = 6
 var previous_player_gain = 0
+var jar_o_savings_used = false
+var jar_o_savings_coins = 16
 
 var previous_player_flips = 0
 var player_turn_count = 0
@@ -50,6 +57,10 @@ var sun_count = 0
 var moon_count = 0
 var has_extra_turn = false
 var extra_turn_penalty = 1
+var thrifted_attack = 0
+var debted_attack = 0
+var spended_attack = 0
+var has_all_in = false
 
 #GENERAL PASSIVES
 
@@ -116,6 +127,7 @@ func save_stats(player):
 	gold_flip_rate = player.gold_flip_rate
 	gain = player.gain
 	debt = player.debt
+	thrift = player.thrift
 	
 	#B-Rank
 	has_wishbone = player.has_wishbone
@@ -177,6 +189,7 @@ func load_stats(player):
 	player.gold_flip_rate = gold_flip_rate
 	player.gain = gain
 	player.debt = debt
+	player.thrift = thrift
 	
 	#B-Rank
 	player.has_wishbone = has_wishbone

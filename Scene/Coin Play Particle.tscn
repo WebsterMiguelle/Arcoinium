@@ -2,6 +2,13 @@
 
 [ext_resource type="Script" uid="uid://b81y1v87st1oc" path="res://Scene/coin_add_particles.gd" id="1_2413c"]
 
+[sub_resource type="Curve" id="Curve_2413c"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_tvmmp"]
+curve = SubResource("Curve_2413c")
+
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2413c"]
 particle_flag_disable_z = true
 velocity_pivot = Vector3(0, -20, 0)
@@ -9,9 +16,10 @@ direction = Vector3(1, -30, 0)
 spread = 0.0
 initial_velocity_min = 553.66
 initial_velocity_max = 641.24
-gravity = Vector3(0, 98, 0)
+gravity = Vector3(0, 100, 0)
 scale_min = 0.0
 scale_max = 20.0
+scale_curve = SubResource("CurveTexture_tvmmp")
 color = Color(1, 1, 0.6117647, 1)
 
 [node name="CoinPlayParticle" type="Node2D" unique_id=257060510]
@@ -20,7 +28,7 @@ color = Color(1, 1, 0.6117647, 1)
 position = Vector2(30, 35)
 emitting = false
 amount = 12
-lifetime = 1.6300000000000001
+lifetime = 1.63
 one_shot = true
 explosiveness = 0.53
 process_material = SubResource("ParticleProcessMaterial_2413c")

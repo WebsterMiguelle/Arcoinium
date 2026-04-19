@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://dwf6g2wuj1oe3"]
+
+[ext_resource type="Script" uid="uid://jtud71vi7fi3" path="res://Scene/floating_label.gd" id="1_4m76f"]
+[ext_resource type="FontFile" uid="uid://drm3kueev5jxy" path="res://Assets/Fonts/OXYGENE1.TTF" id="1_vg785"]
+
+[node name="FloatingLabel" type="Node2D" unique_id=796970257]
+script = ExtResource("1_4m76f")
+
+[node name="Label" type="Label" parent="." unique_id=1183944823]
+offset_right = 40.0
+offset_bottom = 17.0
+theme_override_colors/font_color = Color(1, 0.33765808, 0.22871411, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("1_vg785")
+theme_override_font_sizes/font_size = 21
+text = "20 SPEND"
+horizontal_alignment = 1
+vertical_alignment = 1

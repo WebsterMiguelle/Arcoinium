@@ -809,6 +809,7 @@ grow_vertical = 0
 alignment = 2
 
 [node name="PlayerInformationDisplay2" parent="Battle UI" unique_id=2082350649 instance=ExtResource("43_tcekk")]
+visible = false
 offset_left = 158.00002
 offset_top = 33.999996
 offset_right = 1227.0

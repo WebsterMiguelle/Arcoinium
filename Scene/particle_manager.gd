@@ -42,7 +42,7 @@ func play_attack_animation(start_node: Node, target_node: Node, damage: int) -> 
 	var direction = (end_pos - start_pos).normalized()
 	var perpendicular = Vector2(-direction.y, direction.x)
 	
-	var spread = 300 
+	var spread = 200
 	
 	var number_of_trails = ceil(damage / 10.0)
 	
@@ -64,19 +64,31 @@ func spawn_single_trail(start_pos: Vector2, end_pos: Vector2, control_point: Vec
 		add_child(projectile)
 		projectile.global_position = start_pos
 		
-		var tween = create_tween()
 		var travel_time = randf_range(0.4, 0.8)
+		var half_time = travel_time / 2.0 
+	
+		var move_tween = create_tween()
 		
-		tween.tween_method(
+		move_tween.tween_method(
 			func(t: float): 
 				if is_instance_valid(projectile):
 					projectile.global_position = start_pos.bezier_interpolate(control_point, control_point, end_pos, t),
-			0.0, 1.0, travel_time
-		).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-					
+			0.0, 0.5, half_time
+		).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		
+		move_tween.tween_method(
+			func(t: float): 
+				if is_instance_valid(projectile):
+					projectile.global_position = start_pos.bezier_interpolate(control_point, control_point, end_pos, t),
+			0.5, 1.0, half_time
+		).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+		
+		move_tween.tween_callback(projectile.queue_free)
+		
+		var visual_tween = create_tween().set_parallel(true)
+		
 		var random_spin = randf_range(-PI, PI) * 4
-		tween.parallel().tween_property(projectile, "rotation", random_spin, travel_time)
-		tween.parallel().tween_property(projectile, "self_modulate:a", 0.0, travel_time).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
-		tween.tween_callback(projectile.queue_free)
+		visual_tween.tween_property(projectile, "rotation", random_spin, travel_time)
+		visual_tween.tween_property(projectile, "self_modulate:a", 0.0, travel_time * 2).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
 		
 		await get_tree().create_timer(0.05).timeout

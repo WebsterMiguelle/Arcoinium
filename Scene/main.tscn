@@ -828,15 +828,17 @@ vertical_alignment = 1
 
 [node name="Player Reserve" type="Label" parent="Battle UI" unique_id=15672962]
 custom_minimum_size = Vector2(150, 40)
-offset_left = 895.0
-offset_top = 512.0
-offset_right = 1056.4805
-offset_bottom = 554.0
+offset_left = 874.93463
+offset_top = 502.0
+offset_right = 1024.9346
+offset_bottom = 542.0
 scale = Vector2(1.2137691, 1)
 theme_override_colors/font_color = Color(0.34331307, 8.018583e-05, 0.34331056, 1)
 theme_override_fonts/font = ExtResource("36_1bveb")
 theme_override_font_sizes/font_size = 31
 text = "Reserve: 0/4"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="PlayerHealthBar2" parent="Battle UI" unique_id=1546897993 instance=ExtResource("5_1xcnr")]
 offset_left = 146.0

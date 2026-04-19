@@ -283,12 +283,12 @@ func reset_stats():
 
 	has_active_income = false
 	has_pocket_money = false
-	has_passive_income = false
+	has_passive_income = true
 	has_simple_interest = false
 
 	#DEBTOR PASSIVES
 
-	has_pay_down = false
+	has_pay_down = true
 	has_reimbursement = false
 	has_loan_shark = false
 	has_lending_charge = false
@@ -592,9 +592,10 @@ func start_turn():
 	has_all_in = false
 	flip_clicks = 0
 	latest_coin = null
-	#debted_attack = 10
-	#thrifted_attack = 5
-	#spended_attack = 10
+	if has_pay_down:
+		debted_attack = 8
+		thrifted_attack = 2
+		spended_attack = 4
 	
 	if thrift != 0:
 		main.sound_manager.play_sound(THRIFT_FLAME)

@@ -783,19 +783,6 @@ func end_enemy_turn():
 		turn_spend = 0; turn_lock = false; turn_slow = false
 		main.turn_calculation.text = ""
 
-	# 1. Player Passive Income Check
-	var passive_income_triggered = false
-	var converted_income = 0
-	if turn_damage > 0:
-		if main.player.has_passive_income and !main.player.passive_income_used:
-			main.player.passive_income_used = true
-			passive_income_triggered = true
-			converted_income = turn_damage
-			if converted_income >= 30:
-				converted_income = 30
-			main.player.coin += converted_income
-		else:
-			main.player.take_damage(turn_damage)
 
 
 	# 3. Apply Stats to Enemy
@@ -804,16 +791,6 @@ func end_enemy_turn():
 	max_playable_coins = initial_max_playable_coins
 	gain += turn_gain
 
-	# 4. Player 'Pay Down' Passive Check
-	var pay_down_killed = false
-	var pay_down_debt_added = false
-	if main.player.has_pay_down:
-		if debt > coin:
-			coin = 0
-			pay_down_killed = true
-		else:
-			debt += 5
-			pay_down_debt_added = true
 
 	# 5. Player 'Payback' Revive Check
 	if main.player.has_payback and !main.player.payback_used and main.player.coin <= 0: 
@@ -844,7 +821,7 @@ func end_enemy_turn():
 	
 	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0 or turn_lock or turn_slow:
 		main.turn_calculation_box.exit()
-	elif coin <= 0 and !pay_down_killed:
+	elif coin <= 0:
 		# I combined your double-exit check here so the box doesn't glitch by trying to close twice!
 		main.turn_calculation_box.exit()
 
@@ -853,10 +830,6 @@ func end_enemy_turn():
 		main.sound_manager.play_sound(COIN_ATTACK_PARTICLE) # The firing sound
 		particle_manager.trigger_attack(main.coin_deck, main.player_portrait, turn_damage, "")
 		
-		# Passive income heal happens instantly upon firing
-		if passive_income_triggered:
-			main.player.trigger_temp_passive("passive_income","PASSIVE INCOME")
-			main.sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
 
 	if turn_debt != 0: 
 		main.sound_manager.play_sound(DEBTED_ATTACK)
@@ -870,9 +843,6 @@ func end_enemy_turn():
 	
 
 
-	if pay_down_killed:
-		main.sound_manager.play_sound(PASSIVE_PAYDOWN)
-		main.player.trigger_temp_passive("pay_down","PAY DOWN")
 
 	# Clean up the played coins visually
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
@@ -882,10 +852,25 @@ func end_enemy_turn():
 
 	# -- The Pause --
 	# Wait for the attack runes to travel across the screen
-	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0 or turn_lock or turn_slow or pay_down_killed or pay_down_debt_added:
+	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0 or turn_lock or turn_slow:
 		await get_tree().create_timer(1.0).timeout
 
-
+	# 1. Player Passive Income Check
+	var passive_income_triggered = false
+	var converted_income = 0
+	if turn_damage > 0:
+		if main.player.has_passive_income and !main.player.passive_income_used:
+			main.player.trigger_temp_passive("passive_income","PASSIVE INCOME")
+			main.sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
+			main.player.passive_income_used = true
+			passive_income_triggered = true
+			converted_income = turn_damage
+			if converted_income >= 30:
+				converted_income = 30
+			main.player.coin += converted_income
+		else:
+			main.player.take_damage(turn_damage)
+	
 	# -- Final Hit Impacts & Floating Labels (The runes have arrived!) --
 	if turn_damage > 0:
 		if passive_income_triggered:
@@ -924,6 +909,17 @@ func end_enemy_turn():
 	if turn_lock: main.player.lock = true
 	if turn_slow: main.player.slow = true
 	
+	# 4. Player 'Pay Down' Passive Check
+	var pay_down_killed = false
+	var pay_down_debt_added = false
+	if main.player.has_pay_down:
+		if debt > coin:
+			coin = 0
+			pay_down_killed = true
+	if pay_down_killed:
+		main.sound_manager.play_sound(PASSIVE_PAYDOWN)
+		main.player.trigger_temp_passive("pay_down","PAY DOWN")
+
 	if pay_down_killed:
 		create_floating_label(debt, "DAMAGE", "ENEMY")
 	elif pay_down_debt_added:

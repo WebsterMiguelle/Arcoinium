@@ -422,6 +422,10 @@ func flip():
 	if (flip_clicks == 2 or flip_clicks == 4) and has_lunar_coin:
 		state = 1;
 		trigger_temp_passive("lunar_coin","LUNAR COIN")
+	if state == 0:
+		main.total_heads += 1
+	else:
+		main.total_tails += 1
 	
 	if current_played_coin == max_playable_coins: is_deck_full = true	
 	current_played_coin += 1

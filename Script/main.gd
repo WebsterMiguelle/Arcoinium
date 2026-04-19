@@ -208,14 +208,13 @@ var total_damage = 0
 var highest_damage = 0
 var total_gain = 0
 var highest_gain = 0
-var total_debt = 0
-var highest_debt = 0
 var enemies_defeated = 0
 var total_heads = 0
 var total_tails = 0
 var total_flips = 0
 var total_reflips = 0
 var total_passives = 0
+var overall_reserved_coins = 0
 
 var overall_total_damage: int = 0
 var overall_highest_damage: int = 0
@@ -601,6 +600,7 @@ func show_enemy_passive(text: String, duration: float = 2.5) -> void:
 func _on_flip_pressed():
 	if current_turn != Turn.PLAYER:
 		return
+	total_flips += 1
 	player.flip()
 	if tutorial_enabled and has_encountered_reflip and !has_encountered_reserve and player.current_played_coin >= 16:
 		if current_tutorial != null: current_tutorial.close()
@@ -645,19 +645,16 @@ func trigger_game_over(player_won: bool):
 	
 	var stats = {
 	"remaining_coins": player.coin,
-	"total_damage_dealt": total_damage_dealt,
-	"highest_damage_dealt": highest_damage_dealt,
-	"total_gain": total_gain,
-	"highest_gain": highest_gain,
 	"overall_total_damage": overall_total_damage,
-	"overall_highest_damage": overall_highest_damage,
+	"highest_damage_dealt": highest_damage_dealt,
 	"overall_total_gain": overall_total_gain,
-	"overall_highest_gain": overall_highest_gain,
+	"highest_gain": highest_gain,
 	"enemies_defeated": enemies_defeated,
 	"heads": total_heads,
 	"tails": total_tails,
 	"flips": total_flips,
-	"reflips": total_reflips
+	"reflips": total_reflips,
+	"total_reserved_coins": overall_reserved_coins
 }
 	game_over_ui.show_stats(stats)
 	game_over_ui.visible = true
@@ -792,6 +789,7 @@ func handle_victory_flow():
 	var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
 	for c in reserved_coins:
 		player.coin += 1
+		overall_reserved_coins += 1
 		c.queue_free()
 		player.current_reserve -= 1
 	
@@ -826,10 +824,6 @@ func progression_after_victory():
 		sound_manager.play_music(PASSIVE_SELECTION)
 		await reward_manager.show_card_selection_async()
 		current_room += 1
-			#map.background.global_position.y = 1000
-			#add_child(map)
-			#tween = create_tween()
-			#tween.tween_property(map,"position:y",0,0.4)
 		await _play_progression_cutscene(current_room - 1, current_room)
 		if current_room == 4:
 			await shop_manager.show_shop_async(player)
@@ -843,6 +837,7 @@ func _on_re_flip_pressed():
 	if !has_encountered_reflip:
 		has_encountered_reflip = true
 		if current_tutorial != null: current_tutorial.close()
+	total_reflips += 1
 	player.re_flip()
 
 func reserve_left_over_coin():

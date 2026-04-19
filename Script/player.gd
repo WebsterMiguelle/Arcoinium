@@ -430,7 +430,7 @@ func flip():
 	else:
 		c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
 		c.add_to_group("coins")
-	main.sound_manager.play_sound(COIN_FLIP)
+
 	#Silver/Gold Flip Rate
 	
 	var upgrade_chance = randf()

@@ -179,87 +179,85 @@ func apply_item(card_id):
 			print("Golden Clover")
 			main.player.has_golden_clover = true
 			main.player.gold_flip_rate += 0.1
+
 		4:
-			print("Merchant Scroll Passive")
-			main.player.has_merchant_scroll = true
-		5:
 			print("Impromptu Flip Passive")
 			main.player.has_impromptu_flip = true
-		6:
+		5:
 			print("Advanced Planning Passive")
 			main.player.has_advanced_planning = true
-		7:
+		6:
 			print("Value Increase Passive")
 			main.player.has_value_increase = true
-		8:
+		7:
 			print("Lending Charge Passive")
 			main.player.has_lending_charge = true
-		9:
+		8:
 			print("Coin Snipe Passive")
 			main.player.has_coin_snipe = true
-		10:
+		9:
 			print("Simple Interest Passive")
 			main.player.has_simple_interest = true
-		11:
+		10:
 			print("Lucky Pair")
 			main.player.has_lucky_pair = true
 			main.player.gold_flip_rate += 0.1
-		12:
+		11:
 			print("A-Rank: Sleight of Hand")
 			main.player.has_sleight_of_hand = true
 			main.player.max_re_flip += 4
-		13:
+		12:
 			print("A-Rank: Piggy")
 			main.player.has_piggy = true
-		14:
+		13:
 			print("A-Rank: Pocket Money")
 			main.player.has_pocket_money = true
-		15:
+		14:
 			print("A-Rank: Passive Income")
 			main.player.has_passive_income = true
-		16:
+		15:
 			print("A-Rank: Magic Trick")
 			main.player.has_magic_trick = true
-		17:
+		16:
 			print("A-Rank: Reimbursement")
 			main.player.has_reimbursement = true
-		18:
+		17:
 			print("A-Rank: Payback")
 			main.player.has_payback = true
-		19:
+		18:
 			print("A-Rank: Loan Shark")
 			main.player.has_loan_shark = true
-		20:
+		19:
 			print("A-Rank: Spare Change")
 			main.player.has_spare_change = true
-		21:
+		20:
 			print("A-Rank:Triple Nickel")
 			main.player.has_triple_nickel = true
 			main.player.silver_flip_rate += 0.2
-		22:
+		21:
 			print("S-Rank: Inflation")
 			main.player.has_inflation = true
-		23:
+		22:
 			print("S-Rank: Active Income")
 			main.player.has_active_income = true
-		24:
+		23:
 			print("S-Rank: Pay Down")
 			main.player.has_pay_down = true
-		25:
+		24:
 			print("S-Rank: Refund")
 			main.player.has_refund = true
 			main.player.max_re_flip += 1
-		26:
+		25:
 			print("B-Rank: Withdraw")
 			main.player.has_withdraw = true
-		27:
+		26:
 			print("A-Rank: Deposit")
 			main.player.has_deposit = true
 			main.player.max_reserve += 4
-		28:
+		27:
 			print("A-Rank: Dividend")
 			main.player.has_dividend = true
-		29:
+		28:
 			print("S-Rank: Cash Out")
 			main.player.has_cash_out = true
 		_:

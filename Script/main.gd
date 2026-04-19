@@ -224,12 +224,7 @@ var overall_highest_gain: int = 0
 
 var current_enemy_type
 
-#Random Events Selection Scene
-var event_maps = [
-   # preload("res://Events/###.tscn"),
-   # preload("res://Events/###.tscn"),
-   # preload("res://Events/###.tscn")
-]
+var is_surrender = false
 
 var current_enemy_index
 var current_room
@@ -296,6 +291,10 @@ func toggle_pause():
 	get_tree().paused = !get_tree().paused
 	pause_menu.visible = get_tree().paused
 	
+	battle_particles.emitting = !get_tree().paused
+	dusk_particles.emitting = !get_tree().paused
+	dawn_particles.emitting = !get_tree().paused
+	
 func battle_start():
 	if tutorial_enabled and current_room == 0:
 		re_flip_button.visible = false
@@ -344,30 +343,39 @@ func battle_start():
 		0: 
 			enemy.setup(self,Enemy.MAGE)
 			enemy_portrait_sprite.play("MAGE")
+			current_enemy_type = Enemy.MAGE
 		1: 
 			enemy.setup(self,Enemy.DWARF)
 			enemy_portrait_sprite.play("DWARF")
+			current_enemy_type = Enemy.DWARF
 		2: 
 			enemy.setup(self,Enemy.COLLECTOR)
 			enemy_portrait_sprite.play("COLLECTOR")
+			current_enemy_type = Enemy.COLLECTOR
 		3: 
 			enemy.setup(self,Enemy.TRADER)
 			enemy_portrait_sprite.play("TRADER")
+			current_enemy_type = Enemy.TRADER
 		4: 
 			enemy.setup(self,Enemy.THRIFTER)
 			enemy_portrait_sprite.play("THRIFTER")
+			current_enemy_type = Enemy.THRIFTER
 		5:
 			enemy.setup(self,Enemy.ARISTOCRAT)
 			enemy_portrait_sprite.play("ARISTOCRAT")
+			current_enemy_type = Enemy.ARISTOCRAT
 		6: 
 			enemy.setup(self,Enemy.SUN_CASTER)
 			enemy_portrait_sprite.play("SUN_CASTER")
+			current_enemy_type = Enemy.SUN_CASTER
 		7: 
 			enemy.setup(self,Enemy.MOON_CASTER)
 			enemy_portrait_sprite.play("MOON_CASTER")
+			current_enemy_type = Enemy.MOON_CASTER
 		8:
 			enemy.setup(self,Enemy.TWILIGHT_SAGE)
 			enemy_portrait_sprite.play("TWILIGHT_SAGE_DAWN")
+			current_enemy_type = Enemy.TWILIGHT_SAGE
 
 	
 	update_enemy_coin()
@@ -426,6 +434,7 @@ func _on_end_run_pressed():
 	print("Main Script: Received End Run")
 	get_tree().paused = false
 	pause_menu.visible = false
+	is_surrender = true
 	trigger_game_over(false)
 
 func create_tutorial(title, text, pos, y_offset):
@@ -619,7 +628,8 @@ func trigger_game_over(player_won: bool):
 	sound_manager.stop_music()
 	if player_won:
 		enemy.max_playable_coins = 0
-		reward_manager.show_rewards()
+		if current_enemy_index != 8:
+			reward_manager.show_rewards()
 	
 	game_over_ui.visible = true
 	
@@ -652,37 +662,93 @@ func trigger_game_over(player_won: bool):
 	game_over_ui.show_stats(stats)
 	game_over_ui.visible = true
 	
-	var is_surrender
+	
 	
 	match current_enemy_type:
 		Enemy.MAGE:
-			if player_won:
-				result_label.text = "ARCANE FALLEN"
-				enemy_label.text = "Mage has been slain"
+			if is_surrender:
+				result_label.text = "RUN ABANDONED"
+				enemy_label.text = "You gave up the fight..."
 			else:
 				result_label.text = "CONSUMED BY MAGIC"
 				enemy_label.text = "Mage Wins"
-			
-			
+
 		Enemy.DWARF:
-			if player_won:
-				result_label.text = "THE FORGE BREAKS"
-				enemy_label.text = "Dwarf has been slain"
+			if is_surrender:
+				result_label.text = "RUN ABANDONED"
+				enemy_label.text = "You gave up the fight..."
 			else:
 				result_label.text = "CRUSHED BY THE FORGE"
 				enemy_label.text = "Dwarf Wins"
-				
+
+		Enemy.COLLECTOR:
+			if is_surrender:
+				result_label.text = "RUN ABANDONED"
+				enemy_label.text = "You gave up the fight..."
+			else:
+				result_label.text = "ADDED TO THE COLLECTION"
+				enemy_label.text = "Collector Wins"
+
+		Enemy.TRADER:
+			if is_surrender:
+				result_label.text = "RUN ABANDONED"
+				enemy_label.text = "You gave up the fight..."
+			else:
+				result_label.text = "A BAD DEAL"
+				enemy_label.text = "Trader Wins"
+
+		Enemy.THRIFTER:
+			if is_surrender:
+				result_label.text = "RUN ABANDONED"
+				enemy_label.text = "You gave up the fight..."
+			else:
+				result_label.text = "SPENT TO NOTHING"
+				enemy_label.text = "Thrifter Wins"
+
+		Enemy.ARISTOCRAT:
+			if is_surrender:
+				result_label.text = "RUN ABANDONED"
+				enemy_label.text = "You gave up the fight..."
+			else:
+				result_label.text = "BENEATH THEIR CLASS"
+				enemy_label.text = "Aristocrat Wins"
+
+		Enemy.SUN_CASTER:
+			if is_surrender:
+				result_label.text = "RUN ABANDONED"
+				enemy_label.text = "You gave up the fight..."
+			else:
+				result_label.text = "SCORCHED BY DAWN"
+				enemy_label.text = "Sun Caster Wins"
+
+		Enemy.MOON_CASTER:
+			if is_surrender:
+				result_label.text = "RUN ABANDONED"
+				enemy_label.text = "You gave up the fight..."
+			else:
+				result_label.text =  "CONSUMED BY DUSK"
+				enemy_label.text = "Moon Caster Wins"
+
+		Enemy.TWILIGHT_SAGE:
+			if is_surrender:
+				result_label.text = "RUN ABANDONED"
+				enemy_label.text = "You gave up the fight..."
+			elif player_won:
+				result_label.text = "PLAYER WON"
+				enemy_label.text = "Twilight Sage has been slain"
+			else:
+				result_label.text =  "LOST IN TWILIGHT"
+				enemy_label.text = "Twilight Sage Wins"
+
 	enemy_label.modulate.a = 0.0
 	
-	await get_tree().create_timer(1.0).timeout
-	
-			
+	await get_tree().create_timer(2.0).timeout
 	var tween = create_tween()
 	tween.tween_property(enemy_label, "modulate:a", 1.0, 1.0)
+	is_surrender = false
 	
-	if is_surrender:
-		result_label.text = "RUN ABANDONED"
-		enemy_label.text = "You gave up the fight..."
+	
+	
 
 func check_defeat():
 	if player.coin <= 0:
@@ -706,12 +772,12 @@ func check_defeat():
 	return null
 
 func handle_victory_flow():
+	endTurn_button.disabled = true
 	player.lock = false
 	player.slow = false
 	var coins = get_tree().get_nodes_in_group("reserved coins")
 	player.current_reserve = coins.size()
 	player.max_reserve = player.initial_max_reserve
-	endTurn_button.disabled = true
 	switch_vignetter_color(vignetter_default,1.0)
 	switch_vignette_color(vignette_default,1.0)
 	battle_particles.emitting = true

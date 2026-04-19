@@ -156,6 +156,12 @@ func _on_card_selected(card_id):
 	print("Player selected card:", card_id)
 	apply_reward(card_id)
 	
+	for child in card_container.get_children():
+		if child.card_id == card_id:
+			child.disabled = true
+			child.modulate.a = 0.5
+			break
+	
 	if picked_cards.size() >= max_picks:
 		visible = false
 		emit_signal("selection_done")

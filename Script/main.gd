@@ -272,8 +272,8 @@ func _ready():
 		tutorial_enabled = false
 		enemy.greed = true
 		player.coin += 15
-		player.silver_flip_rate += 0.4
-		player.gold_flip_rate += 0.2
+		player.silver_flip_rate += 0.2
+		player.gold_flip_rate += 0.1
 	else: main.self_modulate = Color.WHITE
 	shop_manager.item_purchased.connect(_on_item_purchased)
 	

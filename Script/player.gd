@@ -271,9 +271,9 @@ func reset_stats():
 	has_value_increase = false
 
 	#SHOOTER PASSIVES
-	has_spare_change = false
+	has_spare_change = true
 	has_triple_nickel = false
-	has_refund = false
+	has_refund = true
 	has_coin_snipe = false
 
 	#INVESTOR PASSIVES
@@ -401,7 +401,6 @@ func coin_calculation():
 func flip():
 	
 	var is_deck_full = false
-	main.sound_manager.play_sound(COIN_FLIP)
 	print("FLIP")
 	flip_clicks += 1
 	if current_re_flip != max_re_flip: 
@@ -423,6 +422,7 @@ func flip():
 	current_played_coin += 1
 	var c = COIN.instantiate()
 	if is_deck_full:
+		if lock: return
 		c.setup(state,main.coin_deck.get_reserve_slot())
 		c.reserved = true
 		current_reserve += 1
@@ -430,7 +430,7 @@ func flip():
 	else:
 		c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
 		c.add_to_group("coins")
-
+	main.sound_manager.play_sound(COIN_FLIP)
 	#Silver/Gold Flip Rate
 	
 	var upgrade_chance = randf()
@@ -537,6 +537,7 @@ func re_flip():
 	if !lock and has_spare_change:
 		var has_withdraw_damage = false
 		var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
+		current_reserve = reserved_coins.size()
 		if reserved_coins.size() != 0:
 			trigger_temp_passive("spare_change","SPARE CHANGE")
 			main.sound_manager.play_sound(PASSIVE_SPARE_CHANGE)

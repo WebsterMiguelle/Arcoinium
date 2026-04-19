@@ -215,7 +215,7 @@ func setup(m,enemy):
 			else:
 				max_coin = 200
 				coin = 50
-				max_playable_coins = 12
+				max_playable_coins = 8
 				silver_flip_rate = 0.0
 				gold_flip_rate = 0.0
 				bounty = 50
@@ -275,8 +275,8 @@ func setup(m,enemy):
 				has_learn_to_save = true
 				main.player.has_learn_to_save = true
 			else:
-				max_coin = 200
-				coin = 150
+				max_coin = 100
+				coin = 100
 				max_playable_coins = 12
 				silver_flip_rate = 0
 				gold_flip_rate = 1
@@ -464,7 +464,7 @@ func enemy_coin_calculation():
 					right_coin = coin			
 				if left_coin != null and right_coin != null:
 					if left_coin.state == 0 and right_coin.state == 0:
-						total_damage += (left_coin.base_value)
+						total_damage += (left_coin.base_value) + (right_coin.base_value)
 					left_coin = null
 					right_coin = null
 				else:

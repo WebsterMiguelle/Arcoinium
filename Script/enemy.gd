@@ -310,7 +310,7 @@ func setup(m,enemy):
 		Enemy.SUN_CASTER:
 			if !greed:
 				max_coin = 200
-				coin = 150
+				coin = 120
 				max_playable_coins = 12
 				silver_flip_rate = 1
 				gold_flip_rate = 0
@@ -332,7 +332,7 @@ func setup(m,enemy):
 		Enemy.MOON_CASTER:
 			if !greed:
 				max_coin = 200
-				coin = 150
+				coin = 120
 				max_playable_coins = 12
 				silver_flip_rate = 1
 				gold_flip_rate = 0
@@ -817,8 +817,10 @@ func end_enemy_turn():
 		create_floating_label("","LOCK","PLAYER")
 		main.player.lock = true
 		main.sound_manager.play_sound(RESERVE_LOCK)
+		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
 	if turn_slow:
 		main.sound_manager.play_sound(SLOW)
+		main.sound_manager.play_sound(DEBT_EFFECT)
 		main.player.slow = true
 		create_floating_label("","SLOW","PLAYER")
 		
@@ -848,6 +850,11 @@ func end_enemy_turn():
 		main.player.coin = 1
 		main.player.payback_used = true
 		main.player.payback_coins = 12
+		main.player.debt = 0
+		main.player.spend = 0
+		main.player.thrift = 0
+		main.player.lock = false
+		main.player.slow = false
 		
 	if main.player.coin > 0:
 		await get_tree().create_timer(1.0).timeout

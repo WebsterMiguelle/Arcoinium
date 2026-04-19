@@ -507,10 +507,26 @@ func start_enemy_turn():
 			check_defeat()
 
 func _on_endturn_pressed():
-	if tutorial_enabled:
-		if has_encountered_endturn:
-			if tutorial_enabled and current_tutorial != null: current_tutorial.close()
-			if tutorial_enabled and !has_encountered_reflip and current_room == 1: has_encountered_reflip = true
+	if enemy.coin > 0 and player.coin > 0:
+		if tutorial_enabled:
+			if has_encountered_endturn:
+				if tutorial_enabled and current_tutorial != null: current_tutorial.close()
+				if tutorial_enabled and !has_encountered_reflip and current_room == 1: has_encountered_reflip = true
+				await player.end_turn()
+				turn_calculation_box.exit()
+				var defeat = await check_defeat()
+				if defeat == null:
+					await get_tree().create_timer(1.0).timeout
+					if !player.has_extra_turn:
+						start_enemy_turn()
+						player.extra_turn_penalty = 1
+					else:
+						sound_manager.play_sound(EXTRA_TURN)
+						show_turn_ui("EXTRA TURN")
+						player.extra_turn()
+						player.has_extra_turn = false
+		else:
+			if current_tutorial != null: current_tutorial.close()
 			await player.end_turn()
 			turn_calculation_box.exit()
 			var defeat = await check_defeat()
@@ -524,21 +540,6 @@ func _on_endturn_pressed():
 					show_turn_ui("EXTRA TURN")
 					player.extra_turn()
 					player.has_extra_turn = false
-	else:
-		if current_tutorial != null: current_tutorial.close()
-		await player.end_turn()
-		turn_calculation_box.exit()
-		var defeat = await check_defeat()
-		if defeat == null:
-			await get_tree().create_timer(1.0).timeout
-			if !player.has_extra_turn:
-				start_enemy_turn()
-				player.extra_turn_penalty = 1
-			else:
-				sound_manager.play_sound(EXTRA_TURN)
-				show_turn_ui("EXTRA TURN")
-				player.extra_turn()
-				player.has_extra_turn = false
 
 func show_passive_notification(text: String, duration: float = 1.5) -> void:
 	var notif = PASSIVE_SCENE.instantiate()

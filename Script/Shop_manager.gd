@@ -40,7 +40,7 @@ var all_cards = [
 	{"id": 15, "name": "Passive Income", "rank": "A", "desc": "In every battle, the first Enemy DAMAGE will be turned into Coins. (Caps at 30 Coin GAIN)"},
 	{"id": 16, "name": "Magic Trick", "rank": "A", "desc": "Upon ending the turn with 8 or more Coins, the 1st Coin Pair will be copied to the 2nd, 3rd, and 4th Coin Pair."},
 	{"id": 17, "name": "Reimbursement", "rank": "A", "desc": "Each Flip and Re-Flip has a 30% Chance to apply 1 DEBT."},
-	{"id": 18, "name": "Payback", "rank": "A", "desc": " If Coin Caster receives a killing blow, set Coin back to 1, and immediately generate 12 GOLD SUN Coins next turn. (One-Time per Battle)"},
+	{"id": 18, "name": "Payback", "rank": "A", "desc": " If Coin Caster receives a killing blow, set Coin back to 1, Cleanse all Debuffs, and immediately generate 12 GOLD SUN Coins next turn. (One-Time per Battle)"},
 	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "At the start of the enemy’s turn, immediately deal damage based on half of the Enemy’s DEBT. Remove half of DEBT afterwards."},
 	{"id": 20, "name": "Spare Change", "rank": "A", "desc": "Upon a Re-Flip, retrieve all RESERVED Coins. (RESERVED Coin: When Arcane Circle overflows with Coins, Reserve it.)"},
 	{"id": 21, "name": "Triple Nickel", "rank": "A", "desc": "+20% SILVER Flip Rate. The first 3 Flips are SILVER Coins."},

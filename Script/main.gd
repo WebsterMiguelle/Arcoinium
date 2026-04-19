@@ -33,6 +33,8 @@ var has_encountered_damage_gain = false
 var has_encountered_debt = false
 var has_encountered_spend = false
 var has_encountered_thrift = false
+var has_encountered_lock = false
+var has_encountered_slow = false
 
 @onready var player = $Player
 @onready var enemy = $Enemy
@@ -455,6 +457,14 @@ func start_player_turn():
 			if player.spend > 0:
 				has_encountered_spend = true
 				current_tutorial = create_tutorial("SPEND", "While having SPEND, each Coin Flip costs 2 Coins.",tutorial_area.global_position,-50)
+		if !has_encountered_lock:
+			if player.lock:
+				has_encountered_lock = true
+				current_tutorial = create_tutorial("LOCK","You cannot Add or Remove Reserved Coins this turn.",tutorial_area.global_position,-50)
+		if !has_encountered_slow:
+			if player.slow:
+				has_encountered_slow = true
+				current_tutorial = create_tutorial("SLOW","Each Coin only has a 50% Chance to Re-Flip.",tutorial_area.global_position,-50)
 		if enemy.coin == 0:
 			check_defeat()
 	else:
@@ -504,6 +514,7 @@ func _on_endturn_pressed():
 					player.extra_turn()
 					player.has_extra_turn = false
 	else:
+		if current_tutorial != null: current_tutorial.close()
 		await player.end_turn()
 		turn_calculation_box.exit()
 		var defeat = await check_defeat()

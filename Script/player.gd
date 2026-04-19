@@ -853,6 +853,8 @@ func end_turn():
 	if lock:	
 		lock = false
 		max_reserve = initial_max_reserve
+		coins = get_tree().get_nodes_in_group("reserved coins")
+		current_reserve = coins.size()
 	if slow:
 		slow = false
 	

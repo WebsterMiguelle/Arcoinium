@@ -366,8 +366,8 @@ func setup(m,enemy):
 				switch_vignette_color(dawn_stance,0.4)
 				trigger_enemy_passive("DAWN STANCE: Play as Many MOON Coins.", 5.0)
 			else:
-				max_coin = 300
-				coin = 300
+				max_coin = 400
+				coin = 400
 				max_playable_coins = 8
 				silver_flip_rate = 0
 				gold_flip_rate = 1

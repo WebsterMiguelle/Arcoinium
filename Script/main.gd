@@ -828,7 +828,7 @@ func progression_after_victory():
 		await reward_manager.show_card_selection_async()
 		current_room += 1
 		await _play_progression_cutscene(current_room - 1, current_room)
-		if current_room == 1:
+		if current_room == 4:
 			sound_manager.play_music(SHOP)
 			await shop_manager.show_shop_async(player)
 			current_room += 1

@@ -58,6 +58,7 @@ const SPENDED_ATTACK = preload("uid://lfprp4w7saas")
 const THRIFTED_ATTACK = preload("uid://dtx4a0j6atomh")
 
 
+
 #PARTICLES
 const SINGLE_DAMAGE_PARTICLE = preload("uid://dgeahqxig4fqa")
 const DAMAGE_PARTICLE = preload("uid://q4hytnmn2fbt")
@@ -288,7 +289,7 @@ func reset_stats():
 
 	#DEBTOR PASSIVES
 
-	has_pay_down = true
+	has_pay_down = false
 	has_reimbursement = false
 	has_loan_shark = false
 	has_lending_charge = false
@@ -855,6 +856,7 @@ func end_turn():
 	var shake_power = 0
 	# -- 2. Final Hit Impacts & Floating Labels (The runes have arrived!) --
 	if turn_damage > 0:
+		
 		# I pasted the hit particles and sounds here!
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 		if turn_damage <= 10: 

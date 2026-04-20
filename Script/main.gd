@@ -94,7 +94,7 @@ const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
 const EXTRA_TURN = preload("uid://yp1dxyml8rna")
 
 #MUSIC
-
+const SHOP = preload("uid://cj6gpgjo4y5s0")
 const PASSIVE_SELECTION = preload("uid://cfm3uhjitv627")
 const TWILIGHT_SAGE = preload("uid://dh7vynnxrbqwa")
 const TWILIGHT_ZONE___BATTLE_THEME_1 = preload("uid://b8go57qfww8el")
@@ -826,9 +826,11 @@ func progression_after_victory():
 		await reward_manager.show_card_selection_async()
 		current_room += 1
 		await _play_progression_cutscene(current_room - 1, current_room)
-		if current_room == 4:
+		if current_room == 1:
+			sound_manager.play_music(SHOP)
 			await shop_manager.show_shop_async(player)
 			current_room += 1
+			sound_manager.stop_music()
 			await _play_progression_cutscene(current_room - 1, current_room)
 			proceed_to_next_enemy()
 		else:

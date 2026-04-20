@@ -1,5 +1,5 @@
 extends CanvasLayer
-
+const SHOPKEEPER_VOICE = preload("uid://c86gce7j7tjey")
 @onready var container = $Background/CenterContainer/VBoxContainer/CardContainer
 const Shop_card = preload("res://Scene/shop_card.tscn")
 @onready var bg = $Background
@@ -9,6 +9,7 @@ const Shop_card = preload("res://Scene/shop_card.tscn")
 @onready var player: Node2D = $"../Player"
 @onready var carpet: TextureRect = $Background/Carpet
 @onready var shop_keeper: AnimatedSprite2D = $"Background/Shop Keeper_Portrait"
+const SHOP_BELL = preload("uid://1kl4yi6uvnhn")
 
 const SCROLL_HOVERED = preload("uid://dpcddmlbji61k")
 const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
@@ -56,9 +57,11 @@ var all_cards = [
 ]
 
 func show_shop_async(player):
+	
 	carpet.modulate.a = 0
 	shop_keeper.modulate.a = 0
-	
+	await main.sound_manager.play_sound(SHOP_BELL)
+	main.sound_manager.play_sound(SHOPKEEPER_VOICE)
 	shop_done = false
 	player_ref = player
 	show()

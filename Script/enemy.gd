@@ -37,7 +37,6 @@ const DEBTED_ATTACK = preload("uid://ddf31ka4126fv")
 const SPENDED_ATTACK = preload("uid://lfprp4w7saas")
 const THRIFTED_ATTACK = preload("uid://dtx4a0j6atomh")
 
-
 #PARTICLES
 const COIN_ADD_PARTICLE = preload("uid://s6va71jul34t")
 const COIN_PLAY_PARTICLE = preload("uid://w5jgphq268vx")

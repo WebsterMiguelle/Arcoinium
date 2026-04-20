@@ -28,6 +28,7 @@ signal card_unhovered() # NEW
 
 var main
 const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
+const GAIN_EFFECT = preload("uid://cr366klr6aivy")
 
 func setup(m):
 	main = m
@@ -126,6 +127,7 @@ func _on_pressed() -> void:
 	if stock <= 0:
 		return
 	main.sound_manager.play_sound(SCROLL_OPEN)
+	main.sound_manager.play_sound(GAIN_EFFECT)
 	stock -= 1
 	card_bought.emit(card_id, price)
 	update_stock_display()

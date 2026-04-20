@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://d2aewh2qfs501"]
+[gd_scene format=3 uid="uid://b4dt8g8qmrauq"]
 
 [ext_resource type="Texture2D" uid="uid://cd8xw5pvgktgo" path="res://Assets/Thrift_Sprite.png" id="1_34oft"]
 [ext_resource type="Script" uid="uid://b81y1v87st1oc" path="res://Scene/coin_add_particles.gd" id="2_igets"]

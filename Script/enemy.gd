@@ -32,10 +32,10 @@ const GAIN_EFFECT = preload("uid://cr366klr6aivy")
 const SPENDED_FLIP = preload("uid://dgu0hy8kwo343")
 const SPEND = preload("uid://bvbtrait4prdi")
 const SLOW = preload("uid://f5jmno7qyhek")
-
-const DEBTED_ATTACK = preload("uid://ddf31ka4126fv")
-const SPENDED_ATTACK = preload("uid://lfprp4w7saas")
 const THRIFTED_ATTACK = preload("uid://dtx4a0j6atomh")
+const SPENDED_ATTACK = preload("uid://lfprp4w7saas")
+const DEBTED_ATTACK = preload("uid://ddf31ka4126fv")
+
 
 
 #PARTICLES
@@ -201,7 +201,7 @@ func setup(m,enemy):
 				bounty = 25
 			else:
 				max_coin = 200
-				coin = 30
+				coin = 40
 				max_playable_coins = 6
 				silver_flip_rate = 0.0
 				gold_flip_rate = 0.0
@@ -217,7 +217,7 @@ func setup(m,enemy):
 				bounty = 25
 			else:
 				max_coin = 200
-				coin = 40
+				coin = 50
 				max_playable_coins = 8
 				silver_flip_rate = 0.0
 				gold_flip_rate = 0.0
@@ -236,8 +236,8 @@ func setup(m,enemy):
 				main.player.has_value_added_tax = true
 				trigger_enemy_passive("The Collector will apply 1 GAIN to self for each DEBT you settled.", 5.0)
 			else:
-				max_coin = 70
-				coin = 70
+				max_coin = 80
+				coin = 80
 				max_playable_coins = 16
 				silver_flip_rate = 0.8
 				gold_flip_rate = 0.0
@@ -258,7 +258,7 @@ func setup(m,enemy):
 				trigger_enemy_passive("The Trader will Copy your Number of Played Coins.", 3.0)
 			else:
 				max_coin = 200
-				coin = 80
+				coin = 100
 				max_playable_coins = 2
 				silver_flip_rate = 1.0
 				gold_flip_rate = 0.0
@@ -699,7 +699,6 @@ func start_enemy_turn():
 	#THRIFT
 	if thrift != 0:
 		main.sound_manager.play_sound(THRIFT_FLAME)
-		
 		var index = 16
 		var current_thrift = thrift
 		while current_thrift != 0:
@@ -720,7 +719,7 @@ func start_enemy_turn():
 			trigger_enemy_passive("FULLY PAID!", 2.0)
 	
 	if has_fully_paid and debt == 0:
-		particle_manager.trigger_attack(main.coin_deck, main.player_portrait, turn_damage, "")
+		particle_manager.play_attack_animation(main.coin_deck, main.player_portrait, turn_damage)
 		await get_tree().create_timer(1.0).timeout
 		if greed:
 			main.player.take_damage(500)
@@ -894,11 +893,11 @@ func end_enemy_turn():
 		main.sound_manager.play_sound(SPEND)
 		create_floating_label(turn_spend, "SPEND", "PLAYER")
 	if turn_lock: 
-		create_floating_label("","LOCK","PLAYER")
-		main.player.lock = true
-		create_floating_label("","LOCK","PLAYER")
-		main.player.lock = true
-		create_floating_label("","LOCK","PLAYER")
+		main.sound_manager.play_sound(RESERVE_LOCK)
+		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
+		create_floating_label("", "LOCK", "PLAYER")
+	if turn_slow: 
+		main.sound_manager.play_sound(SLOW)
 		main.sound_manager.play_sound(PASSIVE_PAYDOWN)
 		create_floating_label("", "SLOW", "PLAYER")
 	
@@ -908,18 +907,6 @@ func end_enemy_turn():
 	if turn_spend != 0: main.player.spend += turn_spend
 	if turn_lock: main.player.lock = true
 	if turn_slow: main.player.slow = true
-		create_floating_label("", "LOCK", "PLAYER")
-	if turn_slow: 
-		main.sound_manager.play_sound(SLOW)
-		main.sound_manager.play_sound(DEBT_EFFECT)
-		main.player.slow = true
-		create_floating_label("","SLOW","PLAYER")
->>>>>>>>> Temporary merge branch 2
-		
-	thrift = 0
-	spend = 0
-	max_playable_coins = initial_max_playable_coins
-	particle_manager.despawn_emitting_particles()
 	
 	# 4. Player 'Pay Down' Passive Check
 	var pay_down_killed = false

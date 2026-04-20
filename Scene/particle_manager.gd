@@ -1,8 +1,11 @@
 extends Node2D
 
 const ATTACK_RUNES_PARTICLES = preload("uid://c5o0wyqkpyhg2")
-const THRIFT_ATTACK_PARTICLE = preload("uid://d2aewh2qfs501")
-const SPEND_ATTACK_PARTICLE = preload("uid://dnrmyxh5i5e13")
+const THRIFT_ATTACK_PARTICLE = preload("res://Scene/Particles/Thrift_Attack_Particles.tscn")
+const SPEND_ATTACK_PARTICLE = preload("res://Scene/Particles/Spend_Attack_Particles.tscn")
+
+
+
 # S-Curve Attack Settings
 const S_CURVE_SPREAD_RATIO = 10
 const S_CURVE_BASE_TIME = 0.8

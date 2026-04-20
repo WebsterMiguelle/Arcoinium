@@ -650,18 +650,6 @@ amount = 64
 lifetime = 1.46
 process_material = ExtResource("7_cr44a")
 
-[node name="Player Thrift Particles2" type="GPUParticles2D" parent="Player" unique_id=1670605008]
-position = Vector2(29, 515)
-amount = 64
-lifetime = 1.46
-process_material = SubResource("ParticleProcessMaterial_1bveb")
-
-[node name="Player Debt Particles2" type="GPUParticles2D" parent="Player" unique_id=2006276550]
-position = Vector2(127, 518)
-amount = 64
-lifetime = 1.46
-process_material = ExtResource("7_cr44a")
-
 [node name="Player_Portrait" type="AnimatedSprite2D" parent="Player" unique_id=1707183387]
 position = Vector2(75.5, 570.99994)
 scale = Vector2(2.015625, 2)

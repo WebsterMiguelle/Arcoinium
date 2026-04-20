@@ -270,7 +270,6 @@ func _ready():
 		player.silver_flip_rate += 0.2
 		player.gold_flip_rate += 0.1
 		player.max_re_flip += 3
-		player.max_reserve += 4
 	else: main.self_modulate = Color.WHITE
 	shop_manager.item_purchased.connect(_on_item_purchased)
 	
@@ -476,6 +475,8 @@ func start_player_turn():
 			if player.slow:
 				has_encountered_slow = true
 				current_tutorial = create_tutorial("SLOW","Each Coin only has a 50% Chance to Re-Flip.",tutorial_area.global_position,-50)
+		if enemy.coin == 0:
+			check_defeat()
 	else:
 		check_defeat()
 			
@@ -499,7 +500,6 @@ func start_enemy_turn():
 				current_tutorial = create_tutorial("SPEND", "While having SPEND, each Coin Flip costs 2 Coins.",tutorial_area.global_position,-50)
 		await enemy.start_enemy_turn()
 		if enemy.coin > 0:
-			await get_tree().create_timer(1.0).timeout
 			if current_tutorial != null: current_tutorial.close()
 			start_player_turn()
 		else:
@@ -784,7 +784,8 @@ func handle_victory_flow():
 	player.gain_coin()
 	sound_manager.play_sound(VICTORY)
 	turn_calculation_box.exit()
-	#particle_manager.despawn_emitting_particles()
+	var particles = get_tree().get_nodes_in_group("particles")
+	if particles.size() > 0:particle_manager.despawn_emitting_particles()
 	await show_turn_ui("VICTORY")
 	sound_manager.play_sound(PASSIVE_SPARE_CHANGE)
 	var reserved_coins = get_tree().get_nodes_in_group("reserved coins")

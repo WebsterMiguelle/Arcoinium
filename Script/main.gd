@@ -785,8 +785,6 @@ func handle_victory_flow():
 	player.gain_coin()
 	sound_manager.play_sound(VICTORY)
 	turn_calculation_box.exit()
-	var particles = get_tree().get_nodes_in_group("particles")
-	if particles.size() > 0:particle_manager.despawn_emitting_particles()
 	await show_turn_ui("VICTORY")
 	sound_manager.play_sound(PASSIVE_SPARE_CHANGE)
 	var reserved_coins = get_tree().get_nodes_in_group("reserved coins")

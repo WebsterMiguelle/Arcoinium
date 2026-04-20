@@ -11,7 +11,7 @@ enum Enemy{
 	MOON_CASTER,
 	TWILIGHT_SAGE
 }
-
+@onready var camera_2d: Camera2D = $"../Camera2D"
 const FLOATING_LABEL = preload("uid://dwf6g2wuj1oe3")
 @onready var all_in: Label = $"../Battle UI/All In"
 var vignette_default = '#bdabb8'
@@ -288,7 +288,7 @@ func reset_stats():
 
 	#DEBTOR PASSIVES
 
-	has_pay_down = false
+	has_pay_down = true
 	has_reimbursement = false
 	has_loan_shark = false
 	has_lending_charge = false
@@ -824,6 +824,7 @@ func end_turn():
 	main.sound_manager.play_sound(COIN_ENDTURN)
 	particle_manager.despawn_emitting_particles()
 	
+
 	
 	main.turn_calculation_box.exit()
 
@@ -851,14 +852,20 @@ func end_turn():
 	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0:
 		await get_tree().create_timer(1.0).timeout
 
+	var shake_power = 0
 	# -- 2. Final Hit Impacts & Floating Labels (The runes have arrived!) --
 	if turn_damage > 0:
 		# I pasted the hit particles and sounds here!
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
-		if turn_damage <= 10: main.sound_manager.play_sound(DAMAGE_LIGHT)
-		elif turn_damage <= 20: main.sound_manager.play_sound(DAMAGE_MODERATE)
-		else: main.sound_manager.play_sound(DAMAGE_HEAVY)
-		
+		if turn_damage <= 10: 
+			main.sound_manager.play_sound(DAMAGE_LIGHT)
+			shake_power += 0.25
+		elif turn_damage <= 20: 
+			main.sound_manager.play_sound(DAMAGE_MODERATE)
+			shake_power += 0.5
+		else: 
+			main.sound_manager.play_sound(DAMAGE_HEAVY)
+			shake_power += 1
 		create_floating_label(turn_damage,"DAMAGE","ENEMY")
 		
 	if turn_debt > 0:
@@ -866,18 +873,25 @@ func end_turn():
 			create_floating_label("DEBT","IMMUNE","ENEMY")
 			main.sound_manager.play_sound(PASSIVE_REFUND)
 		else:
+			shake_power += 0.5
 			main.sound_manager.play_sound(DEBT)
 			create_floating_label(actual_debt_applied,"DEBT","ENEMY")
 			
 	if turn_thrift > 0:
+		shake_power += 0.5
 		main.sound_manager.play_sound(THRIFT)
 		create_floating_label(turn_thrift,"THRIFT","ENEMY")
 		
 	if turn_spend > 0:
+		shake_power += 0.5
 		main.sound_manager.play_sound(SPEND)
 		create_floating_label(turn_spend,"SPEND","ENEMY")
 	
-	
+	camera_2d.add_trauma(shake_power)
+	if turn_damage >= 30:
+		var slow_motion = create_tween()
+		slow_motion.tween_property(Engine, "time_scale", 0.1, 0)
+		slow_motion.tween_property(Engine, "time_scale", 1, 0.5)
 	# 2. Apply Stats to Enemy
 	main.enemy.take_damage(turn_damage)
 	main.enemy.debt += actual_debt_applied

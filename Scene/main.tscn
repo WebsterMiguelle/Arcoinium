@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://qxyeds7oh4s7" path="res://Script/main.gd" id="1_h2yge"]
 [ext_resource type="Texture2D" uid="uid://bvtpq810pp6la" path="res://Assets/New Background.png" id="1_mxd2g"]
 [ext_resource type="Script" uid="uid://bunbms60cogmi" path="res://Script/player.gd" id="2_1bvp3"]
+[ext_resource type="Script" uid="uid://d28knusqb3dv" path="res://Scene/camera_2d.gd" id="3_f043x"]
 [ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="3_hspdg"]
 [ext_resource type="Script" uid="uid://dedsjnmo4366e" path="res://Script/enemy.gd" id="3_lquwl"]
 [ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
@@ -633,6 +634,7 @@ script = ExtResource("1_h2yge")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=659444321]
 position = Vector2(576, 324)
+script = ExtResource("3_f043x")
 
 [node name="SoundManager" type="Node2D" parent="." unique_id=2141723055]
 position = Vector2(576, 324)
@@ -1136,22 +1138,6 @@ offset_right = 1168.0
 offset_bottom = 662.0
 color = Color(0, 0, 0, 0.7607843)
 
-[node name="Restart" type="Button" parent="Game Over UI/ColorRect" unique_id=1995089938]
-custom_minimum_size = Vector2(200, 60)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -113.5
-offset_top = 53.0
-offset_right = 86.5
-offset_bottom = 113.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Restart"
-
 [node name="Gameover" type="Label" parent="Game Over UI/ColorRect" unique_id=1781032691]
 layout_mode = 1
 anchors_preset = 8
@@ -1159,14 +1145,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -149.5
-offset_top = -41.5
-offset_right = 149.5
-offset_bottom = 41.5
+offset_left = -162.5
+offset_top = -151.0
+offset_right = 474.5
+offset_bottom = -91.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_fonts/font = ExtResource("36_b0nqf")
 theme_override_font_sizes/font_size = 60
-text = "Gameover"
+text = "GAME OVER"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="EnemyLabel" type="Label" parent="Game Over UI/ColorRect" unique_id=1741001806]
 custom_minimum_size = Vector2(400, 60)
@@ -1176,14 +1165,16 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -214.5
-offset_top = -133.0
-offset_right = 185.5
-offset_bottom = -50.0
+offset_left = -133.5
+offset_top = -82.0
+offset_right = 436.5
+offset_bottom = -22.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 60
+theme_override_font_sizes/font_size = 24
 text = "Slain"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="StatsLabel" type="Label" parent="Game Over UI/ColorRect" unique_id=387974470]
 custom_minimum_size = Vector2(300, 350)
@@ -1197,12 +1188,46 @@ text = "Game Statistics"
 
 [node name="GameStatLabel" type="Label" parent="Game Over UI/ColorRect" unique_id=701039209]
 layout_mode = 0
-offset_left = 50.0
+offset_left = 91.0
 offset_top = 113.0
-offset_right = 347.0
+offset_right = 368.0
 offset_bottom = 168.0
 theme_override_font_sizes/font_size = 40
 text = "Game Statistics"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Main Menu" type="Button" parent="Game Over UI/ColorRect" unique_id=727443535]
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 40.5
+offset_top = 120.0
+offset_right = 269.5
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Main Menu"
+
+[node name="Restart" type="Button" parent="Game Over UI/ColorRect" unique_id=1995089938]
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 40.5
+offset_top = 45.0
+offset_right = 267.5
+offset_bottom = 105.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Restart"
 
 [node name="CardManager" type="CanvasLayer" parent="." unique_id=806531365]
 visible = false
@@ -1313,7 +1338,7 @@ offset_left = 200.0
 offset_top = 305.0
 offset_right = 400.0
 offset_bottom = 405.0
-text = "Quit"
+text = "Main Menu"
 
 [node name="ShopManager" type="CanvasLayer" parent="." unique_id=248022412]
 layer = 5
@@ -1573,6 +1598,7 @@ position = Vector2(556, 557)
 [connection signal="mouse_entered" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_exited"]
 [connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]
+[connection signal="pressed" from="Game Over UI/ColorRect/Main Menu" to="Game Over UI" method="_on_main_menu_pressed"]
 [connection signal="pressed" from="Game Over UI/ColorRect/Restart" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/Resume" to="PauseMenu" method="_on_resume_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/EndRun" to="PauseMenu" method="_on_end_run_pressed"]

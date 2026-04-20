@@ -3,7 +3,7 @@ extends Node
 
 var main
 const FLOATING_LABEL = preload("uid://dwf6g2wuj1oe3")
-
+@onready var camera_2d: Camera2D = $"../Camera2D"
 @onready var particle_manager: Node2D = $"../ParticleManager"
 @onready var vignette: CanvasModulate = $"../Vignette"
 @onready var vignetter: PointLight2D = $"../Vignetter"
@@ -872,25 +872,36 @@ func end_enemy_turn():
 			main.player.take_damage(turn_damage)
 	
 	# -- Final Hit Impacts & Floating Labels (The runes have arrived!) --
+	var shake_power = 0
 	if turn_damage > 0:
 		if passive_income_triggered:
 			pass 
 		else:
 			# I MOVED THE HIT PARTICLES AND SOUNDS HERE!
 			main.particle_manager.spawn_particle(DAMAGE_PARTICLE, main.player_portrait.global_position)
-			if turn_damage <= 10: main.sound_manager.play_sound(DAMAGE_LIGHT)
-			elif turn_damage <= 20: main.sound_manager.play_sound(DAMAGE_MODERATE)
-			else: main.sound_manager.play_sound(DAMAGE_HEAVY)
+			if turn_damage <= 10: 
+				main.sound_manager.play_sound(DAMAGE_LIGHT)
+				shake_power += 0.25
+			elif turn_damage <= 20: 
+				main.sound_manager.play_sound(DAMAGE_MODERATE)
+				shake_power += 0.5
+			else: 
+				main.sound_manager.play_sound(DAMAGE_HEAVY)
+				shake_power += 1.0
+			
 			
 			create_floating_label(turn_damage, "DAMAGE", "PLAYER")
 			
 	if turn_debt != 0: 
+		shake_power += 0.5
 		main.sound_manager.play_sound(DEBT)
 		create_floating_label(turn_debt, "DEBT", "PLAYER")
 	if turn_thrift != 0: 
+		shake_power += 0.5
 		main.sound_manager.play_sound(THRIFT)
 		create_floating_label(turn_thrift, "THRIFT", "PLAYER")
 	if turn_spend != 0: 
+		shake_power += 0.5
 		main.sound_manager.play_sound(SPEND)
 		create_floating_label(turn_spend, "SPEND", "PLAYER")
 	if turn_lock: 
@@ -901,7 +912,15 @@ func end_enemy_turn():
 		main.sound_manager.play_sound(SLOW)
 		main.sound_manager.play_sound(PASSIVE_PAYDOWN)
 		create_floating_label("", "SLOW", "PLAYER")
+		var slow_motion = create_tween()
+		slow_motion.tween_property(Engine, "time_scale", 0.1, 0)
+		slow_motion.tween_property(Engine, "time_scale", 1, 0.5)
 	
+	camera_2d.add_trauma(shake_power)
+	if turn_damage >= 30:
+			var slow_motion = create_tween()
+			slow_motion.tween_property(Engine, "time_scale", 0.1, 0)
+			slow_motion.tween_property(Engine, "time_scale", 1, 0.5)
 	# 2. Apply Status Effects to Player
 	if turn_debt != 0: main.player.debt += turn_debt
 	if turn_thrift != 0: main.player.thrift += turn_thrift

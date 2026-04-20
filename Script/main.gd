@@ -1133,3 +1133,19 @@ func trigger_passive(id: String, text: String):
 
 func trigger_passive_effect(text: String):
 	show_passive_notification(text, 1.5)
+
+
+func _on_player_info_pressed() -> void:
+	# If the menu exists, destroy it
+	if is_instance_valid(player_info_menu):
+		player_info_menu.queue_free()
+		
+	# If it doesn't exist, create it
+	else:
+		player_info_menu = PLAYER_INFORMATION_DISPLAY.instantiate()
+		
+		# CRITICAL: Add it to a CanvasLayer or your Battle UI node so it draws ON TOP of the game
+		$"Battle UI".add_child(player_info_menu) 
+		
+		# Center the UI on the screen (optional, if your UI isn't already centered)
+		# info_menu_instance.global_position = Vector2(100, 100)

@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cw6je4w12fcdl"]
+
+[ext_resource type="Texture2D" uid="uid://y0e3rkwy5j68" path="res://Assets/Spend_Sprite.png" id="1_oa2ey"]
+
+[node name="SpendAttackParticles" type="Sprite2D" unique_id=1026553237]
+scale = Vector2(8, 8)
+texture = ExtResource("1_oa2ey")

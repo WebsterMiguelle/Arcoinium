@@ -894,11 +894,11 @@ func end_enemy_turn():
 		main.sound_manager.play_sound(SPEND)
 		create_floating_label(turn_spend, "SPEND", "PLAYER")
 	if turn_lock: 
-		main.sound_manager.play_sound(RESERVE_LOCK)
-		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
-		create_floating_label("", "LOCK", "PLAYER")
-	if turn_slow: 
-		main.sound_manager.play_sound(SLOW)
+		create_floating_label("","LOCK","PLAYER")
+		main.player.lock = true
+		create_floating_label("","LOCK","PLAYER")
+		main.player.lock = true
+		create_floating_label("","LOCK","PLAYER")
 		main.sound_manager.play_sound(PASSIVE_PAYDOWN)
 		create_floating_label("", "SLOW", "PLAYER")
 	
@@ -908,6 +908,18 @@ func end_enemy_turn():
 	if turn_spend != 0: main.player.spend += turn_spend
 	if turn_lock: main.player.lock = true
 	if turn_slow: main.player.slow = true
+		create_floating_label("", "LOCK", "PLAYER")
+	if turn_slow: 
+		main.sound_manager.play_sound(SLOW)
+		main.sound_manager.play_sound(DEBT_EFFECT)
+		main.player.slow = true
+		create_floating_label("","SLOW","PLAYER")
+>>>>>>>>> Temporary merge branch 2
+		
+	thrift = 0
+	spend = 0
+	max_playable_coins = initial_max_playable_coins
+	particle_manager.despawn_emitting_particles()
 	
 	# 4. Player 'Pay Down' Passive Check
 	var pay_down_killed = false

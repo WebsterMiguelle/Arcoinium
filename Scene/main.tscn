@@ -650,6 +650,18 @@ amount = 64
 lifetime = 1.46
 process_material = ExtResource("7_cr44a")
 
+[node name="Player Thrift Particles2" type="GPUParticles2D" parent="Player" unique_id=1670605008]
+position = Vector2(29, 515)
+amount = 64
+lifetime = 1.46
+process_material = SubResource("ParticleProcessMaterial_1bveb")
+
+[node name="Player Debt Particles2" type="GPUParticles2D" parent="Player" unique_id=2006276550]
+position = Vector2(127, 518)
+amount = 64
+lifetime = 1.46
+process_material = ExtResource("7_cr44a")
+
 [node name="Player_Portrait" type="AnimatedSprite2D" parent="Player" unique_id=1707183387]
 position = Vector2(75.5, 570.99994)
 scale = Vector2(2.015625, 2)
@@ -739,6 +751,17 @@ theme_override_font_sizes/font_size = 24
 text = "30"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Player Info" type="Button" parent="Player" unique_id=2130563291]
+modulate = Color(1, 1, 1, 0)
+show_behind_parent = true
+custom_minimum_size = Vector2(150, 150)
+offset_left = -1.0
+offset_top = 502.0
+offset_right = 149.0
+offset_bottom = 652.0
+toggle_mode = true
+action_mode = 0
 
 [node name="Enemy" type="Node2D" parent="." unique_id=651932115]
 script = ExtResource("3_lquwl")
@@ -846,6 +869,14 @@ offset_top = 548.0
 offset_right = 238.0
 offset_bottom = 564.0
 scale = Vector2(4, 4)
+
+[node name="Player Info" type="Button" parent="Battle UI" unique_id=261525369]
+visible = false
+offset_left = 15.0
+offset_top = 508.0
+offset_right = 139.0
+offset_bottom = 633.0
+text = "Press for Info"
 
 [node name="HealthLabel" type="Label" parent="Battle UI" unique_id=580605117]
 anchors_preset = 4
@@ -1508,6 +1539,7 @@ process_material = SubResource("ParticleProcessMaterial_mlc74")
 [node name="Tutorial Area" type="Marker2D" parent="." unique_id=162209601]
 position = Vector2(556, 557)
 
+[connection signal="toggled" from="Player/Player Info" to="." method="_on_player_info_toggled"]
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_exited"]
 [connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]

@@ -18,5 +18,5 @@ script = ExtResource("1_xkq2p")
 
 [node name="Icons" type="AnimatedSprite2D" parent="." unique_id=1922908527]
 position = Vector2(15.999999, 15.999999)
-scale = Vector2(2, 2)
+scale = Vector2(1.5, 1.5)
 sprite_frames = ExtResource("2_a4je1")

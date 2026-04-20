@@ -32,8 +32,7 @@ func _ready():
 	icon_sprite.self_modulate.a = 0
 	sprite.play(card_rank)
 	label.text = "%s" % [card_name] 
-	
-	# Fixed the signal connections here!
+
 	if not self.pressed.is_connected(_on_pressed):
 		self.pressed.connect(_on_pressed)
 	if not self.mouse_entered.is_connected(_on_mouse_entered):
@@ -50,11 +49,9 @@ func setup(m):
 func _animate_entrance():
 	modulate.a = 0
 	
-	# Waiting two frames ensures the Container has perfectly placed the card!
 	await get_tree().process_frame
 	await get_tree().process_frame
-	
-	# 2. Grab the true resting Y coordinate now that the UI has settled
+
 	original_y_position = self.position.y
 	
 	var final_x = position.x

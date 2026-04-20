@@ -637,12 +637,6 @@ script = ExtResource("7_ow1sv")
 
 [node name="Player" type="Node2D" parent="." unique_id=1483072070]
 script = ExtResource("2_1bvp3")
-has_wishbone = true
-has_golden_clover = true
-has_solar_coin = true
-has_lunar_coin = true
-has_merchant_scroll = true
-has_impromptu_flip = true
 
 [node name="Player Thrift Particles" type="GPUParticles2D" parent="Player" unique_id=1247546421]
 position = Vector2(29, 515)

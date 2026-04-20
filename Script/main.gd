@@ -1267,6 +1267,7 @@ func _on_player_info_toggled(toggled_on: bool) -> void:
 			current_tutorial.visible = false
 		player_info_menu = PLAYER_INFORMATION_DISPLAY.instantiate()
 		add_child(player_info_menu)
+		player_info_menu.setup(player)
 		
 		await get_tree().process_frame
 		var screen_size = get_viewport_rect().size

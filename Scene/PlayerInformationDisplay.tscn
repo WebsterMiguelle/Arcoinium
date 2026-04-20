@@ -5,7 +5,6 @@
 [ext_resource type="FontFile" uid="uid://cmvd7gycedmwg" path="res://Assets/Fonts/GothicByte.ttf" id="2_1nu5n"]
 [ext_resource type="Texture2D" uid="uid://b26gbj0tgcnn" path="res://Assets/16bitcoins.png" id="3_1nu5n"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="3_6esm0"]
-[ext_resource type="PackedScene" uid="uid://dldde8yrawlpn" path="res://Scene/Passive_Bar_Icon.tscn" id="4_5jg2k"]
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="6_jpy41"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hhsno"]
@@ -294,51 +293,9 @@ vertical_alignment = 1
 
 [node name="GridContainer" type="GridContainer" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=256021586]
 layout_mode = 2
-theme_override_constants/h_separation = 44
-theme_override_constants/v_separation = 44
-columns = 7
-
-[node name="PassiveIcon" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=1789334303 instance=ExtResource("4_5jg2k")]
-layout_mode = 2
-
-[node name="PassiveIcon2" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=6649267 instance=ExtResource("4_5jg2k")]
-layout_mode = 2
-
-[node name="PassiveIcon3" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=1092914595 instance=ExtResource("4_5jg2k")]
-layout_mode = 2
-
-[node name="PassiveIcon4" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=2131454705 instance=ExtResource("4_5jg2k")]
-layout_mode = 2
-
-[node name="PassiveIcon5" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=758278 instance=ExtResource("4_5jg2k")]
-layout_mode = 2
-
-[node name="PassiveIcon6" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=408761049 instance=ExtResource("4_5jg2k")]
-layout_mode = 2
-
-[node name="PassiveIcon7" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=1163163583 instance=ExtResource("4_5jg2k")]
-layout_mode = 2
-
-[node name="PassiveIcon8" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=155102171 instance=ExtResource("4_5jg2k")]
-layout_mode = 2
-
-[node name="PassiveIcon9" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=547252680 instance=ExtResource("4_5jg2k")]
-layout_mode = 2
-
-[node name="PassiveIcon10" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=396352497 instance=ExtResource("4_5jg2k")]
-layout_mode = 2
-
-[node name="PassiveIcon11" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=665953377 instance=ExtResource("4_5jg2k")]
-layout_mode = 2
-
-[node name="PassiveIcon12" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=1515414395 instance=ExtResource("4_5jg2k")]
-layout_mode = 2
-
-[node name="PassiveIcon13" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=844214814 instance=ExtResource("4_5jg2k")]
-layout_mode = 2
-
-[node name="PassiveIcon14" parent="PassivesPanel/MarginContainer/VBoxContainer/GridContainer" unique_id=640506584 instance=ExtResource("4_5jg2k")]
-layout_mode = 2
+theme_override_constants/h_separation = 89
+theme_override_constants/v_separation = 51
+columns = 4
 
 [node name="Separator" type="Control" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=706675745]
 custom_minimum_size = Vector2(0, 50)

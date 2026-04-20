@@ -239,13 +239,13 @@ vertical_alignment = 1
 [node name="Flip Coin to Start" type="Label" parent="." unique_id=287850024]
 self_modulate = Color(0.86610603, 0.86610603, 0.86610603, 1)
 layout_mode = 0
-offset_left = 478.0
-offset_top = 568.0
-offset_right = 883.0
-offset_bottom = 632.0
+offset_left = 440.0
+offset_top = 560.0
+offset_right = 712.0
+offset_bottom = 616.0
 scale = Vector2(0.5, 0.5)
 theme_override_font_sizes/font_size = 63
-text = "FLIP TO START"
+text = "FLIP COIN TO START"
 horizontal_alignment = 1
 vertical_alignment = 1
 

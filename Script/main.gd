@@ -54,6 +54,7 @@ var dusk_stance = '#8dacf7'
 @onready var vignette: CanvasModulate = $"../Vignette"
 @onready var vignetter: PointLight2D = $"../Vignetter"
 
+
 #PARTICLES
 const COIN_ADD_PARTICLE = preload("res://Scene/Coin Add Particle.tscn")
 const COIN_PLAY_PARTICLE = preload("res://Scene/Coin Play Particle.tscn")
@@ -1258,3 +1259,26 @@ func trigger_passive(id: String, text: String):
 
 func trigger_passive_effect(text: String):
 	show_passive_notification(text, 1.5)
+
+func _on_player_info_toggled(toggled_on: bool) -> void:
+	print("toggled: ", toggled_on)
+	if toggled_on:
+		if current_tutorial != null and is_instance_valid(current_tutorial):
+			current_tutorial.visible = false
+		player_info_menu = PLAYER_INFORMATION_DISPLAY.instantiate()
+		add_child(player_info_menu)
+		player_info_menu.setup(player)
+		
+		await get_tree().process_frame
+		var screen_size = get_viewport_rect().size
+		var menu_size = player_info_menu.size
+		player_info_menu.global_position = Vector2((screen_size.x - menu_size.x) / 2,
+			(screen_size.y - menu_size.y) / 2)
+		player_info_menu.z_index = 200
+		player_info_menu.open()
+	else:
+		if player_info_menu != null and is_instance_valid(player_info_menu):
+			player_info_menu.close()
+			player_info_menu = null
+		if current_tutorial != null and is_instance_valid(current_tutorial):
+			current_tutorial.visible = true

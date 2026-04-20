@@ -740,6 +740,17 @@ text = "30"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Player Info" type="Button" parent="Player" unique_id=2130563291]
+modulate = Color(1, 1, 1, 0)
+show_behind_parent = true
+custom_minimum_size = Vector2(150, 150)
+offset_left = -1.0
+offset_top = 502.0
+offset_right = 149.0
+offset_bottom = 652.0
+toggle_mode = true
+action_mode = 0
+
 [node name="Enemy" type="Node2D" parent="." unique_id=651932115]
 script = ExtResource("3_lquwl")
 
@@ -1508,6 +1519,7 @@ process_material = SubResource("ParticleProcessMaterial_mlc74")
 [node name="Tutorial Area" type="Marker2D" parent="." unique_id=162209601]
 position = Vector2(556, 557)
 
+[connection signal="toggled" from="Player/Player Info" to="." method="_on_player_info_toggled"]
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_exited"]
 [connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]

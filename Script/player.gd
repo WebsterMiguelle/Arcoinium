@@ -56,6 +56,9 @@ const DEBT_EFFECT = preload("uid://d18qgeounkatf")
 const DEBTED_ATTACK = preload("uid://ddf31ka4126fv")
 const SPENDED_ATTACK = preload("uid://lfprp4w7saas")
 const THRIFTED_ATTACK = preload("uid://dtx4a0j6atomh")
+const SPEND_DAMAGE_PARTICLE = preload("uid://dmgnoylltbfre")
+const THRIFT_DAMAGE_PARTICLE = preload("uid://bvrulyxw02bom")
+const DEBT_DAMAGE_PARTICLE = preload("uid://1g21u656k60k")
 
 
 
@@ -875,17 +878,20 @@ func end_turn():
 			create_floating_label("DEBT","IMMUNE","ENEMY")
 			main.sound_manager.play_sound(PASSIVE_REFUND)
 		else:
+			main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 			shake_power += 0.5
 			main.sound_manager.play_sound(DEBT)
 			create_floating_label(actual_debt_applied,"DEBT","ENEMY")
 			
 	if turn_thrift > 0:
 		shake_power += 0.5
+		main.particle_manager.spawn_particle(THRIFT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 		main.sound_manager.play_sound(THRIFT)
 		create_floating_label(turn_thrift,"THRIFT","ENEMY")
 		
 	if turn_spend > 0:
 		shake_power += 0.5
+		main.particle_manager.spawn_particle(SPEND_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 		main.sound_manager.play_sound(SPEND)
 		create_floating_label(turn_spend,"SPEND","ENEMY")
 	

@@ -8,6 +8,9 @@ const FLOATING_LABEL = preload("uid://dwf6g2wuj1oe3")
 @onready var vignette: CanvasModulate = $"../Vignette"
 @onready var vignetter: PointLight2D = $"../Vignetter"
 @onready var sun_moon_count: Label = $"../Battle UI/Turn Calculation Box/Sun Moon Count"
+const SPEND_DAMAGE_PARTICLE = preload("uid://dmgnoylltbfre")
+const THRIFT_DAMAGE_PARTICLE = preload("uid://bvrulyxw02bom")
+const DEBT_DAMAGE_PARTICLE = preload("uid://1g21u656k60k")
 
 const COIN = preload("uid://ddet242jm5v23")
 
@@ -289,7 +292,7 @@ func setup(m,enemy):
 		Enemy.ARISTOCRAT:
 			if !greed:
 				max_coin = 200
-				coin = 120
+				coin = 100
 				max_playable_coins = 16
 				silver_flip_rate = 1
 				gold_flip_rate = 0
@@ -355,8 +358,8 @@ func setup(m,enemy):
 				trigger_enemy_passive("You have GUARANTEED MOON FLIPS. Avoid Playing 9 or More MOON Coins.", 5.0)
 		Enemy.TWILIGHT_SAGE:
 			if !greed:
-				max_coin = 250
-				coin = 250
+				max_coin = 200
+				coin = 200
 				max_playable_coins = 4
 				silver_flip_rate = 1
 				gold_flip_rate = 0.8
@@ -733,6 +736,7 @@ func start_enemy_turn():
 		take_damage(loan_damage)
 		create_floating_label(loan_damage,"DAMAGE","ENEMY")
 		main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
+		main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
 
@@ -892,14 +896,17 @@ func end_enemy_turn():
 			create_floating_label(turn_damage, "DAMAGE", "PLAYER")
 			
 	if turn_debt != 0: 
+		main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.player_portrait.global_position)
 		shake_power += 0.5
 		main.sound_manager.play_sound(DEBT)
 		create_floating_label(turn_debt, "DEBT", "PLAYER")
 	if turn_thrift != 0: 
+		main.particle_manager.spawn_particle(THRIFT_DAMAGE_PARTICLE,main.player_portrait.global_position)
 		shake_power += 0.5
 		main.sound_manager.play_sound(THRIFT)
 		create_floating_label(turn_thrift, "THRIFT", "PLAYER")
 	if turn_spend != 0: 
+		main.particle_manager.spawn_particle(SPEND_DAMAGE_PARTICLE,main.player_portrait.global_position)
 		shake_power += 0.5
 		main.sound_manager.play_sound(SPEND)
 		create_floating_label(turn_spend, "SPEND", "PLAYER")

@@ -54,6 +54,8 @@ var dusk_stance = '#8dacf7'
 @onready var vignette: CanvasModulate = $"../Vignette"
 @onready var vignetter: PointLight2D = $"../Vignetter"
 
+var second_enemy
+var third_enemy
 
 #PARTICLES
 const COIN_ADD_PARTICLE = preload("res://Scene/Coin Add Particle.tscn")
@@ -260,7 +262,7 @@ func _ready():
 	turn_ui.visible = false
 	print(reward_manager)
 	player.reset_stats()
-	
+
 	#GREED MODE
 	if player.greed: 
 		main.self_modulate = Color(greed_color)
@@ -946,10 +948,17 @@ func proceed_to_next_enemy():
 	match enemies_defeated:
 		1:
 			current_enemy_index = randi_range(2,3)
+			second_enemy = current_enemy_index
 		2:
 			current_enemy_index = randi_range(4,5)
+			third_enemy = current_enemy_index
 		3:
-			current_enemy_index = randi_range(6,7)
+			if second_enemy == 2 and third_enemy == 5:
+				current_enemy_index = 6
+			elif second_enemy == 3 and third_enemy == 4:
+				current_enemy_index = 7
+			else:
+				current_enemy_index = randi_range(6,7)
 		4:
 			current_enemy_index = 8
 	battle_start()

@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://1g21u656k60k"]
+
+[ext_resource type="Script" uid="uid://b81y1v87st1oc" path="res://Scene/coin_add_particles.gd" id="1_q8tto"]
+
+[sub_resource type="Gradient" id="Gradient_pj0s6"]
+offsets = PackedFloat32Array(0, 0.5557491)
+colors = PackedColorArray(0.39919582, 0.0015161186, 0.63164026, 1, 0.4492073, 0.015918523, 0.29072487, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ixwbn"]
+gradient = SubResource("Gradient_pj0s6")
+
+[sub_resource type="Curve" id="Curve_hijrn"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.9909639, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_xcmvv"]
+curve = SubResource("Curve_hijrn")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hijrn"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(1.485, 1.62, 1)
+angle_min = -20.69999
+angle_max = 281.7
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 141.17
+initial_velocity_max = 236.36
+gravity = Vector3(0, 0, 0)
+scale_max = 14.71
+scale_curve = SubResource("CurveTexture_xcmvv")
+color = Color(0.40128255, 0.00076821493, 0.5385874, 1)
+color_ramp = SubResource("GradientTexture1D_ixwbn")
+
+[node name="DebtDamageParticle" type="Node2D" unique_id=257060510]
+
+[node name="DebtDamageParticles" type="GPUParticles2D" parent="." unique_id=881501940]
+position = Vector2(40, 32)
+emitting = false
+amount = 64
+lifetime = 1.66
+one_shot = true
+explosiveness = 0.66
+process_material = SubResource("ParticleProcessMaterial_hijrn")
+script = ExtResource("1_q8tto")

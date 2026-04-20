@@ -637,6 +637,12 @@ script = ExtResource("7_ow1sv")
 
 [node name="Player" type="Node2D" parent="." unique_id=1483072070]
 script = ExtResource("2_1bvp3")
+has_wishbone = true
+has_golden_clover = true
+has_solar_coin = true
+has_lunar_coin = true
+has_merchant_scroll = true
+has_impromptu_flip = true
 
 [node name="Player Thrift Particles" type="GPUParticles2D" parent="Player" unique_id=1247546421]
 position = Vector2(29, 515)
@@ -645,6 +651,18 @@ lifetime = 1.46
 process_material = SubResource("ParticleProcessMaterial_1bveb")
 
 [node name="Player Debt Particles" type="GPUParticles2D" parent="Player" unique_id=772424488]
+position = Vector2(127, 518)
+amount = 64
+lifetime = 1.46
+process_material = ExtResource("7_cr44a")
+
+[node name="Player Thrift Particles2" type="GPUParticles2D" parent="Player" unique_id=1670605008]
+position = Vector2(29, 515)
+amount = 64
+lifetime = 1.46
+process_material = SubResource("ParticleProcessMaterial_1bveb")
+
+[node name="Player Debt Particles2" type="GPUParticles2D" parent="Player" unique_id=2006276550]
 position = Vector2(127, 518)
 amount = 64
 lifetime = 1.46
@@ -857,6 +875,14 @@ offset_top = 548.0
 offset_right = 238.0
 offset_bottom = 564.0
 scale = Vector2(4, 4)
+
+[node name="Player Info" type="Button" parent="Battle UI" unique_id=261525369]
+visible = false
+offset_left = 15.0
+offset_top = 508.0
+offset_right = 139.0
+offset_bottom = 633.0
+text = "Press for Info"
 
 [node name="HealthLabel" type="Label" parent="Battle UI" unique_id=580605117]
 anchors_preset = 4

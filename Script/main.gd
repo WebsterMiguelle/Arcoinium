@@ -54,6 +54,7 @@ var dusk_stance = '#8dacf7'
 @onready var vignette: CanvasModulate = $"../Vignette"
 @onready var vignetter: PointLight2D = $"../Vignetter"
 
+
 #PARTICLES
 const COIN_ADD_PARTICLE = preload("res://Scene/Coin Add Particle.tscn")
 const COIN_PLAY_PARTICLE = preload("res://Scene/Coin Play Particle.tscn")

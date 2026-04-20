@@ -500,6 +500,7 @@ func start_enemy_turn():
 				current_tutorial = create_tutorial("SPEND", "While having SPEND, each Coin Flip costs 2 Coins.",tutorial_area.global_position,-50)
 		await enemy.start_enemy_turn()
 		if enemy.coin > 0:
+			await get_tree().create_timer(1.0).timeout
 			if current_tutorial != null: current_tutorial.close()
 			start_player_turn()
 		else:

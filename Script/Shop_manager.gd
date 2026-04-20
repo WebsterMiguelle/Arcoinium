@@ -3,10 +3,12 @@ extends CanvasLayer
 @onready var container = $Background/CenterContainer/VBoxContainer/CardContainer
 const Shop_card = preload("res://Scene/shop_card.tscn")
 @onready var bg = $Background
-@onready var back_button = $Background/Back
+@onready var back_button: Button = $Back
 @onready var main = get_node("/root/Main")
 @onready var coin_label = $Background/CoinLabel
 @onready var player: Node2D = $"../Player"
+@onready var carpet: TextureRect = $Background/Carpet
+@onready var shop_keeper: AnimatedSprite2D = $"Background/Shop Keeper_Portrait"
 
 const SCROLL_HOVERED = preload("uid://dpcddmlbji61k")
 const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
@@ -45,7 +47,7 @@ var all_cards = [
 	{"id": 20, "name": "Triple Nickel", "rank": "A", "desc": "+20% SILVER Flip Rate. The first 3 Flips are SILVER Coins."},
 	{"id": 21, "name": "Inflation", "rank": "S", "desc": "There is a 50% chance for each Coin on the Arcane Circle to upgrade every Re-Flip. For every Gold Coin played, apply 1 SPEND."},
 	{"id": 22, "name": "Jar'O Savings", "rank": "S", "desc":"At the end of the 1st Turn, gain an EXTRA TURN, apply 16 THRIFT to the enemy, and generate 16 SILVER MOON Coins. Cannot Flip or Re-Flip during Extra Turns. (One-Time per Battle)"},
-	{"id": 23, "name": "Pay Down", "rank": "S", "desc": "Add 5 DEBT at the end of the Enemy’s Turn. If Enemy DEBT is greater than their Current Coins at the end of their turn, perish instantly."},
+	{"id": 23, "name": "Bankrupt", "rank": "S", "desc": "For each turn, apply 8 DEBT, 4 SPEND, and 2 THRIFT. If Enemy DEBT is greater than their Current Coins at the end of their turn, perish instantly."},
 	{"id": 24, "name": "All In", "rank": "S", "desc": "If there are No Coins on the Arcane Circle at the end of the turn, Automatically Flip 24 Upgraded Coins."},
 	{"id": 25, "name": "Withdraw", "rank": "B", "desc": "For each RESERVED Coin removed, deal 1 DAMAGE. (RESERVED Coin: When Arcane Circle overflows with Coins, Reserve it.)"},
 	{"id": 26, "name": "Deposit", "rank": "A", "desc": "+4 Max Reserve."},
@@ -54,10 +56,16 @@ var all_cards = [
 ]
 
 func show_shop_async(player):
+	carpet.modulate.a = 0
+	shop_keeper.modulate.a = 0
+	
 	shop_done = false
 	player_ref = player
 	show()
 	
+	var tween = create_tween()
+	tween.parallel().tween_property(carpet,"modulate:a",1,0.4)
+	tween.parallel().tween_property(shop_keeper,"modulate:a",1,0.4)
 	bg.visible = true
 	visible = true
 	back_button.disabled = false 
@@ -239,7 +247,7 @@ func apply_item(card_id):
 			print("S-Rank: Active Income")
 			main.player.has_active_income = true
 		23:
-			print("S-Rank: Pay Down")
+			print("S-Rank: Bankrupt")
 			main.player.has_pay_down = true
 		24:
 			print("S-Rank: Refund")
@@ -266,6 +274,9 @@ func close_shop():
 	bg.visible = false
 	visible = false
 	shop_done = true
+	var tween = create_tween()
+	tween.parallel().tween_property(carpet,"modulate:a",0,0.4)
+	tween.parallel().tween_property(shop_keeper,"modulate:a",0,0.4)
 	emit_signal("shop_closed")
 	
 func _ready() -> void:

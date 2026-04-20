@@ -45,9 +45,6 @@ const PASSIVE_JAR_O_SAVINGS = preload("uid://ctageqytkfmgg")
 const DEBT = preload("uid://cuwgygacdm7dj")
 const PASSIVE_PAYBACK = preload("uid://bbsxs62yhirxa")
 const JAR_O_SAVINGS = preload("uid://cbg3ofct0pu0j")
-const SPENDED_ATTACK = preload("uid://lfprp4w7saas")
-const DEBTED_ATTACK = preload("uid://ddf31ka4126fv")
-const THRIFTED_ATTACK = preload("uid://dtx4a0j6atomh")
 
 const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
 const THRIFT = preload("uid://b34wg18n8eb0t")
@@ -56,6 +53,9 @@ const SPEND = preload("uid://bvbtrait4prdi")
 const SPENDED_FLIP = preload("uid://dgu0hy8kwo343")
 const GAIN_EFFECT = preload("uid://cr366klr6aivy")
 const DEBT_EFFECT = preload("uid://d18qgeounkatf")
+const DEBTED_ATTACK = preload("uid://ddf31ka4126fv")
+const SPENDED_ATTACK = preload("uid://lfprp4w7saas")
+const THRIFTED_ATTACK = preload("uid://dtx4a0j6atomh")
 
 
 #PARTICLES
@@ -267,6 +267,7 @@ func reset_stats():
 	has_piggy = false
 
 	#INNOVATOR PASSIVES
+
 	has_inflation = false
 	has_payback = false
 	has_lucky_pair = false
@@ -378,7 +379,9 @@ func coin_calculation():
 	if thrifted_attack != 0:
 		total_thrift += thrifted_attack
 	if debted_attack != 0:
-		total_debt += debted_attack	
+		total_debt += debted_attack
+	if spended_attack != 0:
+		total_spend += spended_attack
 	var text = ""
 	if coins != null:
 		if total_damage != 0: 
@@ -589,6 +592,10 @@ func start_turn():
 	has_all_in = false
 	flip_clicks = 0
 	latest_coin = null
+	if has_pay_down:
+		debted_attack = 8
+		thrifted_attack = 2
+		spended_attack = 4
 	
 	if thrift != 0:
 		main.sound_manager.play_sound(THRIFT_FLAME)
@@ -724,6 +731,8 @@ func start_turn():
 			all_in.text = "ALL IN"
 		toggle_button(main.re_flip_button,true)
 	print(max_reserve)
+	if main.enemy.coin == 0:
+		main.check_defeat()
 
 func end_turn():
 	all_in.text = ""
@@ -746,7 +755,7 @@ func end_turn():
 	var turn_thrift = calculations[3]
 	var turn_spend = calculations[4]
 	previous_player_gain = turn_gain
-
+	
 	# Determine if enemy is immune to debt before applying
 	var is_debt_immune = (main.enemy.type == Enemy.COLLECTOR or main.enemy.type == Enemy.ARISTOCRAT) and greed
 	var actual_debt_applied = 0 if is_debt_immune else turn_debt
@@ -756,12 +765,12 @@ func end_turn():
 	spend = 0
 	gain += turn_gain
 	max_playable_coins = initial_max_playable_coins
-
+	
 	if thrifted_attack != 0: thrifted_attack = 0
 	if debted_attack != 0: debted_attack = 0
 	if spended_attack != 0: spended_attack = 0
 
-
+	
 	# 3. Twilight Sage Logic
 	if main.enemy.type == Enemy.TWILIGHT_SAGE:
 		if main.enemy.has_dusk_stance: spend += moon_count
@@ -790,7 +799,7 @@ func end_turn():
 		if coin.reserved == false:
 			main.particle_manager.spawn_particle(COIN_PLAY_PARTICLE,coin.global_position)
 			coin.queue_free()
-
+			
 	if has_piggy:
 		trigger_temp_passive("piggy","PIGGY")
 		var type = latest_pair_left_coin.type
@@ -799,7 +808,7 @@ func end_turn():
 		latest_pair_left_coin.type = type
 		latest_pair_left_coin.add_to_group("reserved coins")
 		add_child(latest_pair_left_coin)
-
+		
 		type = latest_pair_right_coin.type
 		latest_pair_right_coin.setup(latest_pair_right_coin.state,main.coin_deck.get_reserve_slot())
 		latest_pair_right_coin.reserved = true
@@ -811,11 +820,11 @@ func end_turn():
 	# ==========================================
 	# PHASE 2: VISUALS & ANIMATIONS (Play all the eye-candy!)
 	# ==========================================
-
+	
 	main.sound_manager.play_sound(COIN_ENDTURN)
 	particle_manager.despawn_emitting_particles()
-
-
+	
+	
 	main.turn_calculation_box.exit()
 
 	# -- 1. Trigger Simultaneous Firing (Shooting out of the deck) --
@@ -836,7 +845,7 @@ func end_turn():
 	if turn_spend > 0:
 		main.sound_manager.play_sound(SPENDED_ATTACK)
 		particle_manager.trigger_attack(main.coin_deck, main.enemy_portrait, turn_spend, "SPEND")
-
+		
 	# -- The Pause --
 	# Wait 1 second for the particles to fly across the screen BEFORE showing the impacts
 	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0:
@@ -849,9 +858,9 @@ func end_turn():
 		if turn_damage <= 10: main.sound_manager.play_sound(DAMAGE_LIGHT)
 		elif turn_damage <= 20: main.sound_manager.play_sound(DAMAGE_MODERATE)
 		else: main.sound_manager.play_sound(DAMAGE_HEAVY)
-
+		
 		create_floating_label(turn_damage,"DAMAGE","ENEMY")
-
+		
 	if turn_debt > 0:
 		if is_debt_immune:
 			create_floating_label("DEBT","IMMUNE","ENEMY")
@@ -859,22 +868,22 @@ func end_turn():
 		else:
 			main.sound_manager.play_sound(DEBT)
 			create_floating_label(actual_debt_applied,"DEBT","ENEMY")
-
+			
 	if turn_thrift > 0:
 		main.sound_manager.play_sound(THRIFT)
 		create_floating_label(turn_thrift,"THRIFT","ENEMY")
-
+		
 	if turn_spend > 0:
 		main.sound_manager.play_sound(SPEND)
 		create_floating_label(turn_spend,"SPEND","ENEMY")
-
-
+	
+	
 	# 2. Apply Stats to Enemy
 	main.enemy.take_damage(turn_damage)
 	main.enemy.debt += actual_debt_applied
 	main.enemy.thrift += turn_thrift
 	main.enemy.spend += turn_spend
-
+	
 	# 6. Extra Turn Checks
 	if has_active_income and player_turn_count == 1 and !jar_o_savings_used:
 		jar_o_savings_used = true
@@ -884,7 +893,7 @@ func end_turn():
 	if !lock and main.enemy.coin > 0 and has_cash_out and current_reserve >= max_reserve:
 		trigger_temp_passive("cash_out","CASH OUT")
 		has_extra_turn = true
-
+	
 	if lock:	
 		lock = false
 		max_reserve = initial_max_reserve
@@ -974,7 +983,7 @@ func activate_player_turn_start_passives():
 			await get_tree().create_timer(0.1).timeout
 			latest_coin = c
 
-		main.endTurn_button.disabled = false
+		toggle_button(main.endTurn_button, false)
 		toggle_button(main.re_flip_button,true)
 		
 	#PAYBACK

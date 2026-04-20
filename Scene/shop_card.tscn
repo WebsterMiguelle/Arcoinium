@@ -206,6 +206,14 @@ animations = [{
 atlas = ExtResource("3_bku1w")
 region = Rect2(192, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_7h2xg"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(160, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_81yiv"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(32, 64, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_bku1w"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(128, 64, 32, 32)
@@ -266,10 +274,6 @@ region = Rect2(128, 0, 32, 32)
 atlas = ExtResource("3_bku1w")
 region = Rect2(224, 32, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_81yiv"]
-atlas = ExtResource("3_bku1w")
-region = Rect2(32, 64, 32, 32)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_mnfj7"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(256, 32, 32, 32)
@@ -281,10 +285,6 @@ region = Rect2(320, 32, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_scg27"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(128, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_7h2xg"]
-atlas = ExtResource("3_bku1w")
-region = Rect2(64, 64, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hq3qh"]
 atlas = ExtResource("3_bku1w")
@@ -330,6 +330,22 @@ animations = [{
 }],
 "loop": false,
 "name": &"Advanced Planning",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7h2xg")
+}],
+"loop": false,
+"name": &"All In",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_81yiv")
+}],
+"loop": false,
+"name": &"Bankrupt",
 "speed": 5.0
 }, {
 "frames": [{
@@ -454,14 +470,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_81yiv")
-}],
-"loop": false,
-"name": &"Pay Down",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_mnfj7")
 }],
 "loop": false,
@@ -482,14 +490,6 @@ animations = [{
 }],
 "loop": false,
 "name": &"Pocket Money",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_7h2xg")
-}],
-"loop": false,
-"name": &"Refund",
 "speed": 5.0
 }, {
 "frames": [{
@@ -604,7 +604,7 @@ frame = 4
 position = Vector2(76, 71)
 scale = Vector2(3.0625002, 2.9375)
 sprite_frames = SubResource("SpriteFrames_u5k1i")
-animation = &"Withdraw"
+animation = &"All In"
 
 [node name="Label" type="Label" parent="." unique_id=594536539]
 layout_mode = 0

@@ -251,7 +251,7 @@ autowrap_mode = 3
 position = Vector2(100, 84)
 scale = Vector2(4, 4)
 sprite_frames = ExtResource("4_wnubr")
-animation = &"Withdraw"
+animation = &"All In"
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

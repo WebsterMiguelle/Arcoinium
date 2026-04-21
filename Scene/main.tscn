@@ -1014,6 +1014,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Turn Calculation Box" type="TextureRect" parent="Battle UI" unique_id=1091749495]
+visible = false
 offset_left = -3.0
 offset_top = 212.0
 offset_right = 311.0

@@ -16,6 +16,7 @@ const COIN = preload("uid://ddet242jm5v23")
 
 
 #SOUNDS
+const CRITICAL = preload("uid://nnwjjtfxt47l")
 const DEATH = preload("uid://bx1ttmouolx2q")
 const COIN_FLIP = preload("uid://bmscttmxwr782")
 const COIN_GAIN = preload("uid://c3v64vs2uqtik")
@@ -229,20 +230,19 @@ func setup(m,enemy):
 			type = Enemy.COLLECTOR
 			if !greed:
 				max_coin = 200
-				coin = 48
-				max_playable_coins = 8
+				coin = 40
+				max_playable_coins = 6
 				silver_flip_rate = 0.5
-				gold_flip_rate = 0.2
+				gold_flip_rate = 0
 				bounty = 50
 				has_value_added_tax = true
 				main.player.has_value_added_tax = true
-				trigger_enemy_passive("The Collector will apply 1 GAIN to self for each DEBT you settled.", 5.0)
 			else:
 				max_coin = 70
 				coin = 70
-				max_playable_coins = 16
+				max_playable_coins = 14
 				silver_flip_rate = 0.8
-				gold_flip_rate = 0.0
+				gold_flip_rate = 0.2
 				bounty = 100
 				has_value_added_tax = true
 				main.player.has_value_added_tax = true
@@ -250,7 +250,7 @@ func setup(m,enemy):
 		Enemy.TRADER:
 			if !greed:
 				max_coin = 200
-				coin = 48
+				coin = 40
 				max_playable_coins = 2
 				silver_flip_rate = 0.1
 				gold_flip_rate = 0.0
@@ -302,8 +302,8 @@ func setup(m,enemy):
 				debt = 100
 				trigger_enemy_passive("When The Aristocrat settled all her DEBT, Deal 100 Damage.", 4.0)
 			else:
-				max_coin = 180
-				coin = 180
+				max_coin = 200
+				coin = 200
 				max_playable_coins = 16
 				silver_flip_rate = 0
 				gold_flip_rate = 1
@@ -491,7 +491,7 @@ func enemy_coin_calculation():
 				if left_coin != null and right_coin != null:
 					if left_coin.state != right_coin.state:
 						total_damage += (left_coin.base_value)
-						total_debt += (right_coin.base_value)
+						total_debt += (right_coin.base_value) / 2
 					left_coin = null
 					right_coin = null
 				else:
@@ -924,9 +924,10 @@ func end_enemy_turn():
 	
 	camera_2d.add_trauma(shake_power)
 	if turn_damage >= 30:
-			var slow_motion = create_tween()
-			slow_motion.tween_property(Engine, "time_scale", 0.1, 0)
-			slow_motion.tween_property(Engine, "time_scale", 1, 0.5)
+		main.sound_manager.play_sound(CRITICAL)
+		var slow_motion = create_tween()
+		slow_motion.tween_property(Engine, "time_scale", 0.1, 0)
+		slow_motion.tween_property(Engine, "time_scale", 1, 0.5)
 	# 2. Apply Status Effects to Player
 	if turn_debt != 0: main.player.debt += turn_debt
 	if turn_thrift != 0: main.player.thrift += turn_thrift
@@ -965,10 +966,12 @@ func end_enemy_turn():
 				switch_vignette_color(dawn_stance, 0.4)
 				trigger_enemy_passive("DAWN STANCE: Play as Many MOON Coins.", 5.0)
 				main.enemy_portrait_sprite.play("TWILIGHT_SAGE_DAWN")	
-				
+	else:
+		main.check_defeat()
 	if type == Enemy.MOON_CASTER or type == Enemy.SUN_CASTER:
 		switch_vignetter_color(vignetter_default, 0.4)
 	
+
 	main.coin_deck.sigil_unlight_()
 	
 	

@@ -75,6 +75,7 @@ func _on_button_exited() -> void:
 	glow_tween.tween_property(glow_panel, "modulate:a", 0.0, 0.3).set_trans(Tween.TRANS_SINE)
 		
 func _on_button_pressed() -> void:
+	PlayerSingleton.greed = false
 	sound_manager.play_sound(COIN_FLIP)
 	button.disabled = true
 	

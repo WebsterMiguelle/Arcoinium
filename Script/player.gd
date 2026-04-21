@@ -45,6 +45,7 @@ const PASSIVE_JAR_O_SAVINGS = preload("uid://ctageqytkfmgg")
 const DEBT = preload("uid://cuwgygacdm7dj")
 const PASSIVE_PAYBACK = preload("uid://bbsxs62yhirxa")
 const JAR_O_SAVINGS = preload("uid://cbg3ofct0pu0j")
+const CRITICAL = preload("uid://nnwjjtfxt47l")
 
 const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
 const THRIFT = preload("uid://b34wg18n8eb0t")
@@ -230,13 +231,13 @@ func gain_coin():
 	debt -= temp
 	coin += gain
 	if gain > 0:
-		if temp2 != 0 and has_value_added_tax:
+		if greed and temp2 != 0 and has_value_added_tax:
 			main.enemy.gain += temp2
 		particle_manager.spawn_particle(GAIN_EFFECT_PARTICLE,main.player_gain.global_position)
 		main.sound_manager.play_sound(GAIN_EFFECT)
 		create_floating_label(gain,"GAIN","PLAYER")
 	elif debt > 0:
-		if has_value_added_tax:
+		if greed and has_value_added_tax:
 			main.enemy.gain += temp
 		particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,main.player_debt.global_position)
 		main.sound_manager.play_sound(DEBT_EFFECT)
@@ -299,7 +300,7 @@ func reset_stats():
 
 	has_cash_out = false
 	has_dividend = false
-	has_withdraw = false
+	has_withdraw = true
 	has_deposit = false
 
 func refresh_start_of_battle_stats():
@@ -767,6 +768,12 @@ func end_turn():
 	# 1. Apply Stats to Player
 	thrift = 0
 	spend = 0
+	if lock:	
+		lock = false
+		max_reserve = initial_max_reserve
+		var coins = get_tree().get_nodes_in_group("reserved coins")
+		current_reserve = coins.size()
+	if slow: slow = false
 	gain += turn_gain
 	max_playable_coins = initial_max_playable_coins
 	
@@ -897,6 +904,7 @@ func end_turn():
 	
 	camera_2d.add_trauma(shake_power)
 	if turn_damage >= 30:
+		main.sound_manager.play_sound(CRITICAL)
 		var slow_motion = create_tween()
 		slow_motion.tween_property(Engine, "time_scale", 0.1, 0)
 		slow_motion.tween_property(Engine, "time_scale", 1, 0.5)
@@ -916,12 +924,6 @@ func end_turn():
 		trigger_temp_passive("cash_out","CASH OUT")
 		has_extra_turn = true
 	
-	if lock:	
-		lock = false
-		max_reserve = initial_max_reserve
-		coins = get_tree().get_nodes_in_group("reserved coins")
-		current_reserve = coins.size()
-	if slow: slow = false
 	
 func activate_pre_battle_passives():
 	

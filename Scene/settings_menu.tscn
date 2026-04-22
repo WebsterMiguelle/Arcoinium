@@ -1,0 +1,119 @@
+[gd_scene format=3 uid="uid://oo0d6ux74rgi"]
+
+[ext_resource type="Script" uid="uid://cqv36i1qcoxnd" path="res://settings_menu.gd" id="1_pyvgt"]
+
+[node name="SettingsMenu" type="Panel" unique_id=241235065]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -309.0
+offset_top = -241.0
+offset_right = 291.0
+offset_bottom = 259.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pyvgt")
+
+[node name="Music" type="Label" parent="." unique_id=1551747624]
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 0
+offset_left = 192.0
+offset_top = 45.0
+offset_right = 392.0
+offset_bottom = 105.0
+theme_override_font_sizes/font_size = 45
+text = "Music"
+horizontal_alignment = 1
+vertical_alignment = 3
+
+[node name="MusicSlider" type="HSlider" parent="." unique_id=125216645]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 0
+offset_left = 150.0
+offset_top = 113.0
+offset_right = 550.0
+offset_bottom = 163.0
+
+[node name="Mute0N_OFF" type="Button" parent="." unique_id=1037622231]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 0
+offset_left = 70.0
+offset_top = 109.0
+offset_right = 120.0
+offset_bottom = 159.0
+theme_override_font_sizes/font_size = 30
+text = "M"
+
+[node name="SPX" type="Label" parent="." unique_id=1568584931]
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 0
+offset_left = 182.0
+offset_top = 160.0
+offset_right = 382.0
+offset_bottom = 220.0
+theme_override_font_sizes/font_size = 45
+text = "SFX"
+horizontal_alignment = 1
+vertical_alignment = 3
+
+[node name="SFXSlider" type="HSlider" parent="." unique_id=1376447176]
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 0
+offset_left = 149.0
+offset_top = 217.0
+offset_right = 549.0
+offset_bottom = 267.0
+
+[node name="SFXON_OFF" type="Button" parent="." unique_id=202022620]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 0
+offset_left = 71.0
+offset_top = 211.0
+offset_right = 121.0
+offset_bottom = 261.0
+theme_override_font_sizes/font_size = 30
+text = "S"
+
+[node name="Particles" type="CheckButton" parent="." unique_id=729108564]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 1
+offset_left = 62.0
+offset_top = 301.0
+offset_right = 262.0
+offset_bottom = 387.0
+button_pressed = true
+keep_pressed_outside = true
+text = "Paricles Effects"
+icon_alignment = 1
+
+[node name="LightEffect" type="CheckButton" parent="." unique_id=1879868040]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 1
+offset_left = 334.0
+offset_top = 304.0
+offset_right = 534.0
+offset_bottom = 390.0
+button_pressed = true
+keep_pressed_outside = true
+text = "Light Effects"
+icon_alignment = 1
+
+[node name="Back" type="Button" parent="." unique_id=1298990483]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 0
+offset_left = 187.0
+offset_top = 412.0
+offset_right = 387.0
+offset_bottom = 462.0
+theme_override_font_sizes/font_size = 30
+text = "Back"
+
+[connection signal="value_changed" from="MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="button_down" from="Mute0N_OFF" to="." method="_on_mute_0n_off_button_down"]
+[connection signal="value_changed" from="SFXSlider" to="." method="_on_sfx_slider_value_changed"]
+[connection signal="button_down" from="SFXON_OFF" to="." method="_on_sfxon_off_button_down"]
+[connection signal="button_up" from="Particles" to="." method="_on_particles_button_up"]
+[connection signal="button_up" from="LightEffect" to="." method="_on_light_effect_button_up"]
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]

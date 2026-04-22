@@ -288,6 +288,10 @@ func _input(event):
 	if event.is_action_pressed("ui_cancel"): # ESC key
 		toggle_pause()
 		
+func _on_menu_pressed() -> void:
+	print("Button Pressed")
+	toggle_pause()
+	
 func toggle_pause():
 	get_tree().paused = !get_tree().paused
 	pause_menu.visible = get_tree().paused

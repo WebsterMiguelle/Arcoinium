@@ -1,5 +1,7 @@
 extends Node2D
 
+var particles_enabled: bool = true 
+
 const ATTACK_RUNES_PARTICLES = preload("uid://c5o0wyqkpyhg2")
 const THRIFT_ATTACK_PARTICLE = preload("res://Scene/Particles/Thrift_Attack_Particles.tscn")
 const SPEND_ATTACK_PARTICLE = preload("res://Scene/Particles/Spend_Attack_Particles.tscn")
@@ -12,7 +14,7 @@ const S_CURVE_BASE_TIME = 0.8
 const S_CURVE_ADD_TIME = 0.005
 
 func _ready() -> void:
-	pass
+	add_to_group("particles_manager")
 
 func spawn_particle(p,pos):
 	if is_instance_valid(p):
@@ -231,6 +233,8 @@ func play_spend_attack(start_node: Node, target_node: Node, amount: int) -> void
 		
 		
 func trigger_attack(start_node: Node, target_node: Node, amount: int, damage_type: String = "") -> void:
+	if !particles_enabled:  
+		return
 	if damage_type == "DEBT":
 		play_debt_attack(start_node, target_node, amount)
 	elif damage_type == "THRIFT":

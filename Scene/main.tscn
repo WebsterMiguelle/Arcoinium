@@ -631,8 +631,20 @@ offset_right = 1.777832
 offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("1_mxd2g")
 script = ExtResource("1_h2yge")
+
+[node name="Menu" type="Button" parent="." unique_id=732694242]
+process_mode = 3
+visibility_layer = 524801
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 0
+offset_left = 30.0
+offset_top = 20.0
+offset_right = 130.0
+offset_bottom = 70.0
+text = "MENU"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=659444321]
 position = Vector2(576, 324)
@@ -646,6 +658,7 @@ script = ExtResource("3_hspdg")
 [node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1219776385]
 process_mode = 3
 stream = SubResource("AudioStreamPolyphonic_hspdg")
+bus = &"SFX"
 
 [node name="BGMPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=526912258]
 process_mode = 3
@@ -1309,39 +1322,48 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -250.0
-offset_right = 300.0
-offset_bottom = 250.0
+offset_left = -299.0
+offset_top = -241.0
+offset_right = 301.0
+offset_bottom = 259.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Resume" type="Button" parent="PauseMenu/Panel" unique_id=496970523]
-custom_minimum_size = Vector2(200, 100)
+custom_minimum_size = Vector2(200, 80)
 layout_mode = 0
-offset_left = 200.0
-offset_top = 37.0
-offset_right = 400.0
-offset_bottom = 137.0
+offset_left = 193.0
+offset_top = 33.0
+offset_right = 393.0
+offset_bottom = 133.0
 text = "Resume"
 
 [node name="EndRun" type="Button" parent="PauseMenu/Panel" unique_id=1637342553]
-custom_minimum_size = Vector2(200, 100)
+custom_minimum_size = Vector2(200, 80)
 layout_mode = 0
-offset_left = 204.0
-offset_top = 166.0
-offset_right = 404.0
-offset_bottom = 266.0
+offset_left = 196.0
+offset_top = 148.0
+offset_right = 396.0
+offset_bottom = 248.0
 text = "Endrun"
 
 [node name="Quit" type="Button" parent="PauseMenu/Panel" unique_id=1056057779]
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 0
-offset_left = 200.0
-offset_top = 305.0
-offset_right = 400.0
-offset_bottom = 405.0
+offset_left = 199.0
+offset_top = 377.0
+offset_right = 399.0
+offset_bottom = 477.0
 text = "Main Menu"
+
+[node name="Settings" type="Button" parent="PauseMenu/Panel" unique_id=1040642060]
+custom_minimum_size = Vector2(200, 80)
+layout_mode = 0
+offset_left = 196.0
+offset_top = 261.0
+offset_right = 396.0
+offset_bottom = 361.0
+text = "Settings"
 
 [node name="ShopManager" type="CanvasLayer" parent="." unique_id=248022412]
 layer = 5
@@ -1555,7 +1577,7 @@ position = Vector2(97, 431)
 scale = Vector2(2, 2.5)
 sprite_frames = SubResource("SpriteFrames_f043x")
 
-[node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384 groups=["point_light"]]
 position = Vector2(577, 318)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.9019608, 0.5647059, 0.61960787)
@@ -1594,6 +1616,7 @@ process_material = SubResource("ParticleProcessMaterial_mlc74")
 [node name="Tutorial Area" type="Marker2D" parent="." unique_id=162209601]
 position = Vector2(556, 557)
 
+[connection signal="pressed" from="Menu" to="." method="_on_menu_pressed"]
 [connection signal="toggled" from="Player/Player Info" to="." method="_on_player_info_toggled"]
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_exited"]
@@ -1606,4 +1629,5 @@ position = Vector2(556, 557)
 [connection signal="pressed" from="PauseMenu/Panel/Resume" to="PauseMenu" method="_on_resume_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/EndRun" to="PauseMenu" method="_on_end_run_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/Quit" to="PauseMenu" method="_on_quit_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/Settings" to="PauseMenu" method="_on_settings_pressed"]
 [connection signal="pressed" from="ShopManager/Back" to="ShopManager" method="_on_back_pressed"]

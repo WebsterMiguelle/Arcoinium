@@ -635,17 +635,6 @@ mouse_filter = 2
 texture = ExtResource("1_mxd2g")
 script = ExtResource("1_h2yge")
 
-[node name="Menu" type="Button" parent="." unique_id=732694242]
-process_mode = 3
-visibility_layer = 524801
-custom_minimum_size = Vector2(100, 50)
-layout_mode = 0
-offset_left = 30.0
-offset_top = 20.0
-offset_right = 130.0
-offset_bottom = 70.0
-text = "MENU"
-
 [node name="Camera2D" type="Camera2D" parent="." unique_id=659444321]
 position = Vector2(576, 324)
 script = ExtResource("3_f043x")
@@ -1616,7 +1605,18 @@ process_material = SubResource("ParticleProcessMaterial_mlc74")
 [node name="Tutorial Area" type="Marker2D" parent="." unique_id=162209601]
 position = Vector2(556, 557)
 
-[connection signal="pressed" from="Menu" to="." method="_on_menu_pressed"]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1949546978]
+
+[node name="Menu" type="Button" parent="CanvasLayer" unique_id=732694242]
+process_mode = 3
+visibility_layer = 524801
+custom_minimum_size = Vector2(100, 50)
+offset_left = 30.0
+offset_top = 20.0
+offset_right = 130.0
+offset_bottom = 70.0
+text = "MENU"
+
 [connection signal="toggled" from="Player/Player Info" to="." method="_on_player_info_toggled"]
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_exited"]
@@ -1631,3 +1631,4 @@ position = Vector2(556, 557)
 [connection signal="pressed" from="PauseMenu/Panel/Quit" to="PauseMenu" method="_on_quit_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/Settings" to="PauseMenu" method="_on_settings_pressed"]
 [connection signal="pressed" from="ShopManager/Back" to="ShopManager" method="_on_back_pressed"]
+[connection signal="pressed" from="CanvasLayer/Menu" to="." method="_on_menu_pressed"]

@@ -252,7 +252,7 @@ func _ready():
 	await _play_fake_coin_intro()
 	turn_calculation_box.visible = false
 	turn_ui.visible = false
-	current_room = 3
+	current_room = 0
 	current_enemy_index = randi_range(0,1)
 	passive_manager.setup(self)
 	player.setup(self)
@@ -768,7 +768,7 @@ func check_defeat():
 		flip_button.disabled = true
 		endTurn_button.disabled = true 
 		re_flip_button.disabled = true
-		enemies_defeated = 4
+		enemies_defeated += 1
 		await handle_victory_flow()
 		return true
 	

@@ -252,7 +252,7 @@ func _ready():
 	await _play_fake_coin_intro()
 	turn_calculation_box.visible = false
 	turn_ui.visible = false
-	current_room = 0
+	current_room = 3
 	current_enemy_index = randi_range(0,1)
 	passive_manager.setup(self)
 	player.setup(self)
@@ -503,7 +503,10 @@ func start_enemy_turn():
 			if enemy.type != Enemy.TWILIGHT_SAGE:
 				await get_tree().create_timer(1.0).timeout
 			if current_tutorial != null: current_tutorial.close()
-			start_player_turn()
+			if player.coin > 0:
+				start_player_turn()
+			else:
+				check_defeat()
 		else:
 			check_defeat()
 
@@ -765,7 +768,7 @@ func check_defeat():
 		flip_button.disabled = true
 		endTurn_button.disabled = true 
 		re_flip_button.disabled = true
-		enemies_defeated += 1
+		enemies_defeated = 4
 		await handle_victory_flow()
 		return true
 	
@@ -794,7 +797,7 @@ func handle_victory_flow():
 		overall_reserved_coins += 1
 		c.queue_free()
 		player.current_reserve -= 1
-	
+	particle_manager.despawn_emitting_particles()
 	if current_tutorial != null: current_tutorial.close()
 	# Disable gameplay buttons
 	flip_button.disabled = true

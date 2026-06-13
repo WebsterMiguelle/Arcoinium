@@ -297,8 +297,8 @@ vertical_alignment = 1
 [node name="GridContainer" type="GridContainer" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=256021586]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/h_separation = 35
-theme_override_constants/v_separation = 51
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 25
 columns = 4
 
 [node name="Passive_name" type="Label" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=1237834155]

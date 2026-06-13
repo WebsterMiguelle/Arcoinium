@@ -871,6 +871,7 @@ offset_left = -64.0
 offset_top = 276.0
 offset_right = 1232.0
 offset_bottom = 359.0
+mouse_filter = 2
 color = Color(0, 0, 0, 0.5803922)
 
 [node name="Turn UI Label" type="Label" parent="Battle UI/Turn UI" unique_id=421358590]

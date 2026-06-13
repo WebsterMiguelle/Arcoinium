@@ -300,7 +300,7 @@ func reset_stats():
 
 	has_cash_out = false
 	has_dividend = false
-	has_withdraw = true
+	has_withdraw = false
 	has_deposit = false
 
 func refresh_start_of_battle_stats():

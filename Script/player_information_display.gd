@@ -2,6 +2,19 @@ extends HBoxContainer
 const PASSIVE_BAR_ICON = preload("uid://dldde8yrawlpn")
 @onready var passives_container: GridContainer = $PassivesPanel/MarginContainer/VBoxContainer/GridContainer
 
+@onready var passive_name: Label = $PassivesPanel/MarginContainer/VBoxContainer/Passive_name
+@onready var passive_desc: Label = $PassivesPanel/MarginContainer/VBoxContainer/Passive_desc
+
+@onready var coins: Label = $StatsBoxPanel/MarginContainer/VBoxContainer/Coins
+
+@onready var gain: Label = $StatusEffectsPanel/MarginContainer/VBoxContainer/GainBox/Gain
+@onready var gain_info: Label = $StatusEffectsPanel/MarginContainer/VBoxContainer/GainBox/GainInfo
+
+@onready var debt: Label = $StatusEffectsPanel/MarginContainer/VBoxContainer/DebtBox/Debt
+@onready var debt_info: Label = $StatusEffectsPanel/MarginContainer/VBoxContainer/DebtBox/DebtInfo
+
+@onready var thrift: Label = $StatusEffectsPanel/MarginContainer/VBoxContainer/ThriftBox/Thrift
+@onready var thrift_info: Label = $StatusEffectsPanel/MarginContainer/VBoxContainer/ThriftBox/ThriftInfo
 
 var is_closing: bool = false
 var slide_distance: float = 30.0 
@@ -180,6 +193,7 @@ func _ready() -> void:
 
 func setup(player:Node) -> void:
 	populate_passives(player)
+	populate_stats(player)
 	
 func open() -> void:
 	target_y = global_position.y
@@ -206,23 +220,48 @@ func close() -> void:
 
 
 func populate_passives(player: Node) -> void:
-	# 1. BUILD THE ARRAY
-	# Instead of just animation names, we store the dictionary keys of the passives the player actually owns
+
 	var active_passive_keys: Array[String] = []
 	
 	for variable_name in PASSIVE_DATA.keys():
 		if player.get(variable_name) == true:
 			active_passive_keys.append(variable_name)
 			
-	# 2. SPAWN THE ICONS
+
 	for key in active_passive_keys:
 		var icon_instance = PASSIVE_BAR_ICON.instantiate()
-		
-		# Add it to the GridContainer first so it enters the scene tree
 		passives_container.add_child(icon_instance)
 		
-		# Grab the specific dictionary block for this passive
 		var data = PASSIVE_DATA[key]
 		
-		# Pass the 3 pieces of data directly into the icon's setup function!
-		icon_instance.setup(data["name"], data["desc"], data["name"])
+		icon_instance.setup(data["name"], data["desc"]) 
+		
+		icon_instance.mouse_entered.connect(show_passive_details.bind(data["name"], data["desc"]))
+		
+		
+func show_passive_details(p_name: String, p_desc: String) -> void:
+	print("mouse entered")
+	passive_name.text = p_name
+	passive_desc.text = p_desc
+
+func clear_passive_details() -> void:
+	passive_name.text = "Passive Name"
+	passive_desc.text = "Hover over a passive to view details."
+
+func populate_stats(player:Node) -> void:
+	var stats_text = ""
+	stats_text += "Coins: " + str(player.coin) + "\n"
+	stats_text += "Silver Flip Rate: " + str(player.silver_flip_rate * 100) + "%\n"
+	stats_text += "Gold Flip Rate: " + str(player.gold_flip_rate * 100) + "%\n"
+	stats_text += "Max Playable Coins: " + str(player.max_playable_coins) + "\n"
+	stats_text += "Max Reflips: " + str(player.max_re_flip) + "\n"
+	stats_text += "Max Reserve: " + str(player.max_reserve)
+	
+	coins.text = stats_text
+	gain.text = "Gain ( " + str(player.gain) + " )"
+	debt.text = "Debt ( " + str(player.debt) + " )"
+	thrift.text = "Thrift ( " + str(player.thrift) + " )"
+	
+	gain_info.text = "Gain " + str(player.gain) + " coins next turn."
+	debt_info.text = "Pay " + str(player.debt) + " coins to start gaining."
+	thrift_info.text = "Cannot place " + str(player.thrift) + " coins on the Arcane Circle."

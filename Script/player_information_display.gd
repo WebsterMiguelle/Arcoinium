@@ -240,9 +240,24 @@ func populate_passives(player: Node) -> void:
 		
 		
 func show_passive_details(p_name: String, p_desc: String) -> void:
-	print("mouse entered")
+	# 1. Set the text
 	passive_name.text = p_name
 	passive_desc.text = p_desc
+	# 2. Reset the font size to your maximum/default size (e.g., 16)
+	var current_font_size = 20 
+	passive_desc.add_theme_font_size_override("font_size", current_font_size)
+	
+	# 3. Force Godot to calculate the new text dimensions
+	passive_desc.reset_size()
+	
+	# 4. While the text is wider than our box, shrink it!
+	# (We stop at 8 so it doesn't become microscopic)
+	while passive_desc.get_minimum_size().x > passive_desc.size.x and current_font_size > 10:
+		current_font_size -= 1
+		passive_desc.add_theme_font_size_override("font_size", current_font_size)
+		passive_desc.reset_size()
+	
+	
 
 func clear_passive_details() -> void:
 	passive_name.text = "Passive Name"

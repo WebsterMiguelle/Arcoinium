@@ -795,17 +795,6 @@ func end_enemy_turn():
 	gain += turn_gain
 
 
-	# 5. Player 'Payback' Revive Check
-	if main.player.has_payback and !main.player.payback_used and main.player.coin <= 0: 
-		main.player.coin = 1
-		main.player.payback_used = true
-		main.player.payback_coins = 12
-		main.player.debt = 0
-		main.player.spend = 0
-		main.player.thrift = 0
-		main.player.lock = false
-		main.player.slow = false
-
 	# 6. Twilight Sage Pre-Calc
 	if main.player.coin > 0:
 		has_dusk_stance = !has_dusk_stance
@@ -951,6 +940,17 @@ func end_enemy_turn():
 	elif pay_down_debt_added:
 		create_floating_label(5, "DEBT", "ENEMY")
 
+
+	# 5. Player 'Payback' Revive Check
+	if main.player.has_payback and !main.player.payback_used and main.player.coin <= 0: 
+		main.player.coin = 1
+		main.player.payback_used = true
+		main.player.payback_coins = 12
+		main.player.debt = 0
+		main.player.spend = 0
+		main.player.thrift = 0
+		main.player.lock = false
+		main.player.slow = false
 	# -- Post-Turn Enemy Visuals (Stances & Vignettes) --
 	if main.player.coin > 0:
 		if type == Enemy.TWILIGHT_SAGE:

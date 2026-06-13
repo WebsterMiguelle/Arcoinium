@@ -274,7 +274,7 @@ func reset_stats():
 	#INNOVATOR PASSIVES
 
 	has_inflation = false
-	has_payback = false
+	has_payback = true
 	has_lucky_pair = false
 	has_value_increase = false
 
@@ -743,6 +743,7 @@ func end_turn():
 	all_in.text = ""
 	toggle_button(main.re_flip_button,true)
 	toggle_button(main.endTurn_button, true)
+	toggle_button(main.flip_button,true)
 	main.coin_deck.sigil_pressed();
 	previous_player_flips = current_played_coin
 
@@ -1053,7 +1054,7 @@ func activate_player_turn_start_passives():
 				create_floating_label(1,"DAMAGE","ENEMY")
 			coin_calculation()
 			payback_coins -= 1
-			await get_tree().create_timer(0.2).timeout
+			await get_tree().create_timer(0.1).timeout
 			
 		main.endTurn_button.disabled = false
 		toggle_button(main.re_flip_button,false)

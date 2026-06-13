@@ -503,7 +503,10 @@ func start_enemy_turn():
 			if enemy.type != Enemy.TWILIGHT_SAGE:
 				await get_tree().create_timer(1.0).timeout
 			if current_tutorial != null: current_tutorial.close()
-			start_player_turn()
+			if player.coin > 0:
+				start_player_turn()
+			else:
+				check_defeat()
 		else:
 			check_defeat()
 
@@ -794,7 +797,7 @@ func handle_victory_flow():
 		overall_reserved_coins += 1
 		c.queue_free()
 		player.current_reserve -= 1
-	
+	particle_manager.despawn_emitting_particles()
 	if current_tutorial != null: current_tutorial.close()
 	# Disable gameplay buttons
 	flip_button.disabled = true

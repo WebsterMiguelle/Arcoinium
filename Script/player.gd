@@ -274,7 +274,7 @@ func reset_stats():
 	#INNOVATOR PASSIVES
 
 	has_inflation = false
-	has_payback = true
+	has_payback = false
 	has_lucky_pair = false
 	has_value_increase = false
 
@@ -300,7 +300,7 @@ func reset_stats():
 
 	has_cash_out = false
 	has_dividend = false
-	has_withdraw = true
+	has_withdraw = false
 	has_deposit = false
 
 func refresh_start_of_battle_stats():

@@ -20,7 +20,7 @@ enum Enemy{
 #USER INTERFACE
 const TUTORIAL = preload("uid://cq10yywodq6bn")
 var current_tutorial = null
-var tutorial_enabled = true
+var tutorial_enabled = false
 var has_encountered_flip = false
 var has_encountered_spells = false
 var has_encountered_reflip = false
@@ -1286,7 +1286,7 @@ func _on_player_info_toggled(toggled_on: bool) -> void:
 		var menu_size = player_info_menu.size
 		player_info_menu.global_position = Vector2((screen_size.x - menu_size.x) / 2,
 			(screen_size.y - menu_size.y) / 2)
-		player_info_menu.z_index = 200
+		player_info_menu.z_index = 100
 		player_info_menu.open()
 	else:
 		if player_info_menu != null and is_instance_valid(player_info_menu):

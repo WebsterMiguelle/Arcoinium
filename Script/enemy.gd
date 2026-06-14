@@ -848,41 +848,33 @@ func end_enemy_turn():
 		await get_tree().create_timer(1.0).timeout
 
 	# 1. Player Passive Income Check
-	var passive_income_triggered = false
 	var converted_income = 0
 	if turn_damage > 0:
-		if main.player.has_passive_income and !main.player.passive_income_used:
+		if main.player.has_passive_income:
 			main.player.trigger_temp_passive("passive_income","PASSIVE INCOME")
 			main.sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
-			main.player.passive_income_used = true
-			passive_income_triggered = true
-			converted_income = turn_damage
-			if converted_income >= 30:
-				converted_income = 30
-			main.player.coin += converted_income
-		else:
-			main.player.take_damage(turn_damage)
+			converted_income = turn_damage / 10
+			for i in (converted_income):
+				main.player.reserve()
+		main.player.take_damage(turn_damage)
 	
 	# -- Final Hit Impacts & Floating Labels (The runes have arrived!) --
 	var shake_power = 0
 	if turn_damage > 0:
-		if passive_income_triggered:
-			pass 
-		else:
-			# I MOVED THE HIT PARTICLES AND SOUNDS HERE!
-			main.particle_manager.spawn_particle(DAMAGE_PARTICLE, main.player_portrait.global_position)
-			if turn_damage <= 10: 
-				main.sound_manager.play_sound(DAMAGE_LIGHT)
-				shake_power += 0.25
-			elif turn_damage <= 20: 
-				main.sound_manager.play_sound(DAMAGE_MODERATE)
-				shake_power += 0.5
-			else: 
-				main.sound_manager.play_sound(DAMAGE_HEAVY)
-				shake_power += 1.0
-			
-			
-			create_floating_label(turn_damage, "DAMAGE", "PLAYER")
+		# I MOVED THE HIT PARTICLES AND SOUNDS HERE!
+		main.particle_manager.spawn_particle(DAMAGE_PARTICLE, main.player_portrait.global_position)
+		if turn_damage <= 10: 
+			main.sound_manager.play_sound(DAMAGE_LIGHT)
+			shake_power += 0.25
+		elif turn_damage <= 20: 
+			main.sound_manager.play_sound(DAMAGE_MODERATE)
+			shake_power += 0.5
+		else: 
+			main.sound_manager.play_sound(DAMAGE_HEAVY)
+			shake_power += 1.0
+		
+		
+		create_floating_label(turn_damage, "DAMAGE", "PLAYER")
 			
 	if turn_debt != 0: 
 		main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.player_portrait.global_position)

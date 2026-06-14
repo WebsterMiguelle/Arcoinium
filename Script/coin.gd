@@ -1,20 +1,26 @@
 extends Node2D
-
+@onready var shined: AnimatedSprite2D = $SHINED
 enum CoinType{
 	COPPER,
 	SILVER,
 	GOLD
 }
+
+enum CoinStatus{
+	NONE,
+	SHINED
+}
+
 #COIN VARIABLES
 var type
 var base_value:int
 var state:int # If 0, then Head, Else, then Tail
+var status:CoinStatus
 var reserved:bool
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 func _ready() -> void:
 	refresh_sprite()
-	pass 
 
 func setup(s,pos):
 	state = s
@@ -23,6 +29,8 @@ func setup(s,pos):
 	reserved = false
 	type = CoinType.COPPER
 	base_value = 2
+	status = CoinStatus.NONE
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -61,6 +69,7 @@ func copy_coin(coin):
 	reserved = coin.reserved
 	type = coin.type
 	state = coin.state
+	status = coin.status
 
 func refresh_sprite():
 	var appear_tween = create_tween()
@@ -68,20 +77,29 @@ func refresh_sprite():
 	appear_tween.tween_property(animated_sprite_2d, "position:y", 0, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	appear_tween.parallel().tween_property(animated_sprite_2d, "modulate:a", 1.0, 0.2)
 	
+	if status == CoinStatus.SHINED:
+		shined.visible = true
+	else:
+		shined.visible = false
 	match type:
 		CoinType.COPPER:
 			base_value = 2
 			animated_sprite_2d.play("copper_to_head" if state == 0 else "copper_to_tail")
+			shined.play("copper_to_head" if state == 0 else "copper_to_tail")
 			await animated_sprite_2d.animation_finished
 			animated_sprite_2d.play("copper_head" if state == 0 else "copper_tail")
+			shined.play("copper_head" if state == 0 else "copper_tail")
 		CoinType.SILVER:
 			base_value = 4
 			animated_sprite_2d.play("silver_to_head" if state == 0 else "silver_to_tail")
+			shined.play("silver_to_head" if state == 0 else "silver_to_tail")
 			await animated_sprite_2d.animation_finished
 			animated_sprite_2d.play("silver_head" if state == 0 else "silver_tail")
+			shined.play("silver_head" if state == 0 else "silver_tail")
 		CoinType.GOLD:
 			base_value = 6
 			animated_sprite_2d.play("gold_to_head" if state == 0 else "gold_to_tail")
+			shined.play("gold_to_head" if state == 0 else "gold_to_tail")
 			await animated_sprite_2d.animation_finished
 			animated_sprite_2d.play("gold_head" if state == 0 else "gold_tail")
-	
+			shined.play("gold_head" if state == 0 else "gold_tail")

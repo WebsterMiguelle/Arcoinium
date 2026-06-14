@@ -33,8 +33,9 @@ var dusk_stance = '#8dacf7'
 @onready var battle_particles: GPUParticles2D = $"ParticleManager/Battle Particles"
 @onready var dusk_particles: GPUParticles2D = $"ParticleManager/Dusk Particles"
 @onready var dawn_particles: GPUParticles2D = $"ParticleManager/Dawn Particles"
-@onready var player_reserve: Label = $"Battle UI/Player Reserve"
-
+@onready var reserve_button: Button = $"Battle UI/Reserve Button"
+@onready var player_reserve: Label = $"Battle UI/Reserve Button/Player Reserve"
+@onready var player_reserve_rug: TextureRect = $"Player/Player Reserve Rug"
 @onready var vignette: CanvasModulate = $"../Vignette"
 @onready var vignetter: PointLight2D = $"../Vignetter"
 
@@ -771,6 +772,9 @@ func reserve_left_over_coin():
 		left_coin.add_to_group("reserved coins")
 		coins = get_tree().get_nodes_in_group("reserved coins")
 		player.current_reserve = coins.size()
+		if player.has_simple_interest: 
+			player.gain += 1
+			player.trigger_temp_passive("simple_interest","SIMPLE INTEREST")
 
 func update_player_coin():
 	player_health_label.text = "Coins: " + str(player.coin)
@@ -784,9 +788,11 @@ func update_player_reflip_and_reserve():
 		player_slow.visible = false
 	if player.lock:
 		player_reserve.text = ""
+		reserve_button.visible = false
 		player_lock.visible = true
 		player_lock_particles.emitting = true
 	else:
+		reserve_button.visible = true
 		player_lock.visible = false
 		player_lock_particles.emitting = false
 		player_reserve.text = "Reserve: " + str(player.current_reserve) + "/" + str(player.max_reserve)
@@ -1187,3 +1193,11 @@ func _on_player_info_toggled(toggled_on: bool) -> void:
 		if player_info_menu != null and is_instance_valid(player_info_menu):
 			player_info_menu.close()
 			player_info_menu = null
+
+
+func _on_reserve_button_pressed() -> void:
+	player.reserve()
+	if player.current_reserve >= player.max_reserve:
+		reserve_button.disabled = true
+	else:
+		reserve_button.disabled = false

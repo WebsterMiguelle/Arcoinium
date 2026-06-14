@@ -1,8 +1,33 @@
 [gd_scene format=3 uid="uid://cq10yywodq6bn"]
 
-[ext_resource type="Script" uid="uid://cvieeuxw2n7gl" path="res://Scene/tutorial.gd" id="1_dmkc7"]
 [ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="2_ntsqm"]
 [ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="3_dmkc7"]
+
+[sub_resource type="GDScript" id="GDScript_0i241"]
+script/source = "extends Node2D
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	modulate.a = 0
+	var tween = create_tween()
+	tween.parallel().tween_property(self, \"modulate:a\",1,0.2)
+	tween.parallel().tween_property(self,\"position:y\",global_position.y - 50, 0.2)
+	
+func setup(tit, txt, pos, offset):
+	var tutorial_name: Label = $\"Tutorial Panel/MarginContainer/VBoxContainer/Tutorial Name\"
+	var tutorial_info: Label = $\"Tutorial Panel/MarginContainer/VBoxContainer/Tutorial Info\"
+	tutorial_name.text = tit
+	tutorial_info.text = txt
+	global_position = pos
+	global_position.y += offset
+
+func close():
+	var tween = create_tween()
+	tween.parallel().tween_property(self, \"modulate:a\",0,0.2)
+	tween.parallel().tween_property(self,\"position:y\",global_position.y + 10, 0.2)
+	await get_tree().create_timer(0.8).timeout
+	queue_free()
+"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h2smw"]
 bg_color = Color(0.12835406, 0.13816993, 0.12315822, 0.90000004)
@@ -19,7 +44,7 @@ anti_aliasing = false
 
 [node name="Tutorial" type="Node2D" unique_id=1678281989]
 top_level = true
-script = ExtResource("1_dmkc7")
+script = SubResource("GDScript_0i241")
 
 [node name="Tutorial Panel" type="PanelContainer" parent="." unique_id=1443554992]
 offset_right = 343.0

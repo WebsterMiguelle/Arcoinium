@@ -1,5 +1,10 @@
 extends Node2D
 
+enum CoinStatus{
+	NONE,
+	SHINED
+}
+
 enum Enemy{
 	MAGE,
 	DWARF,
@@ -300,7 +305,7 @@ func reset_stats():
 
 	has_cash_out = false
 	has_dividend = false
-	has_withdraw = true
+	has_withdraw = false
 	has_deposit = false
 
 func refresh_start_of_battle_stats():
@@ -346,6 +351,9 @@ func coin_calculation():
 	var total_debt = 0
 	var total_thrift = 0
 	var total_spend = 0
+	
+	var shined_sun_multiplier = 1
+	var shined_moon_multiplier = 1
 	sun_count = 0
 	moon_count = 0
 	var coins = get_tree().get_nodes_in_group("coins")
@@ -358,8 +366,12 @@ func coin_calculation():
 			right_coin = coin
 		if coin.state == 0 and !coin.reserved:
 			sun_count += 1
-		else:
+			if coin.status == CoinStatus.SHINED: 
+				shined_sun_multiplier += 0.1
+		elif coin.state == 1 and !coin.reserved:
 			moon_count +=1
+			if coin.status == CoinStatus.SHINED:
+				shined_moon_multiplier += 0.1
 		if left_coin != null and right_coin != null and left_coin.reserved == false and right_coin.reserved == false:
 			# 1. HEAD-HEAD PAIR
 			if left_coin.state == 0 and right_coin.state == 0:
@@ -391,8 +403,12 @@ func coin_calculation():
 	if coins != null:
 		if total_damage != 0: 
 			text += "\nDAMAGE: " + str(total_damage)
+			if shined_sun_multiplier > 1:
+				text += " (x" + str(shined_sun_multiplier) + ")"
 		if total_gain != 0:
 			text += "\nGAIN: " + str(total_gain)
+			if shined_moon_multiplier > 1:
+				text += " (x" + str(shined_moon_multiplier) + ")"
 		if total_debt != 0:
 			text += "\nDEBT: " + str(total_debt)
 		if total_thrift != 0:
@@ -406,7 +422,94 @@ func coin_calculation():
 	if text != "":
 		sun_moon_count.text = "𖤓 " + str(sun_count) + " ☾ " + str(moon_count)
 		main.turn_calculation_box.entrance(true)
-	return [total_damage,total_gain,total_debt,total_thrift, total_spend]
+	return [total_damage,total_gain,total_debt,total_thrift, total_spend, shined_sun_multiplier, shined_moon_multiplier]
+
+func reserve():
+	print("RESERVE")
+	main.sound_manager.play_sound(COIN_FLIP)
+	flip_clicks += 1
+	if current_re_flip != max_re_flip: 
+		toggle_button(main.re_flip_button,false)
+		
+	var state = randi() % 2
+	
+	if greed and has_sunlit_curse: state = 0
+	if greed and has_midnight_curse: state = 1
+
+	if (flip_clicks == 1 or flip_clicks == 3) and has_solar_coin:
+		state = 0;
+		trigger_temp_passive("solar_coin","SOLAR COIN")
+	if (flip_clicks == 2 or flip_clicks == 4) and has_lunar_coin:
+		state = 1;
+		trigger_temp_passive("lunar_coin","LUNAR COIN")
+	if state == 0:
+		main.total_heads += 1
+	else:
+		main.total_tails += 1
+	
+	var c = COIN.instantiate()
+	
+	if lock: return
+	c.setup(state,main.coin_deck.get_reserve_slot())
+	c.reserved = true
+	current_reserve += 1
+	c.add_to_group("reserved coins")
+	
+	#Silver/Gold Flip Rate
+	
+	var upgrade_chance = randf()
+
+	if upgrade_chance <= silver_flip_rate:
+		c.upgrade_to_silver()
+		
+	upgrade_chance = randf() 
+	if upgrade_chance <= gold_flip_rate:
+		c.upgrade_to_gold()
+	
+	if has_lucky_pair and (flip_clicks == 7 or flip_clicks == 8):
+		c.upgrade()
+		trigger_temp_passive("lucky_pair","LUCKY PAIR")
+		c.status = CoinStatus.SHINED
+		
+	if flip_clicks <= 3 and has_triple_nickel:
+		trigger_temp_passive("triple_nickel","TRIPLE NICKEL")
+		c.upgrade_to_silver()
+		
+	if (flip_clicks == 1 or flip_clicks == 3) and has_solar_coin:
+		c.upgrade()
+		
+	if (flip_clicks == 2 or flip_clicks == 4) and has_lunar_coin:
+		c.upgrade()
+		
+	if c.base_value > 2:
+		main.sound_manager.play_sound(COIN_UPGRADE)
+		if has_coin_snipe:
+			trigger_temp_passive("coin_snipe","COIN SNIPE")
+			main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
+			main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
+			main.enemy.take_damage(1)
+			create_floating_label(1,"DAMAGE","ENEMY")
+
+	take_damage(1)
+	add_child(c)
+	if has_simple_interest: 
+		gain += 1
+		trigger_temp_passive("simple_interest","SIMPLE INTEREST")
+
+	if has_reimbursement:
+		var debt_chance = randf()
+		if debt_chance <= 0.3: 
+			debted_attack += 1
+			trigger_temp_passive("reimbursement","REIMBURSEMENT")
+
+	print(current_played_coin)
+	if (current_reserve >= max_reserve) or coin == 1:
+		toggle_button(main.reserve_button,true)
+	if coin == 1:
+		toggle_button(main.flip_button,true)
+	coin_calculation()
+	if main.enemy.coin > 0:
+		main.check_defeat()
 
 func flip():
 	
@@ -441,10 +544,14 @@ func flip():
 		c.reserved = true
 		current_reserve += 1
 		c.add_to_group("reserved coins")
+		if has_simple_interest: 
+			gain += 1
+			trigger_temp_passive("simple_interest","SIMPLE INTEREST")
 	else:
 		c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
 		c.add_to_group("coins")
 	main.sound_manager.play_sound(COIN_FLIP)
+
 	#Silver/Gold Flip Rate
 	
 	var upgrade_chance = randf()
@@ -459,6 +566,7 @@ func flip():
 	if has_lucky_pair and (flip_clicks == 7 or flip_clicks == 8):
 		c.upgrade()
 		trigger_temp_passive("lucky_pair","LUCKY PAIR")
+		c.status = CoinStatus.SHINED
 		
 	
 	if flip_clicks <= 3 and has_triple_nickel:
@@ -505,11 +613,15 @@ func flip():
 	print(current_played_coin)
 	if (current_played_coin == max_playable_coins and current_reserve >= max_reserve) or coin == 1:
 		toggle_button(main.flip_button,true)
+		toggle_button(main.reserve_button,true)
 	coin_calculation()
 	if main.enemy.coin > 0:
 		main.check_defeat()
 	if current_played_coin != 0 and has_refund:
 		all_in.text = ""
+
+	if current_reserve >= max_reserve:
+		toggle_button(main.reserve_button,true)
 
 
 
@@ -549,14 +661,13 @@ func re_flip():
 			else:
 				c.re_flip()
 	if !lock and has_spare_change:
+		toggle_button(main.flip_button,false)
 		var has_withdraw_damage = false
 		var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
 		current_reserve = reserved_coins.size()
 		if reserved_coins.size() != 0:
 			trigger_temp_passive("spare_change","SPARE CHANGE")
 			main.sound_manager.play_sound(PASSIVE_SPARE_CHANGE)
-			if has_simple_interest: 
-				trigger_temp_passive("simple_interest","SIMPLE INTEREST")
 			if has_withdraw: 
 				trigger_temp_passive("withdraw","WITHDRAW")
 		for c in reserved_coins:
@@ -564,8 +675,6 @@ func re_flip():
 			c.queue_free()
 			toggle_button(main.flip_button,false)
 			current_reserve -= 1
-			if has_simple_interest: 
-				gain += 1
 			if has_withdraw: 
 				create_floating_label(1,"DAMAGE","ENEMY")
 				main.enemy.take_damage(1)
@@ -636,6 +745,7 @@ func start_turn():
 	await activate_player_turn_start_passives()
 	
 	toggle_button(main.flip_button,false)
+	toggle_button(main.reserve_button,false)
 	if current_played_coin == 0:
 		toggle_button(main.re_flip_button,true)
 		main.turn_calculation.text = ""
@@ -654,8 +764,6 @@ func start_turn():
 		if coins.size() != 0:
 			if has_value_increase:
 				trigger_temp_passive("value_increase","VALUE INCREASE")
-			if has_simple_interest:
-				trigger_temp_passive("simple_interest","SIMPLE INTEREST")
 			if has_withdraw:
 				trigger_temp_passive("withdraw","WITHDRAW")
 				
@@ -675,7 +783,6 @@ func start_turn():
 					coin.global_position.x = pos[0]
 					coin.global_position.y = pos[1]
 					coin.reserved = false
-					if has_simple_interest: gain += 1
 					if has_withdraw: 
 						create_floating_label(1,"DAMAGE","ENEMY")
 						main.enemy.take_damage(1)
@@ -706,7 +813,6 @@ func start_turn():
 						coin.global_position.x = pos[0]
 						coin.global_position.y = pos[1]
 						coin.reserved = false
-						if has_simple_interest: gain += 1
 						if has_withdraw:
 							create_floating_label(1,"DAMAGE","ENEMY")
 							main.enemy.take_damage(1)
@@ -731,18 +837,23 @@ func start_turn():
 				#reserved_coin.queue_free()
 	if !lock and (coin == 1 or current_reserve >= max_reserve):
 		toggle_button(main.flip_button,true)
-	if current_played_coin == 0 :
+		toggle_button(main.reserve_button,true)
+	if current_played_coin == 0:
 		if has_refund:
 			all_in.text = "ALL IN"
 		toggle_button(main.re_flip_button,true)
 	print(max_reserve)
 	if main.enemy.coin == 0:
 		main.check_defeat()
+	
 
 func end_turn():
+	print("ENDED TURN!?")
 	all_in.text = ""
 	toggle_button(main.re_flip_button,true)
 	toggle_button(main.endTurn_button, true)
+	toggle_button(main.flip_button,true)
+	toggle_button(main.reserve_button,true)
 	main.coin_deck.sigil_pressed();
 	previous_player_flips = current_played_coin
 
@@ -754,8 +865,8 @@ func end_turn():
 	# PHASE 1: MATH & LOGIC (Instantly calculate everything)
 	# ==========================================
 	var calculations = coin_calculation()
-	var turn_damage = calculations[0]
-	var turn_gain = calculations[1]
+	var turn_damage:int = calculations[0] * calculations[5]
+	var turn_gain:int = calculations[1] * calculations[6]
 	var turn_debt = calculations[2]
 	var turn_thrift = calculations[3]
 	var turn_spend = calculations[4]
@@ -812,11 +923,13 @@ func end_turn():
 			coin.queue_free()
 			
 	if has_piggy:
+		
 		trigger_temp_passive("piggy","PIGGY")
 		var type = latest_pair_left_coin.type
 		latest_pair_left_coin.setup(latest_pair_left_coin.state,main.coin_deck.get_reserve_slot())
 		latest_pair_left_coin.reserved = true
 		latest_pair_left_coin.type = type
+		latest_pair_left_coin.status = CoinStatus.SHINED
 		latest_pair_left_coin.add_to_group("reserved coins")
 		add_child(latest_pair_left_coin)
 		
@@ -824,10 +937,14 @@ func end_turn():
 		latest_pair_right_coin.setup(latest_pair_right_coin.state,main.coin_deck.get_reserve_slot())
 		latest_pair_right_coin.reserved = true
 		latest_pair_right_coin.type = type
+		latest_pair_right_coin.status = CoinStatus.SHINED
 		latest_pair_right_coin.add_to_group("reserved coins")
 		add_child(latest_pair_right_coin)
 		current_reserve += 2
-
+		
+		if has_simple_interest: 
+			gain += 2
+			trigger_temp_passive("simple_interest","SIMPLE INTEREST")
 	# ==========================================
 	# PHASE 2: VISUALS & ANIMATIONS (Play all the eye-candy!)
 	# ==========================================
@@ -927,7 +1044,6 @@ func end_turn():
 	
 func activate_pre_battle_passives():
 	
-	passive_income_used = false
 	payback_used = false
 	jar_o_savings_used = false
 	jar_o_savings_coins = 16
@@ -1053,7 +1169,7 @@ func activate_player_turn_start_passives():
 				create_floating_label(1,"DAMAGE","ENEMY")
 			coin_calculation()
 			payback_coins -= 1
-			await get_tree().create_timer(0.2).timeout
+			await get_tree().create_timer(0.1).timeout
 			
 		main.endTurn_button.disabled = false
 		toggle_button(main.re_flip_button,false)
@@ -1109,13 +1225,13 @@ func activate_player_turn_end_passives():
 			if index == 1: first_coin = coin
 			if index == 2: second_coin = coin
 			if index == 3 or index == 5 or index == 7:
-				coin.state = first_coin.state
+				coin.copy_coin(first_coin)
 				coin.refresh_sprite()
 				main.sound_manager.play_sound(COIN_FLIP)
 				coin_calculation()
 				await get_tree().create_timer(0.1).timeout
 			if index == 4 or index == 6 or index == 8:
-				coin.state = second_coin.state
+				coin.copy_coin(second_coin)
 				coin.refresh_sprite()
 				main.sound_manager.play_sound(COIN_FLIP)
 				coin_calculation()
@@ -1127,6 +1243,7 @@ func extra_turn():
 	await start_turn()
 	toggle_button(main.re_flip_button,true)
 	toggle_button(main.flip_button,true)
+	toggle_button(main.reserve_button,true)
 	
 func toggle_button(btn: Button, make_disabled: bool) -> void:
 	btn.disabled = make_disabled

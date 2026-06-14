@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://qxyeds7oh4s7" path="res://Script/main.gd" id="1_h2yge"]
 [ext_resource type="Texture2D" uid="uid://bvtpq810pp6la" path="res://Assets/New Background.png" id="1_mxd2g"]
 [ext_resource type="Script" uid="uid://bunbms60cogmi" path="res://Script/player.gd" id="2_1bvp3"]
-[ext_resource type="Script" path="res://Scene/camera_2d.gd" id="3_f043x"]
+[ext_resource type="Script" uid="uid://d28knusqb3dv" path="res://Scene/camera_2d.gd" id="3_f043x"]
 [ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="3_hspdg"]
 [ext_resource type="Script" uid="uid://dedsjnmo4366e" path="res://Script/enemy.gd" id="3_lquwl"]
 [ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
@@ -227,25 +227,41 @@ scale_over_velocity_max = 196.06999
 color = Color(0.7682126, 0.0005047953, 0.7783489, 1)
 color_ramp = SubResource("GradientTexture1D_cr44a")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_wimqa"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_f043x"]
 atlas = ExtResource("9_jbas8")
 region = Rect2(0, 0, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_t372l"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_gejqg"]
+atlas = ExtResource("9_jbas8")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oywcm"]
 atlas = ExtResource("10_p4j74")
 region = Rect2(0, 0, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_uctnp"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_xgc63"]
+atlas = ExtResource("10_p4j74")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w8oc3"]
 atlas = ExtResource("11_hiice")
 region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tbp1y"]
+atlas = ExtResource("11_hiice")
+region = Rect2(64, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xw8bv"]
 atlas = ExtResource("12_pqe63")
 region = Rect2(0, 0, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_m37ut"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_h5i8s"]
 atlas = ExtResource("12_sor6r")
 region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7sh50"]
+atlas = ExtResource("12_sor6r")
+region = Rect2(64, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yoaul"]
 atlas = ExtResource("13_pqe63")
@@ -263,13 +279,21 @@ region = Rect2(0, 0, 64, 64)
 atlas = ExtResource("14_aam5o")
 region = Rect2(64, 0, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mu7ye"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ekncj"]
 atlas = ExtResource("15_nyb1q")
 region = Rect2(0, 0, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_2oiod"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_jmo7v"]
+atlas = ExtResource("15_nyb1q")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hjai8"]
 atlas = ExtResource("16_xw8bv")
 region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_txj2b"]
+atlas = ExtResource("16_xw8bv")
+region = Rect2(64, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8bkap"]
 atlas = ExtResource("18_aam5o")
@@ -291,27 +315,36 @@ region = Rect2(64, 0, 64, 64)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_wimqa")
+"texture": SubResource("AtlasTexture_f043x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gejqg")
 }],
 "loop": true,
 "name": &"ARISTOCRAT",
-"speed": 5.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_t372l")
+"texture": SubResource("AtlasTexture_oywcm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xgc63")
 }],
 "loop": true,
 "name": &"COLLECTOR",
-"speed": 5.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_uctnp")
+"texture": SubResource("AtlasTexture_w8oc3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tbp1y")
 }],
 "loop": true,
 "name": &"DWARF",
-"speed": 5.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -323,11 +356,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_m37ut")
+"texture": SubResource("AtlasTexture_h5i8s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7sh50")
 }],
 "loop": true,
 "name": &"MAGE",
-"speed": 5.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -338,7 +374,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"MOON_CASTER",
-"speed": 1.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -349,23 +385,29 @@ animations = [{
 }],
 "loop": true,
 "name": &"SUN_CASTER",
-"speed": 1.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_mu7ye")
+"texture": SubResource("AtlasTexture_ekncj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jmo7v")
 }],
 "loop": true,
 "name": &"THRIFTER",
-"speed": 5.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_2oiod")
+"texture": SubResource("AtlasTexture_hjai8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_txj2b")
 }],
 "loop": true,
 "name": &"TRADER",
-"speed": 5.0
+"speed": 2.0
 }, {
 "frames": [],
 "loop": true,
@@ -381,7 +423,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"TWILIGHT_SAGE_DAWN",
-"speed": 1.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -392,7 +434,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"TWILIGHT_SAGE_DUSK",
-"speed": 1.0
+"speed": 2.0
 }]
 
 [sub_resource type="Gradient" id="Gradient_n7vvl"]
@@ -459,7 +501,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 1.0
+"speed": 2.0
 }]
 
 [sub_resource type="Gradient" id="Gradient_mlc74"]
@@ -961,7 +1003,7 @@ offset_bottom = 137.97021
 position = Vector2(58.67501, 59.03)
 scale = Vector2(1.9374993, 1.9375)
 sprite_frames = SubResource("SpriteFrames_8bkap")
-animation = &"TWILIGHT_SAGE"
+animation = &"ARISTOCRAT"
 
 [node name="EnemyFrame" type="TextureRect" parent="Enemy" unique_id=1466787434]
 offset_left = 998.0
@@ -1594,9 +1636,6 @@ amount = 64
 lifetime = 1.82
 randomness = 0.35
 process_material = SubResource("ParticleProcessMaterial_mlc74")
-
-[node name="Tutorial Area" type="Marker2D" parent="." unique_id=162209601]
-position = Vector2(556, 557)
 
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_exited"]

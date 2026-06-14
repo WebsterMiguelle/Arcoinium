@@ -740,6 +740,7 @@ func start_turn():
 		main.check_defeat()
 
 func end_turn():
+	print("ENDED TURN!?")
 	all_in.text = ""
 	toggle_button(main.re_flip_button,true)
 	toggle_button(main.endTurn_button, true)

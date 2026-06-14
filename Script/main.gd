@@ -375,6 +375,7 @@ func battle_start():
 	#Battle Start Passives
 	await player.activate_pre_battle_passives()
 	player.player_turn_count = 0
+	current_turn = Turn.PLAYER
 	start_player_turn()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -459,20 +460,6 @@ func _on_endturn_pressed():
 				show_turn_ui("EXTRA TURN")
 				player.extra_turn()
 				player.has_extra_turn = false
-		else:
-			await player.end_turn()
-			turn_calculation_box.exit()
-			defeat = await check_defeat()
-			if defeat == null:
-				await get_tree().create_timer(1.0).timeout
-				if !player.has_extra_turn:
-					start_enemy_turn()
-					player.extra_turn_penalty = 1
-				else:
-					sound_manager.play_sound(EXTRA_TURN)
-					show_turn_ui("EXTRA TURN")
-					player.extra_turn()
-					player.has_extra_turn = false
 
 func show_passive_notification(text: String, duration: float = 1.5) -> void:
 	var notif = PASSIVE_SCENE.instantiate()

@@ -35,6 +35,8 @@ const PASSIVE_BAR_ICON = preload("res://Scene/Passive_Bar_Icon.tscn")
 @onready var drowse_effect: TextureRect = $"../Drowse Effect"
 @onready var dazzled_effect: TextureRect = $"../Dazzled Effect"
 @onready var dazzled_light: PointLight2D = $"../Dazzled Effect/Dazzled Light"
+@onready var tally_effect: TextureRect = $"../Tally Effect"
+@onready var tally_flip_count: Label = $"../Tally Effect/Tally Flip Count"
 
 
 const COIN = preload("uid://ddet242jm5v23")
@@ -114,6 +116,8 @@ var gold_flip_rate = 0.05: #Chance to Flip a Gold Coin
 
 #STATUS EFFECTS
 var starstruck = false #Play Dazzled Coins
+var tally = false #Enables Tally Counter
+var tally_counter = 0 #If this reaches zero, automatically end the turn.
 var lock = false #Reserve is Locked
 var slow = false #Re-Flip on each Coin only works 50% at a time.
 var gain = 0: #Coin to be gained next turn
@@ -286,16 +290,16 @@ func reset_stats():
 
 	#INNOVATOR PASSIVES
 
-	has_inflation = false
+	has_inflation = true
 	has_payback = false
-	has_lucky_pair = false
+	has_lucky_pair = true
 	has_value_increase = false
 
 	#SHOOTER PASSIVES
 	has_spare_change = false
 	has_triple_nickel = false
 	has_refund = true
-	has_coin_snipe = false
+	has_coin_snipe = true
 
 	#INVESTOR PASSIVES
 
@@ -321,6 +325,9 @@ func refresh_start_of_battle_stats():
 	lock = false
 	slow = false
 	starstruck = false
+	tally = false
+	tally_effect.visible = false
+	tally_counter = 0
 	has_all_in = false
 	thrifted_attack = 0
 	debted_attack = 0
@@ -440,8 +447,6 @@ func reserve():
 	print("RESERVE")
 	main.sound_manager.play_sound(COIN_FLIP)
 	flip_clicks += 1
-	if current_re_flip != max_re_flip: 
-		toggle_button(main.re_flip_button,false)
 		
 	var state = randi() % 2
 	
@@ -516,11 +521,21 @@ func reserve():
 	print(current_played_coin)
 	if (current_reserve >= max_reserve) or coin == 1:
 		toggle_button(main.reserve_button,true)
-	if coin == 1:
+	if coin == 1 or (current_reserve >= max_reserve and current_played_coin == max_playable_coins):
 		toggle_button(main.flip_button,true)
 	coin_calculation()
+	
 	if main.enemy.coin > 0:
 		main.check_defeat()
+	
+	if tally and main.enemy.coin > 0:
+		if tally_counter > 0:
+			tally_counter -= 1
+			if tally_counter == 0:
+				await get_tree().create_timer(0.1).timeout
+				main.tally_end_turn()
+				tally = false
+				return
 
 func flip():
 	
@@ -560,13 +575,13 @@ func flip():
 			trigger_temp_passive("simple_interest","SIMPLE INTEREST")
 	else:
 		c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
-		if starstruck:
-			var dazzle_chance = randi_range(0,1)
-			if dazzle_chance == 1:
-				c.status = CoinStatus.DAZZLED
 		c.add_to_group("coins")
 	main.sound_manager.play_sound(COIN_FLIP)
 
+	if starstruck:
+		var dazzle_chance = randi_range(0,1)
+		if dazzle_chance == 1:
+			c.status = CoinStatus.DAZZLED
 	#Silver/Gold Flip Rate
 	
 	var upgrade_chance = randf()
@@ -636,6 +651,17 @@ func flip():
 
 	if current_reserve >= max_reserve:
 		toggle_button(main.reserve_button,true)
+	
+	if tally and main.enemy.coin > 0:
+		if tally_counter > 0:
+			tally_counter -= 1
+			if tally_counter == 0:
+				await get_tree().create_timer(0.1).timeout
+				main.tally_end_turn()
+				tally = false
+				return
+		
+		
 
 
 
@@ -717,6 +743,9 @@ func re_flip():
 func start_turn():
 	if lock:
 		max_reserve = 0
+	if tally:
+		show_tally_ui()
+		
 	player_turn_count += 1
 	
 	#Initialize Global Stats
@@ -865,6 +894,8 @@ func start_turn():
 	
 
 func end_turn():
+	if tally:
+		hide_tally_ui()
 	print("ENDED TURN!?")
 	all_in.text = ""
 	toggle_button(main.re_flip_button,true)
@@ -1219,6 +1250,7 @@ func activate_player_turn_end_passives():
 		await get_tree().create_timer(0.6).timeout
 	
 	main.endTurn_button.disabled = true
+	main.re_flip_button.disabled = true
 	if has_refund and current_played_coin == 0 and !has_all_in:
 		main.show_turn_ui("ALL IN")
 		trigger_temp_passive("refund","ALL IN")
@@ -1313,3 +1345,27 @@ func trigger_temp_passive(id: String, text: String):
 	
 	await get_tree().create_timer(1.5).timeout
 	active_temp_ids.erase(id)
+
+
+func show_tally_ui():
+	tally_effect.visible = true
+	main.sound_manager.play_sound(PASSIVE_REFUND)
+	tally_flip_count.text = str(tally_counter)
+	tally_effect.self_modulate = Color("ffffff00")
+	var target_position = tally_effect.global_position.y - 20
+	
+	var tween = create_tween()
+	tween.parallel().tween_property(tally_effect,"self_modulate",Color("e7a900"),0.2)
+	tween.parallel().tween_property(tally_effect, "position:y",target_position,0.2)
+	
+	
+
+func hide_tally_ui():
+	var target_position = tally_effect.global_position.y - 20
+	var tween = create_tween()
+	tween.parallel().tween_property(tally_effect,"self_modulate",Color("ffffff00"),0.2)
+	tween.parallel().tween_property(tally_effect, "position:y",target_position,0.2)
+	await tween.finished
+	tally_effect.global_position.y += 40
+	tally_effect.visible = false
+	

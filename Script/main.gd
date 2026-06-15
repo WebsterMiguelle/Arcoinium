@@ -125,6 +125,7 @@ $"Progression Map/Boss"
 @onready var player_lock: Label = $"Player/Player Lock"
 @onready var player_slow: Label = $"Battle UI/Re-Flip/Player Slow"
 @onready var player_slow_particles: GPUParticles2D = $"Battle UI/Re-Flip/Player Slow Particles"
+
 var slow_color = "#43a563"
 const PLAYER_INFORMATION_DISPLAY = preload("uid://c61s4yrsvak0l")
 var player_info_menu: Node = null
@@ -137,6 +138,11 @@ var player_info_menu: Node = null
 @onready var enemy_thrift_particles: GPUParticles2D = $"Enemy/Enemy Thrift Particles"
 @onready var enemy_gain_particles: GPUParticles2D = $"Enemy/Enemy Gain Particles"
 @onready var dazzled_effect: TextureRect = $"Player/Dazzled Effect"
+@onready var player_tally: TextureRect = $"Player/Player Tally"
+@onready var tally_effect: TextureRect = $"Tally Effect"
+@onready var tally_flip_count: Label = $"Tally Effect/Tally Flip Count"
+@onready var player_tally_count: Label = $"Player/Player Tally/Player Tally Count"
+
 
 @onready var player_spend_particles: GPUParticles2D = $"Battle UI/Player Spend Particles"
 @onready var player_spend: Label = $"Battle UI/Player Spend"
@@ -386,7 +392,7 @@ func _process(delta: float) -> void:
 	update_enemy_coin()
 	update_player_stacks()
 	update_enemy_stacks()
-	update_player_reflip_and_reserve()
+	update_player_status()
 
 func show_turn_ui(text):
 	sound_manager.play_sound(TURN_REVEAL)
@@ -449,6 +455,23 @@ func start_enemy_turn():
 
 func _on_endturn_pressed():
 	if enemy.coin > 0 and player.coin > 0:
+		await player.end_turn()
+		turn_calculation_box.exit()
+		var defeat = await check_defeat()
+		if defeat == null:
+			await get_tree().create_timer(1.0).timeout
+			if !player.has_extra_turn:
+				start_enemy_turn()
+				player.extra_turn_penalty = 1
+			else:
+				sound_manager.play_sound(EXTRA_TURN)
+				show_turn_ui("EXTRA TURN")
+				player.extra_turn()
+				player.has_extra_turn = false
+
+func tally_end_turn():
+	if enemy.coin > 0 and player.coin > 0:
+		show_turn_ui("TURN ENDED")
 		await player.end_turn()
 		turn_calculation_box.exit()
 		var defeat = await check_defeat()
@@ -780,7 +803,7 @@ func reserve_left_over_coin():
 func update_player_coin():
 	player_health_label.text = "Coins: " + str(player.coin)
 	
-func update_player_reflip_and_reserve():
+func update_player_status():
 	if player.starstruck:
 		dazzled_effect.visible = true
 	else:
@@ -806,6 +829,7 @@ func update_enemy_coin():
 	enemy_health_label.text = "Coins: " + str(enemy.coin)
 	
 func update_player_stacks():
+	player_tally.visible = false
 	player_debt_particles.emitting = false
 	player_gain_particles.emitting = false
 	player_thrift_particles.emitting = false
@@ -826,6 +850,10 @@ func update_player_stacks():
 	if player.spend != 0:
 		player_spend.text = str(player.spend)
 		player_spend_particles.emitting = true
+	if player.tally_counter != 0:
+		player_tally_count.text = str(player.tally_counter)
+		tally_flip_count.text = str(player.tally_counter)
+		player_tally.visible = true
 	
 func update_enemy_stacks():
 	enemy_debt_particles.emitting = false

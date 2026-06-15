@@ -53,8 +53,12 @@ func setup(val, typ, ent, pos):
 		"SPEND":
 			temp_label.add_theme_color_override("font_color", Color(spend_color))
 		"VOID":
-			temp_label.add_theme_color_override("font_color", Color(Color.GHOST_WHITE))
+			temp_label.add_theme_color_override("font_color", Color(Color.BLACK))
 		"DROWSE":
 			temp_label.add_theme_color_override("font_color", Color.LIGHT_STEEL_BLUE)
+		"STARSTRUCK":
+			temp_label.add_theme_color_override("font_color", Color.DEEP_PINK)
+		"TALLY":
+			temp_label.add_theme_color_override("font_color", Color.CORAL)
 		"IMMUNE":
 			temp_label.add_theme_color_override("font_color", Color(Color.SLATE_GRAY))

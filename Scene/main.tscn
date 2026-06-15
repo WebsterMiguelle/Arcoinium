@@ -48,6 +48,7 @@
 [ext_resource type="Texture2D" uid="uid://bmkxblxwtg47d" path="res://Assets/Rug.png" id="38_f043x"]
 [ext_resource type="Texture2D" uid="uid://4aebywoijoue" path="res://Assets/mapIconShop.png" id="39_tcekk"]
 [ext_resource type="Texture2D" uid="uid://fl7tmytwihia" path="res://Assets/mapIconBoss.png" id="40_1bveb"]
+[ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="49_5qrjd"]
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]
 
@@ -680,6 +681,15 @@ gradient = SubResource("Gradient_5qrjd")
 fill = 1
 fill_from = Vector2(0.50427353, 0.48034188)
 
+[sub_resource type="Gradient" id="Gradient_5rsq1"]
+offsets = PackedFloat32Array(0, 0.14573991, 0.63901347, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.08744395, 0.08744395, 0.08744395, 0.91255605, 0, 0, 0, 0.030899167, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4lqwv"]
+gradient = SubResource("Gradient_5rsq1")
+fill = 1
+fill_from = Vector2(0.51111114, 0.48376068)
+
 [node name="Main" type="TextureRect" unique_id=975709238]
 anchors_preset = 15
 anchor_right = 1.0
@@ -877,7 +887,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Turn Calculation Box" type="TextureRect" parent="Battle UI" unique_id=1091749495]
-visible = false
 offset_left = -3.0
 offset_top = 212.0
 offset_right = 311.0
@@ -1024,7 +1033,7 @@ offset_bottom = 137.97021
 position = Vector2(58.67501, 59.03)
 scale = Vector2(1.9374993, 1.9375)
 sprite_frames = SubResource("SpriteFrames_8bkap")
-animation = &"ARISTOCRAT"
+animation = &"THRIFTER"
 
 [node name="EnemyFrame" type="TextureRect" parent="Enemy" unique_id=1466787434]
 offset_left = 998.0
@@ -1228,6 +1237,31 @@ offset_right = 149.0
 offset_bottom = 652.0
 toggle_mode = true
 action_mode = 0
+
+[node name="Player Tally" type="TextureRect" parent="Player" unique_id=1191166538]
+self_modulate = Color(0.9047755, 0.66126776, 3.85046e-07, 1)
+top_level = true
+offset_left = 162.0
+offset_top = 501.0
+offset_right = 210.0
+offset_bottom = 549.0
+texture = ExtResource("49_5qrjd")
+
+[node name="Player Tally Count" type="Label" parent="Player/Player Tally" unique_id=1049271658]
+top_level = true
+layout_mode = 0
+offset_left = 159.0
+offset_top = 507.0
+offset_right = 216.0
+offset_bottom = 545.0
+theme_override_colors/font_color = Color(1, 1, 0.62352943, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 26
+text = "7"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Game Over UI" type="CanvasLayer" parent="." unique_id=994626979]
 visible = false
@@ -1715,6 +1749,76 @@ scale = Vector2(17.671875, 2.2031252)
 color = Color(0.91764706, 0.7372549, 1, 0)
 energy = 3.28
 texture = SubResource("GradientTexture2D_5rsq1")
+
+[node name="Tally Effect" type="TextureRect" parent="." unique_id=1482077241]
+visible = false
+self_modulate = Color(0.9047755, 0.66126776, 3.85046e-07, 1)
+top_level = true
+layout_mode = 0
+offset_left = 859.0
+offset_top = 253.0
+offset_right = 1032.0
+offset_bottom = 424.0
+texture = ExtResource("49_5qrjd")
+
+[node name="Label" type="Label" parent="Tally Effect" unique_id=1889950644]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 10.0
+offset_right = 147.0
+offset_bottom = 55.0
+theme_override_colors/font_color = Color(0.9999997, 0.8281812, 0.28550413, 1)
+theme_override_colors/font_outline_color = Color(0.20025441, 0.08449874, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 30
+text = "TALLY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Text" type="Label" parent="Tally Effect" unique_id=642004469]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 50.0
+offset_right = 171.0
+offset_bottom = 157.0
+theme_override_colors/font_color = Color(0.9999998, 0.92214483, 0.8525816, 1)
+theme_override_colors/font_outline_color = Color(0.20025441, 0.08449874, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("36_1bveb")
+theme_override_font_sizes/font_size = 22
+text = "Your Turn Ends After:
+
+
+
+Flips"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tally Flip Count" type="Label" parent="Tally Effect" unique_id=1679512594]
+layout_mode = 0
+offset_left = 47.0
+offset_top = 85.0
+offset_right = 128.0
+offset_bottom = 130.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.1815921, 0.08803221, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 0
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 39
+text = "7"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Tally Effect" unique_id=9012651]
+show_behind_parent = true
+layout_mode = 0
+offset_left = -64.1167
+offset_top = -41.0
+offset_right = 246.24945
+offset_bottom = 233.0
+texture = SubResource("GradientTexture2D_4lqwv")
 
 [connection signal="pressed" from="Battle UI/Reserve Button" to="." method="_on_reserve_button_pressed"]
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]

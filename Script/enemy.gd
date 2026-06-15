@@ -4,7 +4,8 @@ extends Node
 enum CoinStatus{
 	NONE,
 	SHINED,
-	VOIDED
+	VOIDED,
+	DAZZLED
 }
 
 var main
@@ -235,7 +236,7 @@ func setup(m,enemy):
 				gold_flip_rate = 0.0
 				bounty = 25
 			else:
-				max_coin = 200
+				max_coin = 999
 				coin = 40
 				max_playable_coins = 8
 				silver_flip_rate = 0.0
@@ -410,6 +411,7 @@ func flip():
 		state = 0
 	if type == Enemy.MOON_CASTER and main.player.moon_count >= 9:
 		state = 1
+	
 
 	take_damage(1)
 	if spend > 0:
@@ -429,7 +431,10 @@ func flip():
 	@warning_ignore("shadowed_variable")
 	var coin = COIN.instantiate()
 	coin.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
-	
+	if type == Enemy.TWILIGHT_SAGE:
+		var shined_chance = randi_range(0,4);
+		if shined_chance == 1:
+			coin.status = CoinStatus.SHINED
 	#Silver/Gold Flip Rate
 	
 	var upgrade_chance = randf()
@@ -454,6 +459,7 @@ func enemy_coin_calculation():
 	var total_spend = 0
 	var sun_count = 0
 	var moon_count = 0
+	var total_tally = 0
 	var activate_lock = false
 	var activate_slow = false
 	var activate_starstruck = false
@@ -522,7 +528,7 @@ func enemy_coin_calculation():
 				else:
 					total_gain += coin.base_value / 2
 					moon_count +=1
-			if greed and current_played_coin == 16:
+			if greed:
 				activate_lock = true
 		Enemy.THRIFTER:
 			var is_left = true # true - Left Coin, false - Right Coin
@@ -540,17 +546,11 @@ func enemy_coin_calculation():
 				if left_coin != null and right_coin != null:
 					if left_coin.state == 1 and right_coin.state == 1:
 						total_gain += (left_coin.base_value / 2) + (right_coin.base_value / 2)
+						if greed:
+							total_tally += 4
 					elif left_coin.state == 0 and right_coin.state == 0:
 						total_damage += (left_coin.base_value) + (right_coin.base_value)
-					else:
-						if greed:
-							total_thrift += 2
-						else:
-							total_thrift += 3
-					if greed and total_thrift <= 6:
-						activate_lock = true
-					else:
-						activate_lock = false
+						total_thrift += 3
 					left_coin = null
 					right_coin = null
 				else:
@@ -667,6 +667,8 @@ func enemy_coin_calculation():
 			text += "\nTHRIFT: " + str(total_thrift)
 		if total_spend != 0:
 			text += "\nSPEND: " + str(total_spend)
+		if total_tally != 0:
+			text += "\nTALLY: " + str(total_tally)
 		if activate_lock:
 			text += "\nCan VOID"
 		if activate_slow:
@@ -678,7 +680,7 @@ func enemy_coin_calculation():
 	if text != "":
 		sun_moon_count.text = "𖤓 " + str(sun_count) + " ☾ " + str(moon_count)
 		main.turn_calculation_box.entrance(true)
-	return [total_damage,total_gain,total_debt,total_thrift,total_spend,activate_lock,activate_slow,activate_starstruck]
+	return [total_damage,total_gain,total_debt,total_thrift,total_spend,activate_lock,activate_slow,activate_starstruck, total_tally]
 
 func start_enemy_turn():
 	toggle_button(main.flip_button,true)
@@ -687,10 +689,7 @@ func start_enemy_turn():
 
 
 	if has_fair_trade:
-		if greed and main.player.previous_player_flips == 16:
-			trigger_enemy_passive("Playing " + str(main.player.previous_player_flips) + " Coins will also apply VOID.", 2.0)
-		else:
-			trigger_enemy_passive("The Trader will play " + str(main.player.previous_player_flips) + " Coins.", 2.0)
+		trigger_enemy_passive("The Trader will play " + str(main.player.previous_player_flips) + " Coins.", 2.0)
 		max_playable_coins = main.player.previous_player_flips
 		main.player.previous_player_flips = 0
 
@@ -799,11 +798,12 @@ func end_enemy_turn():
 	var turn_lock = calculations[5]
 	var turn_slow = calculations[6]
 	var turn_starstruck = calculations[7]
+	var turn_tally = calculations[8]
 	
 	# Check if Enemy is already dead
 	if coin <= 0:
-		turn_damage = 0; turn_gain = 0; turn_debt = 0; turn_thrift = 0
-		turn_spend = 0; turn_lock = false; turn_slow = false
+		turn_damage = 0; turn_gain = 0; turn_debt = 0; turn_thrift = 0; turn_tally = 0
+		turn_spend = 0; turn_lock = false; turn_slow = false; turn_starstruck = false
 		main.turn_calculation.text = ""
 
 
@@ -831,7 +831,7 @@ func end_enemy_turn():
 
 	particle_manager.despawn_emitting_particles()
 	
-	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0 or turn_lock or turn_slow:
+	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0 or turn_lock or turn_slow or turn_starstruck or turn_tally > 0:
 		main.turn_calculation_box.exit()
 	elif coin <= 0:
 		# I combined your double-exit check here so the box doesn't glitch by trying to close twice!
@@ -864,7 +864,7 @@ func end_enemy_turn():
 
 	# -- The Pause --
 	# Wait for the attack runes to travel across the screen
-	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0 or turn_lock or turn_slow:
+	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0 or turn_lock or turn_slow or turn_tally > 0 or turn_starstruck:
 		await get_tree().create_timer(1.0).timeout
 
 	# 1. Player Passive Income Check
@@ -917,6 +917,10 @@ func end_enemy_turn():
 		main.sound_manager.play_sound(RESERVE_LOCK)
 		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
 		create_floating_label("", "VOID", "PLAYER")
+	if turn_tally: 
+		main.sound_manager.play_sound(PASSIVE_PAYDOWN)
+		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
+		create_floating_label(turn_tally, "TALLY", "PLAYER")
 	if turn_slow: 
 		main.sound_manager.play_sound(SLOW)
 		main.sound_manager.play_sound(PASSIVE_PAYDOWN)
@@ -951,6 +955,9 @@ func end_enemy_turn():
 				c.status = CoinStatus.VOIDED
 				c.refresh_sprite()
 	if turn_slow: main.player.slow = true
+	if turn_tally: 
+		main.player.tally = true
+		main.player.tally_counter += turn_tally
 	if turn_starstruck: main.player.starstruck = true
 	# 4. Player 'Pay Down' Passive Check
 	var pay_down_killed = false

@@ -136,6 +136,7 @@ var player_info_menu: Node = null
 @onready var player_thrift_particles: GPUParticles2D = $"Player/Player Thrift Particles"
 @onready var enemy_thrift_particles: GPUParticles2D = $"Enemy/Enemy Thrift Particles"
 @onready var enemy_gain_particles: GPUParticles2D = $"Enemy/Enemy Gain Particles"
+@onready var dazzled_effect: TextureRect = $"Player/Dazzled Effect"
 
 @onready var player_spend_particles: GPUParticles2D = $"Battle UI/Player Spend Particles"
 @onready var player_spend: Label = $"Battle UI/Player Spend"
@@ -780,6 +781,10 @@ func update_player_coin():
 	player_health_label.text = "Coins: " + str(player.coin)
 	
 func update_player_reflip_and_reserve():
+	if player.starstruck:
+		dazzled_effect.visible = true
+	else:
+		dazzled_effect.visible = false
 	if player.slow:
 		player_slow_particles.emitting = true
 		player_slow.visible = true

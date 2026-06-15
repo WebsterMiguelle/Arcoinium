@@ -1,5 +1,8 @@
 extends Node2D
 @onready var shined: AnimatedSprite2D = $SHINED
+@onready var voided: AnimatedSprite2D = $VOIDED
+@onready var dazzled: AnimatedSprite2D = $DAZZLED
+
 enum CoinType{
 	COPPER,
 	SILVER,
@@ -8,7 +11,9 @@ enum CoinType{
 
 enum CoinStatus{
 	NONE,
-	SHINED
+	SHINED,
+	VOIDED,
+	DAZZLED
 }
 
 #COIN VARIABLES
@@ -71,6 +76,7 @@ func copy_coin(coin):
 	state = coin.state
 	status = coin.status
 
+
 func refresh_sprite():
 	var appear_tween = create_tween()
 	
@@ -81,25 +87,50 @@ func refresh_sprite():
 		shined.visible = true
 	else:
 		shined.visible = false
+
+	if status == CoinStatus.VOIDED:
+		voided.visible = true
+	else:
+		voided.visible = false
+		
+	if status == CoinStatus.DAZZLED:
+		dazzled.visible = true
+	else:
+		dazzled.visible = false
+
 	match type:
 		CoinType.COPPER:
 			base_value = 2
 			animated_sprite_2d.play("copper_to_head" if state == 0 else "copper_to_tail")
-			shined.play("copper_to_head" if state == 0 else "copper_to_tail")
+			voided.play("copper_to_head" if state == 0 else "copper_to_tail")
+			voided.play("copper_to_head" if state == 0 else "copper_to_tail")
+			dazzled.play("copper_to_head" if state == 0 else "copper_to_tail")
 			await animated_sprite_2d.animation_finished
 			animated_sprite_2d.play("copper_head" if state == 0 else "copper_tail")
 			shined.play("copper_head" if state == 0 else "copper_tail")
+			voided.play("copper_head" if state == 0 else "copper_tail")
+			dazzled.play("copper_head" if state == 0 else "copper_tail")
 		CoinType.SILVER:
 			base_value = 4
 			animated_sprite_2d.play("silver_to_head" if state == 0 else "silver_to_tail")
 			shined.play("silver_to_head" if state == 0 else "silver_to_tail")
+			voided.play("copper_to_head" if state == 0 else "copper_to_tail")
+			dazzled.play("silver_to_head" if state == 0 else "silver_to_tail")
 			await animated_sprite_2d.animation_finished
+			
 			animated_sprite_2d.play("silver_head" if state == 0 else "silver_tail")
 			shined.play("silver_head" if state == 0 else "silver_tail")
+			voided.play("copper_head" if state == 0 else "copper_tail")
+			dazzled.play("silver_head" if state == 0 else "silver_tail")
+			
 		CoinType.GOLD:
 			base_value = 6
 			animated_sprite_2d.play("gold_to_head" if state == 0 else "gold_to_tail")
 			shined.play("gold_to_head" if state == 0 else "gold_to_tail")
+			voided.play("copper_to_head" if state == 0 else "copper_to_tail")
+			dazzled.play("gold_to_head" if state == 0 else "gold_to_tail")
 			await animated_sprite_2d.animation_finished
 			animated_sprite_2d.play("gold_head" if state == 0 else "gold_tail")
 			shined.play("gold_head" if state == 0 else "gold_tail")
+			voided.play("copper_head" if state == 0 else "copper_tail")
+			dazzled.play("gold_head" if state == 0 else "gold_tail")

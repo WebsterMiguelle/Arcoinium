@@ -1,6 +1,12 @@
 #Enemy
 extends Node
 
+enum CoinStatus{
+	NONE,
+	SHINED,
+	VOIDED
+}
+
 var main
 const FLOATING_LABEL = preload("uid://dwf6g2wuj1oe3")
 @onready var camera_2d: Camera2D = $"../Camera2D"
@@ -11,6 +17,15 @@ const FLOATING_LABEL = preload("uid://dwf6g2wuj1oe3")
 const SPEND_DAMAGE_PARTICLE = preload("uid://dmgnoylltbfre")
 const THRIFT_DAMAGE_PARTICLE = preload("uid://bvrulyxw02bom")
 const DEBT_DAMAGE_PARTICLE = preload("uid://1g21u656k60k")
+
+
+@onready var drowse_effect: TextureRect = $"../Drowse Effect"
+@onready var dazzled_effect: TextureRect = $"../Dazzled Effect"
+@onready var dazzled_light: PointLight2D = $"../Dazzled Effect/Dazzled Light"
+
+var drowse_color = Color("#0059a89f")
+var dazzle_color = Color("#fb16ff24")
+@onready var player_reserve_rug: TextureRect = $"../Player/Player Reserve Rug"
 
 const COIN = preload("uid://ddet242jm5v23")
 
@@ -52,6 +67,7 @@ const DEBT_EFFECT_PARTICLE = preload("uid://c52tpyupg2ynl")
 const SPEND_EFFECT_PARTICLE = preload("uid://m3n67qiuvr7i")
 const SPEND_EXPLOSION_PARTICLE = preload("uid://bgfgq2kw3njao")
 const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
+const VOID_ADDED_PARTICLE = preload("uid://dwpakh5cjl3k5")
 
 enum Enemy{
 	MAGE,
@@ -440,6 +456,7 @@ func enemy_coin_calculation():
 	var moon_count = 0
 	var activate_lock = false
 	var activate_slow = false
+	var activate_starstruck = false
 	@warning_ignore("confusable_local_usage", "shadowed_variable")
 	var type = type
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
@@ -547,7 +564,7 @@ func enemy_coin_calculation():
 				else:
 					sun_count +=1
 				if greed and current_played_coin == 16:
-					activate_slow = true
+					activate_starstruck = true
 		Enemy.SUN_CASTER:
 			var is_left = true # true - Left Coin, false - Right Coin
 			var left_coin
@@ -651,15 +668,17 @@ func enemy_coin_calculation():
 		if total_spend != 0:
 			text += "\nSPEND: " + str(total_spend)
 		if activate_lock:
-			text += "\nCan LOCK"
+			text += "\nCan VOID"
 		if activate_slow:
-			text += "\nCan SLOW"
+			text += "\nCan DROWSE"
+		if activate_starstruck:
+			text += "\nSTARSTRUCK!"
 		main.turn_calculation.text = text
 		main.turn_calculation.add_theme_color_override("font_color", Color.WHITE)
 	if text != "":
 		sun_moon_count.text = "𖤓 " + str(sun_count) + " ☾ " + str(moon_count)
 		main.turn_calculation_box.entrance(true)
-	return [total_damage,total_gain,total_debt,total_thrift,total_spend,activate_lock,activate_slow]
+	return [total_damage,total_gain,total_debt,total_thrift,total_spend,activate_lock,activate_slow,activate_starstruck]
 
 func start_enemy_turn():
 	toggle_button(main.flip_button,true)
@@ -669,7 +688,7 @@ func start_enemy_turn():
 
 	if has_fair_trade:
 		if greed and main.player.previous_player_flips == 16:
-			trigger_enemy_passive("Playing " + str(main.player.previous_player_flips) + " Coins will also apply LOCK.", 2.0)
+			trigger_enemy_passive("Playing " + str(main.player.previous_player_flips) + " Coins will also apply VOID.", 2.0)
 		else:
 			trigger_enemy_passive("The Trader will play " + str(main.player.previous_player_flips) + " Coins.", 2.0)
 		max_playable_coins = main.player.previous_player_flips
@@ -779,6 +798,7 @@ func end_enemy_turn():
 	var turn_spend = calculations[4]
 	var turn_lock = calculations[5]
 	var turn_slow = calculations[6]
+	var turn_starstruck = calculations[7]
 	
 	# Check if Enemy is already dead
 	if coin <= 0:
@@ -851,11 +871,13 @@ func end_enemy_turn():
 	var converted_income = 0
 	if turn_damage > 0:
 		if main.player.has_passive_income:
-			main.player.trigger_temp_passive("passive_income","PASSIVE INCOME")
-			main.sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
 			converted_income = turn_damage / 10
-			for i in (converted_income):
-				main.player.reserve()
+			if converted_income > 0:
+				main.player.trigger_temp_passive("passive_income","PASSIVE INCOME")
+				main.sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
+				for i in (converted_income):
+					main.player.coin += 1
+					main.player.reserve()
 		main.player.take_damage(turn_damage)
 	
 	# -- Final Hit Impacts & Floating Labels (The runes have arrived!) --
@@ -894,15 +916,22 @@ func end_enemy_turn():
 	if turn_lock: 
 		main.sound_manager.play_sound(RESERVE_LOCK)
 		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
-		create_floating_label("", "LOCK", "PLAYER")
+		create_floating_label("", "VOID", "PLAYER")
 	if turn_slow: 
 		main.sound_manager.play_sound(SLOW)
 		main.sound_manager.play_sound(PASSIVE_PAYDOWN)
-		create_floating_label("", "SLOW", "PLAYER")
+		create_floating_label("", "DROWSE", "PLAYER")
 		var slow_motion = create_tween()
+		var drowse_tween = create_tween()
+		drowse_tween.tween_property(drowse_effect,"self_modulate", drowse_color,1.0)
 		slow_motion.tween_property(Engine, "time_scale", 0.1, 0)
 		slow_motion.tween_property(Engine, "time_scale", 1, 0.5)
-	
+	if turn_starstruck:
+		main.sound_manager.play_sound(PASSIVE_PAYDOWN)
+		create_floating_label("", "STARSTRUCK", "PLAYER")
+		var dazzled_tween = create_tween()
+		dazzled_tween.parallel().tween_property(dazzled_effect,"self_modulate", dazzle_color,0.2)
+		dazzled_tween.parallel().tween_property(dazzled_light,"color", Color("#eabcff"),0.2)
 	camera_2d.add_trauma(shake_power)
 	if turn_damage >= 30:
 		main.sound_manager.play_sound(CRITICAL)
@@ -913,9 +942,16 @@ func end_enemy_turn():
 	if turn_debt != 0: main.player.debt += turn_debt
 	if turn_thrift != 0: main.player.thrift += turn_thrift
 	if turn_spend != 0: main.player.spend += turn_spend
-	if turn_lock: main.player.lock = true
+	if turn_lock: 
+		main.player.lock = true
+		main.particle_manager.spawn_particle(VOID_ADDED_PARTICLE,player_reserve_rug.global_position)
+		var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
+		for c in reserved_coins:
+			if c.status == CoinStatus.NONE:
+				c.status = CoinStatus.VOIDED
+				c.refresh_sprite()
 	if turn_slow: main.player.slow = true
-	
+	if turn_starstruck: main.player.starstruck = true
 	# 4. Player 'Pay Down' Passive Check
 	var pay_down_killed = false
 	var pay_down_debt_added = false

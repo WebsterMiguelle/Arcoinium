@@ -2,7 +2,9 @@ extends Node2D
 
 enum CoinStatus{
 	NONE,
-	SHINED
+	SHINED,
+	VOIDED,
+	DAZZLED
 }
 
 enum Enemy{
@@ -30,6 +32,10 @@ var active_temp_ids: Dictionary = {}
 
 #SCENES
 const PASSIVE_BAR_ICON = preload("res://Scene/Passive_Bar_Icon.tscn")
+@onready var drowse_effect: TextureRect = $"../Drowse Effect"
+@onready var dazzled_effect: TextureRect = $"../Dazzled Effect"
+@onready var dazzled_light: PointLight2D = $"../Dazzled Effect/Dazzled Light"
+
 
 const COIN = preload("uid://ddet242jm5v23")
 var main
@@ -78,6 +84,7 @@ const GAIN_EFFECT_PARTICLE = preload("uid://c5py6ekby1mnm")
 const DEBT_EFFECT_PARTICLE = preload("uid://c52tpyupg2ynl")
 const SPEND_EFFECT_PARTICLE = preload("uid://m3n67qiuvr7i")
 const SPEND_EXPLOSION_PARTICLE = preload("uid://bgfgq2kw3njao")
+const VOID_REMOVED_PARTICLE = preload("uid://b360j7dt7jml1")
 
 #PLAYER STATS
 var greed = false
@@ -106,6 +113,7 @@ var gold_flip_rate = 0.05: #Chance to Flip a Gold Coin
 		gold_flip_rate = clamp(value,0.0,100.0) 
 
 #STATUS EFFECTS
+var starstruck = false #Play Dazzled Coins
 var lock = false #Reserve is Locked
 var slow = false #Re-Flip on each Coin only works 50% at a time.
 var gain = 0: #Coin to be gained next turn
@@ -286,14 +294,14 @@ func reset_stats():
 	#SHOOTER PASSIVES
 	has_spare_change = false
 	has_triple_nickel = false
-	has_refund = false
+	has_refund = true
 	has_coin_snipe = false
 
 	#INVESTOR PASSIVES
 
 	has_active_income = false
 	has_pocket_money = false
-	has_passive_income = false
+	has_passive_income = true
 	has_simple_interest = false
 
 	#DEBTOR PASSIVES
@@ -312,6 +320,7 @@ func refresh_start_of_battle_stats():
 	initial_max_reserve = max_reserve
 	lock = false
 	slow = false
+	starstruck = false
 	has_all_in = false
 	thrifted_attack = 0
 	debted_attack = 0
@@ -354,6 +363,7 @@ func coin_calculation():
 	
 	var shined_sun_multiplier = 1
 	var shined_moon_multiplier = 1
+	
 	sun_count = 0
 	moon_count = 0
 	var coins = get_tree().get_nodes_in_group("coins")
@@ -372,6 +382,8 @@ func coin_calculation():
 			moon_count +=1
 			if coin.status == CoinStatus.SHINED:
 				shined_moon_multiplier += 0.1
+		if coin.status == CoinStatus.VOIDED:
+			coin.base_value = 0
 		if left_coin != null and right_coin != null and left_coin.reserved == false and right_coin.reserved == false:
 			# 1. HEAD-HEAD PAIR
 			if left_coin.state == 0 and right_coin.state == 0:
@@ -467,7 +479,6 @@ func reserve():
 		c.upgrade_to_gold()
 	
 	if has_lucky_pair and (flip_clicks == 7 or flip_clicks == 8):
-		c.upgrade()
 		trigger_temp_passive("lucky_pair","LUCKY PAIR")
 		c.status = CoinStatus.SHINED
 		
@@ -523,7 +534,7 @@ func flip():
 	
 	if greed and has_sunlit_curse: state = 0
 	if greed and has_midnight_curse: state = 1
-
+	
 	if (flip_clicks == 1 or flip_clicks == 3) and has_solar_coin:
 		state = 0;
 		trigger_temp_passive("solar_coin","SOLAR COIN")
@@ -549,6 +560,10 @@ func flip():
 			trigger_temp_passive("simple_interest","SIMPLE INTEREST")
 	else:
 		c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
+		if starstruck:
+			var dazzle_chance = randi_range(0,1)
+			if dazzle_chance == 1:
+				c.status = CoinStatus.DAZZLED
 		c.add_to_group("coins")
 	main.sound_manager.play_sound(COIN_FLIP)
 
@@ -564,7 +579,6 @@ func flip():
 		c.upgrade_to_gold()
 	
 	if has_lucky_pair and (flip_clicks == 7 or flip_clicks == 8):
-		c.upgrade()
 		trigger_temp_passive("lucky_pair","LUCKY PAIR")
 		c.status = CoinStatus.SHINED
 		
@@ -644,6 +658,9 @@ func re_flip():
 	var index = 0
 	var slow_chance
 	for c in coins:
+		if c.status == CoinStatus.VOIDED:
+			c.status = CoinStatus.NONE
+			main.particle_manager.spawn_particle(VOID_REMOVED_PARTICLE,c.global_position)
 		if !c.reserved:
 			index += 1
 		if index <= 2 and has_advanced_planning:
@@ -884,7 +901,15 @@ func end_turn():
 		max_reserve = initial_max_reserve
 		var coins = get_tree().get_nodes_in_group("reserved coins")
 		current_reserve = coins.size()
-	if slow: slow = false
+	if slow: 
+		slow = false
+		var drowse_tween = create_tween()
+		drowse_tween.tween_property(drowse_effect,"self_modulate", Color("#0059a800"),0.6)
+	if starstruck:
+		starstruck = false
+		var dazzled_tween = create_tween()
+		dazzled_tween.parallel().tween_property(dazzled_effect,"self_modulate", Color("#0059a800"),0.6)
+		dazzled_tween.parallel().tween_property(dazzled_light,"color", Color("#0059a800"),0.6)
 	gain += turn_gain
 	max_playable_coins = initial_max_playable_coins
 	
@@ -1176,6 +1201,23 @@ func activate_player_turn_start_passives():
 
 
 func activate_player_turn_end_passives():
+	
+	if starstruck:
+		var coins = get_tree().get_nodes_in_group("coins")
+		for coin in coins:
+			if coin.status == CoinStatus.DAZZLED:
+				if coin.state == 0:
+					coin.state = 1
+				else:
+					coin.state = 0
+				coin.status = CoinStatus.NONE
+				coin.refresh_sprite()
+				main.sound_manager.play_sound(COIN_FLIP)
+				coin_calculation()
+				await get_tree().create_timer(0.1).timeout
+		coin_calculation()
+		await get_tree().create_timer(0.6).timeout
+	
 	main.endTurn_button.disabled = true
 	if has_refund and current_played_coin == 0 and !has_all_in:
 		main.show_turn_ui("ALL IN")

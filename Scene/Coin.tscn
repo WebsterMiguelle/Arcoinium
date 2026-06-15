@@ -287,6 +287,37 @@ fill = 1
 fill_from = Vector2(0.4940171, 0.52136755)
 fill_to = Vector2(0.83931625, 0.25128207)
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hncfd"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(-1.485, 0, 0)
+emission_shape = 1
+emission_sphere_radius = 7.17
+spread = 0.0
+initial_velocity_max = 1.0
+gravity = Vector3(20, 0, 0)
+scale_min = 0.0
+scale_max = 2.0
+
+[sub_resource type="Curve" id="Curve_hncfd"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5174129, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_36o68"]
+curve = SubResource("Curve_hncfd")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_yekfk"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(-1.485, 0, 0)
+emission_shape = 1
+emission_sphere_radius = 7.17
+spread = 0.0
+initial_velocity_max = 1.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_max = 7.62
+scale_curve = SubResource("CurveTexture_36o68")
+color = Color(0.99607843, 0.6784314, 1, 1)
+
 [node name="Coin" type="Node2D" unique_id=1898979683]
 script = ExtResource("1_byqvs")
 
@@ -312,3 +343,39 @@ color = Color(0.9999996, 0.92378306, 0.7951896, 1)
 energy = 3.16
 blend_mode = 2
 texture = SubResource("GradientTexture2D_36o68")
+
+[node name="VOIDED" type="AnimatedSprite2D" parent="." unique_id=1714397541]
+self_modulate = Color(0, 0, 0, 1)
+texture_filter = 1
+position = Vector2(40.000004, -3.5762787e-07)
+scale = Vector2(5, 5)
+sprite_frames = SubResource("SpriteFrames_hncfd")
+animation = &"copper_head"
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="VOIDED" unique_id=570306732]
+amount = 32
+lifetime = 1.2
+process_material = SubResource("ParticleProcessMaterial_hncfd")
+
+[node name="DAZZLED" type="AnimatedSprite2D" parent="." unique_id=844248671]
+modulate = Color(0.7355533, 0.7290752, 1, 1)
+self_modulate = Color(0.99999994, 0.8368822, 0.9705754, 1)
+texture_filter = 1
+position = Vector2(40.000004, -3.5762787e-07)
+scale = Vector2(5, 5)
+sprite_frames = SubResource("SpriteFrames_hncfd")
+animation = &"gold_head"
+
+[node name="PointLight2D" type="PointLight2D" parent="DAZZLED" unique_id=491070134]
+position = Vector2(0.20000029, 4.7683716e-07)
+scale = Vector2(0.25, 0.24999996)
+color = Color(0.9872803, 0.75462484, 1, 1)
+energy = 2.25
+blend_mode = 2
+texture = SubResource("GradientTexture2D_36o68")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="DAZZLED" unique_id=1242080159]
+position = Vector2(1.3999991, 7.152557e-08)
+amount = 16
+lifetime = 0.33
+process_material = SubResource("ParticleProcessMaterial_yekfk")

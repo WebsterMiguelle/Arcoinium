@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://brn3ihcjo08pk" path="res://Assets/Coins/sun_to_moon_coin-Sheet.png" id="2_byqvs"]
 [ext_resource type="Texture2D" uid="uid://b26gbj0tgcnn" path="res://Assets/16bitcoins.png" id="2_jea4o"]
 [ext_resource type="Script" uid="uid://bce80haxrb33g" path="res://Scene/shined.gd" id="4_hncfd"]
+[ext_resource type="Texture2D" uid="uid://cna4umj0n4yt" path="res://Assets/Blocking coin deck1.png" id="5_36o68"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hncfd"]
 atlas = ExtResource("2_jea4o")
@@ -379,3 +380,12 @@ position = Vector2(1.3999991, 7.152557e-08)
 amount = 16
 lifetime = 0.33
 process_material = SubResource("ParticleProcessMaterial_yekfk")
+
+[node name="STAMPED" type="TextureRect" parent="." unique_id=743894983]
+self_modulate = Color(1, 0.12941177, 0.003921569, 1)
+offset_left = 43.0
+offset_top = 5.0
+offset_right = 76.0
+offset_bottom = 38.0
+texture = ExtResource("5_36o68")
+expand_mode = 1

@@ -5,7 +5,8 @@ enum CoinStatus{
 	NONE,
 	SHINED,
 	VOIDED,
-	DAZZLED
+	DAZZLED,
+	STAMPED
 }
 
 var main
@@ -107,6 +108,9 @@ var gold_flip_rate = 0.00: #Chance to Flip a Gold Coin
 
 #STATUS EFFECTS
 
+var has_audit = false #For each DEBT Settled by the opposing side, apply 1 GAIN to self.
+var has_radiant = false #At the end of each turn, each Coin has a 50% Chance to be SHINED.
+var has_benchmark = false #Can only play the same amount of Coins by the opposing side.
 var gain = 0: #Coin to be gained next turn
 	set(value):
 		gain = clamp(value,0,1000) 
@@ -186,6 +190,9 @@ func reset_passives():
 	has_dusk_stance = false
 
 func refresh_start_of_battle_stats():
+	has_audit = false
+	has_benchmark = false
+	has_radiant = false
 	gain = 0
 	debt = 0
 	thrift = 0
@@ -245,46 +252,47 @@ func setup(m,enemy):
 			type = Enemy.DWARF
 		Enemy.COLLECTOR:
 			type = Enemy.COLLECTOR
+			has_audit = true
 			if !greed:
 				max_coin = 200
-				coin = 40
+				coin = 50
 				max_playable_coins = 6
 				silver_flip_rate = 0.5
 				gold_flip_rate = 0
 				bounty = 50
-				has_value_added_tax = true
-				main.player.has_value_added_tax = true
+				trigger_enemy_passive("AUDIT: For each DEBT you settled, The Collector self-applies 1 GAIN.", 5.0)
 			else:
-				max_coin = 70
-				coin = 70
-				max_playable_coins = 14
+				max_coin = 100
+				coin = 80
+				max_playable_coins = 12
 				silver_flip_rate = 0.8
-				gold_flip_rate = 0.2
+				gold_flip_rate = 0.5
 				bounty = 100
 				has_value_added_tax = true
 				main.player.has_value_added_tax = true
-				trigger_enemy_passive("The Collector will apply 1 GAIN to self for each DEBT you settled.", 5.0)
+				trigger_enemy_passive("GREED: The Collector will apply STAMP on your Odd Coin Flips.", 5.0)
 		Enemy.TRADER:
+			has_benchmark = true
 			if !greed:
 				max_coin = 200
 				coin = 40
 				max_playable_coins = 2
-				silver_flip_rate = 0.1
+				silver_flip_rate = 0.2
 				gold_flip_rate = 0.0
 				bounty = 50
 				type = Enemy.TRADER
 				has_fair_trade = true
-				trigger_enemy_passive("The Trader will Copy your Number of Played Coins.", 3.0)
+				trigger_enemy_passive("BENCHMARK: The Trader will Copy your Number of Played Coins.", 3.0)
 			else:
 				max_coin = 200
 				coin = 80
 				max_playable_coins = 2
-				silver_flip_rate = 1.0
-				gold_flip_rate = 0.0
+				silver_flip_rate = 0.8
+				gold_flip_rate = 0.5
 				bounty = 100
 				type = Enemy.TRADER
 				has_fair_trade = true
-				trigger_enemy_passive("The Trader will Copy your Number of Played Coins.", 3.0)
+				trigger_enemy_passive("GREED: The Trader will apply VOID Every turn.", 3.0)
 		Enemy.THRIFTER:
 			if !greed:
 				max_coin = 200
@@ -547,7 +555,7 @@ func enemy_coin_calculation():
 					if left_coin.state == 1 and right_coin.state == 1:
 						total_gain += (left_coin.base_value / 2) + (right_coin.base_value / 2)
 						if greed:
-							total_tally += 4
+							total_tally += 6
 					elif left_coin.state == 0 and right_coin.state == 0:
 						total_damage += (left_coin.base_value) + (right_coin.base_value)
 						total_thrift += 3
@@ -688,8 +696,8 @@ func start_enemy_turn():
 	main.endTurn_button.disabled = true
 
 
-	if has_fair_trade:
-		trigger_enemy_passive("The Trader will play " + str(main.player.previous_player_flips) + " Coins.", 2.0)
+	if has_benchmark:
+		trigger_enemy_passive("Benchmarked Your Played Coins. Now Playing " + str(main.player.previous_player_flips) + " Coins.", 2.0)
 		max_playable_coins = main.player.previous_player_flips
 		main.player.previous_player_flips = 0
 
@@ -877,7 +885,7 @@ func end_enemy_turn():
 				main.sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
 				for i in (converted_income):
 					main.player.coin += 1
-					main.player.reserve()
+					main.player.reserve(true)
 		main.player.take_damage(turn_damage)
 	
 	# -- Final Hit Impacts & Floating Labels (The runes have arrived!) --
@@ -943,7 +951,20 @@ func end_enemy_turn():
 		slow_motion.tween_property(Engine, "time_scale", 0.1, 0)
 		slow_motion.tween_property(Engine, "time_scale", 1, 0.5)
 	# 2. Apply Status Effects to Player
-	if turn_debt != 0: main.player.debt += turn_debt
+	if turn_debt != 0:
+		if main.player.has_reimbursement:
+			turn_debt /= 2
+			if greed and (type == Enemy.ARISTOCRAT or type == Enemy.COLLECTOR):
+				create_floating_label("DEBT", "IMMUNE", "ENEMY")
+			else:
+				debt += turn_debt
+				create_floating_label(turn_debt, "DEBT", "ENEMY")
+			take_damage(turn_debt)
+			main.sound_manager.play_sound(DAMAGE_MODERATE)
+			main.sound_manager.play_sound(DEBTED_ATTACK)
+			create_floating_label(turn_debt, "DAMAGE", "ENEMY")
+		main.player.debt += turn_debt
+		
 	if turn_thrift != 0: main.player.thrift += turn_thrift
 	if turn_spend != 0: main.player.spend += turn_spend
 	if turn_lock: 

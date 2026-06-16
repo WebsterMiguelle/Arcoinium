@@ -262,7 +262,7 @@ func _ready():
 		player.coin += 15
 		player.silver_flip_rate += 0.2
 		player.gold_flip_rate += 0.1
-		player.max_re_flip += 3
+		player.max_re_flip += 2
 	else: main.self_modulate = Color.WHITE
 	shop_manager.item_purchased.connect(_on_item_purchased)
 	
@@ -885,7 +885,7 @@ func _on_restart_pressed():
 func proceed_to_next_enemy():
 	match enemies_defeated:
 		1:
-			current_enemy_index = randi_range(2,3)
+			current_enemy_index = randi_range(2,2)
 			second_enemy = current_enemy_index
 		2:
 			current_enemy_index = randi_range(4,5)
@@ -1094,9 +1094,6 @@ func show_all_passive_notifications():
 		
 	if player.has_golden_clover:
 		trigger_passive("golden_clover", "GOLDEN CLOVER")
-		
-	if player.has_sleight_of_hand:
-		trigger_passive("sleight_of_hand", "SLEIGHT OF HAND")
 		
 	if player.has_pocket_money:
 		trigger_passive("pocket_money", "POCKET MONEY")

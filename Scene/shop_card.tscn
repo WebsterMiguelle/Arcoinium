@@ -278,6 +278,10 @@ region = Rect2(224, 32, 32, 32)
 atlas = ExtResource("3_bku1w")
 region = Rect2(256, 32, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_2cmf1"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(288, 32, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_7pygo"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(320, 32, 32, 32)
@@ -286,17 +290,9 @@ region = Rect2(320, 32, 32, 32)
 atlas = ExtResource("3_bku1w")
 region = Rect2(128, 32, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_hq3qh"]
-atlas = ExtResource("3_bku1w")
-region = Rect2(64, 32, 32, 32)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_5k42d"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(288, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2cmf1"]
-atlas = ExtResource("3_bku1w")
-region = Rect2(288, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ko8ob"]
 atlas = ExtResource("3_bku1w")
@@ -305,6 +301,10 @@ region = Rect2(64, 0, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_oi7qt"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hq3qh"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(64, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ea05u"]
 atlas = ExtResource("3_bku1w")
@@ -478,6 +478,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_2cmf1")
+}],
+"loop": false,
+"name": &"Pickpocket",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_7pygo")
 }],
 "loop": false,
@@ -494,26 +502,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_hq3qh")
-}],
-"loop": false,
-"name": &"Reimbursement",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_5k42d")
 }],
 "loop": false,
 "name": &"Simple Interest",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_2cmf1")
-}],
-"loop": false,
-"name": &"Sleight of Hand",
 "speed": 5.0
 }, {
 "frames": [{
@@ -530,6 +522,14 @@ animations = [{
 }],
 "loop": false,
 "name": &"Spare Change",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hq3qh")
+}],
+"loop": false,
+"name": &"Tax Evasion",
 "speed": 5.0
 }, {
 "frames": [{
@@ -604,7 +604,7 @@ frame = 4
 position = Vector2(76, 71)
 scale = Vector2(3.0625002, 2.9375)
 sprite_frames = SubResource("SpriteFrames_u5k1i")
-animation = &"All In"
+animation = &"Tax Evasion"
 
 [node name="Label" type="Label" parent="." unique_id=594536539]
 layout_mode = 0

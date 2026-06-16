@@ -2,6 +2,7 @@ extends Node2D
 @onready var shined: AnimatedSprite2D = $SHINED
 @onready var voided: AnimatedSprite2D = $VOIDED
 @onready var dazzled: AnimatedSprite2D = $DAZZLED
+@onready var stamped: TextureRect = $STAMPED
 
 enum CoinType{
 	COPPER,
@@ -13,7 +14,8 @@ enum CoinStatus{
 	NONE,
 	SHINED,
 	VOIDED,
-	DAZZLED
+	DAZZLED,
+	STAMPED
 }
 
 #COIN VARIABLES
@@ -83,6 +85,8 @@ func refresh_sprite():
 	appear_tween.tween_property(animated_sprite_2d, "position:y", 0, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	appear_tween.parallel().tween_property(animated_sprite_2d, "modulate:a", 1.0, 0.2)
 	
+	stamped.visible = false
+	
 	if status == CoinStatus.SHINED:
 		shined.visible = true
 	else:
@@ -134,3 +138,5 @@ func refresh_sprite():
 			shined.play("gold_head" if state == 0 else "gold_tail")
 			voided.play("copper_head" if state == 0 else "copper_tail")
 			dazzled.play("gold_head" if state == 0 else "gold_tail")
+	if status == CoinStatus.STAMPED:
+		stamped.visible = true

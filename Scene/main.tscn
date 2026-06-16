@@ -1726,6 +1726,7 @@ randomness = 0.35
 process_material = SubResource("ParticleProcessMaterial_mlc74")
 
 [node name="Drowse Effect" type="TextureRect" parent="." unique_id=1015393589]
+modulate = Color(1, 1, 1, 0.92941177)
 self_modulate = Color(0, 0.34901962, 0.65882355, 0)
 layout_mode = 0
 offset_left = -30.0

@@ -779,7 +779,7 @@ func reserve_left_over_coin():
 			player.trigger_temp_passive("simple_interest","SIMPLE INTEREST")
 
 func update_player_coin():
-	player_health_label.text = "Coins: " + str(player.coin)
+	player_health_label.text = str(player.coin)
 	
 func update_player_reflip_and_reserve():
 	if player.slow:
@@ -800,7 +800,7 @@ func update_player_reflip_and_reserve():
 		player_reserve.text = "Reserve: " + str(player.current_reserve) + "/" + str(player.max_reserve)
 	
 func update_enemy_coin():
-	enemy_health_label.text = "Coins: " + str(enemy.coin)
+	enemy_health_label.text = str(enemy.coin)
 	
 func update_player_stacks():
 	player_debt_particles.emitting = false

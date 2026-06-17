@@ -103,3 +103,21 @@ func refresh_sprite():
 			await animated_sprite_2d.animation_finished
 			animated_sprite_2d.play("gold_head" if state == 0 else "gold_tail")
 			shined.play("gold_head" if state == 0 else "gold_tail")
+
+# Inside your Coin.gd script
+var glow_tween: Tween
+
+func pulse_glow() -> void:
+	# If it's already glowing, kill the old animation to prevent overlapping glitches
+	if glow_tween and glow_tween.is_running():
+		glow_tween.kill()
+		
+	glow_tween = create_tween().set_parallel(true)
+	
+	# Swell slightly and brighten the color
+	glow_tween.tween_property(self, "scale", Vector2(1.1, 1.1), 0.4).set_trans(Tween.TRANS_SINE)
+	glow_tween.tween_property(self, "modulate", Color(1.5, 1.5, 1.5, 1.0), 0.4).set_trans(Tween.TRANS_SINE)
+	
+	# Chain it to shrink back to normal slowly
+	glow_tween.chain().tween_property(self, "scale", Vector2(1.0, 1.0), 0.6).set_trans(Tween.TRANS_SINE)
+	glow_tween.chain().tween_property(self, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.6).set_trans(Tween.TRANS_SINE)

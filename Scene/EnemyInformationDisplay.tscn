@@ -1,0 +1,194 @@
+[gd_scene format=3 uid="uid://1lqiy1lfcalo"]
+
+[ext_resource type="Script" uid="uid://bte7pihi3plon" path="res://Script/enemy_information_display.gd" id="1_1mh3q"]
+[ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="2_cobfp"]
+[ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="3_db5qw"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="4_d80n4"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5krdm"]
+texture = ExtResource("2_cobfp")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tx20m"]
+texture = ExtResource("2_cobfp")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_70qsu"]
+texture = ExtResource("2_cobfp")
+
+[node name="EnemyInformationDisplay" type="HBoxContainer" unique_id=2082350649]
+custom_minimum_size = Vector2(1080, 400)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -517.0
+offset_top = -272.0
+offset_right = 563.0
+offset_bottom = 335.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.9716186, 0.91292155)
+mouse_filter = 2
+theme_override_constants/separation = 10
+script = ExtResource("1_1mh3q")
+
+[node name="ProfilePanel" type="PanelContainer" parent="." unique_id=401102771]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_5krdm")
+
+[node name="MarginContainer" type="MarginContainer" parent="ProfilePanel" unique_id=77883903]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 44
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 44
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ProfilePanel/MarginContainer" unique_id=1181417655]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="EnemyName" type="Label" parent="ProfilePanel/MarginContainer/VBoxContainer" unique_id=517925706]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_db5qw")
+theme_override_font_sizes/font_size = 44
+text = "Enemy Name:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EnemyStats" type="Label" parent="ProfilePanel/MarginContainer/VBoxContainer" unique_id=1862259072]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("4_d80n4")
+theme_override_font_sizes/font_size = 40
+text = "Coins:
+Silver Flip Rate:
+Gold Flip Rate:
+"
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="ProfilePanel/MarginContainer/VBoxContainer" unique_id=1351307598]
+layout_mode = 2
+
+[node name="Story" type="Label" parent="ProfilePanel/MarginContainer/VBoxContainer" unique_id=2064010057]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_db5qw")
+theme_override_font_sizes/font_size = 40
+text = "Story"
+vertical_alignment = 1
+
+[node name="EnemyLore" type="Label" parent="ProfilePanel/MarginContainer/VBoxContainer" unique_id=1420735796]
+custom_minimum_size = Vector2(120, 250)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("4_d80n4")
+theme_override_font_sizes/font_size = 40
+text = "Enemy Story Goes here"
+autowrap_mode = 3
+
+[node name="StatusEffectsPanel" type="PanelContainer" parent="." unique_id=710897952]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_tx20m")
+
+[node name="MarginContainer" type="MarginContainer" parent="StatusEffectsPanel" unique_id=1235637992]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 44
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 44
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StatusEffectsPanel/MarginContainer" unique_id=539274188]
+layout_mode = 2
+theme_override_constants/separation = 29
+
+[node name="StatusEffects" type="Label" parent="StatusEffectsPanel/MarginContainer/VBoxContainer" unique_id=133481273]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_db5qw")
+theme_override_font_sizes/font_size = 46
+text = "Status Effects:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Gain" type="Label" parent="StatusEffectsPanel/MarginContainer/VBoxContainer" unique_id=1114232208]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_db5qw")
+theme_override_font_sizes/font_size = 40
+text = "Gain ( )"
+
+[node name="Debt" type="Label" parent="StatusEffectsPanel/MarginContainer/VBoxContainer" unique_id=463933079]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_db5qw")
+theme_override_font_sizes/font_size = 40
+text = "Debt ( )"
+
+[node name="Thrift" type="Label" parent="StatusEffectsPanel/MarginContainer/VBoxContainer" unique_id=208306955]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_db5qw")
+theme_override_font_sizes/font_size = 40
+text = "Thrift ( )"
+
+[node name="EnemyMechanics" type="PanelContainer" parent="." unique_id=1386994785]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_70qsu")
+
+[node name="MarginContainer" type="MarginContainer" parent="EnemyMechanics" unique_id=863420057]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 44
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 44
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EnemyMechanics/MarginContainer" unique_id=459575857]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 37
+
+[node name="Ability" type="Label" parent="EnemyMechanics/MarginContainer/VBoxContainer" unique_id=968639581]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_db5qw")
+theme_override_font_sizes/font_size = 46
+text = "Ability:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EnemyAbility" type="Label" parent="EnemyMechanics/MarginContainer/VBoxContainer" unique_id=2086748791]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("4_d80n4")
+theme_override_font_sizes/font_size = 40
+text = "Insert Enemy Ability here"
+autowrap_mode = 3
+clip_text = true
+
+[node name="Tip" type="Label" parent="EnemyMechanics/MarginContainer/VBoxContainer" unique_id=1237834155]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_db5qw")
+theme_override_font_sizes/font_size = 36
+text = "Tip!"
+autowrap_mode = 3
+
+[node name="PlayerTip" type="Label" parent="EnemyMechanics/MarginContainer/VBoxContainer" unique_id=527254046]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("4_d80n4")
+theme_override_font_sizes/font_size = 40
+text = "Insert Enemy Tips here"
+autowrap_mode = 3
+clip_text = true

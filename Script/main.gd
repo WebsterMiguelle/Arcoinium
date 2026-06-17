@@ -128,6 +128,8 @@ $"Progression Map/Boss"
 var slow_color = "#43a563"
 const PLAYER_INFORMATION_DISPLAY = preload("uid://c61s4yrsvak0l")
 var player_info_menu: Node = null
+const ENEMY_INFORMATION_DISPLAY = preload("res://Scene/EnemyInformationDisplay.tscn")
+var enemy_info_menu: Node = null
 
 @onready var player_lock_particles: GPUParticles2D = $"Player/Player Lock Particles"
 @onready var player_gain_particles: GPUParticles2D = $"Player/Player Gain Particles"
@@ -925,7 +927,6 @@ func _play_progression_cutscene(from_index: int, to_index: int) -> void:
 	slide_in.tween_interval(0.3)
 	await slide_in.finished
 	
-	player_sprite.play("default") 
 	
 	var walk_tween = progression_map.create_tween()
 	
@@ -1194,6 +1195,24 @@ func _on_player_info_toggled(toggled_on: bool) -> void:
 			player_info_menu.close()
 			player_info_menu = null
 
+func _on_enemy_info_toggled(toggled_on: bool) -> void:
+	print("toggled: ", toggled_on)
+	if toggled_on:
+		enemy_info_menu = ENEMY_INFORMATION_DISPLAY.instantiate()
+		add_child(enemy_info_menu)
+		enemy_info_menu.setup(enemy)
+		
+		await get_tree().process_frame
+		var screen_size = get_viewport_rect().size
+		var menu_size = enemy_info_menu.size
+		enemy_info_menu.global_position = Vector2((screen_size.x - menu_size.x) / 2,
+			(screen_size.y - menu_size.y) / 2)
+		enemy_info_menu.z_index = 100
+		enemy_info_menu.open()
+	else:
+		if enemy_info_menu != null and is_instance_valid(enemy_info_menu):
+			enemy_info_menu.close()
+			enemy_info_menu = null
 
 func _on_reserve_button_pressed() -> void:
 	player.reserve()

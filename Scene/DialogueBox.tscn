@@ -37,5 +37,4 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
 theme_override_fonts/font = ExtResource("2_e54vf")
 theme_override_font_sizes/font_size = 25
-text = "KEEPER OF SECRETS."
 vertical_alignment = 3

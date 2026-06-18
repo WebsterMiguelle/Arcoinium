@@ -249,7 +249,7 @@ func setup(m,enemy):
 				coin = 40
 				max_playable_coins = 8
 				silver_flip_rate = 0.0
-				gold_flip_rate = 1.0
+				gold_flip_rate = 0.0
 				bounty = 50
 			type = Enemy.DWARF
 		Enemy.COLLECTOR:

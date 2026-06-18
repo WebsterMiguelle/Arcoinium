@@ -291,6 +291,7 @@ func toggle_pause():
 func battle_start():
 	re_flip_button.visible = true
 	player_reserve.visible = true
+	flip_button.disabled = true
 	switch_vignetter_color(vignetter_default,0.1)
 	switch_vignette_color(vignette_default,0.1)
 	battle_particles.emitting = true
@@ -410,6 +411,7 @@ func show_turn_ui(text):
 	tween.parallel().tween_property(turn_ui,"modulate",Color("ffffff"),0.2)
 	tween.parallel().tween_property(turn_ui, "position:y",target_position,0.2)
 	await get_tree().create_timer(1.0).timeout
+	print("=============================UI DONE")
 	turn_ui_label.text = text
 	tween = create_tween()
 	tween.parallel().tween_property(turn_ui,"modulate",Color("ffffff00"),0.2)
@@ -419,6 +421,7 @@ func show_turn_ui(text):
 			await get_tree().create_timer(1.0).timeout
 		endTurn_button.disabled = false
 	await get_tree().create_timer(1.0).timeout
+	print("=============================UI DONE")
 	
 func _on_end_run_pressed():
 	print("Main Script: Received End Run")
@@ -695,7 +698,7 @@ func check_defeat():
 		endTurn_button.disabled = true 
 		re_flip_button.disabled = true
 		reserve_button.disabled = true
-		if enemies_defeated == current_room:
+		if enemies_defeated == current_room or enemy.type == Enemy.TWILIGHT_SAGE:
 			enemies_defeated += 1
 			await handle_victory_flow()
 			return true

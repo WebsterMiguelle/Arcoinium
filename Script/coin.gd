@@ -157,7 +157,7 @@ func refresh_sprite():
 		stamped.visible = true
 	if status == CoinStatus.SHINED and shine_stack > 0:
 		shine_stack_label.visible = true
-		shine_stack_label.text = "x" + str(shine_stack)
+		shine_stack_label.text = "x" + str(shine_stack+1)
 
 # Inside your Coin.gd script
 var glow_tween: Tween

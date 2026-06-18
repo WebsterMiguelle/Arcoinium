@@ -326,7 +326,7 @@ func reset_stats():
 
 	#INNOVATOR PASSIVES
 
-	has_inflation = false
+	has_inflation = true
 	has_payback = false
 	has_lucky_pair = false
 	has_value_increase = false
@@ -357,21 +357,6 @@ func reset_stats():
 	has_deposit = false
 
 func refresh_start_of_battle_stats():
-	starstruck = false
-	var dazzled_tween = create_tween()
-	dazzled_tween.parallel().tween_property(dazzled_effect,"self_modulate", Color("#0059a800"),0.6)
-	dazzled_tween.parallel().tween_property(dazzled_light,"color", Color("#0059a800"),0.6)
-	await dazzled_tween.finished
-	dazzled_effect.visible = false
-	dazzled_light.visible = false
-	
-	slow = false
-	var drowse_tween = create_tween()
-	drowse_tween.tween_property(drowse_effect,"self_modulate", Color("#0059a800"),0.6)
-	await drowse_tween.finished
-	drowse_effect.visible = false
-
-	
 	settle = 15
 	initial_max_reserve = max_reserve
 	lock = false
@@ -416,6 +401,19 @@ func refresh_start_of_battle_stats():
 	else:
 		lunar_blessing_icon.visible = false
 		
+	starstruck = false
+	var dazzled_tween = create_tween()
+	dazzled_tween.parallel().tween_property(dazzled_effect,"self_modulate", Color("#0059a800"),0.6)
+	dazzled_tween.parallel().tween_property(dazzled_light,"color", Color("#0059a800"),0.6)
+	await dazzled_tween.finished
+	dazzled_effect.visible = false
+	dazzled_light.visible = false
+	
+	slow = false
+	var drowse_tween = create_tween()
+	drowse_tween.tween_property(drowse_effect,"self_modulate", Color("#0059a800"),0.6)
+	await drowse_tween.finished
+	drowse_effect.visible = false
 	
 	
 	
@@ -894,6 +892,7 @@ func re_flip():
 	
 	
 func start_turn():
+	print("CURRENT PLAYED COIN " + str(current_played_coin))
 	if lock:
 		max_reserve = 0
 	if tally:
@@ -1532,7 +1531,7 @@ func activate_player_turn_end_passives():
 				coin.upgrade()
 				if has_inflation and coin.base_value == 6:
 					if coin.status == CoinStatus.SHINED:
-						coin.shined_stack += 1
+						coin.shine_stack += 1
 					else:
 						coin.add_status(CoinStatus.SHINED)
 				if coin.status == CoinStatus.VOIDED:

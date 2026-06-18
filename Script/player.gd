@@ -341,6 +341,16 @@ func refresh_start_of_battle_stats():
 func _ready():
 	player_portrait.play("default")
 	all_in.text = ""
+	# --- NEW: THE PAIR PULSE HEARTBEAT ---
+# --- THE PAIR PULSE HEARTBEAT ---
+	var pulse_timer = Timer.new()
+	
+	# Increase this to 4 or 5 seconds to give the ripple time to finish!
+	pulse_timer.wait_time = 8.0 
+	
+	pulse_timer.autostart = true
+	pulse_timer.timeout.connect(trigger_board_pulse)
+	add_child(pulse_timer)
 
 func coin_calculation():
 	var is_left = true # true - Left Coin, false - Right Coin
@@ -1271,3 +1281,19 @@ func trigger_temp_passive(id: String, text: String):
 	
 	await get_tree().create_timer(1.5).timeout
 	active_temp_ids.erase(id)
+
+func trigger_board_pulse() -> void:
+	var board_coins = get_tree().get_nodes_in_group("coins")
+	
+	for i in range(0, board_coins.size() - 1, 2):
+		var left_coin = board_coins[i]
+		var right_coin = board_coins[i + 1]
+		
+		if is_instance_valid(left_coin) and is_instance_valid(right_coin):
+			if not left_coin.reserved and not right_coin.reserved:
+				left_coin.pulse_glow()
+				right_coin.pulse_glow()
+				
+		# --- THE MAGIC STAGGER ---
+		# Wait 0.3 seconds before telling the next pair to pulse!
+		await get_tree().create_timer(1.0).timeout

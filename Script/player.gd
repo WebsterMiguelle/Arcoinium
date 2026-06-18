@@ -256,7 +256,7 @@ func gain_coin():
 	gain -= debt
 	debt -= temp
 	coin += gain
-	if has_active_income and has_debt and debt == 0:
+	if has_active_income and has_debt and debt == 0 and main.enemy.coin > 0:
 		has_debt = false
 		trigger_temp_passive("jar_o_savings","FULLY PAID")
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
@@ -326,7 +326,7 @@ func reset_stats():
 
 	#INNOVATOR PASSIVES
 
-	has_inflation = true
+	has_inflation = false
 	has_payback = false
 	has_lucky_pair = false
 	has_value_increase = false

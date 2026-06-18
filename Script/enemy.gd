@@ -1066,11 +1066,13 @@ func end_enemy_turn():
 	if pay_down_killed:
 		main.sound_manager.play_sound(PASSIVE_PAYDOWN)
 		main.player.trigger_temp_passive("pay_down","BANKRUPT")
+		var slow_motion = create_tween()
+		slow_motion.tween_property(Engine, "time_scale", 0.1, 0)
+		slow_motion.tween_property(Engine, "time_scale", 1, 0.5)
 
 	if pay_down_killed:
 		create_floating_label(debt, "DAMAGE", "ENEMY")
-	elif pay_down_debt_added:
-		create_floating_label(5, "DEBT", "ENEMY")
+
 
 
 	# 5. Player 'Payback' Revive Check

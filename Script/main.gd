@@ -4,6 +4,8 @@ enum Turn {
 	PLAYER,
 	ENEMY
 }
+@onready var forest_area: TextureRect = $"Forest Area"
+@onready var fields_area: TextureRect = $"Fields Area"
 
 enum Enemy{
 	MAGE,
@@ -96,8 +98,8 @@ const TWILIGHT_ZONE___BATTLE_THEME_3 = preload("uid://bivy2e314q2fa")
 
 # --- PROGRESSION MAP ---
 @onready var progression_map: CanvasLayer = $"Progression Map"
-@onready var player_sprite: AnimatedSprite2D = $"Progression Map/Player_Sprite"
 @onready var banner: TextureRect = $"Progression Map/MapBackground/Banner"
+@onready var player_sprite: AnimatedSprite2D = $"Progression Map/MapBackground/Player_Sprite"
 
 @onready var map_markers: Array[Node] = [
 $"Progression Map/Enemy 1", 
@@ -241,7 +243,7 @@ func switch_vignetter_color(to,duration):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-
+	forest_area.visible = true
 	await get_tree().create_timer(0.4).timeout
 	await _play_fake_coin_intro()
 	turn_calculation_box.visible = false
@@ -972,8 +974,8 @@ func _play_progression_cutscene(from_index: int, to_index: int) -> void:
 	slide_in.tween_property(progression_map, "offset:y", 0.0, 0.5).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 	
 	slide_in.tween_interval(0.3)
+
 	await slide_in.finished
-	
 	
 	var walk_tween = progression_map.create_tween()
 	
@@ -988,14 +990,24 @@ func _play_progression_cutscene(from_index: int, to_index: int) -> void:
 	await dramatic_pause.finished
 	sound_manager.stop_music()
 	sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
+	get_tree().paused = false
+	var bg_fade = create_tween()
+	if to_index == 2:
+		fields_area.visible = true
+		bg_fade.tween_property(forest_area,"modulate", Color("#0059a800"),0.6)
+		await bg_fade.finished
+		forest_area.visible = false
+	elif to_index == 5:
+		bg_fade.tween_property(fields_area,"modulate", Color("#0059a800"),0.6)
+		await bg_fade.finished
+		fields_area.visible = false
 	
 	var slide_out = progression_map.create_tween()
 	slide_out.tween_property(progression_map, "offset:y", -screen_height, 0.8).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN)
 	await slide_out.finished
 
 	progression_map.visible = false
-	get_tree().paused = false
-	
+
 
 
 func _show_temporary_passive(id: String, text: String, duration: float = 1.5):

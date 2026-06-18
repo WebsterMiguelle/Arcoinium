@@ -44,7 +44,7 @@ var all_cards = [
 	{"id": 15, "name": "Magic Trick", "rank": "A", "desc": "If you played 8+ Coins, the 1st Coin Pair generates copies of itself into the 2nd, 3rd, and 4th Pair at the end of the turn."},
 	{"id": 16, "name": "Tax Evasion", "rank": "A", "desc": "When DEBT is applied to you, halve it, return the removed DEBT to the Enemy, and deal DAMAGE equal to the returned DEBT."},
 	{"id": 17, "name": "Payback", "rank": "A", "desc": "Fatal Damage leaves you at 1 Coin, cleanses all Debuffs, and generates 12 SHINED GOLD SUN Coins next turn. (Once per Battle)"},
-	{"id": 18, "name": "Loan Shark", "rank": "A", "desc": "For each Enemy Flip, detonate 5% of their DEBT as DAMAGE."},
+	{"id": 18, "name": "Loan Shark", "rank": "A", "desc": "For each Enemy Coin Flip, detonate 5% of their DEBT as DAMAGE. Each Enemy Coin Flip has a chance equal to their current DEBT (up to 100%) to become DAZZLED."},
 	{"id": 19, "name": "Spare Change", "rank": "A", "desc": "Re-Flipping retrieves all RESERVED Coins. Retrieving a STAMPED Coin restores 1 Re-Flip."},
 	{"id": 20, "name": "Triple Nickel", "rank": "A", "desc": "+20% SILVER Flip Rate. Your first 3 Flips each turn are guaranteed SHINED SILVER Coins."},
 
@@ -55,7 +55,7 @@ var all_cards = [
 	{"id": 25, "name": "Withdraw", "rank": "B", "desc": "Removing a RESERVED Coin deals 1 DAMAGE. Statused Coins deal 3 DAMAGE instead."},
 	{"id": 26, "name": "Deposit", "rank": "A", "desc": "+4 Max Reserve. Overflowing Reserve applies 3 GAIN per Coin."},
 	{"id": 27, "name": "Dividend", "rank": "A", "desc": "Each RESERVED Coin has a 30% chance to generate a copy of itself next turn."},
-	{"id": 28, "name": "Cash Out", "rank": "S", "desc": "If Reserve is full at End Turn, gain an EXTRA TURN. Extra Turns cannot Flip, Re-Flip, or Reserve."}
+	{"id": 28, "name": "Cash Out", "rank": "S", "desc":  "If there are 4 or more RESERVED Coins at the end of a Player or Enemy Turn, gain an EXTRA TURN. During Extra Turns, you can only Re-Flip and cannot gain additional Extra Turns."}
 ]
 
 func show_shop_async(player):
@@ -108,9 +108,14 @@ func generate_shop():
 	var s_pool = pool.filter(func(c): return c["rank"] == "S")
 	
 	var selected_cards = []
-	selected_cards += draw_cards(b_pool, 2)
-	selected_cards += draw_cards(a_pool, 4)
-	selected_cards += draw_cards(s_pool, 2)
+	if !main.player.has_merchant_scroll:
+		selected_cards += draw_cards(b_pool, 2)
+		selected_cards += draw_cards(a_pool, 4)
+		selected_cards += draw_cards(s_pool, 2)
+	else:
+		selected_cards += draw_cards(b_pool, 1)
+		selected_cards += draw_cards(a_pool, 4)
+		selected_cards += draw_cards(s_pool, 3)
 
 	for data in selected_cards:
 		var card = Shop_card.instantiate()

@@ -1,5 +1,9 @@
 extends Node2D
 
+enum Turn {
+	PLAYER,
+	ENEMY
+}
 enum CoinStatus{
 	NONE,
 	SHINED,
@@ -154,7 +158,6 @@ var player_turn_count = 0
 var sun_count = 0
 var moon_count = 0
 var has_extra_turn = false
-var extra_turn_penalty = 1
 var thrifted_attack = 0
 var debted_attack = 0
 var spended_attack = 0
@@ -354,7 +357,6 @@ func reset_stats():
 	has_deposit = false
 
 func refresh_start_of_battle_stats():
-
 	starstruck = false
 	var dazzled_tween = create_tween()
 	dazzled_tween.parallel().tween_property(dazzled_effect,"self_modulate", Color("#0059a800"),0.6)
@@ -824,6 +826,9 @@ func re_flip():
 		if !has_inflation:
 			toggle_button(main.reserve_button,false)
 			toggle_button(main.flip_button,false)
+		if has_extra_turn:
+			toggle_button(main.reserve_button,true)
+			toggle_button(main.flip_button,true)
 		var has_withdraw_damage = false
 		var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
 		current_reserve = reserved_coins.size()
@@ -867,8 +872,6 @@ func re_flip():
 	if current_re_flip == max_re_flip or current_played_coin == 0:
 		toggle_button(main.re_flip_button,true)
 
-	if main.enemy.coin == 0:
-		main.check_defeat()
 
 	await get_tree().create_timer(0.1).timeout
 	coin_calculation()
@@ -1275,10 +1278,13 @@ func end_turn():
 	main.enemy.spend += turn_spend
 	
 	# 6. Extra Turn Checks
-
-	if !lock and main.enemy.coin > 0 and has_cash_out and current_reserve >= max_reserve:
+	
+	if !has_extra_turn and !lock and main.enemy.coin > 0 and has_cash_out and current_reserve >= 4:
 		trigger_temp_passive("cash_out","CASH OUT")
 		has_extra_turn = true
+		return
+	
+	has_extra_turn = false
 	
 	
 func activate_pre_battle_passives():
@@ -1388,7 +1394,6 @@ func activate_player_turn_end_passives():
 		solar_glow.visible = false
 		lunar_glow.visible = false
 	
-	has_extra_turn = false
 	var has_dazzle = false
 	var coins = get_tree().get_nodes_in_group("coins")
 	for coin in coins:
@@ -1566,9 +1571,9 @@ func activate_player_turn_end_passives():
 
 func extra_turn():
 	await start_turn()
-	toggle_button(main.re_flip_button,true)
 	toggle_button(main.flip_button,true)
 	toggle_button(main.reserve_button,true)
+	toggle_button(main.endTurn_button,false)
 	
 func toggle_button(btn: Button, make_disabled: bool) -> void:
 	btn.disabled = make_disabled

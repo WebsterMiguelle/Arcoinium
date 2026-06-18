@@ -14,6 +14,9 @@ extends Button
 var normal_scale = Vector2(1.0, 1.0)
 var hover_scale = Vector2(1.2, 1.2) # 20% bigger
 var float_tween: Tween
+var main
+const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
+
 
 # 1. Remove @onready. We will set this when the container is finished loading!
 var original_y_position: float 
@@ -29,8 +32,7 @@ func _ready():
 	icon_sprite.self_modulate.a = 0
 	sprite.play(card_rank)
 	label.text = "%s" % [card_name] 
-	
-	# Fixed the signal connections here!
+
 	if not self.pressed.is_connected(_on_pressed):
 		self.pressed.connect(_on_pressed)
 	if not self.mouse_entered.is_connected(_on_mouse_entered):
@@ -41,14 +43,15 @@ func _ready():
 	_animate_entrance()
 	icon_sprite.play(card_name)
 
+func setup(m):
+	main = m
+
 func _animate_entrance():
 	modulate.a = 0
 	
-	# Waiting two frames ensures the Container has perfectly placed the card!
 	await get_tree().process_frame
 	await get_tree().process_frame
-	
-	# 2. Grab the true resting Y coordinate now that the UI has settled
+
 	original_y_position = self.position.y
 	
 	var final_x = position.x
@@ -69,14 +72,14 @@ func _process(_delta: float) -> void:
 	pass
 
 func _on_pressed() -> void:
+	main.sound_manager.play_sound(SCROLL_OPEN)
 	glow_panel.visible = false
-	
 	var tween = create_tween()
 	tween.tween_property(icon_sprite,"scale",Vector2(10.0,10.0), 0.3).set_trans(Tween.TRANS_SINE)
 	tween.parallel().tween_property(icon_sprite,"self_modulate:a", 0, 0.3).set_trans(Tween.TRANS_SINE)
 	
 	label.visible = false
-	
+	main.sound_manager.play_sound(SCROLL_OPEN)
 	sprite.play_backwards(card_rank)
 	await sprite.animation_finished
 	

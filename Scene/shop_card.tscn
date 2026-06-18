@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://v856cqe4ouly" path="res://Script/shop_card.gd" id="1_dvf4x"]
 [ext_resource type="Texture2D" uid="uid://ctr0wbykggnh2" path="res://Assets/Detailed_Scroll_1-Sheet.png" id="2_nn8ao"]
 [ext_resource type="Texture2D" uid="uid://eeepgts0tvpj" path="res://Assets/Passive_Icons.png" id="3_bku1w"]
+[ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="4_bku1w"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_08wl6"]
 bg_color = Color(1, 1, 1, 1)
@@ -205,9 +206,29 @@ animations = [{
 atlas = ExtResource("3_bku1w")
 region = Rect2(192, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_7h2xg"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(160, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_81yiv"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(32, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bku1w"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(128, 64, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_igsup"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(320, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_23lek"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(384, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5k1i"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(352, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s4jp2"]
 atlas = ExtResource("3_bku1w")
@@ -253,10 +274,6 @@ region = Rect2(128, 0, 32, 32)
 atlas = ExtResource("3_bku1w")
 region = Rect2(224, 32, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_81yiv"]
-atlas = ExtResource("3_bku1w")
-region = Rect2(32, 64, 32, 32)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_mnfj7"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(256, 32, 32, 32)
@@ -268,10 +285,6 @@ region = Rect2(320, 32, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_scg27"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(128, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_7h2xg"]
-atlas = ExtResource("3_bku1w")
-region = Rect2(64, 64, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hq3qh"]
 atlas = ExtResource("3_bku1w")
@@ -305,6 +318,10 @@ region = Rect2(224, 0, 32, 32)
 atlas = ExtResource("3_bku1w")
 region = Rect2(0, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_jodkd"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(352, 0, 32, 32)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_u5k1i"]
 animations = [{
 "frames": [{
@@ -317,10 +334,50 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_7h2xg")
+}],
+"loop": false,
+"name": &"All In",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_81yiv")
+}],
+"loop": false,
+"name": &"Bankrupt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bku1w")
+}],
+"loop": true,
+"name": &"Cash Out",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_igsup")
 }],
 "loop": false,
 "name": &"Coin Snipe",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_23lek")
+}],
+"loop": true,
+"name": &"Deposit",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u5k1i")
+}],
+"loop": true,
+"name": &"Dividend",
 "speed": 5.0
 }, {
 "frames": [{
@@ -413,14 +470,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_81yiv")
-}],
-"loop": false,
-"name": &"Pay Down",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_mnfj7")
 }],
 "loop": false,
@@ -441,14 +490,6 @@ animations = [{
 }],
 "loop": false,
 "name": &"Pocket Money",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_7h2xg")
-}],
-"loop": false,
-"name": &"Refund",
 "speed": 5.0
 }, {
 "frames": [{
@@ -514,6 +555,14 @@ animations = [{
 "loop": false,
 "name": &"Wish Bone",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jodkd")
+}],
+"loop": true,
+"name": &"Withdraw",
+"speed": 5.0
 }]
 
 [node name="ShopCard" type="Button" unique_id=1944982988]
@@ -521,7 +570,6 @@ self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(150, 200)
 offset_right = 150.0
 offset_bottom = 201.0
-scale = Vector2(0.8, 0.8)
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -530,50 +578,55 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_08wl6")
 text = "CARD"
 script = ExtResource("1_dvf4x")
 
-[node name="GlowPanel" type="Panel" parent="." unique_id=1440354801]
+[node name="GlowPanel" type="Panel" parent="." unique_id=48394232]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = 21.25
-offset_right = -28.750015
-offset_bottom = 17.749985
+offset_left = 28.0
+offset_top = 4.0
+offset_right = -28.0
+offset_bottom = -12.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(-5, 5)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_nn8ao")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=571560191]
-position = Vector2(72.5, 120)
-scale = Vector2(3, 3)
+position = Vector2(76, 115.5)
+scale = Vector2(3.059, 2.9375)
 sprite_frames = SubResource("SpriteFrames_23lek")
-animation = &"B"
+animation = &"unfurl-down"
 frame = 4
 
 [node name="Icon" type="AnimatedSprite2D" parent="." unique_id=1661363716]
-position = Vector2(72.49999, 75)
-scale = Vector2(3, 3)
+position = Vector2(76, 71)
+scale = Vector2(3.0625002, 2.9375)
 sprite_frames = SubResource("SpriteFrames_u5k1i")
-animation = &"Pay Down"
+animation = &"All In"
 
 [node name="Label" type="Label" parent="." unique_id=594536539]
 layout_mode = 0
 offset_left = 9.0
 offset_top = 148.0
-offset_right = 139.0
+offset_right = 277.0
 offset_bottom = 171.0
+scale = Vector2(0.5, 0.5)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_fonts/font = ExtResource("4_bku1w")
+theme_override_font_sizes/font_size = 36
 text = "Name"
 horizontal_alignment = 1
 
 [node name="StockStatus" type="Label" parent="." unique_id=1982709267]
-visible = false
 layout_mode = 0
 offset_left = 56.0
 offset_top = 186.0
 offset_right = 96.0
 offset_bottom = 203.0
+theme_override_fonts/font = ExtResource("4_bku1w")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]

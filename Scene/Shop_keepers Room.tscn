@@ -1,0 +1,121 @@
+[gd_scene format=3 uid="uid://cph07oexpeoak"]
+
+[ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="1_4akbf"]
+[ext_resource type="Script" uid="uid://dgaqt8yame5va" path="res://Script/shop_keepers_room.gd" id="1_rvcs7"]
+[ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="2_rvcs7"]
+[ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="3_sqeug"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_at7dl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_4akbf")
+}],
+"loop": true,
+"name": &"SHOP_KEEPER",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Theme" id="Theme_c41qw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y1smu"]
+bg_color = Color(0.44841415, 0.18128064, 0.028855877, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vits8"]
+bg_color = Color(0.44705883, 0.18039216, 0.02745098, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2gtc7"]
+bg_color = Color(0.44705883, 0.18039216, 0.02745098, 1)
+
+[node name="Node2D" type="ColorRect" unique_id=1328940769]
+custom_minimum_size = Vector2(1150, 650)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("1_rvcs7")
+
+[node name="Shop_Keeper Portrait" type="Control" parent="." unique_id=1981396183]
+anchors_preset = 0
+offset_left = 108.0
+offset_top = 202.0
+offset_right = 408.0
+offset_bottom = 502.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Shop_Keeper Portrait" unique_id=1111535791]
+position = Vector2(150, 149)
+scale = Vector2(5, 5)
+sprite_frames = SubResource("SpriteFrames_at7dl")
+animation = &"SHOP_KEEPER"
+
+[node name="ColorRect" type="TextureRect" parent="." unique_id=722472630]
+custom_minimum_size = Vector2(320, 320)
+layout_mode = 0
+offset_left = 90.0
+offset_top = 190.0
+offset_right = 410.0
+offset_bottom = 510.0
+texture = ExtResource("2_rvcs7")
+
+[node name="Basic Mode" type="Button" parent="." unique_id=1113266185]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 0
+offset_left = 503.0
+offset_top = 440.0
+offset_right = 753.0
+offset_bottom = 490.0
+theme = SubResource("Theme_c41qw")
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = SubResource("StyleBoxFlat_y1smu")
+text = "BASIC MODE"
+
+[node name="Advance Mode" type="Button" parent="." unique_id=1439571434]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 0
+offset_left = 811.0
+offset_top = 437.0
+offset_right = 1061.0
+offset_bottom = 487.0
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = SubResource("StyleBoxFlat_vits8")
+text = "ADVANCE MODE"
+
+[node name="Tutorial Label" type="Label" parent="." unique_id=318180390]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 0
+offset_left = 235.0
+offset_top = 74.0
+offset_right = 955.0
+offset_bottom = 174.0
+theme_override_fonts/font = ExtResource("3_sqeug")
+theme_override_font_sizes/font_size = 80
+text = "TUTORIAL MODE"
+
+[node name="Back Button" type="Button" parent="." unique_id=1412783332]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 0
+offset_left = 180.0
+offset_top = 551.0
+offset_right = 330.0
+offset_bottom = 596.0
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = SubResource("StyleBoxFlat_2gtc7")
+action_mode = 0
+text = "BACK"
+
+[node name="Dialogue Area" type="Marker2D" parent="." unique_id=399608582]
+position = Vector2(445, 70)
+
+[connection signal="mouse_entered" from="Basic Mode" to="." method="_on_basic_mode_mouse_entered"]
+[connection signal="pressed" from="Basic Mode" to="." method="_on_basic_mode_pressed"]
+[connection signal="mouse_entered" from="Advance Mode" to="." method="_on_advance_mode_mouse_entered"]
+[connection signal="pressed" from="Advance Mode" to="." method="_on_advance_mode_pressed"]
+[connection signal="mouse_entered" from="Back Button" to="." method="_on_back_button_mouse_entered"]
+[connection signal="pressed" from="Back Button" to="." method="_on_back_button_pressed"]

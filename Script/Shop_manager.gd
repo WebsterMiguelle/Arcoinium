@@ -1,12 +1,18 @@
 extends CanvasLayer
-
+const SHOPKEEPER_VOICE = preload("uid://c86gce7j7tjey")
 @onready var container = $Background/CenterContainer/VBoxContainer/CardContainer
 const Shop_card = preload("res://Scene/shop_card.tscn")
 @onready var bg = $Background
-@onready var back_button = $Background/Back
+@onready var back_button: Button = $Back
 @onready var main = get_node("/root/Main")
 @onready var coin_label = $Background/CoinLabel
 @onready var player: Node2D = $"../Player"
+@onready var carpet: TextureRect = $Background/Carpet
+@onready var shop_keeper: AnimatedSprite2D = $"Background/Shop Keeper_Portrait"
+const SHOP_BELL = preload("uid://1kl4yi6uvnhn")
+
+const SCROLL_HOVERED = preload("uid://dpcddmlbji61k")
+const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
 
 # NEW: Reference the new text box you just made!
 @onready var descriptions: Label = $Background/Descriptions
@@ -19,39 +25,50 @@ signal shop_closed
 
 # UPDATED: Now contains all the "desc" keys!
 var all_cards = [
-	{"id": 0, "name": "Solar Coin", "rank": "B", "desc": "Guarantee that the 1st coin flip is an H."},
-	{"id": 1, "name": "Lunar Coin", "rank": "B", "desc": "Guarantee that the 2nd coin flip is a T."},
-	{"id": 2, "name": "Wish Bone", "rank": "B", "desc": "Raise chances of flipping a Silver Coin by 10%."},
-	{"id": 3, "name": "Golden Clover", "rank": "B", "desc": "Raise chances of flipping a Gold Coin by 5%."},
-	{"id": 4, "name": "Merchant’s Scroll", "rank": "B", "desc": "25% Shop Discount."},
-	{"id": 5, "name": "Impromptu Flip", "rank": "B", "desc": "Upon ending the turn, the last coin on the deck will be flipped, switching its side."},
-	{"id": 6, "name": "Advanced Planning", "rank": "B", "desc": "The first 2 coins on the deck will not be affected by Re-Flips."},
-	{"id": 7, "name": "Value Increase", "rank": "B", "desc": "If there is a reserved copper/silver coin on the deck this turn, upgrade it to silver/gold next turn."},
-	{"id": 8, "name": "Lending Charge", "rank": "B", "desc": "Each HT/TH Pairs played this turn applies 3 Debt to the enemy."},
-	{"id": 9, "name": "Coin Snipe", "rank": "B", "desc": "If the player flipped a Silver or Gold Coin, Deal 1 Damage to the enemy then place it on the deck."},
-	{"id": 10, "name": "Simple Interest", "rank": "B", "desc": "At the start of each turn, add Gain to self based on 20% of Gain from last turn."},
-	{"id": 11, "name": "Lucky Pair", "rank": "A", "desc": "+10% Gold Flip Rate. The 7th and 8th Flipped Coin on every turn is guaranteed to be upgraded."},
-	{"id": 12, "name": "Sleight of Hand", "rank": "A", "desc": "+3 Extra Re-Flips and +2 Max Coin Reserve."},
-	{"id": 13, "name": "Piggy", "rank": "A", "desc": "At the start of each turn, Piggy will generate the 1st Coin Pair on the deck based on the previous turn’s Last Coin Pair."},
-	{"id": 14, "name": "Pocket Money", "rank": "A", "desc": "Start each battle with 4 Silver TT Pairs."},
-	{"id": 15, "name": "Passive Income", "rank": "A", "desc": "Start Combat with 8 Gain. In every battle, the first enemy damage will be turned into player HP. (Caps at 30 Coin Gain)"},
-	{"id": 16, "name": "Magic Trick", "rank": "A", "desc": "Upon ending the turn with 6 or more Coins, the 1st Coin Pair will be copied to the 2nd and 3rd Coin Pair."},
-	{"id": 17, "name": "Reimbursement", "rank": "A", "desc": "+3 Re-Flips. If all Coin Pairs played this turn are HT/TH, Double the Debt Application this turn."},
-	{"id": 18, "name": "Payback", "rank": "A", "desc": "If the player receives Fatal Damage from an enemy attack, set HP to 1, and immediately generate 12 Gold Coins on the deck next turn. (One-Time per Battle)"},
-	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "At the start of the enemy’s turn, immediately deal damage based on the Enemy’s Debt."},
-	{"id": 20, "name": "Spare Change", "rank": "A", "desc": "Upon a Re-Flip, retrieve all reserved coins on the deck."},
-	{"id": 21, "name": "Triple Nickel", "rank": "A", "desc": "+20% Silver Flip Rate. The first 3 Flips on every turn are guaranteed to be Silver Coins."},
-	{"id": 22, "name": "Inflation", "rank": "S", "desc": "+3 Extra Re-Flips. There is a 30% chance for each coin on the deck to upgrade every Re-Flip."},
-	{"id": 23, "name": "Jar'O Savings", "rank": "S", "desc": "At the start of each turn, if a player has 30 or more gained coins, cleanse all Debt Stacks and immediately deal 100% of Gain as damage."},
-	{"id": 24, "name": "Pay Down", "rank": "S", "desc": "Add 10 Debt at the end of the Enemy’s Turn. If Enemy Debt is greater than their Current Coins at the end of their turn, perish instantly."},
-	{"id": 25, "name": "Refund", "rank": "S", "desc": "+3 Re-Flips. There is a 10% chance to retrieve all coins on the deck upon a Re-Flip."}
+	{"id": 0, "name": "Solar Coin", "rank": "B", "desc": "The 1st and 3rd Coin Flip are always SUN. Guaranteed Upgrade if RESERVED."},
+	{"id": 1, "name": "Lunar Coin", "rank": "B", "desc": "The 2nd and 4th Coin Flip are always MOON. Guaranteed Upgrade if RESERVED."},
+	{"id": 2, "name": "Wish Bone", "rank": "B", "desc": "+20% SILVER Flip Rate."},
+	{"id": 3, "name": "Golden Clover", "rank": "B", "desc": "+10% GOLD Flip Rate."},
+	{"id": 4, "name": "Impromptu Flip", "rank": "B", "desc": "Upon ending the turn, the Last Coin on the Arcane Circle will be Upgraded, and Flipped to its other side."},
+	{"id": 5, "name": "Advanced Planning", "rank": "B", "desc": "The First 2 Coins on the Arcane Circle will not be affected by Re-Flips. Upgrade these Coins at the end of the turn."},
+	{"id": 6, "name": "Value Increase", "rank": "B", "desc": "Upgrade all RESERVED Coins next turn."},
+	{"id": 7, "name": "Lending Charge", "rank": "B", "desc": "Each SUN-MOON Pair applies 3 DEBT."},
+	{"id": 8, "name": "Coin Snipe", "rank": "B", "desc": "Flipping a SILVER or GOLD Coin deals 1 DAMAGE."},
+	{"id": 9, "name": "Simple Interest", "rank": "B", "desc": "When RESERVING a Coin, apply 1 GAIN to self."},
+	{"id": 10, "name": "Lucky Pair", "rank": "A", "desc": "+10% GOLD Flip Rate. The 7th and 8th Flipped Coin are SHINED."},
+	{"id": 11, "name": "Sleight of Hand", "rank": "A", "desc": "+4 Extra Re-Flips."},
+	{"id": 12, "name": "Piggy", "rank": "A", "desc": "At the end of each turn, Piggy will duplicate your Last Coin Pair,and RESERVE it. This Coin Pair will be SHINED."},
+	{"id": 13, "name": "Pocket Money", "rank": "A", "desc": "Start each battle with 8 SILVER MOON Coins."},
+	{"id": 14, "name": "Passive Income", "rank": "A", "desc": "10% of the Enemy's Damage will be converted to RESERVED Coins."},
+	{"id": 15, "name": "Magic Trick", "rank": "A", "desc": "Upon ending the turn with 8 or more Coins, the 1st Coin Pair will be copied to the 2nd, 3rd, and 4th Coin Pair."},
+	{"id": 16, "name": "Reimbursement", "rank": "A", "desc": "Each Flip, Re-Flip, or Reserve has a 30% Chance to apply 1 DEBT."},
+	{"id": 17, "name": "Payback", "rank": "A", "desc": " If Coin Caster receives a killing blow, set Coin back to 1, Cleanse all Debuffs, and immediately generate 12 GOLD SUN Coins next turn. (One-Time per Battle)"},
+	{"id": 18, "name": "Loan Shark", "rank": "A", "desc": "At the start of the enemy’s turn, immediately deal damage based on half of the Enemy’s DEBT. Remove half of DEBT afterwards."},
+	{"id": 19, "name": "Spare Change", "rank": "A", "desc": "Upon a Re-Flip, retrieve all RESERVED Coins."},
+	{"id": 20, "name": "Triple Nickel", "rank": "A", "desc": "+20% SILVER Flip Rate. The first 3 Flips are guaranteed SILVER Coins."},
+	{"id": 21, "name": "Inflation", "rank": "S", "desc": "There is a 50% chance for each Coin on the Arcane Circle to upgrade every Re-Flip. For every Gold Coin played, apply 1 SPEND."},
+	{"id": 22, "name": "Jar'O Savings", "rank": "S", "desc":"At the end of the 1st Turn, gain an EXTRA TURN, apply 16 THRIFT to the enemy, and generate 16 SILVER MOON Coins. Cannot Flip, Re-Flip, or Reserve during Extra Turns. (One-Time per Battle)"},
+	{"id": 23, "name": "Bankrupt", "rank": "S", "desc": "For each turn, apply 8 DEBT, 4 SPEND, and 2 THRIFT. If Enemy DEBT is greater than their Current Coins at the end of their turn, perish instantly."},
+	{"id": 24, "name": "All In", "rank": "S", "desc": "If there are No Coins on the Arcane Circle at the end of the turn, Automatically Flip 24 Upgraded Coins."},
+	{"id": 25, "name": "Withdraw", "rank": "B", "desc": "For each RESERVED Coin removed, deal 1 DAMAGE."},
+	{"id": 26, "name": "Deposit", "rank": "A", "desc": "+4 Max Reserve."},
+	{"id": 27, "name": "Dividend", "rank": "A", "desc": "There is a 30% chance to duplicate each RESERVED Coin on the next turn."},
+	{"id": 28, "name": "Cash Out", "rank": "S", "desc": "When Coin Reserve is full at the end of the turn, immediately gain an EXTRA TURN. Cannot Flip, Re-Flip, or Reserve during Extra Turns."}
 ]
 
 func show_shop_async(player):
+	
+	carpet.modulate.a = 0
+	shop_keeper.modulate.a = 0
+	await main.sound_manager.play_sound(SHOP_BELL)
+	main.sound_manager.play_sound(SHOPKEEPER_VOICE)
 	shop_done = false
 	player_ref = player
 	show()
 	
+	var tween = create_tween()
+	tween.parallel().tween_property(carpet,"modulate:a",1,0.4)
+	tween.parallel().tween_property(shop_keeper,"modulate:a",1,0.4)
 	bg.visible = true
 	visible = true
 	back_button.disabled = false 
@@ -90,8 +107,8 @@ func generate_shop():
 	
 	var selected_cards = []
 	selected_cards += draw_cards(b_pool, 3)
-	selected_cards += draw_cards(a_pool, 2)
-	selected_cards += draw_cards(s_pool, 1)
+	selected_cards += draw_cards(a_pool, 3)
+	selected_cards += draw_cards(s_pool, 2)
 
 	for data in selected_cards:
 		var card = Shop_card.instantiate()
@@ -110,7 +127,7 @@ func generate_shop():
 			"B": base_price = 10
 			
 		# BONUS: Your Merchant Scroll Logic perfectly implemented!
-		if main.has_merchant_scroll:
+		if main.player.has_merchant_scroll:
 			card.price = int(base_price * 0.75) # 25% Off!
 		else:
 			card.price = base_price
@@ -122,11 +139,12 @@ func generate_shop():
 		# NEW: Listen for the hover signals!
 		card.card_hovered.connect(_on_card_hovered)
 		card.card_unhovered.connect(_on_card_unhovered)
-		
+		card.setup(main)
 		container.add_child(card)
 
 # NEW: Update the label when hovered
 func _on_card_hovered(description_text: String) -> void:
+	main.sound_manager.play_sound(SCROLL_HOVERED)
 	if descriptions:
 		descriptions.text = description_text
 
@@ -157,44 +175,111 @@ func _on_card_bought(card_id, price, card):
 func apply_item(card_id):
 	# ... (Your existing apply_item logic remains entirely unchanged here) ...
 	match card_id:
-		0: main.has_solar_coin = true
-		1: main.has_lunar_coin = true
-		2: 
-			main.has_wishbone = true
-			player.silver_flip_rate += 0.1
-		3: 
-			main.has_golden_clover = true
-			player.gold_flip_rate += 0.05
-		4: main.has_merchant_scroll = true
-		5: main.has_impromptu_flip = true
-		6: main.has_advanced_planning = true
-		7: main.has_value_increase = true
-		8: main.has_lending_charge = true
-		9: main.has_coin_snipe = true
-		10: main.has_simple_interest = true
-		11: main.has_lucky_pair = true
-		12: 
-			main.has_sleight_of_hand = true
-			player.max_flip += 3
-			player.max_reserve += 2
-		13: main.has_piggy = true
-		14: main.has_pocket_money = true
-		15: main.has_passive_income = true
-		16: main.has_magic_trick = true
-		17: main.has_reimbursement = true
-		18: main.has_payback = true
-		19: main.has_loan_shark = true
-		20: main.has_spare_change = true
-		21: main.has_triple_nickel = true
-		22: main.has_inflation = true
-		23: main.has_active_income = true
-		24: main.has_pay_down = true
-		25: main.has_refund = true
+		0:
+			print("Solar Coin Passive")
+			main.player.has_solar_coin = true
+		1:
+			print("Lunar Coin")
+			main.player.has_lunar_coin = true
+		2:
+			print("Wish Bone")
+			main.player.has_wishbone = true
+			main.player.silver_flip_rate += 0.2
+		3:
+			print("Golden Clover")
+			main.player.has_golden_clover = true
+			main.player.gold_flip_rate += 0.1
+		4:
+			print("Impromptu Flip Passive")
+			main.player.has_impromptu_flip = true
+		5:
+			print("Advanced Planning Passive")
+			main.player.has_advanced_planning = true
+		6:
+			print("Value Increase Passive")
+			main.player.has_value_increase = true
+		7:
+			print("Lending Charge Passive")
+			main.player.has_lending_charge = true
+		8:
+			print("Coin Snipe Passive")
+			main.player.has_coin_snipe = true
+		9:
+			print("Simple Interest Passive")
+			main.player.has_simple_interest = true
+		10:
+			print("Lucky Pair")
+			main.player.has_lucky_pair = true
+			main.player.gold_flip_rate += 0.1
+		11:
+			print("A-Rank: Sleight of Hand")
+			main.player.has_sleight_of_hand = true
+			main.player.max_re_flip += 4
+		12:
+			print("A-Rank: Piggy")
+			main.player.has_piggy = true
+		13:
+			print("A-Rank: Pocket Money")
+			main.player.has_pocket_money = true
+		14:
+			print("A-Rank: Passive Income")
+			main.player.has_passive_income = true
+		15:
+			print("A-Rank: Magic Trick")
+			main.player.has_magic_trick = true
+		16:
+			print("A-Rank: Reimbursement")
+			main.player.has_reimbursement = true
+		17:
+			print("A-Rank: Payback")
+			main.player.has_payback = true
+		18:
+			print("A-Rank: Loan Shark")
+			main.player.has_loan_shark = true
+		19:
+			print("A-Rank: Spare Change")
+			main.player.has_spare_change = true
+		20:
+			print("A-Rank:Triple Nickel")
+			main.player.has_triple_nickel = true
+			main.player.silver_flip_rate += 0.2
+		21:
+			print("S-Rank: Inflation")
+			main.player.has_inflation = true
+		22:
+			print("S-Rank: Active Income")
+			main.player.has_active_income = true
+		23:
+			print("S-Rank: Bankrupt")
+			main.player.has_pay_down = true
+		24:
+			print("S-Rank: Refund")
+			main.player.has_refund = true
+			main.player.max_re_flip += 1
+		25:
+			print("B-Rank: Withdraw")
+			main.player.has_withdraw = true
+		26:
+			print("A-Rank: Deposit")
+			main.player.has_deposit = true
+			main.player.max_reserve += 4
+		27:
+			print("A-Rank: Dividend")
+			main.player.has_dividend = true
+		28:
+			print("S-Rank: Cash Out")
+			main.player.has_cash_out = true
+		_:
+			print("Other reward")
+
 
 func close_shop():
 	bg.visible = false
 	visible = false
 	shop_done = true
+	var tween = create_tween()
+	tween.parallel().tween_property(carpet,"modulate:a",0,0.4)
+	tween.parallel().tween_property(shop_keeper,"modulate:a",0,0.4)
 	emit_signal("shop_closed")
 	
 func _ready() -> void:
@@ -216,30 +301,63 @@ func _on_back_pressed() -> void:
 	
 func is_card_owned(card_id: int) -> bool:
 	match card_id:
-		0: return main.has_solar_coin
-		1: return main.has_lunar_coin
-		2: return main.has_wishbone
-		3: return main.has_golden_clover
-		4: return main.has_merchant_scroll
-		5: return main.has_impromptu_flip
-		6: return main.has_advanced_planning
-		7: return main.has_value_increase
-		8: return main.has_lending_charge
-		9: return main.has_coin_snipe
-		10: return main.has_simple_interest
-		11: return main.has_lucky_pair
-		12: return main.has_sleight_of_hand
-		13: return main.has_piggy
-		14: return main.has_pocket_money
-		15: return main.has_passive_income
-		16: return main.has_magic_trick
-		17: return main.has_reimbursement
-		18: return main.has_payback
-		19: return main.has_loan_shark
-		20: return main.has_spare_change
-		21: return main.has_triple_nickel
-		22: return main.has_inflation
-		23: return main.has_active_income
-		24: return main.has_pay_down
-		25: return main.has_refund
-		_: return false
+		0: 
+			return main.player.has_solar_coin
+		1: 
+			return main.player.has_lunar_coin
+		2: 
+			return main.player.has_wishbone
+		3: 
+			return main.player.has_golden_clover
+		4: 
+			return main.player.has_impromptu_flip
+		5: 
+			return main.player.has_advanced_planning
+		6: 
+			return main.player.has_value_increase
+		7: 
+			return main.player.has_lending_charge
+		8: 
+			return main.player.has_coin_snipe
+		9: 
+			return main.player.has_simple_interest
+		10: 
+			return main.player.has_lucky_pair
+		11: 
+			return main.player.has_sleight_of_hand
+		12: 
+			return main.player.has_piggy
+		13: 
+			return main.player.has_pocket_money
+		14: 
+			return main.player.has_passive_income
+		15: 
+			return main.player.has_magic_trick
+		16: 
+			return main.player.has_reimbursement
+		17: 
+			return main.player.has_payback
+		18: 
+			return main.player.has_loan_shark
+		19: 
+			return main.player.has_spare_change
+		20: 
+			return main.player.has_triple_nickel
+		21: 
+			return main.player.has_inflation
+		22: 
+			return main.player.has_active_income
+		23: 
+			return main.player.has_pay_down
+		24: 
+			return main.player.has_refund
+		25:
+			return main.player.has_withdraw
+		26:
+			return main.player.has_deposit
+		27:
+			return main.player.has_dividend
+		28:
+			return main.player.has_cash_out
+		_:
+			return false

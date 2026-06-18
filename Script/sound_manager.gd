@@ -4,7 +4,6 @@ extends Node2D
 var playback: AudioStreamPlaybackPolyphonic
 
 @onready var bgm_player: AudioStreamPlayer2D = $"BGMPlayer"
-var synchronizer: AudioStreamSynchronized
 
 
 # Called when the node enters the scene tree for the first time.
@@ -20,5 +19,12 @@ func play_sound(stream: AudioStream):
 	if !sfx_player.playing:
 		sfx_player.play()
 		playback = sfx_player.get_stream_playback()
-
 	playback.play_stream(stream)
+
+func play_music(stream):
+	if !bgm_player.playing:
+		bgm_player.stream = stream
+		bgm_player.play()
+		
+func stop_music():
+	bgm_player.stop()

@@ -3,7 +3,6 @@
 [ext_resource type="Texture2D" uid="uid://brn3ihcjo08pk" path="res://Assets/Coins/sun_to_moon_coin-Sheet.png" id="1_s7vc7"]
 [ext_resource type="Script" uid="uid://jwx6fba1yb5l" path="res://Scripts/Menus/main_menu_script.gd" id="1_sjmou"]
 [ext_resource type="Texture2D" uid="uid://bvg1hmi6pjwfb" path="res://Assets/Coins/sun_flip_upright.png" id="2_b43xc"]
-[ext_resource type="Texture2D" uid="uid://ctp4djn4xcepy" path="res://Assets/Coins/moon_flip_upright.png" id="3_ppjel"]
 [ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="5_yf7ie"]
 [ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="6_uyvy5"]
 
@@ -33,35 +32,99 @@ region = Rect2(32, 0, 16, 16)
 atlas = ExtResource("2_b43xc")
 region = Rect2(48, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ppjel"]
-atlas = ExtResource("1_s7vc7")
-region = Rect2(0, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_b43xc"]
-atlas = ExtResource("1_s7vc7")
-region = Rect2(16, 0, 16, 16)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_yf7ie"]
 atlas = ExtResource("1_s7vc7")
-region = Rect2(32, 0, 16, 16)
+region = Rect2(0, 32, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uyvy5"]
-atlas = ExtResource("3_ppjel")
-region = Rect2(48, 0, 16, 16)
+atlas = ExtResource("1_s7vc7")
+region = Rect2(16, 32, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_eslk0"]
-atlas = ExtResource("3_ppjel")
-region = Rect2(0, 0, 16, 16)
+atlas = ExtResource("1_s7vc7")
+region = Rect2(32, 32, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p0twe"]
-atlas = ExtResource("3_ppjel")
-region = Rect2(16, 0, 16, 16)
+atlas = ExtResource("1_s7vc7")
+region = Rect2(48, 32, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_of7ff"]
-atlas = ExtResource("3_ppjel")
-region = Rect2(32, 0, 16, 16)
+atlas = ExtResource("1_s7vc7")
+region = Rect2(64, 32, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e60vw"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(80, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_agvtg"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(96, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0c733"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(112, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vyihv"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lngom"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hlnrm"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bp1oj"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(48, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rbbaj"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(64, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r4o7e"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(80, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dam3f"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(96, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yjix4"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(112, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w0euy"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ajndv"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c7ltb"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pkslc"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7jwau"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4psld"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1mm1q"]
+atlas = ExtResource("1_s7vc7")
+region = Rect2(96, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_070e8"]
 atlas = ExtResource("1_s7vc7")
 region = Rect2(112, 0, 16, 16)
 
@@ -85,33 +148,91 @@ animations = [{
 "speed": 8.0
 }, {
 "frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ppjel")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_b43xc")
-}, {
-"duration": 1.0,
+"duration": 0.6,
 "texture": SubResource("AtlasTexture_yf7ie")
 }, {
-"duration": 1.0,
+"duration": 0.6,
 "texture": SubResource("AtlasTexture_uyvy5")
 }, {
-"duration": 1.0,
+"duration": 0.6,
 "texture": SubResource("AtlasTexture_eslk0")
 }, {
-"duration": 1.0,
+"duration": 0.6,
 "texture": SubResource("AtlasTexture_p0twe")
 }, {
-"duration": 1.0,
+"duration": 0.6,
 "texture": SubResource("AtlasTexture_of7ff")
 }, {
-"duration": 1.0,
+"duration": 0.6,
 "texture": SubResource("AtlasTexture_e60vw")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_agvtg")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_0c733")
 }],
 "loop": true,
 "name": &"coin_flipping",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_vyihv")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_lngom")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_hlnrm")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_bp1oj")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_rbbaj")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_r4o7e")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_dam3f")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_yjix4")
+}],
+"loop": true,
+"name": &"gold_coin_flip",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_w0euy")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_ajndv")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_c7ltb")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_pkslc")
+}, {
+"duration": 0.99,
+"texture": SubResource("AtlasTexture_7jwau")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_4psld")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_1mm1q")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_070e8")
+}],
+"loop": true,
+"name": &"tutorial_coin",
+"speed": 5.0
 }]
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_eslk0"]
@@ -120,17 +241,24 @@ animations = [{
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 871.0
+offset_top = -94.0
+offset_right = 871.0
+offset_bottom = -94.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 script = ExtResource("1_sjmou")
 
+[node name="Camera2D" type="Camera2D" parent="." unique_id=254091799]
+position = Vector2(576, 324)
+
 [node name="Glow" type="Panel" parent="." unique_id=712917737]
 layout_mode = 0
-offset_left = 568.0
+offset_left = 561.0
 offset_top = 440.0
-offset_right = 584.0
-offset_bottom = 456.0
+offset_right = 577.0
+offset_bottom = 457.0
 pivot_offset = Vector2(-5, 5)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_uyvy5")
@@ -141,15 +269,28 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 512.0
-offset_top = 384.0
-offset_right = -512.0
-offset_bottom = -136.0
+offset_left = 504.0
+offset_top = 387.0
+offset_right = -520.0
+offset_bottom = -133.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Tutorial" type="Button" parent="." unique_id=2050805658]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 108.0
+offset_top = 393.0
+offset_right = -916.0
+offset_bottom = -127.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Coin" type="AnimatedSprite2D" parent="." unique_id=1128530618]
-position = Vector2(576, 448)
+position = Vector2(567, 449)
 rotation = 1.5707964
 scale = Vector2(8, 8)
 sprite_frames = SubResource("SpriteFrames_i4xaw")
@@ -157,12 +298,13 @@ animation = &"coin_flip_up"
 
 [node name="Main Game Title" type="Label" parent="." unique_id=1408840644]
 layout_mode = 0
-offset_left = 128.0
-offset_top = 128.0
-offset_right = 1024.0
-offset_bottom = 320.0
+offset_left = -77.0
+offset_top = 95.0
+offset_right = 2609.0
+offset_bottom = 367.0
+scale = Vector2(0.5, 0.5)
 theme_override_fonts/font = ExtResource("5_yf7ie")
-theme_override_font_sizes/font_size = 123
+theme_override_font_sizes/font_size = 272
 text = "A r c o i n i u m"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -170,12 +312,13 @@ vertical_alignment = 1
 [node name="Flip Coin to Start" type="Label" parent="." unique_id=287850024]
 self_modulate = Color(0.86610603, 0.86610603, 0.86610603, 1)
 layout_mode = 0
-offset_left = 440.0
-offset_top = 560.0
-offset_right = 712.0
-offset_bottom = 616.0
-theme_override_font_sizes/font_size = 31
-text = "FLIP COIN TO START"
+offset_left = 478.0
+offset_top = 568.0
+offset_right = 883.0
+offset_bottom = 632.0
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/font_size = 63
+text = "FLIP TO START"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -186,3 +329,127 @@ script = ExtResource("6_uyvy5")
 
 [node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1088019939]
 stream = SubResource("AudioStreamPolyphonic_eslk0")
+
+[node name="Greed Glow" type="Panel" parent="." unique_id=1203397006]
+self_modulate = Color(0.9999998, 0.8607578, 0.4857236, 1)
+layout_mode = 0
+offset_left = 799.0
+offset_top = 445.0
+offset_right = 815.0
+offset_bottom = 461.0
+pivot_offset = Vector2(-5, 5)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_uyvy5")
+
+[node name="Greed Coin" type="AnimatedSprite2D" parent="." unique_id=1228548389]
+position = Vector2(806, 453)
+rotation = 1.5707964
+scale = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_i4xaw")
+animation = &"coin_flipping"
+
+[node name="GreedButton" type="Button" parent="." unique_id=1229254374]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 743.0
+offset_top = 390.0
+offset_right = -281.0
+offset_bottom = -130.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NORMAL" type="Label" parent="." unique_id=1582131222]
+visible = false
+self_modulate = Color(0.86610603, 0.86610603, 0.86610603, 1)
+layout_mode = 0
+offset_left = 253.0
+offset_top = 409.0
+offset_right = 775.0
+offset_bottom = 540.0
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/font_size = 63
+text = "NORMAL MODE
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NORMAL" type="Label" parent="NORMAL" unique_id=987742484]
+self_modulate = Color(0.86610603, 0.86610603, 0.86610603, 1)
+layout_mode = 0
+offset_left = 94.0
+offset_top = 96.0
+offset_right = 730.0
+offset_bottom = 227.0
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/font_size = 63
+text = "- Standard Experience
+- Start With 15 Coins
+- For New Players"
+vertical_alignment = 1
+
+[node name="Tutorial Label" type="Label" parent="." unique_id=1129801492]
+visible = false
+self_modulate = Color(0.86610603, 0.86610603, 0.86610603, 1)
+layout_mode = 0
+offset_left = 43.0
+offset_top = 299.0
+offset_right = 565.0
+offset_bottom = 430.0
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/font_size = 63
+text = "TUTORIAL MODE
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GREED" type="Label" parent="." unique_id=715473414]
+visible = false
+self_modulate = Color(0.86610603, 0.86610603, 0.86610603, 1)
+layout_mode = 0
+offset_left = 886.0
+offset_top = 395.0
+offset_right = 1362.0
+offset_bottom = 526.0
+scale = Vector2(0.5, 0.5)
+theme_override_colors/font_color = Color(0.9999998, 0.73395246, 0.10155413, 1)
+theme_override_font_sizes/font_size = 63
+text = "GREED MODE
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GREED" type="Label" parent="GREED" unique_id=307475919]
+self_modulate = Color(0.86610603, 0.86610603, 0.86610603, 1)
+layout_mode = 0
+offset_left = 58.0
+offset_top = 106.0
+offset_right = 805.0
+offset_bottom = 304.0
+scale = Vector2(0.5, 0.5)
+theme_override_colors/font_color = Color(0.9999998, 0.73395246, 0.10155413, 1)
+theme_override_font_sizes/font_size = 63
+text = "- Enemies Greatly Enhanced
+- Start With 30 Coins
+- Base Stats Increased
+- For Experienced Players
+"
+
+[node name="Glow2" type="Panel" parent="." unique_id=1169691643]
+layout_mode = 0
+offset_left = 180.0
+offset_top = 443.0
+offset_right = 196.0
+offset_bottom = 460.0
+pivot_offset = Vector2(-5, 5)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_uyvy5")
+
+[node name="Coin2" type="AnimatedSprite2D" parent="." unique_id=2013974195]
+position = Vector2(189, 453)
+rotation = 1.5707964
+scale = Vector2(8, 8)
+sprite_frames = SubResource("SpriteFrames_i4xaw")
+animation = &"gold_coin_flip"

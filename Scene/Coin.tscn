@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://ctvgpe532fo2k" path="res://Script/coin.gd" id="1_byqvs"]
 [ext_resource type="Texture2D" uid="uid://brn3ihcjo08pk" path="res://Assets/Coins/sun_to_moon_coin-Sheet.png" id="2_byqvs"]
 [ext_resource type="Texture2D" uid="uid://b26gbj0tgcnn" path="res://Assets/16bitcoins.png" id="2_jea4o"]
+[ext_resource type="Script" uid="uid://bce80haxrb33g" path="res://Scene/shined.gd" id="4_hncfd"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hncfd"]
 atlas = ExtResource("2_jea4o")
@@ -277,6 +278,15 @@ animations = [{
 "speed": 8.0
 }]
 
+[sub_resource type="Gradient" id="Gradient_hncfd"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_36o68"]
+gradient = SubResource("Gradient_hncfd")
+fill = 1
+fill_from = Vector2(0.4940171, 0.52136755)
+fill_to = Vector2(0.83931625, 0.25128207)
+
 [node name="Coin" type="Node2D" unique_id=1898979683]
 script = ExtResource("1_byqvs")
 
@@ -285,4 +295,20 @@ texture_filter = 1
 position = Vector2(40, 40)
 scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_hncfd")
-animation = &"silver_tail"
+animation = &"gold_tail"
+
+[node name="SHINED" type="AnimatedSprite2D" parent="." unique_id=261963074]
+texture_filter = 1
+position = Vector2(40.000004, -3.5762787e-07)
+scale = Vector2(5, 5)
+sprite_frames = SubResource("SpriteFrames_hncfd")
+animation = &"copper_head"
+script = ExtResource("4_hncfd")
+
+[node name="PointLight2D" type="PointLight2D" parent="SHINED" unique_id=1648405762]
+position = Vector2(0.20000029, 4.7683716e-07)
+scale = Vector2(0.25, 0.24999996)
+color = Color(0.9999996, 0.92378306, 0.7951896, 1)
+energy = 3.16
+blend_mode = 2
+texture = SubResource("GradientTexture2D_36o68")

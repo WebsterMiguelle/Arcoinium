@@ -25,7 +25,7 @@ grow_horizontal = 0
 grow_vertical = 0
 script = ExtResource("1_v28cp")
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=471872385]
+[node name="Background" type="TextureRect" parent="." unique_id=471872385]
 custom_minimum_size = Vector2(100, 10)
 layout_mode = 1
 anchors_preset = 15
@@ -40,7 +40,7 @@ grow_vertical = 2
 scale = Vector2(1, 0.53478336)
 texture = SubResource("GradientTexture2D_pa47o")
 
-[node name="MarginContainer" type="MarginContainer" parent="TextureRect" unique_id=807353360]
+[node name="MarginContainer" type="MarginContainer" parent="Background" unique_id=807353360]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -55,7 +55,7 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="Label" type="Label" parent="TextureRect/MarginContainer" unique_id=1906907782]
+[node name="Label" type="Label" parent="Background/MarginContainer" unique_id=1906907782]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Label"

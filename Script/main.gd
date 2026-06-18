@@ -17,9 +17,30 @@ enum Enemy{
 	TWILIGHT_SAGE
 }
 
-#USER INTERFACE
+
+
+
 @onready var player = $Player
 @onready var enemy = $Enemy
+@onready var main: TextureRect = $"."
+var greed_color = '#ffa889'
+var vignette_default = '#bdabb8'
+var vignetter_default = '#ffe6909e'
+var sun_caster_color = '#e56400'
+var moon_caster_color = '#1a54fb'
+var dawn_stance = '#ffcda0'
+var dusk_stance = '#8dacf7'
+@onready var battle_particles: GPUParticles2D = $"ParticleManager/Battle Particles"
+@onready var dusk_particles: GPUParticles2D = $"ParticleManager/Dusk Particles"
+@onready var dawn_particles: GPUParticles2D = $"ParticleManager/Dawn Particles"
+@onready var reserve_button: Button = $"Battle UI/Reserve Button"
+@onready var player_reserve: Label = $"Battle UI/Reserve Button/Player Reserve"
+@onready var player_reserve_rug: TextureRect = $"Player/Player Reserve Rug"
+@onready var vignette: CanvasModulate = $"../Vignette"
+@onready var vignetter: PointLight2D = $"../Vignetter"
+
+var second_enemy
+var third_enemy
 
 #PARTICLES
 const COIN_ADD_PARTICLE = preload("res://Scene/Coin Add Particle.tscn")
@@ -34,7 +55,6 @@ const SINGLE_DAMAGE_PARTICLE = preload("res://Scene/Single Damage Particle.tscn"
 #SFX
 const COIN_ENDTURN = preload("uid://bfruqunt0uyuj")
 const COIN_FLIP = preload("uid://bmscttmxwr782")
-const COIN_GAIN = preload("uid://c3v64vs2uqtik")
 const COIN_REFLIP = preload("uid://qtxsmuntihe3")
 const DAMAGE_HEAVY = preload("uid://b8us2t16pmggo")
 const DAMAGE_LIGHT = preload("uid://ds0jngoq17iij")
@@ -42,6 +62,7 @@ const DAMAGE_MODERATE = preload("uid://b2rf2iy046cx2")
 const TURN_ENEMY = preload("uid://rncriov1quyx")
 const TURN_PLAYER = preload("uid://dk7433d32rg52")
 const TURN_REVEAL = preload("uid://boyjppal62qns")
+const VICTORY = preload("uid://bu3c18dhngcvw")
 
 const PASSIVE_PASSIVE_INCOME = preload("uid://cl4xnombcshkv")
 const PASSIVE_PAYBACK = preload("uid://bbsxs62yhirxa")
@@ -55,7 +76,17 @@ const PASSIVE_LOAN_SHARK = preload("uid://6xxw4avoncr8")
 const PASSIVE_PAYDOWN = preload("uid://djv3lp0l3aftb")
 const DEATH = preload("uid://bx1ttmouolx2q")
 
+const BATTLE_START = preload("uid://whq12p7mykru")
+const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
+const EXTRA_TURN = preload("uid://yp1dxyml8rna")
 
+#MUSIC
+const SHOP = preload("uid://cj6gpgjo4y5s0")
+const PASSIVE_SELECTION = preload("uid://cfm3uhjitv627")
+const TWILIGHT_SAGE = preload("uid://dh7vynnxrbqwa")
+const TWILIGHT_ZONE___BATTLE_THEME_1 = preload("uid://b8go57qfww8el")
+const TWILIGHT_ZONE___BATTLE_THEME_2 = preload("uid://byxwfs5g71s5x")
+const TWILIGHT_ZONE___BATTLE_THEME_3 = preload("uid://bivy2e314q2fa")
 
 #@onready var player_portrait: ColorRect = $Player/Player_Portrait
 #@onready var enemy_portrait: ColorRect = $Enemy/Enemy_Portrait
@@ -68,7 +99,6 @@ const DEATH = preload("uid://bx1ttmouolx2q")
 @onready var player_sprite: AnimatedSprite2D = $"Progression Map/Player_Sprite"
 @onready var banner: TextureRect = $"Progression Map/MapBackground/Banner"
 
-# Put your markers in the exact order they should be visited
 @onready var map_markers: Array[Node] = [
 $"Progression Map/Enemy 1", 
 $"Progression Map/Enemy 2", 
@@ -83,27 +113,64 @@ $"Progression Map/Boss"
 @onready var re_flip_button: Button = $"Battle UI/Re-Flip"
 @onready var reflip_sprite: AnimatedSprite2D = $"Battle UI/Re-Flip/Reflip_Sprite"
 @onready var reflip_label: Label = $"Battle UI/Re-Flip/Reflip_Label"
-@onready var turn_calculation: Label = $"Battle UI/Turn Calculation"
+@onready var turn_calculation: Label = $"Battle UI/Turn Calculation Box/Turn Calculation"
+@onready var turn_calculation_box: TextureRect = $"Battle UI/Turn Calculation Box"
+
 
 @onready var player_health_bar = $"Battle UI/PlayerHealthBar2"
 @onready var player_gain: Label = $"Player/Player Gain"
 @onready var player_debt: Label = $"Player/Player Debt"
 @onready var player_health_label = $"Battle UI/HealthLabel"
+@onready var player_thrift: Label = $"Player/Player Thrift"
+@onready var player_lock: Label = $"Player/Player Lock"
+@onready var player_slow: Label = $"Battle UI/Re-Flip/Player Slow"
+@onready var player_slow_particles: GPUParticles2D = $"Battle UI/Re-Flip/Player Slow Particles"
+var slow_color = "#43a563"
+const PLAYER_INFORMATION_DISPLAY = preload("uid://c61s4yrsvak0l")
+var player_info_menu: Node = null
+const ENEMY_INFORMATION_DISPLAY = preload("res://Scene/EnemyInformationDisplay.tscn")
+var enemy_info_menu: Node = null
+
+@onready var player_lock_particles: GPUParticles2D = $"Player/Player Lock Particles"
+@onready var player_gain_particles: GPUParticles2D = $"Player/Player Gain Particles"
+@onready var player_debt_particles: GPUParticles2D = $"Player/Player Debt Particles"
+@onready var enemy_debt_particles: GPUParticles2D = $"Enemy/Enemy Debt Particles"
+@onready var player_thrift_particles: GPUParticles2D = $"Player/Player Thrift Particles"
+@onready var enemy_thrift_particles: GPUParticles2D = $"Enemy/Enemy Thrift Particles"
+@onready var enemy_gain_particles: GPUParticles2D = $"Enemy/Enemy Gain Particles"
+
+@onready var player_spend_particles: GPUParticles2D = $"Battle UI/Player Spend Particles"
+@onready var player_spend: Label = $"Battle UI/Player Spend"
+@onready var enemy_spend_particles: GPUParticles2D = $"Battle UI/Enemy Spend Particles"
+@onready var enemy_spend: Label = $"Battle UI/Enemy Spend"
+
 
 @onready var enemy_health_bar = $"Battle UI/EnemyHealthBar"
 @onready var enemy_health_label: Label = $"Battle UI/EnemyHealthLabel"
 @onready var enemy_gain: Label = $"Enemy/Enemy Gain"
 @onready var enemy_debt: Label = $"Enemy/Enemy Debt"
+@onready var enemy_thrift: Label = $"Enemy/Enemy Thrift"
+
+@onready var enemy_passive_label = $"Battle UI/CenterContainer/Background/EnemyLabelNotification"
+@onready var enemy_passive_bg = $"Battle UI/CenterContainer/Background"
+var enemy_notif_tween: Tween = null
+var enemy_notif_base_pos: Vector2
 
 @onready var turn_ui: ColorRect = $"Battle UI/Turn UI"
 @onready var turn_ui_label: Label = $"Battle UI/Turn UI/Turn UI Label"
 
 @onready var passive_manager = $PassiveManager
 @onready var passive_label = $"Battle UI/PassiveContainer"
-@onready var enemy_passive_label = $"Battle UI/EnemyLabelNotification"
 
 var active_passive_notifs: Dictionary = {}
+var active_temp_notifs: Array = []
+var recent_triggers: Dictionary = {}
+var active_temp_ids: Dictionary = {}
+var passive_order: Array = []
+var max_visible_passives = 10
+var overflow_notif: Control = null
 
+	
 const PASSIVE_SCENE = preload("res://Scene/passsive_notification.tscn")
 
 @onready var game_over_ui: CanvasLayer = $"Game Over UI"
@@ -131,14 +198,13 @@ var total_damage = 0
 var highest_damage = 0
 var total_gain = 0
 var highest_gain = 0
-var total_debt = 0
-var highest_debt = 0
 var enemies_defeated = 0
 var total_heads = 0
 var total_tails = 0
 var total_flips = 0
 var total_reflips = 0
 var total_passives = 0
+var overall_reserved_coins = 0
 
 var overall_total_damage: int = 0
 var overall_highest_damage: int = 0
@@ -147,88 +213,7 @@ var overall_highest_gain: int = 0
 
 var current_enemy_type
 
-#Random Events Selection Scene
-var event_maps = [
-   # preload("res://Events/###.tscn"),
-   # preload("res://Events/###.tscn"),
-   # preload("res://Events/###.tscn")
-]
-
-
-#PASSIVES
-
-#Passive Specific Variables
-var flip_clicks = 0
-var latest_coin = null
-var coin_count = 0
-var latest_pair_left_coin = null
-var latest_pair_right_coin = null
-var payback_used = false
-var payback_coins = 10
-var passive_income_used = false
-var pocket_money_coins = 6
-var previous_player_gain = 0
-
-var previous_player_flips = 0
-var player_turn_count = 0
-var sun_count = 0
-var moon_count = 0
-
-var coins_array: Array = []
-
-#GENERAL PASSIVES
-
-#B-Rank
-@export var has_wishbone = false
-@export var has_golden_clover = false
-@export var has_solar_coin = false
-@export var has_lunar_coin = false
-@export var has_merchant_scroll = false
-@export var has_impromptu_flip = false
-@export var has_advanced_planning = false
-
-#A-Rank
-@export var has_magic_trick = false
-@export var has_sleight_of_hand = false
-@export var has_piggy = false
-
-#INNOVATOR PASSIVES
-
-@export var has_inflation = false
-@export var has_payback = false
-@export var has_lucky_pair = false
-@export var has_value_increase = false
-
-#SHOOTER PASSIVES
-
-@export var has_spare_change = false
-@export var has_triple_nickel = false
-@export var has_refund = false
-@export var has_coin_snipe = false
-
-#INVESTOR PASSIVES
-
-@export var has_active_income = false
-@export var has_pocket_money = false
-@export var has_passive_income = false
-@export var has_simple_interest = false
-
-#DEBTOR PASSIVES
-
-@export var has_pay_down = false
-@export var has_reimbursement = false
-@export var has_loan_shark = false
-@export var has_lending_charge = false
-
-#ENEMY PASSIVES
-
-var has_value_added_tax = false
-var has_fair_trade = false
-var has_learn_to_save = false
-var has_fully_paid = false
-var has_sunlit_curse = false
-var has_midnight_curse = false
-var has_dusk_stance = false
+var is_surrender = false
 
 var current_enemy_index
 var current_room
@@ -238,67 +223,42 @@ func _on_item_purchased(card_id,price):
 	update_player_coin()
 	if shop_manager.visible:
 		shop_manager.coin_label.text = "Coins: " + str(player.coin)
-	
 
-func reset_player_passives():
-		#B-Rank
-	has_wishbone = false
-	has_golden_clover = false
-	has_solar_coin = false
-	has_lunar_coin = false
-	has_merchant_scroll = false
-	has_impromptu_flip = false
-	has_advanced_planning = false
+func switch_vignette_color(to,duration):
+	var tween = create_tween()
+	tween.tween_property(vignette,"color",Color.from_string(to,Color.WHITE),duration)
 
-	#A-Rank
-	has_magic_trick = false
-	has_sleight_of_hand = false
-	has_piggy = false
-
-	#INNOVATOR PASSIVES
-
-	has_inflation = false
-	has_payback = false
-	has_lucky_pair = false
-	has_value_increase = false
-
-	#SHOOTER PASSIVES
-
-	has_spare_change = false
-	has_triple_nickel = false
-	has_refund = false
-	has_coin_snipe = false
-
-	#INVESTOR PASSIVES
-
-	has_active_income = false
-	has_pocket_money = false
-	has_passive_income = false
-	has_simple_interest = false
-
-	#DEBTOR PASSIVES
-
-	has_pay_down = false
-	has_reimbursement = false
-	has_loan_shark = false
-	has_lending_charge = false
+func switch_vignetter_color(to,duration):
+	var tween = create_tween()
+	tween.tween_property(vignetter,"color",Color.from_string(to,Color.WHITE),duration)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+
 	await get_tree().create_timer(0.4).timeout
 	await _play_fake_coin_intro()
-	
+	turn_calculation_box.visible = false
+	turn_ui.visible = false
 	current_room = 0
 	current_enemy_index = randi_range(0,1)
 	passive_manager.setup(self)
-	#show_passive_notification("PASSIVE APPEAR HERE", 3.0)
-	show_enemy_passive("", 3.0)
+	player.setup(self)
+	#show_enemy_passive("Hello!", 3.0)
 	game_over_ui.visible = false
 	pause_menu.visible = false
 	turn_ui.visible = false
 	print(reward_manager)
-	reset_player_passives()
 	player.reset_stats()
+
+	#GREED MODE
+	if player.greed: 
+		main.self_modulate = Color(greed_color)
+		enemy.greed = true
+		player.coin += 15
+		player.silver_flip_rate += 0.2
+		player.gold_flip_rate += 0.1
+		player.max_re_flip += 3
+	else: main.self_modulate = Color.WHITE
 	shop_manager.item_purchased.connect(_on_item_purchased)
 	
 	if not pause_menu.end_run_pressed.is_connected(_on_end_run_pressed):
@@ -318,18 +278,20 @@ func toggle_pause():
 	get_tree().paused = !get_tree().paused
 	pause_menu.visible = get_tree().paused
 	
+	battle_particles.emitting = !get_tree().paused
+	dusk_particles.emitting = !get_tree().paused
+	dawn_particles.emitting = !get_tree().paused
+	
 func battle_start():
-	#Refresh Enemy Passives
+	re_flip_button.visible = true
+	player_reserve.visible = true
+	switch_vignetter_color(vignetter_default,0.1)
+	switch_vignette_color(vignette_default,0.1)
+	battle_particles.emitting = true
+	dawn_particles.emitting = false
+	dusk_particles.emitting = false
 	
-	has_value_added_tax = false
-	has_fair_trade = false
-	has_learn_to_save = false
-	has_fully_paid = false
-	has_sunlit_curse = false
-	has_midnight_curse = false
-	has_dusk_stance = false
-	
-
+	turn_ui.visible = false
 	var coins = get_tree().get_nodes_in_group("enemy coins")
 	for coin in coins:
 		coin.queue_free()
@@ -342,21 +304,18 @@ func battle_start():
 	for coin in coins:
 		coin.queue_free()
 		
-	latest_pair_left_coin = null
-	latest_pair_right_coin = null
-	latest_coin = null
+	coins = get_tree().get_nodes_in_group("enemy_coins")
+	for coin in coins:
+		coin.queue_free()
 	reserved_coin = null
-	enemy.debt = 0
-	player.debt = 0
-	enemy.gain = 0
-	player.gain = 0
-	player.max_flip = 16
-	
+	player.refresh_start_of_battle_stats()
+	enemy.refresh_start_of_battle_stats()
+	enemy.reset_passives()
+	show_all_passive_notifications()
+
 	coin_deck.reset_sigils()
-	update_enemy_gain_debt()
-	update_player_gain_debt()
 	reflip_label.text = str(player.max_re_flip - player.current_re_flip)
-	
+
 	randomize()
 	
 	flip_button.pressed.connect(_on_flip_pressed)
@@ -365,238 +324,70 @@ func battle_start():
 	var enemy_id = current_enemy_index
 	match enemy_id:
 		0: 
-			enemy.setup(Enemy.MAGE)
+			enemy.setup(self,Enemy.MAGE)
 			enemy_portrait_sprite.play("MAGE")
+			current_enemy_type = Enemy.MAGE
 		1: 
-			enemy.setup(Enemy.DWARF)
+			enemy.setup(self,Enemy.DWARF)
 			enemy_portrait_sprite.play("DWARF")
+			current_enemy_type = Enemy.DWARF
 		2: 
-			enemy.setup(Enemy.COLLECTOR)
+			enemy.setup(self,Enemy.COLLECTOR)
 			enemy_portrait_sprite.play("COLLECTOR")
-			has_value_added_tax = true
+			current_enemy_type = Enemy.COLLECTOR
 		3: 
-			enemy.setup(Enemy.TRADER)
+			enemy.setup(self,Enemy.TRADER)
 			enemy_portrait_sprite.play("TRADER")
-			has_fair_trade = true
+			current_enemy_type = Enemy.TRADER
 		4: 
-			enemy.setup(Enemy.THRIFTER)
+			enemy.setup(self,Enemy.THRIFTER)
 			enemy_portrait_sprite.play("THRIFTER")
-			has_learn_to_save = true
+			current_enemy_type = Enemy.THRIFTER
 		5:
-			enemy.setup(Enemy.ARISTOCRAT)
+			enemy.setup(self,Enemy.ARISTOCRAT)
 			enemy_portrait_sprite.play("ARISTOCRAT")
-			has_fully_paid = true
-			enemy.debt = 100
+			current_enemy_type = Enemy.ARISTOCRAT
 		6: 
-			enemy.setup(Enemy.SUN_CASTER)
+			enemy.setup(self,Enemy.SUN_CASTER)
 			enemy_portrait_sprite.play("SUN_CASTER")
-			has_sunlit_curse = true
+			current_enemy_type = Enemy.SUN_CASTER
 		7: 
-			enemy.setup(Enemy.MOON_CASTER)
+			enemy.setup(self,Enemy.MOON_CASTER)
 			enemy_portrait_sprite.play("MOON_CASTER")
-			has_midnight_curse = true
+			current_enemy_type = Enemy.MOON_CASTER
 		8:
-			enemy.setup(Enemy.TWILIGHT_SAGE)
-			enemy_portrait_sprite.play("TWILIGHT_SAGE_DUSK")
-			has_dusk_stance = true
+			enemy.setup(self,Enemy.TWILIGHT_SAGE)
+			enemy_portrait_sprite.play("TWILIGHT_SAGE_DAWN")
+			current_enemy_type = Enemy.TWILIGHT_SAGE
+
 	
 	update_enemy_coin()
 	update_player_coin()
-	show_turn_ui("BATTLE START")
 	flip_button.disabled = false
-	
+	sound_manager.play_sound(BATTLE_START)
+	var bgm_rand = randi_range(0,2)
+	if current_enemy_index == 8:
+		sound_manager.play_music(TWILIGHT_SAGE)
+	elif bgm_rand == 0: 
+		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_1)
+	elif bgm_rand == 1:
+		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_2)
+	else:
+		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_3)
+		
 	#Battle Start Passives
-	await activate_pre_battle_passives()
-	player_turn_count = 0
+	await player.activate_pre_battle_passives()
+	player.player_turn_count = 0
+	current_turn = Turn.PLAYER
 	start_player_turn()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	update_player_coin()
 	update_enemy_coin()
-	update_player_gain_debt()
-	update_enemy_gain_debt()
-
-func activate_pre_battle_passives():
-	
-	show_all_passive_notifications()
-	
-	if has_value_added_tax:
-		player.debt += 5
-		show_floating_label(player,0,LabelType.VALUE_ADDED_TAX)
-		
-		
-	passive_income_used = false
-	payback_used = false
-	payback_coins = 12
-	pocket_money_coins = 8
-	coin_count = 0
-	player.current_flip = 0
-	if has_passive_income:
-		player.gain += 12
-	if has_lending_charge: show_floating_label(player,0,LabelType.LENDING_CHARGE)
-	if has_reimbursement: show_floating_label(player,0,LabelType.REIMBURSEMENT)
-	if has_wishbone: show_floating_label(player,0,LabelType.WISH_BONE) 
-	if has_golden_clover: show_floating_label(player,0,LabelType.GOLDEN_CLOVER) 
-	if has_sleight_of_hand: show_floating_label(player,0,LabelType.SLEIGHT_OF_HAND) 
-	if has_pocket_money:
-		show_floating_label(player,0,LabelType.POCKET_MONEY) 
-		while pocket_money_coins != 0:
-			if current_turn != Turn.PLAYER:
-				return
-				
-			var state = 1
-			player.current_flip += 1
-			var coin = COIN.instantiate()
-			print("POCKET MONEY: " + str(pocket_money_coins))
-			coin.setup(state,coin_deck.get_vacant_slot(player.current_flip))
-			
-			#Guaranteed Silver Flips
-			
-			coin.upgrade_to_silver()
-			coin.add_to_group("coins")
-			latest_coin = coin
-			particle_manager.spawn_particle(COIN_ADD_PARTICLE,latest_coin.global_position)
-			add_child(coin);
-			
-			coin_count += 1
-			
-			print(player.current_flip)
-			if player.current_flip == player.max_flip or player.coin == 1:
-				flip_button.disabled = true
-			coin_calculation()
-			pocket_money_coins -= 1
-			sound_manager.play_sound(COIN_FLIP)
-			await get_tree().create_timer(0.1).timeout
-		endTurn_button.disabled = false
-		re_flip_button.disabled = false
-
-func activate_player_turn_start_passives():
-	previous_player_flips = 0
-	if payback_used and payback_coins != 0:
-		if has_learn_to_save and coin_count >= 8:
-			payback_coins = 8
-			if has_piggy:
-				payback_coins = 6
-		else:
-			payback_coins = 12
-		endTurn_button.disabled = true
-		re_flip_button.disabled = true
-		print("PAYBACK: " + str(payback_coins))
-		sound_manager.play_sound(PASSIVE_PAYBACK)
-		while payback_coins != 0:
-			if player.current_re_flip != player.max_re_flip: 
-				re_flip_button.disabled = false
-				
-			var state = randi() % 2
-			player.current_flip += 1
-			var coin = COIN.instantiate()
-			coin.setup(state,coin_deck.get_vacant_slot(player.current_flip))
-			
-			#Guaranteed Silver Flips
-			
-			coin.upgrade_to_gold()
-			coin.add_to_group("coins")
-			
-			add_child(coin);
-			
-			latest_coin = coin
-			coin_count += 1
-			sound_manager.play_sound(COIN_FLIP)
-			particle_manager.spawn_particle(COIN_ADD_PARTICLE,coin.global_position)
-			if player.current_flip == player.max_flip or player.coin == 1:
-				flip_button.disabled = true
-			coin_calculation()
-			payback_coins -= 1
-			await get_tree().create_timer(0.2).timeout
-			latest_coin = coin
-		endTurn_button.disabled = false
-		re_flip_button.disabled = false
-
-	#Piggy Passive
-	if latest_pair_left_coin != null and latest_pair_right_coin != null:
-		show_floating_label(player,0,LabelType.PIGGY)
-		var left_coin = COIN.instantiate()
-		var pos
-		player.current_flip += 1
-		if coin_count >= player.max_flip:
-			pos = coin_deck.get_reserve_slot()
-			left_coin.reserved = true
-			player.current_reserve += 1
-		else:
-			pos = coin_deck.get_vacant_slot(player.current_flip)
-			coin_count += 1
-			left_coin.reserved = false
-		re_flip_button.disabled = false
-		left_coin.setup(latest_pair_left_coin.state,pos)
-		left_coin.copy_coin(latest_pair_left_coin)
-		left_coin.reserved = false
-		left_coin.add_to_group("coins")
-		add_child(left_coin);
-		particle_manager.spawn_particle(COIN_ADD_PARTICLE,left_coin.global_position)
-		
-		var right_coin = COIN.instantiate()
-		player.current_flip += 1
-		if coin_count >= player.max_flip:
-			pos = coin_deck.get_reserve_slot()
-			right_coin.reserved = true
-			player.current_reserve += 1
-		else:
-			pos = coin_deck.get_vacant_slot(player.current_flip)
-			coin_count += 1
-			right_coin.reserved = false
-		re_flip_button.disabled = false
-		right_coin.setup(latest_pair_right_coin.state,pos)
-		right_coin.copy_coin(latest_pair_right_coin)
-		right_coin.reserved = false
-		right_coin.add_to_group("coins")
-		add_child(right_coin);
-		latest_coin = right_coin
-		sound_manager.play_sound(COIN_FLIP)
-		particle_manager.spawn_particle(COIN_ADD_PARTICLE,right_coin.global_position)
-	latest_pair_left_coin = null
-	latest_pair_right_coin = null
-	print(coin_count)
-		
-
-func activate_player_turn_end_passives():
-	endTurn_button.disabled = true
-	if has_impromptu_flip and latest_coin != null:
-		show_floating_label(player,0,LabelType.IMPROMPTU_FLIP)
-		if latest_coin.state == 0:
-			latest_coin.state = 1
-		else:
-			latest_coin.state = 0
-		latest_coin.refresh_sprite()
-		sound_manager.play_sound(COIN_FLIP)
-		coin_calculation()
-		await get_tree().create_timer(1.0).timeout
-
-	if has_magic_trick and coin_count >= 6:
-		show_floating_label(player,0,LabelType.MAGIC_TRICK)
-		var coins = get_tree().get_nodes_in_group("coins")
-		var index = 0
-		var first_coin = null
-		var second_coin = null
-		for coin in coins:
-			index += 1
-			print("Checking Coin: " + str(index))
-			if index == 1: first_coin = coin
-			if index == 2: second_coin = coin
-			if index == 3 or index == 5:
-				coin.copy_coin(first_coin)
-				coin.refresh_sprite()
-				sound_manager.play_sound(COIN_FLIP)
-				coin_calculation()
-				await get_tree().create_timer(0.1).timeout
-			if index == 4 or index == 6:
-				coin.copy_coin(second_coin)
-				coin.refresh_sprite()
-				sound_manager.play_sound(COIN_FLIP)
-				coin_calculation()
-				await get_tree().create_timer(0.1).timeout
-		coin_calculation()
-		await get_tree().create_timer(1.0).timeout
+	update_player_stacks()
+	update_enemy_stacks()
+	update_player_reflip_and_reserve()
 
 func show_turn_ui(text):
 	sound_manager.play_sound(TURN_REVEAL)
@@ -618,480 +409,137 @@ func show_turn_ui(text):
 	tween.parallel().tween_property(turn_ui,"modulate",Color("ffffff00"),0.2)
 	tween.parallel().tween_property(turn_ui, "position:y",target_position - 30,0.2)
 	if current_turn == Turn.PLAYER:
-		if has_pocket_money:
+		if player.has_pocket_money:
 			await get_tree().create_timer(1.0).timeout
 		endTurn_button.disabled = false
 	await get_tree().create_timer(1.0).timeout
-	turn_ui.visible = false
 	
 func _on_end_run_pressed():
 	print("Main Script: Received End Run")
 	get_tree().paused = false
 	pause_menu.visible = false
+	is_surrender = true
 	trigger_game_over(false)
+
 	
 func start_player_turn():
-	
-	player_turn_count += 1
-	
-	#Initialize Global Stats
-	damage = 0
-	gain = 0
-	debt = 0
-	flip_clicks = 0
-	latest_coin = null
-	if has_passive_income and player_turn_count == 1:
-		pass
+	if player.coin > 0:
+		show_turn_ui("PLAYER TURN")
+		current_turn = Turn.PLAYER
+		sound_manager.play_sound(TURN_PLAYER)
+		await player.start_turn()
 	else:
-		coin_count = 0
-	
-	#ACTIVE INCOME
-	if has_active_income and player.gain >= 30:
-		var gain_damage = player.gain
-		enemy.take_damage(gain_damage)
-		particle_manager.spawn_particle(DAMAGE_PARTICLE,enemy_portrait.global_position)
-		sound_manager.play_sound(PASSIVE_JAR_O_SAVINGS)
-		show_floating_label(enemy,gain_damage,LabelType.DAMAGE)
-		show_floating_label(player,gain_damage,LabelType.ACTIVE_INCOME)
 		check_defeat()
-		previous_player_gain = 0
-		player.debt = 0
-	
-	#Coin Gain Triggers
-	if player.gain != 0 and player.gain > player.debt: 
-		show_floating_label(player,player.gain-player.debt,LabelType.GAIN)
-	if player_turn_count != 1:
-		player.gain_coin()
-
-	if has_simple_interest:
-		var interest = int(previous_player_gain * 0.2)
-		player.gain += interest
-		gain += interest
-		if interest != 0: show_floating_label(player,int(previous_player_gain * 0.2),LabelType.SIMPLE_INTEREST)
-
-	#Reset Player Stats
-	if has_pocket_money and player_turn_count == 1:
-		pass
-	else:
-		coin_count = 0
-		player.current_flip = 0
-		player.current_re_flip = 0
-		latest_coin = null
-		coin_deck.reset_sigils()
-
-	
-	current_turn = Turn.PLAYER
-	flip_button.disabled = false
-	if player.current_flip == 0:
-		re_flip_button.disabled = true
-		turn_calculation.text = ""
-	
-	#Activate Turn Start Passives
-	await activate_player_turn_start_passives()
-	
-	reflip_label.text = str(player.max_re_flip - player.current_re_flip)
-	player.current_reserve = 0
-	#Check Coin Reserve
-	var coins = get_tree().get_nodes_in_group("reserved coins")
-	for coin in coins:
-		if coin.reserved:
-			re_flip_button.disabled = false
-			var pos
-			if coin_count >= player.max_flip:
-				pos = coin_deck.get_reserve_slot()
-				player.current_reserve += 1
-			else:
-				player.current_flip += 1
-				pos = coin_deck.get_vacant_slot(player.current_flip)
-				coin.global_position.x = pos[0]
-				coin.global_position.y = pos[1]
-				coin_count += 1
-				coin.reserved = false
-			if has_value_increase:
-				coin.upgrade()
-				show_floating_label(player,0,LabelType.VALUE_INCREASE)
-			latest_coin = COIN.instantiate()
-			latest_coin.setup(coin.state,pos)
-			latest_coin.copy_coin(coin)
-			coin.queue_free()
-			latest_coin.add_to_group("coins")
-			add_child(latest_coin)
-			latest_coin.refresh_sprite()
-			coin_calculation()
-			#reserved_coin.queue_free()
-	if has_learn_to_save and coin_count >= 8 or player.coin == 1:
-		flip_button.disabled = true
-		show_floating_label(player,0,LabelType.LEARN_TO_SAVE)
 			
 func start_enemy_turn():
-	coin_deck.reset_sigils()
-	endTurn_button.disabled = true
-	
-	if enemy.type == Enemy.SUN_CASTER:
-		if sun_count >= 9:
-			enemy.gold_flip_rate = 1
-		else:
-			enemy.gold_flip_rate = 0
-
-	if enemy.type == Enemy.MOON_CASTER:
-		if moon_count >= 9:
-			enemy.gold_flip_rate = 1
-		else:
-			enemy.gold_flip_rate = 0
-	
-	show_turn_ui("Enemy Turn")
-	#Initialize Stats
-	damage = 0
-	gain = 0
-	debt = 0
-	var defeat
-	
-	#Coin Gain Triggers
-	if enemy.gain != 0 and enemy.gain > enemy.debt: show_floating_label(enemy,enemy.gain,LabelType.GAIN)
-	enemy.gain_coin()
-	if has_fully_paid and enemy.debt == 0:
-		player.take_damage(100)
-		particle_manager.spawn_particle(DAMAGE_PARTICLE,player_portrait.global_position)
-		show_floating_label(player,100,LabelType.FULLY_PAID)
-		defeat = await check_defeat()
-	if has_loan_shark and enemy.debt > 1:
-		var loan_damage = enemy.debt
-		enemy.take_damage(loan_damage)
-		particle_manager.spawn_particle(DAMAGE_PARTICLE,enemy_portrait.global_position)
-		sound_manager.play_sound(PASSIVE_LOAN_SHARK)
-		show_floating_label(enemy,loan_damage,LabelType.LOAN_SHARK)
-		defeat = await check_defeat()
-
-
-	#Reset Enemy Stats
-	enemy.current_flip = 0
-	
-	if has_fair_trade:
-		enemy.max_flip = previous_player_flips
-		previous_player_flips = 0
-		show_floating_label(enemy,0,LabelType.FAIR_TRADE)
-		
-	current_turn = Turn.ENEMY
-	turn_calculation.text = ""
-	
-
-	flip_button.disabled = true
-	re_flip_button.disabled = true
-	endTurn_button.disabled = true
-
-	#FLIP COINS
-	if defeat == null:
-		await get_tree().create_timer(1.0).timeout
-		while enemy.current_flip != enemy.max_flip:
-			defeat = await check_defeat()
-			if enemy.coin <= 2:
-				print("Enemy has insufficient coins, ending turn early")
-				break
-			if defeat == null:
-				enemy_flip()
-			await get_tree().create_timer(0.4).timeout
-		await get_tree().create_timer(1.0).timeout
-		end_enemy_turn()
-
-func end_enemy_turn():
-	coin_deck.sigil_pressed()
-	
-	if damage != 0: 
-		if has_passive_income and !passive_income_used:
-			passive_income_used = true
-			if damage >= 30:
-				damage = 30
-			player.coin += damage
-			sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
-			show_floating_label(player,damage,LabelType.PASSIVE_INCOME)
-		else:
-			if damage <= 10: sound_manager.play_sound(DAMAGE_LIGHT)
-			elif damage <= 20: sound_manager.play_sound(DAMAGE_MODERATE)
-			else: sound_manager.play_sound(DAMAGE_HEAVY)
-			player.take_damage(damage)
-			particle_manager.spawn_particle(DAMAGE_PARTICLE,player_portrait.global_position)
-			show_floating_label(player,damage,LabelType.DAMAGE)
-	if debt != 0:
-			player.debt += debt
-			sound_manager.play_sound(DEBT)
-			show_floating_label(player,debt,LabelType.DEBT)
-	enemy.gain += gain
-	if gain != 0: show_floating_label(enemy,gain,LabelType.TO_GAIN)
-	if has_pay_down:
-		if enemy.debt > enemy.coin:
-			enemy.coin = 0
-			sound_manager.play_sound(PASSIVE_PAYDOWN)
-			show_floating_label(enemy,0,LabelType.PAY_DOWN)
-		else:
-			enemy.debt += 10
-		
-	var defeat = await check_defeat()
-	var coins = get_tree().get_nodes_in_group("enemy_coins")
-	for coin in coins:
-		particle_manager.spawn_particle(COIN_PLAY_PARTICLE,coin.global_position)
-		coin.queue_free()
-	
-	#ACTIVATE PAYBACK
-	if has_payback and !payback_used and defeat: 
-		show_floating_label(player,0,LabelType.PAYBACK)
-		defeat = null
-		player.coin = 1
-		payback_used = true
-		payback_coins = 12
-		
-	if defeat == null:
-		await get_tree().create_timer(1.0).timeout
-		show_turn_ui("Player Turn")
-		if enemy.type == Enemy.TWILIGHT_SAGE:
-			if has_dusk_stance == true:
-				enemy_portrait_sprite.play("TWILIGHT_SAGE_DUSK")
+	if enemy.coin > 0:
+		show_turn_ui("ENEMY'S TURN")
+		coin_deck.reset_sigils()
+		current_turn = Turn.ENEMY
+		sound_manager.play_sound(TURN_ENEMY)
+		await enemy.start_enemy_turn()
+		if enemy.coin > 0:
+			if enemy.type != Enemy.TWILIGHT_SAGE:
+				await get_tree().create_timer(1.0).timeout
+			if player.coin > 0:
+				start_player_turn()
 			else:
-				enemy_portrait_sprite.play("TWILIGHT_SAGE_DAWN")	
-			has_dusk_stance = !has_dusk_stance
-			enemy.max_flip += 4
-		sound_manager.play_sound(TURN_PLAYER)
-		start_player_turn()
-	
-	coin_deck.sigil_unlight_()
+				check_defeat()
+		else:
+			check_defeat()
 
 func _on_endturn_pressed():
-	re_flip_button.disabled = true
-	endTurn_button.disabled = true
-	sound_manager.play_sound(COIN_ENDTURN)
-	coin_deck.sigil_pressed();
-	previous_player_flips = flip_clicks
-	
-	#Activate End Turn Passives
-	await activate_player_turn_end_passives()
-	enemy.take_damage(damage)
-	
-	if damage <= 10: sound_manager.play_sound(DAMAGE_LIGHT)
-	elif damage <= 20: sound_manager.play_sound(DAMAGE_MODERATE)
-	else: sound_manager.play_sound(DAMAGE_HEAVY)
-	previous_player_gain += gain
-	if damage != 0: 
-		show_floating_label(enemy,damage,LabelType.DAMAGE)
-		particle_manager.spawn_particle(DAMAGE_PARTICLE,enemy_portrait.global_position)
-	player.gain += gain
-	if gain != 0: show_floating_label(player,gain,LabelType.TO_GAIN)
-	if debt != 0: 
-		sound_manager.play_sound(DEBT)
-		show_floating_label(enemy,debt,LabelType.DEBT)
-		enemy.debt += debt
+	if enemy.coin > 0 and player.coin > 0:
+		await player.end_turn()
+		turn_calculation_box.exit()
+		var defeat = await check_defeat()
+		if defeat == null:
+			await get_tree().create_timer(1.0).timeout
+			if !player.has_extra_turn:
+				start_enemy_turn()
+				player.extra_turn_penalty = 1
+			else:
+				sound_manager.play_sound(EXTRA_TURN)
+				show_turn_ui("EXTRA TURN")
+				player.extra_turn()
+				player.has_extra_turn = false
 
-	if enemy.type == Enemy.TWILIGHT_SAGE:
-		if has_dusk_stance:
-			enemy.gain += moon_count * 3
-			update_enemy_gain_debt()
-		else:
-			enemy_portrait_sprite.play("TWILIGHT_SAGE_DAWN")
-			player.debt += sun_count * 3
-			update_player_gain_debt()
-	reserve_left_over_coin()
-	var coins = get_tree().get_nodes_in_group("coins")
-	var is_left = true
-	if has_piggy:
-		latest_pair_left_coin = COIN.instantiate()
-		latest_pair_right_coin = COIN.instantiate()
-	for coin in coins:
-		if has_piggy and is_left and !coin.reserved:
-			latest_pair_left_coin.copy_coin(coin)
-			is_left = false
-			print("Piggy Copying 1")
-		elif has_piggy and !is_left and !coin.reserved:
-			latest_pair_right_coin.copy_coin(coin)
-			is_left = true
-			print("Piggy Copying 2")
-		if coin.reserved == false:
-			particle_manager.spawn_particle(COIN_PLAY_PARTICLE,coin.global_position)
-			coin.queue_free()
+func show_passive_notification(text: String, duration: float = 1.5) -> void:
+	var notif = PASSIVE_SCENE.instantiate()
+	passive_label.add_child(notif)
 	
-
-	var defeat = await check_defeat()
-	if defeat == null:
-		await get_tree().create_timer(1.0).timeout
-		start_enemy_turn()
-			
-	total_damage_dealt += damage
-	if damage > highest_damage_dealt:
-		highest_damage_dealt = damage
-		
-	total_gain += gain
-	if gain > highest_gain:
-		highest_gain = gain
-			
-	#func show_passive_notification(text: String, duration: float = 1.5) -> void:
-		#var notif = PASSIVE_SCENE.instantiate()
-		#passive_label.add_child(notif)
-		
-		#notif.setup(text)
-		
-		#var container_width = passive_label.get_rect().size.x
-		#notif.position = Vector2(container_width + 50, 0)
-		
-		#notif.modulate.a = 1.0
-		#notif.scale = Vector2(0.9, 0.9)
-		#notif.z_index = 100
-		
-		#var tween_in = create_tween()
-		#tween_in.parallel().tween_property(notif, "position:x", 0, 0.3)
-		#tween_in.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.3)
-		
-		#await get_tree().create_timer(duration).timeout
-		
-		#var tween_out = create_tween()
-		#tween_out.tween_property(notif, "modulate:a", 0.0, 0.5)
-		#tween_out.tween_callback(func():
-			#notif.queue_free()
-		#)
+	notif.setup(text)
 	
-func show_enemy_passive(text: String, duration: float = 1.5) -> void:
+	var container_width = passive_label.get_size().x
+	notif.position = Vector2(container_width + 50, 0)
+	
+	notif.modulate.a = 1.0
+	notif.scale = Vector2(0.9, 0.9)
+	notif.z_index = 100
+	
+	var tween_in = create_tween()
+	tween_in.parallel().tween_property(notif, "position:x", 0, 0.3)
+	tween_in.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.3)
+	
+	for i in range(passive_label.get_child_count()):
+		var child = passive_label.get_child(i)
+		if child != notif:
+			child.position.y += 30
+			
+		await get_tree().create_timer(duration).timeout
+	
+func show_enemy_passive(text: String, duration: float = 2.5) -> void:
 	if not is_instance_valid(enemy_passive_label):
 		return
 		
+	if enemy_notif_base_pos == Vector2.ZERO:
+		enemy_notif_base_pos = enemy_passive_bg.position
+	
+	# Kill previous animation (IMPORTANT)
+	if enemy_notif_tween and enemy_notif_tween.is_running():
+		enemy_notif_tween.kill()
+	
 	enemy_passive_label.text = text
 	enemy_passive_label.visible = true
+	enemy_passive_bg.visible = true
 	enemy_passive_label.modulate.a = 0.0
-	enemy_passive_label.z_index = 100
+	enemy_passive_bg.modulate.a = 0.0
+	enemy_passive_label.scale = Vector2(0.9, 0.9)
+
 	
-	var tween = create_tween()
-	tween.parallel().tween_property(enemy_passive_label, "modulate:a", 1.0, 0.2)
-	tween.parallel().tween_property(enemy_passive_label, "position:y", enemy_passive_label.position.y - 20, 0.2)
-	tween.parallel().tween_property(enemy_passive_label, "scale", Vector2(1, 1), 0.2)
-	
-	
-	var tween_out = create_tween()
-	tween_out.tween_property(enemy_passive_label, "modulate:a", 0.0, 0.5).set_delay(duration)
-	tween_out.tween_callback(func():
+	enemy_notif_tween = create_tween()
+	enemy_notif_tween.parallel().tween_property(enemy_passive_label, "modulate:a", 1.0, 0.2)
+	enemy_notif_tween.parallel().tween_property(enemy_passive_bg, "modulate:a", 1.0, 0.2)
+	enemy_notif_tween.parallel().tween_property(enemy_passive_label, "position:y", enemy_notif_base_pos.y + 15, 0.2)
+	enemy_notif_tween.parallel().tween_property(enemy_passive_label, "scale", Vector2(1.05, 1.05), 0.2)
+	enemy_notif_tween.tween_property(enemy_passive_label, "scale", Vector2(1, 1), 0.1)
+	enemy_notif_tween.tween_interval(duration)
+	enemy_notif_tween.tween_property(enemy_passive_label, "modulate:a", 0.0, 0.4)
+	enemy_notif_tween.tween_property(enemy_passive_bg,	 "modulate:a", 0.0, 0.4)
+	enemy_notif_tween.tween_callback(func():
 		enemy_passive_label.visible = false
-		enemy_passive_label.modulate.a = 1.0 
+		enemy_passive_bg.visible = false
 	)
 	
 
-
 func _on_flip_pressed():
-	sound_manager.play_sound(COIN_FLIP)
-	print("FLIP")
-	flip_clicks += 1
-	if player.current_re_flip != player.max_re_flip: 
-		re_flip_button.disabled = false
 	if current_turn != Turn.PLAYER:
 		return
+	total_flips += 1
+	player.flip()
 		
-	var state = randi() % 2
-	
-	if has_sunlit_curse:
-		state = 0
-	if has_midnight_curse:
-		state = 1
-		
-	if flip_clicks == 1 and has_solar_coin:
-		state = 0;
-		show_floating_label(player,0,LabelType.SOLAR_COIN)
-	if flip_clicks == 2 and has_lunar_coin:
-		state = 1;
-		show_floating_label(player,0,LabelType.LUNAR_COIN)
-	
-	player.current_flip += 1
-	var coin = COIN.instantiate()
-	if coin_count >= player.max_flip:
-		coin.setup(state,coin_deck.get_reserve_slot())
-		coin.reserved = true
-		player.current_reserve += 1
-		coin.add_to_group("reserved coins")
-	else:
-		coin.setup(state,coin_deck.get_vacant_slot(player.current_flip))
-		coin.add_to_group("coins")
-	#Silver/Gold Flip Rate
-	
-	var upgrade_chance = randf()
-	
-	if upgrade_chance <= player.silver_flip_rate:
-		coin.upgrade_to_silver()
-		show_floating_label(player,0,LabelType.SILVER_FLIP)
-		
-	upgrade_chance = randf() 
-	if upgrade_chance <= player.gold_flip_rate:
-		coin.upgrade_to_gold()
-		show_floating_label(player,0,LabelType.GOLD_FLIP) 
-	
-	if has_lucky_pair and (flip_clicks == 7 or flip_clicks == 8):
-		coin.upgrade()
-		sound_manager.play_sound(COIN_UPGRADE)
-		show_floating_label(player,0,LabelType.LUCKY_PAIR)
-	
-	if flip_clicks <= 3 and has_triple_nickel:
-		coin.upgrade_to_silver()
-		show_floating_label(player,0,LabelType.TRIPLE_NICKEL)
-	if has_coin_snipe and coin.base_value > 2:
-		particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,enemy_portrait.global_position)
-		sound_manager.play_sound(PASSIVE_COIN_SNIPE)
-		enemy.take_damage(1)
-		show_floating_label(player,1,LabelType.COIN_SNIPE)
-		show_floating_label(enemy,1,LabelType.DAMAGE)
+	if player.coin == 0 or enemy.coin == 0:
 		check_defeat()
 
-	player.take_damage(1)
-	show_floating_label(player,1,LabelType.DAMAGE)
-	add_child(coin)
-	
-	if coin.reserved == false:
-		latest_coin = coin
-		coin_count += 1
-		particle_manager.spawn_particle(COIN_ADD_PARTICLE,latest_coin.global_position)
-
-	print(coin_count)
-	if coin_count == player.max_flip and (player.current_reserve == player.max_reserve or player.coin == 1):
-		flip_button.disabled = true
-	if has_learn_to_save and coin_count >= 8:
-		flip_button.disabled = true
-		show_floating_label(player,0,LabelType.LEARN_TO_SAVE)
-	coin_calculation()
-	check_defeat()
-
-func enemy_flip():
-	sound_manager.play_sound(COIN_FLIP)
-	var state = randi() % 2
-	
-	if enemy.type == Enemy.SUN_CASTER and sun_count >= 9:
-		state = 0
-	if enemy.type == Enemy.MOON_CASTER and moon_count >= 9:
-		state = 1
-
-	enemy.take_damage(1)
-	show_floating_label(enemy,1,LabelType.DAMAGE) 
-	enemy_coin_calculation()
-	var defeat = await check_defeat()
-
-	
-	enemy.current_flip += 1
-	var coin = COIN.instantiate()
-	if defeat == null:
-		coin.setup(state,coin_deck.get_vacant_slot(enemy.current_flip))
-	
-	#Silver/Gold Flip Rate
-	
-	var upgrade_chance = randf()
-	if upgrade_chance <= enemy.silver_flip_rate:
-		coin.upgrade_to_silver()
-		show_floating_label(enemy,0,LabelType.SILVER_FLIP)
-	
-	upgrade_chance = randf()  
-	if upgrade_chance <= enemy.gold_flip_rate:
-		coin.upgrade_to_gold()
-		show_floating_label(enemy,0,LabelType.GOLD_FLIP) 
-	
-
-	coin.add_to_group("enemy_coins")
-	add_child(coin);
-	particle_manager.spawn_particle(COIN_ADD_PARTICLE,coin.global_position)
 	
 	
 func trigger_game_over(player_won: bool):
 	sound_manager.play_sound(DEATH)
+	sound_manager.stop_music()
 	if player_won:
-		enemy.max_flip = 0
-		reward_manager.show_rewards()
+		enemy.max_playable_coins = 0
+		if current_enemy_index != 8:
+			reward_manager.show_rewards()
 	
 	game_over_ui.visible = true
 	
@@ -1107,59 +555,112 @@ func trigger_game_over(player_won: bool):
 	
 	var stats = {
 	"remaining_coins": player.coin,
-	"total_damage_dealt": total_damage_dealt,
-	"highest_damage_dealt": highest_damage_dealt,
-	"total_gain": total_gain,
-	"highest_gain": highest_gain,
 	"overall_total_damage": overall_total_damage,
-	"overall_highest_damage": overall_highest_damage,
+	"highest_damage_dealt": highest_damage_dealt,
 	"overall_total_gain": overall_total_gain,
-	"overall_highest_gain": overall_highest_gain,
+	"highest_gain": highest_gain,
 	"enemies_defeated": enemies_defeated,
 	"heads": total_heads,
 	"tails": total_tails,
 	"flips": total_flips,
-	"reflips": total_reflips
+	"reflips": total_reflips,
+	"total_reserved_coins": overall_reserved_coins
 }
 	game_over_ui.show_stats(stats)
 	game_over_ui.visible = true
 	
-	var is_surrender
+	
 	
 	match current_enemy_type:
 		Enemy.MAGE:
-			if player_won:
-				result_label.text = "ARCANE FALLEN"
-				enemy_label.text = "Mage has been slain"
+			if is_surrender:
+				result_label.text = "RUN ABANDONED"
+				enemy_label.text = "You gave up the fight..."
 			else:
 				result_label.text = "CONSUMED BY MAGIC"
 				enemy_label.text = "Mage Wins"
-			
-			
+
 		Enemy.DWARF:
-			if player_won:
-				result_label.text = "THE FORGE BREAKS"
-				enemy_label.text = "Dwarf has been slain"
+			if is_surrender:
+				result_label.text = "RUN ABANDONED"
+				enemy_label.text = "You gave up the fight..."
 			else:
 				result_label.text = "CRUSHED BY THE FORGE"
 				enemy_label.text = "Dwarf Wins"
-				
+
+		Enemy.COLLECTOR:
+			if is_surrender:
+				result_label.text = "RUN ABANDONED"
+				enemy_label.text = "You gave up the fight..."
+			else:
+				result_label.text = "ADDED TO THE COLLECTION"
+				enemy_label.text = "Collector Wins"
+
+		Enemy.TRADER:
+			if is_surrender:
+				result_label.text = "RUN ABANDONED"
+				enemy_label.text = "You gave up the fight..."
+			else:
+				result_label.text = "A BAD DEAL"
+				enemy_label.text = "Trader Wins"
+
+		Enemy.THRIFTER:
+			if is_surrender:
+				result_label.text = "RUN ABANDONED"
+				enemy_label.text = "You gave up the fight..."
+			else:
+				result_label.text = "SPENT TO NOTHING"
+				enemy_label.text = "Thrifter Wins"
+
+		Enemy.ARISTOCRAT:
+			if is_surrender:
+				result_label.text = "RUN ABANDONED"
+				enemy_label.text = "You gave up the fight..."
+			else:
+				result_label.text = "BENEATH THEIR CLASS"
+				enemy_label.text = "Aristocrat Wins"
+
+		Enemy.SUN_CASTER:
+			if is_surrender:
+				result_label.text = "RUN ABANDONED"
+				enemy_label.text = "You gave up the fight..."
+			else:
+				result_label.text = "SCORCHED BY DAWN"
+				enemy_label.text = "Sun Caster Wins"
+
+		Enemy.MOON_CASTER:
+			if is_surrender:
+				result_label.text = "RUN ABANDONED"
+				enemy_label.text = "You gave up the fight..."
+			else:
+				result_label.text =  "CONSUMED BY DUSK"
+				enemy_label.text = "Moon Caster Wins"
+
+		Enemy.TWILIGHT_SAGE:
+			if is_surrender:
+				result_label.text = "RUN ABANDONED"
+				enemy_label.text = "You gave up the fight..."
+			elif player_won:
+				result_label.text = "PLAYER WON"
+				enemy_label.text = "Twilight Sage has been slain"
+			else:
+				result_label.text =  "LOST IN TWILIGHT"
+				enemy_label.text = "Twilight Sage Wins"
+
 	enemy_label.modulate.a = 0.0
 	
-	await get_tree().create_timer(1.0).timeout
-	
-			
+	await get_tree().create_timer(2.0).timeout
 	var tween = create_tween()
 	tween.tween_property(enemy_label, "modulate:a", 1.0, 1.0)
+	is_surrender = false
 	
-	if is_surrender:
-		result_label.text = "RUN ABANDONED"
-		enemy_label.text = "You gave up the fight..."
+	
+	
 
 func check_defeat():
 	if player.coin <= 0:
-		if has_payback:
-			if payback_used:
+		if player.has_payback:
+			if player.payback_used:
 				game_over_ui.visible = true
 				trigger_game_over(false)
 		else:
@@ -1171,7 +672,6 @@ func check_defeat():
 		flip_button.disabled = true
 		endTurn_button.disabled = true 
 		re_flip_button.disabled = true
-		enemy.max_flip = 0
 		enemies_defeated += 1
 		await handle_victory_flow()
 		return true
@@ -1179,8 +679,29 @@ func check_defeat():
 	return null
 
 func handle_victory_flow():
+	endTurn_button.disabled = true
+	player.lock = false
+	player.slow = false
+	var coins = get_tree().get_nodes_in_group("reserved coins")
+	player.current_reserve = coins.size()
+	player.max_reserve = player.initial_max_reserve
+	switch_vignetter_color(vignetter_default,1.0)
+	switch_vignette_color(vignette_default,1.0)
+	battle_particles.emitting = true
+	dusk_particles.emitting = false
+	dawn_particles.emitting = false
+	player.gain_coin()
+	sound_manager.play_sound(VICTORY)
+	turn_calculation_box.exit()
 	await show_turn_ui("VICTORY")
-	
+	sound_manager.play_sound(PASSIVE_SPARE_CHANGE)
+	var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
+	for c in reserved_coins:
+		player.coin += 1
+		overall_reserved_coins += 1
+		c.queue_free()
+		player.current_reserve -= 1
+	particle_manager.despawn_emitting_particles()
 	# Disable gameplay buttons
 	flip_button.disabled = true
 	re_flip_button.disabled = true
@@ -1207,129 +728,24 @@ func progression_after_victory():
 		current_room = 5
 		trigger_game_over(true)
 	elif current_room < 4:
+		sound_manager.stop_music()
+		sound_manager.play_music(PASSIVE_SELECTION)
 		await reward_manager.show_card_selection_async()
 		current_room += 1
+		await _play_progression_cutscene(current_room - 1, current_room)
 		if current_room == 4:
+			sound_manager.play_music(SHOP)
 			await shop_manager.show_shop_async(player)
 			current_room += 1
-			#map.background.global_position.y = 1000
-			#add_child(map)
-			#tween = create_tween()
-			#tween.tween_property(map,"position:y",0,0.4)
-		_play_progression_cutscene(current_room - 1, current_room)
-		proceed_to_next_enemy()
-		
-		
+			sound_manager.stop_music()
+			await _play_progression_cutscene(current_room - 1, current_room)
+			proceed_to_next_enemy()
+		else:
+			proceed_to_next_enemy()
 		
 func _on_re_flip_pressed():
-	sound_manager.play_sound(COIN_REFLIP)
-	sound_manager.play_sound(COIN_FLIP)
-	var tween = create_tween()
-	var original_scale: Vector2 = reflip_sprite.scale
-	var swelled_scale: Vector2 = original_scale * 1.2 
-	tween.tween_property(reflip_sprite, "scale", swelled_scale, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	tween.tween_property(reflip_sprite, "scale", original_scale, 0.15).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-	
-	print("REFLIP")
-	print(coin_count)
-	if has_advanced_planning: show_floating_label(player,0,LabelType.ADVANCED_PLANNING)
-	player.current_re_flip += 1
-	reflip_label.text = str(player.max_re_flip - player.current_re_flip)
-	var coins = get_tree().get_nodes_in_group("coins")
-	var index = 0
-	var refund_chance = randf()
-	if has_refund and refund_chance <= 0.1: sound_manager.play_sound(PASSIVE_REFUND)
-	for coin in coins:
-		if !coin.reserved:
-			index += 1
-		if index <= 2 and has_advanced_planning:
-			pass
-		else:
-			if has_inflation:
-				var upgrade_chance = randf()
-				if upgrade_chance <= 0.3:
-					show_floating_label(player,0,LabelType.INFLATION)
-					coin.upgrade()
-				coin.re_flip()
-			if has_refund and refund_chance <= 0.1:
-				player.coin += 1
-				coin_count -= 1
-				player.current_flip -= 1
-				coin.queue_free()
-				flip_button.disabled = false
-				coin_calculation()
-				show_floating_label(player,0,LabelType.REFUND)
-				
-			else:
-				coin.re_flip()
-	if has_spare_change:
-		sound_manager.play_sound(PASSIVE_SPARE_CHANGE)
-		var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
-		for coin in reserved_coins:
-			player.coin += 1
-			coin.queue_free()
-			flip_button.disabled = false
-			player.current_reserve -= 1
-			show_floating_label(player,0,LabelType.SPARE_CHANGE)
-	
-	if player.current_re_flip == player.max_re_flip or coin_count == 0:
-		re_flip_button.disabled = true
-
-	coin_calculation()
-
-func coin_calculation():
-	var is_left = true # true - Left Coin, false - Right Coin
-	var left_coin
-	var right_coin
-	damage = 0
-	gain = 0
-	debt = 0
-	sun_count = 0
-	moon_count = 0
-	var head_tail_count = 0
-	var coins = get_tree().get_nodes_in_group("coins")
-	for coin in coins:
-		if is_left == true:
-			left_coin = coin
-		if is_left == false:
-			right_coin = coin
-		if coin.state == 0 and !coin.reserved:
-			sun_count += 1
-		else:
-			moon_count +=1
-		if left_coin != null and right_coin != null and left_coin.reserved == false and right_coin.reserved == false:
-			# 1. HEAD-HEAD PAIR
-			if left_coin.state == 0 and right_coin.state == 0:
-				damage += (left_coin.base_value + right_coin.base_value)
-			# 2. TAIL-TAIL PAIR
-			elif left_coin.state == 1 and right_coin.state == 1:
-				gain += (left_coin.base_value + right_coin.base_value)
-			# 3. HEAD-TAIL PAIR
-			elif left_coin.state == 0 and right_coin.state == 1:
-				damage += (left_coin.base_value / 2)
-				gain += (right_coin.base_value / 2)
-				head_tail_count += 1
-				if has_lending_charge: debt += 3
-			else:
-				damage += (right_coin.base_value / 2)
-				gain += (left_coin.base_value / 2)
-				if has_lending_charge: debt += 3
-				head_tail_count += 1
-			left_coin = null
-			right_coin = null
-		else:
-			pass
-		is_left = !is_left
-	if has_reimbursement and head_tail_count == coin_count / 2:
-		debt *= 2
-	if (damage != 0 or gain != 0) and coins != null:
-		var text = "DMG: " + str(damage) + "\nGAIN: " + str(gain)
-		if debt != 0:
-			text = "DMG: " + str(damage) + "\nGAIN: " + str(gain) + "\nDEBT: " + str(debt)
-		turn_calculation.text = text
-		turn_calculation.add_theme_color_override("font_color", Color.WHITE)
-	else: 
-		turn_calculation.text = ""
+	total_reflips += 1
+	player.re_flip()
 
 func reserve_left_over_coin():
 	var is_left = true # true - Left Coin, false - Right Coin
@@ -1337,7 +753,6 @@ func reserve_left_over_coin():
 	var right_coin
 	var coins = get_tree().get_nodes_in_group("coins")
 	for coin in coins:
-		
 		if is_left == true:
 			left_coin = coin
 		if is_left == false:
@@ -1357,436 +772,105 @@ func reserve_left_over_coin():
 		tween.tween_property(left_coin,"position:x",target_pos[0],0.2)
 		tween.tween_property(left_coin,"position:y",target_pos[1],0.2)
 		left_coin.add_to_group("reserved coins")
+		coins = get_tree().get_nodes_in_group("reserved coins")
+		player.current_reserve = coins.size()
+		if player.has_simple_interest: 
+			player.gain += 1
+			player.trigger_temp_passive("simple_interest","SIMPLE INTEREST")
 
 func update_player_coin():
-	player_health_label.text = "Coins: " + str(player.coin)
+	player_health_label.text = str(player.coin)
+	
+func update_player_reflip_and_reserve():
+	if player.slow:
+		player_slow_particles.emitting = true
+		player_slow.visible = true
+	else:
+		player_slow_particles.emitting = false
+		player_slow.visible = false
+	if player.lock:
+		player_reserve.text = ""
+		reserve_button.visible = false
+		player_lock.visible = true
+		player_lock_particles.emitting = true
+	else:
+		reserve_button.visible = true
+		player_lock.visible = false
+		player_lock_particles.emitting = false
+		player_reserve.text = "Reserve: " + str(player.current_reserve) + "/" + str(player.max_reserve)
 	
 func update_enemy_coin():
-	enemy_health_label.text = "Coins: " + str(enemy.coin)
+	enemy_health_label.text = str(enemy.coin)
 	
-func update_player_gain_debt():
+func update_player_stacks():
+	player_debt_particles.emitting = false
+	player_gain_particles.emitting = false
+	player_thrift_particles.emitting = false
+	player_spend_particles.emitting = false
 	player_gain.text = ""
 	player_debt.text = ""
+	player_thrift.text = ""
+	player_spend.text = ""
 	if player.gain != 0:
-		player_gain.text = "GAIN: " + str(player.gain)
+		player_gain.text = str(player.gain)
+		player_gain_particles.emitting = true
 	if player.debt != 0:
-		player_debt.text = "DEBT: " + str(player.debt)
+		player_debt_particles.emitting = true
+		player_debt.text = str(player.debt)
+	if player.thrift != 0:
+		player_thrift.text = str(player.thrift)
+		player_thrift_particles.emitting = true
+	if player.spend != 0:
+		player_spend.text = str(player.spend)
+		player_spend_particles.emitting = true
 	
-func update_enemy_gain_debt():
+func update_enemy_stacks():
+	enemy_debt_particles.emitting = false
+	enemy_thrift_particles.emitting = false
+	enemy_gain_particles.emitting = false
+	enemy_spend_particles.emitting = false
 	enemy_gain.text = ""
 	enemy_debt.text = ""
+	enemy_thrift.text = ""
+	enemy_spend.text = ""
 	if enemy.gain != 0:
-		enemy_gain.text = "GAIN: " + str(enemy.gain)
+		enemy_gain.text = str(enemy.gain)
+		enemy_gain_particles.emitting = true
 	if enemy.debt != 0:
-		enemy_debt.text = "DEBT: " + str(enemy.debt)
-	
-
-func enemy_coin_calculation():
-	print("Calculating DMG and Gain of Enemy")
-	damage = 0
-	gain = 0
-	debt = 0
-	var type = enemy.type
-	var coins = get_tree().get_nodes_in_group("enemy_coins")
-	match type:
-		Enemy.MAGE:
-			for coin in coins:
-				if coin.state == 0: damage += coin.base_value
-		Enemy.DWARF:
-			var can_attack = true
-			var coin_count = 0
-			for coin in coins:
-				coin_count += 1
-				if coin.state == 1: can_attack = false
-			if can_attack and coin_count == 2: damage += 4
-		Enemy.COLLECTOR:
-			var is_left = true # true - Left Coin, false - Right Coin
-			var left_coin
-			var right_coin
-			for coin in coins:
-				if is_left == true:
-					left_coin = coin
-				if is_left == false:
-					right_coin = coin			
-				if left_coin != null and right_coin != null:
-					if left_coin.state != right_coin.state:
-						damage += (left_coin.base_value)
-						gain += (right_coin.base_value)
-					left_coin = null
-					right_coin = null
-				else:
-					pass
-				is_left = !is_left
-		Enemy.TRADER:
-			for coin in coins:
-				if coin.state == 0: damage += coin.base_value / 2
-		Enemy.THRIFTER:
-			var is_left = true # true - Left Coin, false - Right Coin
-			var left_coin
-			var right_coin
-			for coin in coins:
-				if is_left == true:
-					left_coin = coin
-				if is_left == false:
-					right_coin = coin
-				if left_coin != null and right_coin != null:
-					if left_coin.state == 1 and right_coin.state == 1:
-						gain += (left_coin.base_value) + (right_coin.base_value)
-					if left_coin.state == 0 and right_coin.state == 0:
-						damage += (left_coin.base_value) + (right_coin.base_value)
-					left_coin = null
-					right_coin = null
-				else:
-					pass
-				is_left = !is_left
-		Enemy.ARISTOCRAT:
-			for coin in coins:
-				if coin.state == 1: gain += coin.base_value
-		Enemy.SUN_CASTER:
-			var is_left = true # true - Left Coin, false - Right Coin
-			var left_coin
-			var right_coin
-			for coin in coins:
-				if coin.state == 0:
-					gain += coin.base_value / 2
-				if is_left == true:
-					left_coin = coin
-				if is_left == false:
-					right_coin = coin			
-				if left_coin != null and right_coin != null:
-					if left_coin.state == 0 and right_coin.state == 0:
-						damage += (left_coin.base_value) + (right_coin.base_value)
-					left_coin = null
-					right_coin = null
-				else:
-					pass
-				is_left = !is_left
-		Enemy.MOON_CASTER:
-			var is_left = true # true - Left Coin, false - Right Coin
-			var left_coin
-			var right_coin
-			for coin in coins:
-				if coin.state == 1:
-					debt += coin.base_value / 2
-				if is_left == true:
-					left_coin = coin
-				if is_left == false:
-					right_coin = coin			
-				if left_coin != null and right_coin != null:
-					if left_coin.state == 1 and right_coin.state == 1:
-						damage += left_coin.base_value / 2 + right_coin.base_value / 2 
-					left_coin = null
-					right_coin = null
-				else:
-					pass
-				is_left = !is_left
-		Enemy.TWILIGHT_SAGE:
-			var is_left = true # true - Left Coin, false - Right Coin
-			var left_coin
-			var right_coin
-			for coin in coins:
-				if is_left == true:
-					left_coin = coin
-				if is_left == false:
-					right_coin = coin
-				if left_coin != null and right_coin != null and left_coin.reserved == false and right_coin.reserved == false:
-					# 1. HEAD-HEAD PAIR
-					if left_coin.state == 0 and right_coin.state == 0:
-						damage += (left_coin.base_value + right_coin.base_value)
-					# 2. TAIL-TAIL PAIR
-					elif left_coin.state == 1 and right_coin.state == 1:
-						gain += (left_coin.base_value + right_coin.base_value)
-					# 3. HEAD-TAIL PAIR
-					elif left_coin.state == 0 and right_coin.state == 1:
-						damage += (left_coin.base_value / 2)
-						gain += (right_coin.base_value / 2)
-					else:
-						damage += (right_coin.base_value / 2)
-						gain += (left_coin.base_value / 2)
-					left_coin = null
-					right_coin = null
-				else:
-					pass
-				is_left = !is_left
-	if damage != 0 or debt != 0 or gain != 0:
-		var text = "DMG: " + str(damage) + "\nGAIN: " + str(gain) + "\nDEBT: " + str(debt)
-		turn_calculation.text = text
-		turn_calculation.add_theme_color_override("font_color", Color.ORANGE)
-
-
-enum LabelType{
-	DAMAGE,
-	GAIN,
-	TO_GAIN,
-	DEBT,
-	SILVER_FLIP,
-	GOLD_FLIP,
-	WISH_BONE,
-	GOLDEN_CLOVER,
-	SOLAR_COIN,
-	LUNAR_COIN,
-	MERCHANT_SCROLL,
-	IMPROMPTU_FLIP,
-	ADVANCED_PLANNING,
-	MAGIC_TRICK,
-	SLEIGHT_OF_HAND,
-	PIGGY,
-	INFLATION,
-	PAYBACK,
-	LUCKY_PAIR,
-	VALUE_INCREASE,
-	SPARE_CHANGE,
-	TRIPLE_NICKEL,
-	REFUND,
-	COIN_SNIPE,
-	ACTIVE_INCOME,
-	POCKET_MONEY,
-	PASSIVE_INCOME,
-	SIMPLE_INTEREST,
-	PAY_DOWN,
-	REIMBURSEMENT,
-	LOAN_SHARK,
-	LENDING_CHARGE,
-	
-	VALUE_ADDED_TAX,
-	FAIR_TRADE,
-	LEARN_TO_SAVE,
-	FULLY_PAID
-}
-func show_floating_label(entity, value, type):
-	var label = Label.new()
-	var target_pos
-	label.add_theme_font_size_override("font_size",32)
-	match type:
-		LabelType.DAMAGE:
-			label.text = "-" + str(value) + " DMG"
-			label.add_theme_color_override("font_color",Color.RED)
-			label.add_theme_font_size_override("font_size",18)
-		LabelType.GAIN:
-			label.text = "+" + str(value) + " COINS"
-			label.add_theme_color_override("font_color",Color.GOLD)
-			label.add_theme_font_size_override("font_size",18)
-		LabelType.TO_GAIN:
-			label.text = "To GAIN: " + str(value)
-			label.add_theme_color_override("font_color",Color.DARK_GOLDENROD)
-			label.add_theme_font_size_override("font_size",18)
-		LabelType.DEBT:
-			label.text = "+" + str(value) + " DEBT"
-			label.add_theme_color_override("font_color",Color.REBECCA_PURPLE)
-			label.add_theme_font_size_override("font_size",18)
-		LabelType.SILVER_FLIP:
-			label.text = "Silver FLIP"
-			label.add_theme_color_override("font_color",Color.SILVER)
-		LabelType.GOLD_FLIP:
-			label.text = "Gold FLIP"
-			label.add_theme_color_override("font_color",Color.GOLDENROD)
-		LabelType.WISH_BONE:
-			label.text = "WISH BONE: +10% Silver Flip Rate"
-			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.GOLDEN_CLOVER:
-			label.text = "GOLDEN CLOVER: +5% Gold Flip Rate"
-			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.SLEIGHT_OF_HAND:
-			label.text = "SLEIGHT OF HAND: +6 Re-Flips"
-			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.SOLAR_COIN:
-			label.text = "SOLAR COIN: Guaranteed Sun"
-			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.LUNAR_COIN:
-			label.text = "LUNAR COIN: Guaranteed Moon"
-			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.IMPROMPTU_FLIP:
-			label.text = "IMPROMPTU FLIP: Last Coin Re-Flipped"
-			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.MAGIC_TRICK:
-			label.text = "MAGIC TRICK: 1st Pair Duplicated"
-			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.ADVANCED_PLANNING:
-			label.text = "ADVANCED PLANNING: No Re-Flip to First 2 Coins" 
-			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.PIGGY:
-			label.text = "PIGGY: Generated 1st Pair" 
-			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.VALUE_INCREASE:
-			label.text = "VALUE INCREASE: Reserved Coin Upgrade" 
-			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.LUCKY_PAIR:
-			label.text = "LUCKY PAIR: Guaranteed Coin Upgrade" 
-			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.PAYBACK:
-			label.text = "PAYBACK: +12 Gold Coins Next Turn" 
-			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
-			label.add_theme_font_size_override("font_size",30)
-		LabelType.INFLATION:
-			label.text = "INFLATION: Coin Upgraded" 
-			label.add_theme_color_override("font_color",Color.DARK_GOLDENROD)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.COIN_SNIPE:
-			label.text = "COIN SNIPE: " + str(value) + " DMG"
-			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.REFUND:
-			label.text = "REFUND: Retrieved 2 Coins" 
-			label.add_theme_color_override("font_color",Color.DARK_GOLDENROD)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.TRIPLE_NICKEL:
-			label.text = "TRIPLE NICKEL: Guaranteed Silver" 
-			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.SPARE_CHANGE:
-			label.text = "SPARE CHANGE: Retrieved 1 Coin" 
-			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.SIMPLE_INTEREST:
-			label.text = "SIMPLE INTEREST: +" + str(value) + " GAIN"
-			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.POCKET_MONEY:
-			label.text = "POCKET MONEY: +8 Silver Moon Coins" 
-			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.PASSIVE_INCOME:
-			label.text = "PASSIVE INCOME: +" + str(value) + " COINS"
-			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.ACTIVE_INCOME:
-			label.text = "ACTIVE INCOME: " + str(value) + " DMG"
-			label.add_theme_color_override("font_color",Color.DARK_GOLDENROD)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.PAY_DOWN:
-			label.text = "PAY DOWN: Instant Death"
-			label.add_theme_color_override("font_color",Color.DARK_GOLDENROD)
-			label.add_theme_font_size_override("font_size",30)
-		LabelType.REIMBURSEMENT:
-			label.text = "REIMBURSEMENT: Double DEBT on All Sun-Moon"
-			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.LOAN_SHARK:
-			label.text = "LOAN SHARK: -" + str(value) + " DMG"
-			label.add_theme_color_override("font_color",Color.SLATE_GRAY)
-			label.add_theme_font_size_override("font_size",22)
-		LabelType.LENDING_CHARGE:
-			label.text = "LENDING CHARGE: Sun-Moon DEBT Application"
-			label.add_theme_color_override("font_color",Color.SANDY_BROWN)
-			label.add_theme_font_size_override("font_size",22)
-		#ENEMY PASSIVES
-		LabelType.VALUE_ADDED_TAX:
-			label.text = "VALUE ADDED TAX: +5 DEBT"
-			label.add_theme_color_override("font_color",Color.WEB_MAROON)
-			label.add_theme_font_size_override("font_size",16)
-		LabelType.FAIR_TRADE:
-			label.text = "FAIR TRADE: Coin Count Copied"
-			label.add_theme_color_override("font_color",Color.WEB_MAROON)
-			label.add_theme_font_size_override("font_size",16)
-		LabelType.LEARN_TO_SAVE:
-			label.text = "LEARN TO SAVE: Only 8 Coins Allowed"
-			label.add_theme_color_override("font_color",Color.WEB_MAROON)
-			label.add_theme_font_size_override("font_size",16)
-		LabelType.FULLY_PAID:
-			label.text = "FULLY PAID: -" + str(value) + " DMG"
-			label.add_theme_color_override("font_color",Color.WEB_MAROON)
-			label.add_theme_font_size_override("font_size",16)
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	
-	
-	if entity == player:
-		var portrait = player_portrait
-		label.global_position = portrait.global_position
-		label.global_position.x += 100
-		label.global_position.y -= 50
-		target_pos = label.global_position.y - 100
-	
-	elif entity == enemy:
-		var portrait = enemy_portrait
-		label.global_position = portrait.global_position
-		label.global_position.x += 50
-		label.global_position.y += 160
-		target_pos = label.global_position.y + 100
-
-	#FURTHER OFFSET
-	match type:
-		LabelType.DAMAGE:
-			label.global_position.x -= 10
-		LabelType.GAIN:
-			label.global_position.x -= 10
-		LabelType.TO_GAIN:
-			label.global_position.x -= 10
-		LabelType.SILVER_FLIP:
-			label.global_position.x -= 70
-			label.global_position.y -= 70
-		LabelType.GOLD_FLIP:
-			label.global_position.x -= 70
-			label.global_position.y -= 100
-		LabelType.WISH_BONE:
-			label.global_position.x -= 100
-			label.global_position.y -= 10
-		LabelType.GOLDEN_CLOVER:
-			label.global_position.x -= 100
-			label.global_position.y += 20
-		LabelType.SLEIGHT_OF_HAND:
-			label.global_position.x -= 100
-			label.global_position.y -= 50
-		_:
-			label.global_position.x -= 100
-			label.global_position.y -= 50
-	
-	#Random Offset
-	label.global_position.x += randi_range(-20,20)
-	label.global_position.y += randi_range(-40,40)
-	if entity == player:
-		target_pos = label.global_position.y - randi_range(70,200)
-	else: 
-		target_pos = label.global_position.y + randi_range(70,200)
-	add_child(label)
-	var tween = create_tween()
-	tween.parallel().tween_property(label,"position:y",target_pos,2.0)
-	tween.parallel().tween_property(label,"modulate",Color("ffffff00"),2.0)
-	tween.tween_callback(label.queue_free)
-
+		enemy_debt.text =str(enemy.debt)
+		enemy_debt_particles.emitting = true
+	if enemy.thrift != 0:
+		enemy_thrift.text = str(enemy.thrift)
+		enemy_thrift_particles.emitting = true
+	if enemy.spend != 0:
+		enemy_spend.text = str(enemy.spend)
+		enemy_spend_particles.emitting = true
 
 func _on_restart_pressed():
 	await get_tree().create_timer(0.2).timeout
 	get_tree().reload_current_scene()
 	
-	
-#func trigger_random_event():
-	#if event_maps.empty():
-	   #print("No maps to load!")
-	   #return
 
-	#Pick a random index
-	#var index = randi() % event_maps.size()
-	#var map_scene = event_maps[index]
-
-	#Instantiate the map
-	#var map_instance = map_scene.instantiate()
-	#get_tree().current_scene.add_child(map_instance)
-
-	#print("Random Event Triggered:", map_scene.resource_path)
 func proceed_to_next_enemy():
 	match enemies_defeated:
 		1:
 			current_enemy_index = randi_range(2,3)
+			second_enemy = current_enemy_index
 		2:
 			current_enemy_index = randi_range(4,5)
+			third_enemy = current_enemy_index
 		3:
-			current_enemy_index = randi_range(6,7)
+			if second_enemy == 2 and third_enemy == 5:
+				current_enemy_index = 6
+			elif second_enemy == 3 and third_enemy == 4:
+				current_enemy_index = 7
+			else:
+				current_enemy_index = randi_range(6,7)
 		4:
 			current_enemy_index = 8
 	battle_start()
 	print("I AM RWADY TO BATTLE")
+
 
 func _on_refresh_pressed() -> void:
 	pass # Replace with function body.
@@ -1794,7 +878,6 @@ func _on_refresh_pressed() -> void:
 func _on_endturn_mouse_entered() -> void:
 	if current_turn == Turn.PLAYER:
 		coin_deck.sigil_light_up()
-
 
 func _on_endturn_mouse_exited() -> void:
 	coin_deck.sigil_unlight_()
@@ -1844,143 +927,296 @@ func _play_progression_cutscene(from_index: int, to_index: int) -> void:
 	slide_in.tween_interval(0.3)
 	await slide_in.finished
 	
-	player_sprite.play("default") 
 	
 	var walk_tween = progression_map.create_tween()
 	
 	var distance = player_sprite.global_position.distance_to(map_markers[to_index].global_position)
-	var walk_duration = distance / 150.0 
+	var walk_duration = distance / 80.0 
 	
 	walk_tween.tween_property(player_sprite, "global_position", map_markers[to_index].global_position, walk_duration).set_trans(Tween.TRANS_LINEAR)
 	await walk_tween.finished
 
-	
 	var dramatic_pause = progression_map.create_tween()
-	dramatic_pause.tween_interval(3.0)
+	dramatic_pause.tween_interval(1.0)
 	await dramatic_pause.finished
+	sound_manager.stop_music()
+	sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
 	
 	var slide_out = progression_map.create_tween()
 	slide_out.tween_property(progression_map, "offset:y", -screen_height, 0.8).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN)
 	await slide_out.finished
-	
+
 	progression_map.visible = false
 	get_tree().paused = false
 	
-func add_passive_notification(id: String, text: String):
-	if active_passive_notifs.has(id):
+
+
+func _show_temporary_passive(id: String, text: String, duration: float = 1.5):
+	
+	if active_temp_ids.has(id):
 		return
 	
-	var notif = PASSIVE_SCENE.instantiate()
+	active_temp_ids[id] = true
+	
+	
+	var notif: Control = PASSIVE_SCENE.instantiate()
 	passive_label.add_child(notif)
 	notif.setup(text)
-	
-	#var start_x = get_viewport_rect().size.x + 100
-	notif.position = Vector2(passive_label.size.x + 200, 0)
-	
-	notif.modulate.a = 0.0     
+	notif.modulate.a = 0.0
 	notif.scale = Vector2(0.9, 0.9)
-	active_passive_notifs.erase(id)
-	active_passive_notifs[id] = notif
+	notif.z_index = 200 # above persistent passives
 	
-	var tween = create_tween()
-	tween.set_parallel(true)
-	tween.tween_property(notif, "position:x", 0, 0.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tween.tween_property(notif, "modulate:a", 1.0, 0.3)
-	tween.tween_property(notif, "scale", Vector2(1, 1), 0.3)
+	active_temp_notifs.append(notif)
+	
 	_restack_passives()
 	
-func remove_passive_notification(id: String):
-	if not active_passive_notifs.has(id):
-		return
-		
-	var notif = active_passive_notifs[id]
-	active_passive_notifs.erase(id)
+	# Start off-screen
+	var container_width = passive_label.get_rect().size.x
+	notif.position = Vector2(container_width + 200, 40)
+	
+	# Slide in and fade in
 	var tween = create_tween()
-	tween.tween_property(notif, "modulate:a", 0.0, 0.4)
-	tween.tween_callback(func():
-		notif.queue_free()
-		_restack_passives()
+	tween.parallel().tween_property(notif, "position:x", 0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(notif, "modulate:a", 1.0, 0.2)
+	tween.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.2)
+	await tween.finished
+	
+	# Wait duration
+	await get_tree().create_timer(duration).timeout
+	
+	# Fade out
+	var tween_out = create_tween()
+	tween_out.tween_property(notif, "modulate:a", 0.0, 0.2)
+	tween_out.tween_callback(func():
+		if is_instance_valid(notif):
+			active_temp_notifs.erase(notif)
+			active_temp_ids.erase(id)
+			notif.queue_free()
+			_restack_passives()
 	)
 
 func _restack_passives():
 	var spacing = 40
 	var index = 0
 	
-	var keys = active_passive_notifs.keys()
-	keys.reverse()
+	var tween = create_tween()
 	
-	for id in keys:
+	# Persistent passives
+	var hidden_count = 0
+	
+	for i in range(passive_order.size()):
+		var id = passive_order[i]
 		var notif = active_passive_notifs[id]
-		
+	
 		if not is_instance_valid(notif):
 			continue
+	
+		if index < max_visible_passives:
+			notif.visible = true
+		
+			var target_y = index * spacing
+			tween.parallel().tween_property(notif, "position:y", target_y, 0.2)
+			tween.parallel().tween_property(notif, "modulate:a", 1.0, 0.2)
+			tween.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.2)
+		
+			index += 1
+		else:
+			notif.visible = false
+			hidden_count += 1
 			
+	if hidden_count > 0:
+		if overflow_notif == null or !is_instance_valid(overflow_notif):
+			overflow_notif = PASSIVE_SCENE.instantiate()
+			passive_label.add_child(overflow_notif)
+			
+			overflow_notif.gui_input.connect(func(event):
+				if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+					max_visible_passives = min(max_visible_passives + 3, passive_order.size())
+					_restack_passives()
+	)
+	
+		overflow_notif.visible = true
+		overflow_notif.setup("+" + str(hidden_count) + " more...")
+	
 		var target_y = index * spacing
-		var tween = create_tween()
+		tween.parallel().tween_property(overflow_notif, "position:y", target_y, 0.2)
+		tween.parallel().tween_property(overflow_notif, "modulate:a", 0.6, 0.2)
+		tween.parallel().tween_property(overflow_notif, "scale", Vector2(0.85, 0.85), 0.2)
+	
+		index += 1
+	else:
+		if overflow_notif != null and is_instance_valid(overflow_notif):
+			overflow_notif.visible = false
+			
+	# Temporary passives
+	for notif in active_temp_notifs:
+		if not is_instance_valid(notif):
+			continue
+		var target_y = index * spacing
 		tween.tween_property(notif, "position:y", target_y, 0.25).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 		index += 1
 		
-		
 func show_all_passive_notifications():
-	if has_wishbone:
-		add_passive_notification("wishbone", "WISH BONE ACTIVE")
-	if has_golden_clover:
-		add_passive_notification("golden_clover", "GOLDEN CLOVER ACTIVE")
-	if has_solar_coin:
-		add_passive_notification("solar_coin", "SOLAR COIN ACTIVE")
-	if has_lunar_coin:
-		add_passive_notification("lunar_coin", "LUNAR COIN ACTIVE")
-	if has_merchant_scroll:
-		add_passive_notification("merchant_scroll", "MERCHANT SCROLL ACTIVE")
-	if has_impromptu_flip:
-		add_passive_notification("impromptu_flip", "IMPROMPTU FLIP ACTIVE")
-	if has_advanced_planning:
-		add_passive_notification("advanced_planning", "ADVANCED PLANNING ACTIVE")
+	if player.has_wishbone:
+		trigger_passive("wishbone", "WISH BONE")
+		
+	if player.has_golden_clover:
+		trigger_passive("golden_clover", "GOLDEN CLOVER")
+		
+	if player.has_sleight_of_hand:
+		trigger_passive("sleight_of_hand", "SLEIGHT OF HAND")
+		
+	if player.has_pocket_money:
+		trigger_passive("pocket_money", "POCKET MONEY")
+		
+	if player.has_inflation:
+		trigger_passive("inflation", "INFLATION")
+		
+	if player.has_lending_charge:
+		trigger_passive("lending_charge", "LENDING CHARGE")
 
-	# A-Rank
-	if has_magic_trick:
-		add_passive_notification("magic_trick", "MAGIC TRICK ACTIVE")
-	if has_sleight_of_hand:
-		add_passive_notification("sleight_of_hand", "SLEIGHT OF HAND ACTIVE")
-	if has_piggy:
-		add_passive_notification("piggy", "PIGGY ACTIVE")
+	if player.has_deposit:
+		trigger_passive("deposit", "DEPOSIT")
 
-	# Innovator
-	if has_inflation:
-		add_passive_notification("inflation", "INFLATION ACTIVE")
-	if has_payback:
-		add_passive_notification("payback", "PAYBACK READY")
-	if has_lucky_pair:
-		add_passive_notification("lucky_pair", "LUCKY PAIR ACTIVE")
-	if has_value_increase:
-		add_passive_notification("value_increase", "VALUE INCREASE ACTIVE")
+	# --- SHOP PASSIVE (PERSISTENT) ---
+	if player.has_merchant_scroll:
+		trigger_passive("merchant_scroll", "MERCHANT SCROLL")
 
-	# Shooter
-	if has_spare_change:
-		add_passive_notification("spare_change", "SPARE CHANGE ACTIVE")
-	if has_triple_nickel:
-		add_passive_notification("triple_nickel", "TRIPLE NICKEL ACTIVE")
-	if has_refund:
-		add_passive_notification("refund", "REFUND ACTIVE")
-	if has_coin_snipe:
-		add_passive_notification("coin_snipe", "COIN SNIPE ACTIVE")
 
-	# Investor
-	if has_active_income:
-		add_passive_notification("active_income", "ACTIVE INCOME READY")
-	if has_pocket_money:
-		add_passive_notification("pocket_money", "POCKET MONEY ACTIVE")
-	if has_passive_income:
-		add_passive_notification("passive_income", "PASSIVE INCOME ACTIVE")
-	if has_simple_interest:
-		add_passive_notification("simple_interest", "SIMPLE INTEREST ACTIVE")
+		
+enum PassiveDisplayType {
+	PERSISTENT,
+	TEMPORARY
+}
 
-	# Debtor
-	if has_pay_down:
-		add_passive_notification("pay_down", "PAY DOWN ACTIVE")
-	if has_reimbursement:
-		add_passive_notification("reimbursement", "REIMBURSEMENT ACTIVE")
-	if has_loan_shark:
-		add_passive_notification("loan_shark", "LOAN SHARK ACTIVE")
-	if has_lending_charge:
-		add_passive_notification("lending_charge", "LENDING CHARGE ACTIVE")
+var passive_display_type = {
+	# --- PERSISTENT ---
+	"wishbone": PassiveDisplayType.TEMPORARY,
+	"golden_clover": PassiveDisplayType.TEMPORARY,
+	"deposit": PassiveDisplayType.TEMPORARY,
+	"sleight_of_hand": PassiveDisplayType.TEMPORARY,
+	"pocket_money": PassiveDisplayType.TEMPORARY,
+	"passive_income": PassiveDisplayType.TEMPORARY,
+	"lending_charge": PassiveDisplayType.TEMPORARY,
+	"reimbursement": PassiveDisplayType.TEMPORARY,
+	"merchant_scroll": PassiveDisplayType.TEMPORARY,
+
+	# --- TEMPORARY ---
+	"piggy": PassiveDisplayType.TEMPORARY,
+	"advanced_planning": PassiveDisplayType.TEMPORARY,
+	"value_increase": PassiveDisplayType.TEMPORARY,
+	"simple_interest": PassiveDisplayType.TEMPORARY,
+	"jar_o_savings": PassiveDisplayType.TEMPORARY,
+	"withdraw": PassiveDisplayType.TEMPORARY,
+	"dividend": PassiveDisplayType.TEMPORARY,
+	"payback": PassiveDisplayType.TEMPORARY,
+	"cash_out": PassiveDisplayType.TEMPORARY,
+	"triple_nickel": PassiveDisplayType.TEMPORARY,
+	"solar_coin": PassiveDisplayType.TEMPORARY,
+	"lunar_coin": PassiveDisplayType.TEMPORARY,
+	"lucky_pair": PassiveDisplayType.TEMPORARY,
+	"refund": PassiveDisplayType.TEMPORARY,
+	"spare_change": PassiveDisplayType.TEMPORARY,
+	"coin_snipe": PassiveDisplayType.TEMPORARY,
+	"inflation": PassiveDisplayType.TEMPORARY,
+	"active_income": PassiveDisplayType.TEMPORARY,
+	"impromptu_flip": PassiveDisplayType.TEMPORARY,
+	"magic_trick": PassiveDisplayType.TEMPORARY,
+	"loan_shark": PassiveDisplayType.TEMPORARY,
+	"pay_down": PassiveDisplayType.TEMPORARY
+}
+
+func trigger_passive_notification(id: String, text: String):
+	if not passive_display_type.has(id):
+		print("⚠ Missing passive display type for: ", id)
+		return
+	
+	match passive_display_type[id]:
+		PassiveDisplayType.PERSISTENT:
+			_add_persistent_passive(id, text)
+		PassiveDisplayType.TEMPORARY:
+			_show_temporary_passive(id, text, 2)
+			
+func _add_persistent_passive(id: String, text: String,):
+	if active_passive_notifs.has(id):
+		return
+	
+	var notif: Control = PASSIVE_SCENE.instantiate()
+	passive_label.add_child(notif)
+	notif.setup(text)
+	notif.modulate.a = 0.0
+	notif.scale = Vector2(0.9, 0.9)
+	notif.z_index = 100
+	
+	active_passive_notifs[id] = notif
+	passive_order.append(id)
+	
+	# Slide in
+	var container_width = passive_label.get_rect().size.x
+	notif.position = Vector2(container_width + 200, 0)
+	var tween = create_tween()
+	tween.parallel().tween_property(notif, "position:x", 0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(notif, "modulate:a", 1.0, 0.2)
+	tween.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.2)
+	
+	_restack_passives()
+	
+func trigger_passive(id: String, text: String):
+	var time = Time.get_ticks_msec()
+	
+	# Prevent spam (200ms window)
+	if recent_triggers.has(id):
+		if time - recent_triggers[id] < 200:
+			return
+	
+	recent_triggers[id] = time
+	
+	trigger_passive_notification(id, text)
+
+func trigger_passive_effect(text: String):
+	show_passive_notification(text, 1.5)
+
+func _on_player_info_toggled(toggled_on: bool) -> void:
+	print("toggled: ", toggled_on)
+	if toggled_on:
+		player_info_menu = PLAYER_INFORMATION_DISPLAY.instantiate()
+		add_child(player_info_menu)
+		player_info_menu.setup(player)
+		
+		await get_tree().process_frame
+		var screen_size = get_viewport_rect().size
+		var menu_size = player_info_menu.size
+		player_info_menu.global_position = Vector2((screen_size.x - menu_size.x) / 2,
+			(screen_size.y - menu_size.y) / 2)
+		player_info_menu.z_index = 100
+		player_info_menu.open()
+	else:
+		if player_info_menu != null and is_instance_valid(player_info_menu):
+			player_info_menu.close()
+			player_info_menu = null
+
+func _on_enemy_info_toggled(toggled_on: bool) -> void:
+	print("toggled: ", toggled_on)
+	if toggled_on:
+		enemy_info_menu = ENEMY_INFORMATION_DISPLAY.instantiate()
+		add_child(enemy_info_menu)
+		enemy_info_menu.setup(enemy)
+		
+		await get_tree().process_frame
+		var screen_size = get_viewport_rect().size
+		var menu_size = enemy_info_menu.size
+		enemy_info_menu.global_position = Vector2((screen_size.x - menu_size.x) / 2,
+			(screen_size.y - menu_size.y) / 2)
+		enemy_info_menu.z_index = 100
+		enemy_info_menu.open()
+	else:
+		if enemy_info_menu != null and is_instance_valid(enemy_info_menu):
+			enemy_info_menu.close()
+			enemy_info_menu = null
+
+func _on_reserve_button_pressed() -> void:
+	player.reserve()
+	if player.current_reserve >= player.max_reserve:
+		reserve_button.disabled = true
+	else:
+		reserve_button.disabled = false

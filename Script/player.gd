@@ -361,11 +361,17 @@ func refresh_start_of_battle_stats():
 	var dazzled_tween = create_tween()
 	dazzled_tween.parallel().tween_property(dazzled_effect,"self_modulate", Color("#0059a800"),0.6)
 	dazzled_tween.parallel().tween_property(dazzled_light,"color", Color("#0059a800"),0.6)
+	await dazzled_tween.finished
+	dazzled_effect.visible = false
+	dazzled_light.visible = false
 	
 	slow = false
 	var drowse_tween = create_tween()
 	drowse_tween.tween_property(drowse_effect,"self_modulate", Color("#0059a800"),0.6)
+	await drowse_tween.finished
+	drowse_effect.visible = false
 
+	
 	settle = 15
 	initial_max_reserve = max_reserve
 	lock = false
@@ -1115,11 +1121,16 @@ func end_turn():
 		slow = false
 		var drowse_tween = create_tween()
 		drowse_tween.tween_property(drowse_effect,"self_modulate", Color("#0059a800"),0.6)
+		await drowse_tween.finished
+		drowse_effect.visible = false
 	if starstruck:
 		starstruck = false
 		var dazzled_tween = create_tween()
 		dazzled_tween.parallel().tween_property(dazzled_effect,"self_modulate", Color("#0059a800"),0.6)
 		dazzled_tween.parallel().tween_property(dazzled_light,"color", Color("#0059a800"),0.6)
+		await dazzled_tween.finished
+		dazzled_effect.visible = false
+		dazzled_light.visible = false
 	gain += turn_gain
 	max_playable_coins = initial_max_playable_coins
 	

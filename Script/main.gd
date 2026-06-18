@@ -127,7 +127,7 @@ $"Progression Map/Boss"
 @onready var player_slow_particles: GPUParticles2D = $"Battle UI/Re-Flip/Player Slow Particles"
 
 var slow_color = "#43a563"
-const PLAYER_INFORMATION_DISPLAY = preload("uid://c61s4yrsvak0l")
+const PLAYER_INFORMATION_DISPLAY = preload("res://Scene/PlayerInformationDisplay.tscn")
 var player_info_menu: Node = null
 const ENEMY_INFORMATION_DISPLAY = preload("res://Scene/EnemyInformationDisplay.tscn")
 var enemy_info_menu: Node = null

@@ -1002,6 +1002,7 @@ func end_enemy_turn():
 		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
 		create_floating_label(turn_tally, "TALLY", "PLAYER")
 	if turn_slow: 
+		drowse_effect.visible = true
 		main.sound_manager.play_sound(SLOW)
 		main.sound_manager.play_sound(PASSIVE_PAYDOWN)
 		create_floating_label("", "DROWSE", "PLAYER")
@@ -1011,6 +1012,8 @@ func end_enemy_turn():
 		slow_motion.tween_property(Engine, "time_scale", 0.1, 0)
 		slow_motion.tween_property(Engine, "time_scale", 1, 0.5)
 	if turn_starstruck:
+		dazzled_effect.visible = true
+		dazzled_light.visible = true
 		main.sound_manager.play_sound(PASSIVE_PAYDOWN)
 		create_floating_label("", "STARSTRUCK", "PLAYER")
 		var dazzled_tween = create_tween()

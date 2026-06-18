@@ -125,6 +125,7 @@ $"Progression Map/Boss"
 @onready var player_lock: Label = $"Player/Player Lock"
 @onready var player_slow: Label = $"Battle UI/Re-Flip/Player Slow"
 @onready var player_slow_particles: GPUParticles2D = $"Battle UI/Re-Flip/Player Slow Particles"
+
 var slow_color = "#43a563"
 const PLAYER_INFORMATION_DISPLAY = preload("uid://c61s4yrsvak0l")
 var player_info_menu: Node = null
@@ -138,6 +139,12 @@ var enemy_info_menu: Node = null
 @onready var player_thrift_particles: GPUParticles2D = $"Player/Player Thrift Particles"
 @onready var enemy_thrift_particles: GPUParticles2D = $"Enemy/Enemy Thrift Particles"
 @onready var enemy_gain_particles: GPUParticles2D = $"Enemy/Enemy Gain Particles"
+@onready var dazzled_effect: TextureRect = $"Player/Dazzled Effect"
+@onready var player_tally: TextureRect = $"Player/Player Tally"
+@onready var tally_effect: TextureRect = $"Tally Effect"
+@onready var tally_flip_count: Label = $"Tally Effect/Tally Flip Count"
+@onready var player_tally_count: Label = $"Player/Player Tally/Player Tally Count"
+
 
 @onready var player_spend_particles: GPUParticles2D = $"Battle UI/Player Spend Particles"
 @onready var player_spend: Label = $"Battle UI/Player Spend"
@@ -257,7 +264,6 @@ func _ready():
 		player.coin += 15
 		player.silver_flip_rate += 0.2
 		player.gold_flip_rate += 0.1
-		player.max_re_flip += 3
 	else: main.self_modulate = Color.WHITE
 	shop_manager.item_purchased.connect(_on_item_purchased)
 	
@@ -387,7 +393,7 @@ func _process(delta: float) -> void:
 	update_enemy_coin()
 	update_player_stacks()
 	update_enemy_stacks()
-	update_player_reflip_and_reserve()
+	update_player_status()
 
 func show_turn_ui(text):
 	sound_manager.play_sound(TURN_REVEAL)
@@ -439,10 +445,14 @@ func start_enemy_turn():
 		sound_manager.play_sound(TURN_ENEMY)
 		await enemy.start_enemy_turn()
 		if enemy.coin > 0:
-			if enemy.type != Enemy.TWILIGHT_SAGE:
-				await get_tree().create_timer(1.0).timeout
+			await get_tree().create_timer(0.6).timeout
 			if player.coin > 0:
-				start_player_turn()
+				if !player.has_extra_turn:
+					start_player_turn()
+				else:
+					sound_manager.play_sound(EXTRA_TURN)
+					show_turn_ui("EXTRA TURN")
+					player.extra_turn()
 			else:
 				check_defeat()
 		else:
@@ -456,8 +466,25 @@ func _on_endturn_pressed():
 		if defeat == null:
 			await get_tree().create_timer(1.0).timeout
 			if !player.has_extra_turn:
+				if current_turn == Turn.ENEMY:
+					start_player_turn()
+				else:
+					start_enemy_turn()
+			else:
+				sound_manager.play_sound(EXTRA_TURN)
+				show_turn_ui("EXTRA TURN")
+				player.extra_turn()
+
+func tally_end_turn():
+	if enemy.coin > 0 and player.coin > 0:
+		show_turn_ui("TURN ENDED")
+		await player.end_turn()
+		turn_calculation_box.exit()
+		var defeat = await check_defeat()
+		if defeat == null:
+			await get_tree().create_timer(1.0).timeout
+			if !player.has_extra_turn:
 				start_enemy_turn()
-				player.extra_turn_penalty = 1
 			else:
 				sound_manager.play_sound(EXTRA_TURN)
 				show_turn_ui("EXTRA TURN")
@@ -527,11 +554,6 @@ func _on_flip_pressed():
 		return
 	total_flips += 1
 	player.flip()
-		
-	if player.coin == 0 or enemy.coin == 0:
-		check_defeat()
-
-	
 	
 func trigger_game_over(player_won: bool):
 	sound_manager.play_sound(DEATH)
@@ -672,9 +694,11 @@ func check_defeat():
 		flip_button.disabled = true
 		endTurn_button.disabled = true 
 		re_flip_button.disabled = true
-		enemies_defeated += 1
-		await handle_victory_flow()
-		return true
+		reserve_button.disabled = true
+		if enemies_defeated == current_room:
+			enemies_defeated += 1
+			await handle_victory_flow()
+			return true
 	
 	return null
 
@@ -682,6 +706,8 @@ func handle_victory_flow():
 	endTurn_button.disabled = true
 	player.lock = false
 	player.slow = false
+	var has_dazzle = false
+	var main_coins = get_tree().get_nodes_in_group("coins")
 	var coins = get_tree().get_nodes_in_group("reserved coins")
 	player.current_reserve = coins.size()
 	player.max_reserve = player.initial_max_reserve
@@ -693,14 +719,20 @@ func handle_victory_flow():
 	player.gain_coin()
 	sound_manager.play_sound(VICTORY)
 	turn_calculation_box.exit()
+	
 	await show_turn_ui("VICTORY")
 	sound_manager.play_sound(PASSIVE_SPARE_CHANGE)
 	var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
+	
 	for c in reserved_coins:
 		player.coin += 1
 		overall_reserved_coins += 1
 		c.queue_free()
 		player.current_reserve -= 1
+	if main_coins.size() > 0:
+		for c in main_coins:
+			player.coin += 1
+			c.queue_free()
 	particle_manager.despawn_emitting_particles()
 	# Disable gameplay buttons
 	flip_button.disabled = true
@@ -746,6 +778,9 @@ func progression_after_victory():
 func _on_re_flip_pressed():
 	total_reflips += 1
 	player.re_flip()
+	if main.enemy.coin == 0:
+		main.check_defeat()
+	reflip_label.text = str(player.max_re_flip - player.current_re_flip)
 
 func reserve_left_over_coin():
 	var is_left = true # true - Left Coin, false - Right Coin
@@ -781,7 +816,11 @@ func reserve_left_over_coin():
 func update_player_coin():
 	player_health_label.text = str(player.coin)
 	
-func update_player_reflip_and_reserve():
+func update_player_status():
+	if player.starstruck:
+		dazzled_effect.visible = true
+	else:
+		dazzled_effect.visible = false
 	if player.slow:
 		player_slow_particles.emitting = true
 		player_slow.visible = true
@@ -803,6 +842,7 @@ func update_enemy_coin():
 	enemy_health_label.text = str(enemy.coin)
 	
 func update_player_stacks():
+	player_tally.visible = false
 	player_debt_particles.emitting = false
 	player_gain_particles.emitting = false
 	player_thrift_particles.emitting = false
@@ -823,6 +863,10 @@ func update_player_stacks():
 	if player.spend != 0:
 		player_spend.text = str(player.spend)
 		player_spend_particles.emitting = true
+	if player.tally_counter != 0:
+		player_tally_count.text = str(player.tally_counter)
+		tally_flip_count.text = str(player.tally_counter)
+		player_tally.visible = true
 	
 func update_enemy_stacks():
 	enemy_debt_particles.emitting = false
@@ -1062,9 +1106,6 @@ func show_all_passive_notifications():
 		
 	if player.has_golden_clover:
 		trigger_passive("golden_clover", "GOLDEN CLOVER")
-		
-	if player.has_sleight_of_hand:
-		trigger_passive("sleight_of_hand", "SLEIGHT OF HAND")
 		
 	if player.has_pocket_money:
 		trigger_passive("pocket_money", "POCKET MONEY")

@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="6_mxd2g"]
 [ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="7_0sxm5"]
 [ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="7_3pt4j"]
+[ext_resource type="Texture2D" uid="uid://eeepgts0tvpj" path="res://Assets/Passive_Icons.png" id="7_5rsq1"]
 [ext_resource type="Material" uid="uid://cxjkyhc8r5fge" path="res://Assets/Particles/debt.tres" id="7_cr44a"]
 [ext_resource type="Script" uid="uid://byrcn8pelxayw" path="res://Script/coin_deck.gd" id="7_ow1sv"]
 [ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="9_jbas8"]
@@ -48,6 +49,7 @@
 [ext_resource type="Texture2D" uid="uid://bmkxblxwtg47d" path="res://Assets/Rug.png" id="38_f043x"]
 [ext_resource type="Texture2D" uid="uid://4aebywoijoue" path="res://Assets/mapIconShop.png" id="39_tcekk"]
 [ext_resource type="Texture2D" uid="uid://fl7tmytwihia" path="res://Assets/mapIconBoss.png" id="40_1bveb"]
+[ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="49_5qrjd"]
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]
 
@@ -139,7 +141,7 @@ animations = [{
 
 [sub_resource type="Gradient" id="Gradient_885bo"]
 offsets = PackedFloat32Array(0, 0.57214767)
-colors = PackedColorArray(2.4065375e-07, 0.34464124, 0.12498734, 0.69411767, 0.903585, 0.76905644, 1.1551381e-06, 0.5921569)
+colors = PackedColorArray(0, 0.2686157, 0.571543, 0.69411767, 0.82152957, 0.7144253, 1, 0.5921569)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_f043x"]
 gradient = SubResource("Gradient_885bo")
@@ -158,7 +160,7 @@ scale_max = 35.28
 scale_curve = SubResource("CurveTexture_mlc74")
 scale_over_velocity_min = 107.84
 scale_over_velocity_max = 196.06999
-color = Color(0.25085992, 0.86204916, 0, 1)
+color = Color(0.51674455, 0.736904, 1, 1)
 color_ramp = SubResource("GradientTexture1D_f043x")
 
 [sub_resource type="Gradient" id="Gradient_ot48q"]
@@ -504,6 +506,13 @@ animations = [{
 "speed": 2.0
 }]
 
+[sub_resource type="Gradient" id="Gradient_f043x"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5qrjd"]
+gradient = SubResource("Gradient_f043x")
+fill = 1
+fill_from = Vector2(0.47350428, 0.45299146)
+
 [sub_resource type="Gradient" id="Gradient_mlc74"]
 offsets = PackedFloat32Array(0.010080645, 0.030864198, 0.69753087)
 colors = PackedColorArray(0.1839853, 0.1969496, 0.18004388, 1, 1, 1, 1, 1, 1, 1, 1, 0.53333336)
@@ -520,14 +529,13 @@ emission_sphere_radius = 10.32
 direction = Vector3(0, 1, 0)
 spread = 0.0
 initial_velocity_min = 11.509999
-initial_velocity_max = 54.42
+initial_velocity_max = 60.039997
 gravity = Vector3(0, 20, 0)
 scale_min = 0.0
 scale_max = 15.9
 scale_curve = SubResource("CurveTexture_cr44a")
 scale_over_velocity_min = 107.84
 scale_over_velocity_max = 196.06999
-color = Color(0.23022687, 0.22255456, 0.21473798, 1)
 color_ramp = SubResource("GradientTexture1D_885bo")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cr44a"]
@@ -548,6 +556,53 @@ scale_over_velocity_min = 107.84
 scale_over_velocity_max = 196.06999
 color = Color(0.9999996, 0.9053559, 0.81244224, 1)
 color_ramp = SubResource("GradientTexture1D_mlc74")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f3bax"]
+atlas = ExtResource("7_5rsq1")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5l0y8"]
+atlas = ExtResource("7_5rsq1")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3drsm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f3bax")
+}],
+"loop": true,
+"name": &"Lunar Blessing",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5l0y8")
+}],
+"loop": true,
+"name": &"Solar Blessing",
+"speed": 5.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_4lqwv"]
+offsets = PackedFloat32Array(0, 0.537037, 1)
+colors = PackedColorArray(0.91427547, 0.23553646, 3.85046e-07, 0.73333335, 0.8834769, 0.5486359, 7.70092e-07, 0.41169596, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_gejqg"]
+gradient = SubResource("Gradient_4lqwv")
+fill = 1
+fill_from = Vector2(0.5232558, 0.48139533)
+fill_to = Vector2(0.7930232, 0.30930233)
+
+[sub_resource type="Gradient" id="Gradient_oywcm"]
+offsets = PackedFloat32Array(0.21851853, 0.537037, 0.9074074)
+colors = PackedColorArray(0.2983726, 0.34945783, 0.8161493, 0.73333335, 0.3951713, 0.52781093, 0.8900136, 0.41169596, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xgc63"]
+gradient = SubResource("Gradient_oywcm")
+fill = 1
+fill_from = Vector2(0.5232558, 0.48139533)
+fill_to = Vector2(0.8534884, 0.35581395)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4lqwv"]
 atlas = ExtResource("37_885bo")
@@ -665,6 +720,24 @@ scale_max = 6.1299996
 scale_curve = SubResource("CurveTexture_885bo")
 color = Color(1, 0.7902349, 0.605322, 0.8627451)
 
+[sub_resource type="Gradient" id="Gradient_5qrjd"]
+offsets = PackedFloat32Array(0, 0.5493274)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5rsq1"]
+gradient = SubResource("Gradient_5qrjd")
+fill = 1
+fill_from = Vector2(0.50427353, 0.48034188)
+
+[sub_resource type="Gradient" id="Gradient_5rsq1"]
+offsets = PackedFloat32Array(0, 0.14573991, 0.63901347, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.08744395, 0.08744395, 0.08744395, 0.91255605, 0, 0, 0, 0.030899167, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4lqwv"]
+gradient = SubResource("Gradient_5rsq1")
+fill = 1
+fill_from = Vector2(0.51111114, 0.48376068)
+
 [node name="Main" type="TextureRect" unique_id=975709238]
 anchors_preset = 15
 anchor_right = 1.0
@@ -716,10 +789,10 @@ offset_bottom = 633.0
 text = "Press for Info"
 
 [node name="Reserve Button" type="Button" parent="Battle UI" unique_id=1926938624]
-offset_left = 864.0
-offset_top = 504.0
-offset_right = 1027.0
-offset_bottom = 543.0
+offset_left = 527.0
+offset_top = 560.0
+offset_right = 693.0
+offset_bottom = 603.0
 
 [node name="Player Reserve" type="Label" parent="Battle UI/Reserve Button" unique_id=15672962]
 custom_minimum_size = Vector2(150, 40)
@@ -856,17 +929,16 @@ offset_left = 221.0
 offset_top = 490.0
 offset_right = 367.0
 offset_bottom = 516.0
-theme_override_colors/font_color = Color(0.35574263, 0.85473233, 0.51888376, 1)
+theme_override_colors/font_color = Color(0.48229116, 0.7700195, 1, 1)
 theme_override_colors/font_outline_color = Color(0.31, 0, 0.24283333, 1)
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("27_t372l")
 theme_override_font_sizes/font_size = 25
-text = "SLOWED"
+text = "DROWSE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Turn Calculation Box" type="TextureRect" parent="Battle UI" unique_id=1091749495]
-visible = false
 offset_left = -3.0
 offset_top = 212.0
 offset_right = 311.0
@@ -1109,6 +1181,30 @@ offset_bottom = 90.0
 theme_override_font_sizes/font_size = 35
 text = "Player"
 
+[node name="Dazzled Effect" type="TextureRect" parent="Player" unique_id=1263654676]
+self_modulate = Color(1, 0.6313726, 0.99607843, 0.19607843)
+offset_left = 14.0
+offset_top = 509.0
+offset_right = 138.0
+offset_bottom = 633.0
+texture = SubResource("GradientTexture2D_5qrjd")
+
+[node name="Player Star Struck" type="Label" parent="Player/Dazzled Effect" unique_id=1916728157]
+top_level = true
+layout_mode = 0
+offset_left = 19.0
+offset_top = 591.0
+offset_right = 136.0
+offset_bottom = 611.0
+theme_override_colors/font_color = Color(1, 0.7299065, 0.9951002, 1)
+theme_override_colors/font_outline_color = Color(0.31, 0, 0.24283333, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 19
+text = "STARSTRUCK"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="PlayerFrame" type="TextureRect" parent="Player" unique_id=152420565]
 offset_top = 493.0
 offset_right = 154.0
@@ -1164,12 +1260,12 @@ offset_left = 882.0
 offset_top = 370.0
 offset_right = 1015.0
 offset_bottom = 407.0
-theme_override_colors/font_color = Color(0.554305, 0.59517217, 0.61141235, 1)
-theme_override_colors/font_outline_color = Color(0.31, 0, 0.24283333, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("27_t372l")
 theme_override_font_sizes/font_size = 36
-text = "LOCKED"
+text = "VOIDED"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -1203,6 +1299,62 @@ offset_right = 149.0
 offset_bottom = 652.0
 toggle_mode = true
 action_mode = 0
+
+[node name="Player Tally" type="TextureRect" parent="Player" unique_id=1191166538]
+self_modulate = Color(0.9047755, 0.66126776, 3.85046e-07, 1)
+top_level = true
+offset_left = 162.0
+offset_top = 501.0
+offset_right = 210.0
+offset_bottom = 549.0
+texture = ExtResource("49_5qrjd")
+
+[node name="Player Tally Count" type="Label" parent="Player/Player Tally" unique_id=1049271658]
+top_level = true
+layout_mode = 0
+offset_left = 159.0
+offset_top = 507.0
+offset_right = 216.0
+offset_bottom = 545.0
+theme_override_colors/font_color = Color(1, 1, 0.62352943, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 26
+text = "7"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Solar Blessing Icon" type="AnimatedSprite2D" parent="Player" unique_id=1498402891]
+visible = false
+self_modulate = Color(0.43529412, 0.1882353, 0, 0.47058824)
+position = Vector2(898, 259)
+scale = Vector2(1.921874, 1.921874)
+sprite_frames = SubResource("SpriteFrames_3drsm")
+animation = &"Solar Blessing"
+
+[node name="Solar Glow" type="TextureRect" parent="Player/Solar Blessing Icon" unique_id=1542688678]
+visible = false
+offset_left = -35.38214
+offset_top = -32.84722
+offset_right = 31.80655
+offset_bottom = 34.34147
+texture = SubResource("GradientTexture2D_gejqg")
+
+[node name="Lunar Blessing Icon" type="AnimatedSprite2D" parent="Player" unique_id=1536334222]
+self_modulate = Color(0.09019608, 0, 0.74509805, 0.30980393)
+position = Vector2(993, 258)
+scale = Vector2(1.921874, 1.921874)
+sprite_frames = SubResource("SpriteFrames_3drsm")
+animation = &"Lunar Blessing"
+
+[node name="Lunar Glow" type="TextureRect" parent="Player/Lunar Blessing Icon" unique_id=980034410]
+visible = false
+offset_left = -35.38214
+offset_top = -32.84722
+offset_right = 31.80655
+offset_bottom = 34.34147
+texture = SubResource("GradientTexture2D_xgc63")
 
 [node name="Game Over UI" type="CanvasLayer" parent="." unique_id=994626979]
 visible = false
@@ -1664,6 +1816,102 @@ amount = 64
 lifetime = 1.82
 randomness = 0.35
 process_material = SubResource("ParticleProcessMaterial_mlc74")
+
+[node name="Drowse Effect" type="TextureRect" parent="." unique_id=1015393589]
+modulate = Color(1, 1, 1, 0.92941177)
+self_modulate = Color(0, 0.34901962, 0.65882355, 0)
+layout_mode = 0
+offset_left = -30.0
+offset_top = -13.0
+offset_right = 1173.4331
+offset_bottom = 660.0
+texture = ExtResource("12_pqe63")
+
+[node name="Dazzled Effect" type="TextureRect" parent="." unique_id=1304550081]
+self_modulate = Color(0.9843137, 0.08627451, 1, 0)
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 1150.0
+offset_bottom = 652.0
+texture = SubResource("GradientTexture2D_5qrjd")
+
+[node name="Dazzled Light" type="PointLight2D" parent="Dazzled Effect" unique_id=1167497638]
+position = Vector2(826.5, 68.5)
+scale = Vector2(17.671875, 2.2031252)
+color = Color(0.91764706, 0.7372549, 1, 0)
+energy = 3.28
+texture = SubResource("GradientTexture2D_5rsq1")
+
+[node name="Tally Effect" type="TextureRect" parent="." unique_id=1482077241]
+visible = false
+self_modulate = Color(0.9047755, 0.66126776, 3.85046e-07, 1)
+top_level = true
+layout_mode = 0
+offset_left = 859.0
+offset_top = 253.0
+offset_right = 1032.0
+offset_bottom = 424.0
+texture = ExtResource("49_5qrjd")
+
+[node name="Label" type="Label" parent="Tally Effect" unique_id=1889950644]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 10.0
+offset_right = 147.0
+offset_bottom = 55.0
+theme_override_colors/font_color = Color(0.9999997, 0.8281812, 0.28550413, 1)
+theme_override_colors/font_outline_color = Color(0.20025441, 0.08449874, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 30
+text = "TALLY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Text" type="Label" parent="Tally Effect" unique_id=642004469]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 50.0
+offset_right = 171.0
+offset_bottom = 157.0
+theme_override_colors/font_color = Color(0.9999998, 0.92214483, 0.8525816, 1)
+theme_override_colors/font_outline_color = Color(0.20025441, 0.08449874, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("36_1bveb")
+theme_override_font_sizes/font_size = 22
+text = "Your Turn Ends After:
+
+
+
+Flips"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tally Flip Count" type="Label" parent="Tally Effect" unique_id=1679512594]
+layout_mode = 0
+offset_left = 47.0
+offset_top = 85.0
+offset_right = 128.0
+offset_bottom = 130.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.1815921, 0.08803221, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 0
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 39
+text = "7"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Tally Effect" unique_id=9012651]
+show_behind_parent = true
+layout_mode = 0
+offset_left = -64.1167
+offset_top = -41.0
+offset_right = 246.24945
+offset_bottom = 233.0
+texture = SubResource("GradientTexture2D_4lqwv")
 
 [connection signal="pressed" from="Battle UI/Reserve Button" to="." method="_on_reserve_button_pressed"]
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]

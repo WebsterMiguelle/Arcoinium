@@ -16,37 +16,39 @@ const SCROLL_HOVERED = preload("uid://dpcddmlbji61k")
 
 
 var all_cards = [
-	{"id": 0, "name": "Solar Coin", "rank": "B", "desc": "The 1st and 3rd Coin Flip are always SUN. Guaranteed Coin Upgrade if RESERVED."},
-	{"id": 1, "name": "Lunar Coin", "rank": "B", "desc": "The 2nd and 4th Coin Flip are always MOON. Guaranteed Coin Upgrade if RESERVED."},
+	{"id": 0, "name": "Solar Blessing", "rank": "B", "desc": "When 8 or more SUN Coins are played this turn, all Odd Flips next turn are guaranteed SUN."},
+	{"id": 1, "name": "Lunar Blessing", "rank": "B", "desc": "When 8 or more MOON Coins are played this turn, all Even Flips next turn are guaranteed MOON."},
 	{"id": 2, "name": "Wish Bone", "rank": "B", "desc": "+20% SILVER Flip Rate."},
 	{"id": 3, "name": "Golden Clover", "rank": "B", "desc": "+10% GOLD Flip Rate."},
-	{"id": 4, "name": "Merchant's Scroll", "rank": "B", "desc": "25% Shop Discount."},
-	{"id": 5, "name": "Impromptu Flip", "rank": "B", "desc": "Upon ending the turn, the Last Coin on the Arcane Circle will be Upgraded, and Flipped to its other side."},
-	{"id": 6, "name": "Advanced Planning", "rank": "B", "desc": "The First 2 Coins on the Arcane Circle will not be affected by Re-Flips. Upgrade these Coins at the end of the turn."},
+	{"id": 4, "name": "Merchant's Scroll", "rank": "B", "desc": "25% Shop Discount. The Shopkeeper will stock 1 extra S-Rank Passive."},
+	{"id": 5, "name": "Flip Sequence", "rank": "B", "desc": "Flip the Last Coin played to its other side. For each Flip that occurred during End Turn Sequence, Deal 1 DAMAGE."},
+	{"id": 6, "name": "Seal of Approval", "rank": "B", "desc": "The first 2 Coins placed on the Arcane Circle become STAMPED. At the end of the turn, Remove all STAMP from Played Coins and Upgrade them."},
 	{"id": 7, "name": "Value Increase", "rank": "B", "desc": "Upgrade all RESERVED Coins next turn."},
-	{"id": 8, "name": "Lending Charge", "rank": "B", "desc": "Each SUN-MOON Pair applies 3 DEBT."},
-	{"id": 9, "name": "Coin Snipe", "rank": "B", "desc": "Flipping a SILVER or GOLD Coin deals 1 DAMAGE."},
-	{"id": 10, "name": "Simple Interest", "rank": "B", "desc": "When RESERVING a Coin, apply 1 GAIN to self."},
-	{"id": 11, "name": "Lucky Pair", "rank": "A", "desc": "+10% GOLD Flip Rate. The 7th and 8th Flipped Coin are SHINED."},
-	{"id": 12, "name": "Sleight of Hand", "rank": "A", "desc": "+4 Extra Re-Flips."},
-	{"id": 13, "name": "Piggy", "rank": "A", "desc": "Upon ending the turn, Piggy will duplicate your Last Coin Pair,and RESERVE it. This Coin Pair will be SHINED."},
-	{"id": 14, "name": "Pocket Money", "rank": "A", "desc": "Start each battle with 8 SILVER MOON Coins."},
-	{"id": 15, "name": "Passive Income", "rank": "A", "desc": "10% of the Enemy's Damage will be converted to RESERVED Coins."},
-	{"id": 16, "name": "Magic Trick", "rank": "A", "desc": "Upon ending the turn with 8 or more Coins, the 1st Coin Pair will be copied to the 2nd, 3rd, and 4th Coin Pair."},
-	{"id": 17, "name": "Reimbursement", "rank": "A", "desc": "Each Flip, Re-Flip, or Reserve has a 30% Chance to apply 1 DEBT."},
-	{"id": 18, "name": "Payback", "rank": "A", "desc": " If Coin Caster receives a killing blow, set Coin back to 1, Cleanse all Debuffs, and immediately generate 12 GOLD SUN Coins next turn. (One-Time per Battle)"},
-	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "At the start of the enemy’s turn, immediately deal damage based on half of the Enemy’s DEBT. Remove half of DEBT afterwards."},
-	{"id": 20, "name": "Spare Change", "rank": "A", "desc": "Upon a Re-Flip, retrieve all RESERVED Coins."},
-	{"id": 21, "name": "Triple Nickel", "rank": "A", "desc": "+20% SILVER Flip Rate. The first 3 Flips are guaranteed SILVER Coins."},
-	{"id": 22, "name": "Inflation", "rank": "S", "desc": "There is a 50% chance for each Coin on the Arcane Circle to upgrade every Re-Flip. For every Gold Coin played, apply 1 SPEND."},
-	{"id": 23, "name": "Jar'O Savings", "rank": "S", "desc":"At the end of the 1st Turn, gain an EXTRA TURN, apply 16 THRIFT to the enemy, and generate 16 SILVER MOON Coins. Cannot Flip or Re-Flip during Extra Turns. (One-Time per Battle)"},
-	{"id": 24, "name": "Bankrupt", "rank": "S", "desc": "For each turn, apply 8 DEBT, 4 SPEND, and 2 THRIFT. If Enemy DEBT is greater than their Current Coins at the end of their turn, perish instantly."},
-	{"id": 25, "name": "All In", "rank": "S", "desc": "If there are No Coins on the Arcane Circle at the end of the turn, Automatically Flip 24 Upgraded Coins."},
-	{"id": 26, "name": "Withdraw", "rank": "B", "desc": "For each RESERVED Coin removed, deal 1 DAMAGE."},
-	{"id": 27, "name": "Deposit", "rank": "A", "desc": "+4 Max Reserve."},
-	{"id": 28, "name": "Dividend", "rank": "A", "desc": "There is a 30% chance to duplicate each RESERVED Coin on the next turn."},
-	{"id": 29, "name": "Cash Out", "rank": "S", "desc": "When Coin Reserve is full at the end of the turn, immediately gain an EXTRA TURN. Cannot Flip, Re-Flip, or Reserve during Extra Turns."}
-]
+	{"id": 8, "name": "Lending Charge", "rank": "B", "desc": "SUN-MOON Pairs apply 3 DEBT. If all played Pairs are SUN-MOON, apply double DEBT."},
+	{"id": 9, "name": "Coin Snipe", "rank": "B", "desc": "Flipping a SILVER or GOLD Coin deals 1 DAMAGE. Generated Coins deal 3 DAMAGE instead."},
+	{"id": 10, "name": "Simple Interest", "rank": "B", "desc": "RESERVING a Coin applies 1 GAIN to yourself."},
+
+	{"id": 11, "name": "Lucky Pair", "rank": "A", "desc": "+10% GOLD Flip Rate. The 9th and 10th Flipped Coins are SHINED at the end of the turn."},
+	{"id": 12, "name": "Pickpocket", "rank": "A", "desc": "+2 Re-Flips. Re-Flipping deals 1 DAMAGE and generates a RESERVED Coin with a Random Status Effect."},
+	{"id": 13, "name": "Piggy", "rank": "A", "desc": "End Turn: Generate and RESERVE a SHINED copy of your last Coin Pair."},
+	{"id": 14, "name": "Pocket Money", "rank": "A", "desc": "Generate 8 STAMPED SILVER MOON Coins at the start of each battle. Half of these Coins will be RESERVED."},
+	{"id": 15, "name": "Passive Income", "rank": "A", "desc": "Generate RESERVED DAZZLED Coins equal to 10% of Enemy Damage taken."},
+	{"id": 16, "name": "Magic Trick", "rank": "A", "desc": "If you played 8+ Coins, the 1st Coin Pair generates copies of itself into the 2nd, 3rd, and 4th Pair at the end of the turn."},
+	{"id": 17, "name": "Tax Evasion", "rank": "A", "desc": "When DEBT is applied to you, halve it, return the removed DEBT to the Enemy, and deal DAMAGE equal to the returned DEBT."},
+	{"id": 18, "name": "Payback", "rank": "A", "desc": "Fatal Damage leaves you at 1 Coin, cleanses all Debuffs, and generates 12 SHINED GOLD SUN Coins next turn. (Once per Battle)"},
+	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "For each Enemy Coin Flip, detonate 5% of their DEBT as DAMAGE. Each Enemy Coin Flip has a chance equal to their current DEBT (up to 100%) to become DAZZLED."},
+	{"id": 20, "name": "Spare Change", "rank": "A", "desc": "Re-Flipping retrieves all RESERVED Coins. Retrieving a STAMPED Coin restores 1 Re-Flip."},
+	{"id": 21, "name": "Triple Nickel", "rank": "A", "desc": "+20% SILVER Flip Rate. Your first 3 Flips each turn are guaranteed SHINED SILVER Coins."},
+
+	{"id": 22, "name": "Inflation", "rank": "S", "desc": "You Cannot Manually Reserve. Each Re-Flip has a 30% Chance for each Coin to Upgrade. Upgrading Beyond Gold consumes 1 Coin and applies SHINE. SHINE is now Stackable."},
+	{"id": 23, "name": "Fully Paid", "rank": "S", "desc": "Everytime you SETTLE all your DEBT, Deal 15 DAMAGE and apply 4 THRIFT. For each successful SETTLE, DAMAGE further increases by 15."},
+	{"id": 24, "name": "Bankrupt", "rank": "S", "desc": "Your Coin Bar will only flip VOIDED Coins. For each VOIDED Coin Played/Cleansed, apply 2 DEBT to Self/Enemy. Execute the enemy if their DEBT is higher than their Coins."},
+	{"id": 25, "name": "All In", "rank": "S", "desc": "If the Arcane Circle is empty at End Turn, automatically Flip 20 SILVER Coins with a 50% Chance of being STAMPED. Each Statused Coin flipped this way deals 3 DAMAGE."},
+	{"id": 26, "name": "Withdraw", "rank": "B", "desc": "Removing a RESERVED Coin deals 1 DAMAGE. Statused Coins deal 3 DAMAGE instead."},
+	{"id": 27, "name": "Deposit", "rank": "A", "desc": "+4 Max Reserve. Overflowing Reserve applies 3 GAIN per Coin."},
+	{"id": 28, "name": "Dividend", "rank": "A", "desc": "Each RESERVED Coin has a 30% chance to generate a copy of itself next turn."},
+	{"id": 29, "name": "Cash Out", "rank": "S", "desc": "If there are 4 or more RESERVED Coins at the end of a Player or Enemy Turn, gain an EXTRA TURN. During Extra Turns, you can only Re-Flip and cannot gain additional Extra Turns."}
+];
 
 var picked_cards = []
 var max_picks = 2
@@ -191,7 +193,7 @@ func apply_reward(card_id):
 			print("Impromptu Flip Passive")
 			main.player.has_impromptu_flip = true
 		6:
-			print("Advanced Planning Passive")
+			print("Seal of Approval Passive")
 			main.player.has_advanced_planning = true
 		7:
 			print("Value Increase Passive")
@@ -210,9 +212,9 @@ func apply_reward(card_id):
 			main.player.has_lucky_pair = true
 			main.player.gold_flip_rate += 0.1
 		12:
-			print("A-Rank: Sleight of Hand")
+			print("A-Rank: Pickpocket")
 			main.player.has_sleight_of_hand = true
-			main.player.max_re_flip += 4
+			main.player.max_re_flip += 2
 		13:
 			print("A-Rank: Piggy")
 			main.player.has_piggy = true
@@ -226,7 +228,7 @@ func apply_reward(card_id):
 			print("A-Rank: Magic Trick")
 			main.player.has_magic_trick = true
 		17:
-			print("A-Rank: Reimbursement")
+			print("A-Rank: Tax Evasion")
 			main.player.has_reimbursement = true
 		18:
 			print("A-Rank: Payback")

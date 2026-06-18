@@ -3,6 +3,7 @@ extends Node2D
 @onready var voided: AnimatedSprite2D = $VOIDED
 @onready var dazzled: AnimatedSprite2D = $DAZZLED
 @onready var stamped: TextureRect = $STAMPED
+@onready var shine_stack_label: Label = $"Shine Stack Label"
 
 enum CoinType{
 	COPPER,
@@ -14,11 +15,13 @@ enum CoinStatus{
 	NONE,
 	SHINED,
 	VOIDED,
-	DAZZLED,
-	STAMPED
+	DAZZLED
 }
 
 #COIN VARIABLES
+var is_stamped = false
+var shine_stack = 0
+var initial_status = CoinStatus.NONE #If VOIDED, remember what status it was beforehand.
 var type
 var base_value:int
 var state:int # If 0, then Head, Else, then Tail
@@ -37,6 +40,7 @@ func setup(s,pos):
 	type = CoinType.COPPER
 	base_value = 2
 	status = CoinStatus.NONE
+	shine_stack = 0
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -77,8 +81,17 @@ func copy_coin(coin):
 	type = coin.type
 	state = coin.state
 	status = coin.status
+	initial_status = coin.initial_status
+	is_stamped = coin.is_stamped
+	shine_stack = coin.shine_stack
 
-
+func add_status(stat):
+	if stat != CoinStatus.VOIDED:
+		initial_status = stat
+		status = stat
+	else:
+		status = stat
+	
 func refresh_sprite():
 	var appear_tween = create_tween()
 	
@@ -86,16 +99,18 @@ func refresh_sprite():
 	appear_tween.parallel().tween_property(animated_sprite_2d, "modulate:a", 1.0, 0.2)
 	
 	stamped.visible = false
+	shine_stack_label.visible = false
 	
-	if status == CoinStatus.SHINED:
-		shined.visible = true
-	else:
-		shined.visible = false
-
 	if status == CoinStatus.VOIDED:
 		voided.visible = true
 	else:
 		voided.visible = false
+		status = initial_status
+		
+	if status == CoinStatus.SHINED:
+		shined.visible = true
+	else:
+		shined.visible = false
 		
 	if status == CoinStatus.DAZZLED:
 		dazzled.visible = true
@@ -138,5 +153,8 @@ func refresh_sprite():
 			shined.play("gold_head" if state == 0 else "gold_tail")
 			voided.play("copper_head" if state == 0 else "copper_tail")
 			dazzled.play("gold_head" if state == 0 else "gold_tail")
-	if status == CoinStatus.STAMPED:
+	if is_stamped:
 		stamped.visible = true
+	if status == CoinStatus.SHINED and shine_stack > 0:
+		shine_stack_label.visible = true
+		shine_stack_label.text = "x" + str(shine_stack)

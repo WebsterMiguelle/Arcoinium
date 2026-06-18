@@ -444,8 +444,7 @@ func start_enemy_turn():
 		sound_manager.play_sound(TURN_ENEMY)
 		await enemy.start_enemy_turn()
 		if enemy.coin > 0:
-			if enemy.type != Enemy.TWILIGHT_SAGE:
-				await get_tree().create_timer(1.0).timeout
+			await get_tree().create_timer(0.6).timeout
 			if player.coin > 0:
 				start_player_turn()
 			else:
@@ -456,18 +455,17 @@ func start_enemy_turn():
 func _on_endturn_pressed():
 	if enemy.coin > 0 and player.coin > 0:
 		await player.end_turn()
+		
 		turn_calculation_box.exit()
 		var defeat = await check_defeat()
 		if defeat == null:
 			await get_tree().create_timer(1.0).timeout
 			if !player.has_extra_turn:
 				start_enemy_turn()
-				player.extra_turn_penalty = 1
 			else:
 				sound_manager.play_sound(EXTRA_TURN)
 				show_turn_ui("EXTRA TURN")
 				player.extra_turn()
-				player.has_extra_turn = false
 
 func tally_end_turn():
 	if enemy.coin > 0 and player.coin > 0:
@@ -549,11 +547,6 @@ func _on_flip_pressed():
 		return
 	total_flips += 1
 	player.flip()
-		
-	if player.coin == 0 or enemy.coin == 0:
-		check_defeat()
-
-	
 	
 func trigger_game_over(player_won: bool):
 	sound_manager.play_sound(DEATH)
@@ -704,6 +697,8 @@ func handle_victory_flow():
 	endTurn_button.disabled = true
 	player.lock = false
 	player.slow = false
+	var has_dazzle = false
+	var main_coins = get_tree().get_nodes_in_group("coins")
 	var coins = get_tree().get_nodes_in_group("reserved coins")
 	player.current_reserve = coins.size()
 	player.max_reserve = player.initial_max_reserve
@@ -715,14 +710,20 @@ func handle_victory_flow():
 	player.gain_coin()
 	sound_manager.play_sound(VICTORY)
 	turn_calculation_box.exit()
+	
 	await show_turn_ui("VICTORY")
 	sound_manager.play_sound(PASSIVE_SPARE_CHANGE)
 	var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
+	
 	for c in reserved_coins:
 		player.coin += 1
 		overall_reserved_coins += 1
 		c.queue_free()
 		player.current_reserve -= 1
+	if main_coins.size() > 0:
+		for c in main_coins:
+			player.coin += 1
+			c.queue_free()
 	particle_manager.despawn_emitting_particles()
 	# Disable gameplay buttons
 	flip_button.disabled = true
@@ -768,6 +769,7 @@ func progression_after_victory():
 func _on_re_flip_pressed():
 	total_reflips += 1
 	player.re_flip()
+	reflip_label.text = str(player.max_re_flip - player.current_re_flip)
 
 func reserve_left_over_coin():
 	var is_left = true # true - Left Coin, false - Right Coin
@@ -885,7 +887,7 @@ func _on_restart_pressed():
 func proceed_to_next_enemy():
 	match enemies_defeated:
 		1:
-			current_enemy_index = randi_range(2,2)
+			current_enemy_index = randi_range(2,3)
 			second_enemy = current_enemy_index
 		2:
 			current_enemy_index = randi_range(4,5)

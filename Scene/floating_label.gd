@@ -60,5 +60,7 @@ func setup(val, typ, ent, pos):
 			temp_label.add_theme_color_override("font_color", Color.DEEP_PINK)
 		"TALLY":
 			temp_label.add_theme_color_override("font_color", Color.CORAL)
+		"SETTLE":
+			temp_label.add_theme_color_override("font_color", Color.AQUAMARINE)
 		"IMMUNE":
 			temp_label.add_theme_color_override("font_color", Color(Color.SLATE_GRAY))

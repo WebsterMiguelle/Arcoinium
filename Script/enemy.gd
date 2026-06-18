@@ -5,8 +5,7 @@ enum CoinStatus{
 	NONE,
 	SHINED,
 	VOIDED,
-	DAZZLED,
-	STAMPED
+	DAZZLED
 }
 
 var main
@@ -111,6 +110,8 @@ var gold_flip_rate = 0.00: #Chance to Flip a Gold Coin
 var has_audit = false #For each DEBT Settled by the opposing side, apply 1 GAIN to self.
 var has_radiant = false #At the end of each turn, each Coin has a 50% Chance to be SHINED.
 var has_benchmark = false #Can only play the same amount of Coins by the opposing side.
+var settle = 0 #Whenever a DEBT was cleared, detonate settle as Damage.
+
 var gain = 0: #Coin to be gained next turn
 	set(value):
 		gain = clamp(value,0,1000) 
@@ -193,6 +194,7 @@ func refresh_start_of_battle_stats():
 	has_audit = false
 	has_benchmark = false
 	has_radiant = false
+	settle = 0
 	gain = 0
 	debt = 0
 	thrift = 0
@@ -285,7 +287,7 @@ func setup(m,enemy):
 				trigger_enemy_passive("BENCHMARK: The Trader will Copy your Number of Played Coins.", 3.0)
 			else:
 				max_coin = 200
-				coin = 80
+				coin = 60
 				max_playable_coins = 2
 				silver_flip_rate = 0.8
 				gold_flip_rate = 0.5
@@ -305,38 +307,38 @@ func setup(m,enemy):
 				has_learn_to_save = true
 				main.player.has_learn_to_save = true
 			else:
-				max_coin = 100
-				coin = 100
+				max_coin = 120
+				coin = 120
 				max_playable_coins = 12
-				silver_flip_rate = 0
-				gold_flip_rate = 1
+				silver_flip_rate = 1
+				gold_flip_rate = 0.2
 				bounty = 150
 				type = Enemy.THRIFTER
 				has_learn_to_save = true
 				main.player.has_learn_to_save = true
 		Enemy.ARISTOCRAT:
 			if !greed:
+				settle = 100
 				max_coin = 200
-				coin = 100
+				coin = 120
 				max_playable_coins = 16
 				silver_flip_rate = 1
 				gold_flip_rate = 0
 				bounty = 75
 				type = Enemy.ARISTOCRAT
-				has_fully_paid = true
 				debt = 100
-				trigger_enemy_passive("When The Aristocrat settled all her DEBT, Deal 100 Damage.", 4.0)
+				trigger_enemy_passive("SETTLE: When The Aristocrat settled all her DEBT, Deal 100 Damage.", 4.0)
 			else:
-				max_coin = 200
-				coin = 200
+				settle = 500
+				max_coin = 220
+				coin = 220
 				max_playable_coins = 16
 				silver_flip_rate = 0
 				gold_flip_rate = 1
 				bounty = 150
 				type = Enemy.ARISTOCRAT
-				has_fully_paid = true
 				debt = 200
-				trigger_enemy_passive("When The Aristocrat settled all her DEBT, Deal 500 Damage.", 4.0)
+				trigger_enemy_passive("GREED: When The Aristocrat settled all her DEBT, Deal 500 Damage.", 4.0)
 		Enemy.SUN_CASTER:
 			if !greed:
 				max_coin = 200
@@ -349,6 +351,7 @@ func setup(m,enemy):
 				has_sunlit_curse = true
 				trigger_enemy_passive("Avoid Playing 9 or More SUN Coins.", 5.0)
 			else:
+				has_radiant = true
 				max_coin = 200
 				coin = 200
 				max_playable_coins = 16
@@ -383,9 +386,9 @@ func setup(m,enemy):
 				trigger_enemy_passive("You have GUARANTEED MOON FLIPS. Avoid Playing 9 or More MOON Coins.", 5.0)
 		Enemy.TWILIGHT_SAGE:
 			if !greed:
-				max_coin = 200
-				coin = 200
-				max_playable_coins = 4
+				max_coin = 500
+				coin = 500
+				max_playable_coins = 8
 				silver_flip_rate = 1
 				gold_flip_rate = 0.8
 				bounty = 0
@@ -396,9 +399,10 @@ func setup(m,enemy):
 				switch_vignette_color(dawn_stance,0.4)
 				trigger_enemy_passive("DAWN STANCE: Play as Many MOON Coins.", 5.0)
 			else:
-				max_coin = 400
-				coin = 400
-				max_playable_coins = 8
+				has_radiant = true
+				max_coin = 999
+				coin = 999
+				max_playable_coins = 16
 				silver_flip_rate = 0
 				gold_flip_rate = 1
 				bounty = 0
@@ -437,25 +441,31 @@ func flip():
 	
 	current_played_coin += 1
 	@warning_ignore("shadowed_variable")
-	var coin = COIN.instantiate()
-	coin.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
-	if type == Enemy.TWILIGHT_SAGE:
-		var shined_chance = randi_range(0,4);
-		if shined_chance == 1:
-			coin.status = CoinStatus.SHINED
+	var c = COIN.instantiate()
+	c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
+
 	#Silver/Gold Flip Rate
 	
 	var upgrade_chance = randf()
 	if upgrade_chance <= silver_flip_rate:
-		coin.upgrade_to_silver()
+		c.upgrade_to_silver()
 	
 	upgrade_chance = randf()  
 	if upgrade_chance <= gold_flip_rate:
-		coin.upgrade_to_gold()
+		c.upgrade_to_gold()
 
-	coin.add_to_group("enemy_coins")
-	add_child(coin);
-	main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,coin.global_position)
+	c.add_to_group("enemy_coins")
+	add_child(c);
+	main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,c.global_position)
+	var loan_damage:int = debt * 0.05
+	if main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
+		take_damage(loan_damage)
+		create_floating_label(loan_damage,"DAMAGE","ENEMY")
+		main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
+		main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
+		main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
+		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
+	
 
 
 func enemy_coin_calculation():
@@ -471,6 +481,9 @@ func enemy_coin_calculation():
 	var activate_lock = false
 	var activate_slow = false
 	var activate_starstruck = false
+	
+	var shined_sun_boost = 0
+	var shined_moon_boost = 0
 	@warning_ignore("confusable_local_usage", "shadowed_variable")
 	var type = type
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
@@ -555,7 +568,7 @@ func enemy_coin_calculation():
 					if left_coin.state == 1 and right_coin.state == 1:
 						total_gain += (left_coin.base_value / 2) + (right_coin.base_value / 2)
 						if greed:
-							total_tally += 6
+							total_tally += 3
 					elif left_coin.state == 0 and right_coin.state == 0:
 						total_damage += (left_coin.base_value) + (right_coin.base_value)
 						total_thrift += 3
@@ -579,13 +592,15 @@ func enemy_coin_calculation():
 			var right_coin
 			for coin in coins:
 				if coin.state == 0:
+					if coin.status == CoinStatus.SHINED: 
+						shined_sun_boost += 3
 					total_spend += 2
 					sun_count += 1
 					if greed:
 						total_damage += coin.base_value / 2
-						if sun_count >= 8:
-							activate_lock = true
 				else:
+					if coin.status == CoinStatus.SHINED: 
+						shined_sun_boost += 1
 					moon_count +=1
 				if is_left == true:
 					left_coin = coin
@@ -630,18 +645,23 @@ func enemy_coin_calculation():
 			var left_coin
 			var right_coin
 			for coin in coins:
+				if greed:
+					if has_dusk_stance:
+						activate_lock = true
+					else:
+						activate_slow = true
 				if coin.state == 0:
+					if coin.status == CoinStatus.SHINED: 
+						shined_sun_boost += 3
 					if greed:
-						total_damage += 1
+						total_damage += coin.base_value/2
 					sun_count +=1
 				else: 
+					if coin.status == CoinStatus.SHINED: 
+						shined_moon_boost += 3
 					if greed:
-						total_gain += 1
+						total_gain += coin.base_value/2
 					moon_count += 1
-				if greed and sun_count >= 8:
-					activate_lock = true
-				if greed and moon_count >= 8:
-					activate_slow = true
 				if is_left == true:
 					left_coin = coin
 				if is_left == false:
@@ -656,8 +676,12 @@ func enemy_coin_calculation():
 					# 3. HEAD-TAIL PAIR
 					elif left_coin.state == 0 and right_coin.state == 1:
 						total_debt +=  (left_coin.base_value/2 + right_coin.base_value/2)
+						if greed:
+							total_debt +=  (left_coin.base_value/2 + right_coin.base_value/2)
 					else:
 						total_debt +=  (left_coin.base_value/2 + right_coin.base_value/2)
+						if greed:
+							total_debt +=  (left_coin.base_value/2 + right_coin.base_value/2)
 					left_coin = null
 					right_coin = null
 				else:
@@ -667,8 +691,12 @@ func enemy_coin_calculation():
 	if coins != null:
 		if total_damage != 0: 
 			text += "\nDAMAGE: " + str(total_damage)
+			if shined_sun_boost > 0:
+				text += " (+" + str(shined_sun_boost) + ")"
 		if total_gain != 0:
 			text += "\nGAIN: " + str(total_gain)
+			if shined_moon_boost > 0:
+				text += " (+" + str(shined_moon_boost) + ")"
 		if total_debt != 0:
 			text += "\nDEBT: " + str(total_debt)
 		if total_thrift != 0:
@@ -688,7 +716,7 @@ func enemy_coin_calculation():
 	if text != "":
 		sun_moon_count.text = "𖤓 " + str(sun_count) + " ☾ " + str(moon_count)
 		main.turn_calculation_box.entrance(true)
-	return [total_damage,total_gain,total_debt,total_thrift,total_spend,activate_lock,activate_slow,activate_starstruck, total_tally]
+	return [total_damage,total_gain,total_debt,total_thrift,total_spend,activate_lock,activate_slow,activate_starstruck, total_tally, shined_sun_boost, shined_moon_boost]
 
 func start_enemy_turn():
 	toggle_button(main.flip_button,true)
@@ -741,30 +769,19 @@ func start_enemy_turn():
 	#Coin Gain Triggers
 	gain_coin()
 	
-	if has_fully_paid:
+	if type == Enemy.ARISTOCRAT:
 		if debt > 0:
 			trigger_enemy_passive("Remaining DEBT: " + str(debt), 2.0)
 		else:
 			trigger_enemy_passive("FULLY PAID!", 2.0)
 	
-	if has_fully_paid and debt == 0:
+	if settle > 0 and debt == 0:
 		particle_manager.trigger_attack(main.coin_deck, main.player_portrait, turn_damage, "")
 		await get_tree().create_timer(1.0).timeout
-		if greed:
-			main.player.take_damage(500)
-		else:
-			main.player.take_damage(100)
+		main.player.take_damage(settle)
 		main.sound_manager.play_sound(DAMAGE_HEAVY)
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.player_portrait.global_position)
-	if main.player.has_loan_shark and debt > 1:
-		var loan_damage = debt / 2
-		debt /= 2
-		take_damage(loan_damage)
-		create_floating_label(loan_damage,"DAMAGE","ENEMY")
-		main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
-		main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
-		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
-		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
+
 
 
 	#Reset Enemy Stats
@@ -794,12 +811,28 @@ func start_enemy_turn():
 func end_enemy_turn():
 	main.coin_deck.sigil_pressed()
 	
+	
+	#END TURN PASSIVES
+	
+	if has_radiant:
+		var coins = get_tree().get_nodes_in_group("enemy_coins")
+		for c in coins:
+			var shine_chance = randi_range(0,1)
+			if shine_chance == 1:
+				main.sound_manager.play_sound(COIN_FLIP)
+				c.status = CoinStatus.SHINED
+				c.initial_status = c.status
+				c.refresh_sprite()
+				enemy_coin_calculation()
+				await get_tree().create_timer(0.1).timeout
+		await get_tree().create_timer(0.6).timeout
+	
 	# ==========================================
 	# PHASE 1: MATH & LOGIC (Instantly calculate everything)
 	# ==========================================
 	var calculations = enemy_coin_calculation()
-	var turn_damage = calculations[0]
-	var turn_gain = calculations[1]
+	var turn_damage = calculations[0] + calculations[9]
+	var turn_gain = calculations[1] + calculations[10]
 	var turn_debt = calculations[2]
 	var turn_thrift = calculations[3]
 	var turn_spend = calculations[4]
@@ -885,7 +918,7 @@ func end_enemy_turn():
 				main.sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
 				for i in (converted_income):
 					main.player.coin += 1
-					main.player.reserve(true)
+					main.player.reserve(true,false,true)
 		main.player.take_damage(turn_damage)
 	
 	# -- Final Hit Impacts & Floating Labels (The runes have arrived!) --
@@ -954,7 +987,7 @@ func end_enemy_turn():
 	if turn_debt != 0:
 		if main.player.has_reimbursement:
 			turn_debt /= 2
-			if greed and (type == Enemy.ARISTOCRAT or type == Enemy.COLLECTOR):
+			if greed and (type == Enemy.COLLECTOR):
 				create_floating_label("DEBT", "IMMUNE", "ENEMY")
 			else:
 				debt += turn_debt
@@ -972,7 +1005,8 @@ func end_enemy_turn():
 		main.particle_manager.spawn_particle(VOID_ADDED_PARTICLE,player_reserve_rug.global_position)
 		var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
 		for c in reserved_coins:
-			if c.status == CoinStatus.NONE:
+			if c.status != CoinStatus.VOIDED and !c.is_stamped:
+				c.initial_status = c.status
 				c.status = CoinStatus.VOIDED
 				c.refresh_sprite()
 	if turn_slow: main.player.slow = true

@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="6_mxd2g"]
 [ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="7_0sxm5"]
 [ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="7_3pt4j"]
+[ext_resource type="Texture2D" uid="uid://eeepgts0tvpj" path="res://Assets/Passive_Icons.png" id="7_5rsq1"]
 [ext_resource type="Material" uid="uid://cxjkyhc8r5fge" path="res://Assets/Particles/debt.tres" id="7_cr44a"]
 [ext_resource type="Script" uid="uid://byrcn8pelxayw" path="res://Script/coin_deck.gd" id="7_ow1sv"]
 [ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="9_jbas8"]
@@ -556,6 +557,53 @@ scale_over_velocity_max = 196.06999
 color = Color(0.9999996, 0.9053559, 0.81244224, 1)
 color_ramp = SubResource("GradientTexture1D_mlc74")
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_f3bax"]
+atlas = ExtResource("7_5rsq1")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5l0y8"]
+atlas = ExtResource("7_5rsq1")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3drsm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f3bax")
+}],
+"loop": true,
+"name": &"Lunar Blessing",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5l0y8")
+}],
+"loop": true,
+"name": &"Solar Blessing",
+"speed": 5.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_4lqwv"]
+offsets = PackedFloat32Array(0, 0.537037, 1)
+colors = PackedColorArray(0.91427547, 0.23553646, 3.85046e-07, 0.73333335, 0.8834769, 0.5486359, 7.70092e-07, 0.41169596, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_gejqg"]
+gradient = SubResource("Gradient_4lqwv")
+fill = 1
+fill_from = Vector2(0.5232558, 0.48139533)
+fill_to = Vector2(0.7930232, 0.30930233)
+
+[sub_resource type="Gradient" id="Gradient_oywcm"]
+offsets = PackedFloat32Array(0.21851853, 0.537037, 0.9074074)
+colors = PackedColorArray(0.2983726, 0.34945783, 0.8161493, 0.73333335, 0.3951713, 0.52781093, 0.8900136, 0.41169596, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xgc63"]
+gradient = SubResource("Gradient_oywcm")
+fill = 1
+fill_from = Vector2(0.5232558, 0.48139533)
+fill_to = Vector2(0.8534884, 0.35581395)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_4lqwv"]
 atlas = ExtResource("37_885bo")
 region = Rect2(0, 0, 64, 64)
@@ -741,10 +789,10 @@ offset_bottom = 633.0
 text = "Press for Info"
 
 [node name="Reserve Button" type="Button" parent="Battle UI" unique_id=1926938624]
-offset_left = 864.0
-offset_top = 504.0
-offset_right = 1027.0
-offset_bottom = 543.0
+offset_left = 527.0
+offset_top = 560.0
+offset_right = 693.0
+offset_bottom = 603.0
 
 [node name="Player Reserve" type="Label" parent="Battle UI/Reserve Button" unique_id=15672962]
 custom_minimum_size = Vector2(150, 40)
@@ -1262,6 +1310,37 @@ theme_override_font_sizes/font_size = 26
 text = "7"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Solar Blessing Icon" type="AnimatedSprite2D" parent="Player" unique_id=1498402891]
+visible = false
+self_modulate = Color(0.43529412, 0.1882353, 0, 0.47058824)
+position = Vector2(898, 259)
+scale = Vector2(1.921874, 1.921874)
+sprite_frames = SubResource("SpriteFrames_3drsm")
+animation = &"Solar Blessing"
+
+[node name="Solar Glow" type="TextureRect" parent="Player/Solar Blessing Icon" unique_id=1542688678]
+visible = false
+offset_left = -35.38214
+offset_top = -32.84722
+offset_right = 31.80655
+offset_bottom = 34.34147
+texture = SubResource("GradientTexture2D_gejqg")
+
+[node name="Lunar Blessing Icon" type="AnimatedSprite2D" parent="Player" unique_id=1536334222]
+self_modulate = Color(0.09019608, 0, 0.74509805, 0.30980393)
+position = Vector2(993, 258)
+scale = Vector2(1.921874, 1.921874)
+sprite_frames = SubResource("SpriteFrames_3drsm")
+animation = &"Lunar Blessing"
+
+[node name="Lunar Glow" type="TextureRect" parent="Player/Lunar Blessing Icon" unique_id=980034410]
+visible = false
+offset_left = -35.38214
+offset_top = -32.84722
+offset_right = 31.80655
+offset_bottom = 34.34147
+texture = SubResource("GradientTexture2D_xgc63")
 
 [node name="Game Over UI" type="CanvasLayer" parent="." unique_id=994626979]
 visible = false

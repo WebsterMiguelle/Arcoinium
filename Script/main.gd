@@ -262,6 +262,7 @@ func _ready():
 		player.coin += 15
 		player.silver_flip_rate += 0.2
 		player.gold_flip_rate += 0.1
+		player.max_re_flip += 2
 	else: main.self_modulate = Color.WHITE
 	shop_manager.item_purchased.connect(_on_item_purchased)
 	
@@ -445,12 +446,7 @@ func start_enemy_turn():
 		if enemy.coin > 0:
 			await get_tree().create_timer(0.6).timeout
 			if player.coin > 0:
-				if !player.has_extra_turn:
-					start_player_turn()
-				else:
-					sound_manager.play_sound(EXTRA_TURN)
-					show_turn_ui("EXTRA TURN")
-					player.extra_turn()
+				start_player_turn()
 			else:
 				check_defeat()
 		else:
@@ -459,15 +455,13 @@ func start_enemy_turn():
 func _on_endturn_pressed():
 	if enemy.coin > 0 and player.coin > 0:
 		await player.end_turn()
+		
 		turn_calculation_box.exit()
 		var defeat = await check_defeat()
 		if defeat == null:
 			await get_tree().create_timer(1.0).timeout
 			if !player.has_extra_turn:
-				if current_turn == Turn.ENEMY:
-					start_player_turn()
-				else:
-					start_enemy_turn()
+				start_enemy_turn()
 			else:
 				sound_manager.play_sound(EXTRA_TURN)
 				show_turn_ui("EXTRA TURN")
@@ -483,6 +477,7 @@ func tally_end_turn():
 			await get_tree().create_timer(1.0).timeout
 			if !player.has_extra_turn:
 				start_enemy_turn()
+				player.extra_turn_penalty = 1
 			else:
 				sound_manager.play_sound(EXTRA_TURN)
 				show_turn_ui("EXTRA TURN")
@@ -692,11 +687,9 @@ func check_defeat():
 		flip_button.disabled = true
 		endTurn_button.disabled = true 
 		re_flip_button.disabled = true
-		reserve_button.disabled = true
-		if enemies_defeated == current_room:
-			enemies_defeated += 1
-			await handle_victory_flow()
-			return true
+		enemies_defeated += 1
+		await handle_victory_flow()
+		return true
 	
 	return null
 
@@ -776,8 +769,6 @@ func progression_after_victory():
 func _on_re_flip_pressed():
 	total_reflips += 1
 	player.re_flip()
-	if main.enemy.coin == 0:
-		main.check_defeat()
 	reflip_label.text = str(player.max_re_flip - player.current_re_flip)
 
 func reserve_left_over_coin():

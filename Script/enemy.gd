@@ -249,7 +249,7 @@ func setup(m,enemy):
 				coin = 40
 				max_playable_coins = 8
 				silver_flip_rate = 0.0
-				gold_flip_rate = 1.0
+				gold_flip_rate = 0.0
 				bounty = 50
 			type = Enemy.DWARF
 		Enemy.COLLECTOR:
@@ -387,7 +387,7 @@ func setup(m,enemy):
 		Enemy.TWILIGHT_SAGE:
 			if !greed:
 				max_coin = 500
-				coin = 300
+				coin = 500
 				max_playable_coins = 8
 				silver_flip_rate = 1
 				gold_flip_rate = 0.8
@@ -401,7 +401,7 @@ func setup(m,enemy):
 			else:
 				has_radiant = true
 				max_coin = 999
-				coin = 900
+				coin = 999
 				max_playable_coins = 16
 				silver_flip_rate = 0
 				gold_flip_rate = 1
@@ -444,10 +444,6 @@ func flip():
 	var c = COIN.instantiate()
 	c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
 
-	var loan_dazzle_chance = debt
-	var loan_success = randi_range(1,100)
-	if main.player.has_loan_shark and loan_success <= loan_dazzle_chance:
-		c.add_status(CoinStatus.DAZZLED)
 	#Silver/Gold Flip Rate
 	
 	var upgrade_chance = randf()
@@ -461,14 +457,15 @@ func flip():
 	c.add_to_group("enemy_coins")
 	add_child(c);
 	main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,c.global_position)
-	var loan_damage:int = ceil(debt * 0.05)
-	if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
+	var loan_damage:int = debt * 0.05
+	if main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
 		take_damage(loan_damage)
 		create_floating_label(loan_damage,"DAMAGE","ENEMY")
 		main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
 		main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 		main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
+	
 
 
 func enemy_coin_calculation():
@@ -657,13 +654,13 @@ func enemy_coin_calculation():
 					if coin.status == CoinStatus.SHINED: 
 						shined_sun_boost += 3
 					if greed:
-						total_damage += 1
+						total_damage += coin.base_value/2
 					sun_count +=1
 				else: 
 					if coin.status == CoinStatus.SHINED: 
 						shined_moon_boost += 3
 					if greed:
-						total_gain += 1
+						total_gain += coin.base_value/2
 					moon_count += 1
 				if is_left == true:
 					left_coin = coin
@@ -680,11 +677,11 @@ func enemy_coin_calculation():
 					elif left_coin.state == 0 and right_coin.state == 1:
 						total_debt +=  (left_coin.base_value/2 + right_coin.base_value/2)
 						if greed:
-							total_debt +=  (left_coin.base_value/2)
+							total_debt +=  (left_coin.base_value/2 + right_coin.base_value/2)
 					else:
 						total_debt +=  (left_coin.base_value/2 + right_coin.base_value/2)
 						if greed:
-							total_debt +=  (left_coin.base_value/2)
+							total_debt +=  (left_coin.base_value/2 + right_coin.base_value/2)
 					left_coin = null
 					right_coin = null
 				else:
@@ -817,54 +814,18 @@ func end_enemy_turn():
 	
 	#END TURN PASSIVES
 	
-	#DAZZLED COINS
-	var has_dazzle = false
-	var coins = get_tree().get_nodes_in_group("enemy_coins")
-	for c in coins:
-		if c.status == CoinStatus.DAZZLED:
-			has_dazzle = true
-			if c.state == 0:
-				c.state = 1
-			else:
-				c.state = 0
-			c.add_status(CoinStatus.NONE)
-			c.refresh_sprite()
-			main.sound_manager.play_sound(COIN_FLIP)
-			enemy_coin_calculation()
-			var loan_damage:int = ceil(debt * 0.05)
-			if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
-				take_damage(loan_damage)
-				create_floating_label(loan_damage,"DAMAGE","ENEMY")
-				main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
-				main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
-				main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
-				main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
-			await get_tree().create_timer(0.1).timeout
-	if has_dazzle:
-		await get_tree().create_timer(0.6).timeout
-
-	
 	if has_radiant:
-		coins = get_tree().get_nodes_in_group("enemy_coins")
+		var coins = get_tree().get_nodes_in_group("enemy_coins")
 		for c in coins:
 			var shine_chance = randi_range(0,1)
 			if shine_chance == 1:
 				main.sound_manager.play_sound(COIN_FLIP)
-				var loan_damage:int = ceil(debt * 0.05)
-				if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
-					take_damage(loan_damage)
-					create_floating_label(loan_damage,"DAMAGE","ENEMY")
-					main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
-					main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
-					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
-					main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
 				c.status = CoinStatus.SHINED
 				c.initial_status = c.status
 				c.refresh_sprite()
 				enemy_coin_calculation()
 				await get_tree().create_timer(0.1).timeout
 		await get_tree().create_timer(0.6).timeout
-		
 	
 	# ==========================================
 	# PHASE 1: MATH & LOGIC (Instantly calculate everything)
@@ -937,7 +898,7 @@ func end_enemy_turn():
 
 
 	# Clean up the played coins visually
-	coins = get_tree().get_nodes_in_group("enemy_coins")
+	var coins = get_tree().get_nodes_in_group("enemy_coins")
 	for c in coins:
 		main.particle_manager.spawn_particle(COIN_PLAY_PARTICLE, c.global_position)
 		c.queue_free()
@@ -1099,12 +1060,10 @@ func end_enemy_turn():
 		main.check_defeat()
 	if type == Enemy.MOON_CASTER or type == Enemy.SUN_CASTER:
 		switch_vignetter_color(vignetter_default, 0.4)
-		
+	
+
 	main.coin_deck.sigil_unlight_()
 	
-	if !main.player.has_extra_turn and !main.player.lock and coin > 0 and main.player.has_cash_out and main.player.current_reserve >= 4 and main.player.coin > 1:
-		main.player.trigger_temp_passive("cash_out","CASH OUT")
-		main.player.has_extra_turn = true
 	
 func toggle_button(btn: Button, make_disabled: bool) -> void:
 	btn.disabled = make_disabled

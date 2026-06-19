@@ -1058,7 +1058,6 @@ func end_enemy_turn():
 	if turn_starstruck: main.player.starstruck = true
 	# 4. Player 'Pay Down' Passive Check
 	var pay_down_killed = false
-	var pay_down_debt_added = false
 	if main.player.has_pay_down:
 		if debt > coin:
 			coin = 0

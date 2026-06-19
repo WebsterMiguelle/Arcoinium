@@ -430,7 +430,7 @@ grow_vertical = 2
 texture = ExtResource("1_q7g03")
 script = ExtResource("2_ogghd")
 
-[node name="Stone Floor" type="TextureRect" parent="." unique_id=320215991]
+[node name="Shop Area" type="TextureRect" parent="." unique_id=320215991]
 layout_mode = 0
 offset_left = -38.78247
 offset_top = -22.0
@@ -438,13 +438,13 @@ offset_right = 1184.6898
 offset_bottom = 668.0
 texture = ExtResource("19_66vrp")
 
-[node name="Rug" type="TextureRect" parent="." unique_id=1832194032]
+[node name="Rug" type="TextureRect" parent="Shop Area" unique_id=1832194032]
 self_modulate = Color(0.74926186, 0.7464951, 0.9420062, 1)
 layout_mode = 0
-offset_left = -643.0
-offset_top = 76.0
-offset_right = 1802.0
-offset_bottom = 557.73254
+offset_left = -604.2175
+offset_top = 98.0
+offset_right = 1840.7825
+offset_bottom = 579.73254
 texture = ExtResource("31_uku07")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=659444321]

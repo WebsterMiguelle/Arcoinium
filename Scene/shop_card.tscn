@@ -232,7 +232,7 @@ region = Rect2(160, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a1sy7"]
 atlas = ExtResource("3_bku1w")
-region = Rect2(96, 64, 32, 32)
+region = Rect2(64, 64, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s4jp2"]
 atlas = ExtResource("3_bku1w")
@@ -604,7 +604,7 @@ frame = 4
 position = Vector2(76, 71)
 scale = Vector2(3.0625002, 2.9375)
 sprite_frames = SubResource("SpriteFrames_u5k1i")
-animation = &"Lunar Blessing"
+animation = &"Fully Paid"
 
 [node name="Label" type="Label" parent="." unique_id=594536539]
 layout_mode = 0

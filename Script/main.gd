@@ -6,6 +6,7 @@ enum Turn {
 }
 @onready var forest_area: TextureRect = $"Forest Area"
 @onready var fields_area: TextureRect = $"Fields Area"
+@onready var shop_area: TextureRect = $"Shop Area"
 
 enum Enemy{
 	MAGE,
@@ -165,8 +166,9 @@ var enemy_info_menu: Node = null
 var enemy_notif_tween: Tween = null
 var enemy_notif_base_pos: Vector2
 
-@onready var turn_ui: ColorRect = $"Battle UI/Turn UI"
+@onready var turn_ui: TextureRect = $"Battle UI/Turn UI"
 @onready var turn_ui_label: Label = $"Battle UI/Turn UI/Turn UI Label"
+@onready var turn_portrait: AnimatedSprite2D = $"Battle UI/Turn UI/PortraitBG/Turn Portrait"
 
 @onready var passive_manager = $PassiveManager
 @onready var passive_label = $"Battle UI/PassiveContainer"
@@ -405,10 +407,34 @@ func show_turn_ui(text):
 	turn_ui_label.text = text
 	turn_ui.modulate = Color("ffffff00")
 	turn_ui.global_position = get_viewport_rect().size / 2
-	turn_ui.global_position.x -= 600
+	turn_ui.global_position.x -= 350
+	turn_ui.global_position.y += 10
 	
 	var target_position = turn_ui.global_position.y - 40
 	
+	if current_turn == Turn.ENEMY:
+		match current_enemy_index:
+			0: 
+				turn_portrait.play("MAGE")
+			1: 
+				turn_portrait.play("DWARF")
+			2: 
+				turn_portrait.play("COLLECTOR")
+			3: 
+				turn_portrait.play("TRADER")
+			4: 
+				turn_portrait.play("THRIFTER")
+			5:
+				turn_portrait.play("ARISTOCRAT")
+			6: 
+				turn_portrait.play("SUN_CASTER")
+			7: 
+				turn_portrait.play("MOON_CASTER")
+			8:
+				turn_portrait.play("TWILIGHT_SAGE")
+	else:
+		turn_portrait.play("COIN_CASTER")
+
 	var tween = create_tween()
 	tween.parallel().tween_property(turn_ui,"modulate",Color("ffffff"),0.2)
 	tween.parallel().tween_property(turn_ui, "position:y",target_position,0.2)
@@ -435,8 +461,8 @@ func _on_end_run_pressed():
 	
 func start_player_turn():
 	if player.coin > 0:
-		show_turn_ui("PLAYER TURN")
 		current_turn = Turn.PLAYER
+		show_turn_ui("YOUR TURN")
 		sound_manager.play_sound(TURN_PLAYER)
 		await player.start_turn()
 	else:
@@ -444,9 +470,9 @@ func start_player_turn():
 			
 func start_enemy_turn():
 	if enemy.coin > 0:
-		show_turn_ui("ENEMY'S TURN")
-		coin_deck.reset_sigils()
 		current_turn = Turn.ENEMY
+		show_turn_ui("ENEMY TURN")
+		coin_deck.reset_sigils()
 		sound_manager.play_sound(TURN_ENEMY)
 		await enemy.start_enemy_turn()
 		if enemy.coin > 0:
@@ -456,6 +482,7 @@ func start_enemy_turn():
 					start_player_turn()
 				else:
 					sound_manager.play_sound(EXTRA_TURN)
+					current_turn = Turn.PLAYER
 					show_turn_ui("EXTRA TURN")
 					player.extra_turn()
 			else:
@@ -997,10 +1024,15 @@ func _play_progression_cutscene(from_index: int, to_index: int) -> void:
 		bg_fade.tween_property(forest_area,"modulate", Color("#0059a800"),0.6)
 		await bg_fade.finished
 		forest_area.visible = false
-	elif to_index == 5:
+	elif to_index == 4:
+		shop_area.visible = true
 		bg_fade.tween_property(fields_area,"modulate", Color("#0059a800"),0.6)
 		await bg_fade.finished
 		fields_area.visible = false
+	elif to_index == 5:
+		bg_fade.tween_property(shop_area,"modulate", Color("#0059a800"),0.6)
+		await bg_fade.finished
+		shop_area.visible = false
 	
 	var slide_out = progression_map.create_tween()
 	slide_out.tween_property(progression_map, "offset:y", -screen_height, 0.8).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN)

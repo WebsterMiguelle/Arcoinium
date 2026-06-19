@@ -255,7 +255,6 @@ func apply_reward(card_id):
 		25:
 			print("S-Rank: Refund")
 			main.player.has_refund = true
-			main.player.max_re_flip += 1
 		26:
 			print("B-Rank: Withdraw")
 			main.player.has_withdraw = true

@@ -351,7 +351,7 @@ func reset_stats():
 	has_loan_shark = false
 	has_lending_charge = false
 
-	has_cash_out = false
+	has_cash_out = true
 	has_dividend = false
 	has_withdraw = false
 	has_deposit = false

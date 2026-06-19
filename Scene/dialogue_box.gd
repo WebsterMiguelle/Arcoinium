@@ -62,7 +62,7 @@ const LINES = {
 		"Saved coins return as bonus\nat battle's end.",
 		"A true Caster plans ahead." ],
 	"sk_overflow": [
-		"Overflow your Cirle." ],
+		"You Overflow your Cirle." ],
 	"sk_player_winning": [
 		"Impressive... you fight well.",
 		"Do not grow arrogant, Caster." ],

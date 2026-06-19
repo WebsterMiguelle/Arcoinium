@@ -7,17 +7,21 @@
 [ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="3_hspdg"]
 [ext_resource type="Script" uid="uid://dedsjnmo4366e" path="res://Script/enemy.gd" id="3_lquwl"]
 [ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
+[ext_resource type="Texture2D" uid="uid://bivk5jj1h0vgt" path="res://Assets/CoinBarBackGround.png" id="4_4lqwv"]
 [ext_resource type="PackedScene" uid="uid://vnsb1sd0yalg" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
 [ext_resource type="Script" uid="uid://deakh0hwd6qoh" path="res://Scene/CardManager.gd" id="5_3amdw"]
+[ext_resource type="Texture2D" uid="uid://cna4umj0n4yt" path="res://Assets/Blocking coin deck1.png" id="5_gejqg"]
 [ext_resource type="Script" uid="uid://bh8ned1dqg5l3" path="res://Script/Shop_manager.gd" id="6_1xcnr"]
 [ext_resource type="PackedScene" uid="uid://dbj4jt3y4yqdx" path="res://Scene/EnemyHealthBar.tscn" id="6_c2iwn"]
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="6_mxd2g"]
+[ext_resource type="Texture2D" uid="uid://bgska0mwhsa2s" path="res://Assets/CoinBarForeGround.png" id="6_oywcm"]
 [ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="7_0sxm5"]
 [ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="7_3pt4j"]
 [ext_resource type="Texture2D" uid="uid://eeepgts0tvpj" path="res://Assets/Passive_Icons.png" id="7_5rsq1"]
 [ext_resource type="Material" uid="uid://cxjkyhc8r5fge" path="res://Assets/Particles/debt.tres" id="7_cr44a"]
 [ext_resource type="Script" uid="uid://byrcn8pelxayw" path="res://Script/coin_deck.gd" id="7_ow1sv"]
 [ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="9_jbas8"]
+[ext_resource type="Texture2D" uid="uid://bf3hv0qyt1kio" path="res://Assets/8-bitrunes.png" id="9_w8oc3"]
 [ext_resource type="Texture2D" uid="uid://r5gatuytbe0t" path="res://Assets/taxCollector.png" id="10_p4j74"]
 [ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="11_hiice"]
 [ext_resource type="Texture2D" uid="uid://dfw0gb82xbava" path="res://Assets/portraitBackground.png" id="12_pqe63"]
@@ -38,8 +42,6 @@
 [ext_resource type="Texture2D" uid="uid://dxhd5hgo3tcw" path="res://Assets/enemy_notif.tres" id="29_n7vvl"]
 [ext_resource type="FontFile" uid="uid://cmvd7gycedmwg" path="res://Assets/Fonts/GothicByte.ttf" id="30_cr44a"]
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="30_tcekk"]
-[ext_resource type="Texture2D" uid="uid://0of51v86402w" path="res://Assets/mapBackground.png" id="34_2oiod"]
-[ext_resource type="Texture2D" uid="uid://bj5nyxg8bmc1k" path="res://Assets/backgroundBanner.png" id="35_8bkap"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="36_1bveb"]
 [ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="36_b0nqf"]
 [ext_resource type="Texture2D" uid="uid://bvlc07v3u1brg" path="res://Assets/mapIconEnemy.png" id="37_2uk8d"]
@@ -49,7 +51,10 @@
 [ext_resource type="Texture2D" uid="uid://bmkxblxwtg47d" path="res://Assets/Rug.png" id="38_f043x"]
 [ext_resource type="Texture2D" uid="uid://4aebywoijoue" path="res://Assets/mapIconShop.png" id="39_tcekk"]
 [ext_resource type="Texture2D" uid="uid://fl7tmytwihia" path="res://Assets/mapIconBoss.png" id="40_1bveb"]
+[ext_resource type="Texture2D" uid="uid://b63ntktw5tw4q" path="res://Assets/mapBackgroundRevamped.png" id="46_xgc63"]
+[ext_resource type="Texture2D" uid="uid://ccnxjfwwlc64x" path="res://Assets/miniCoinCasterRevamped-Sheet.png" id="47_w8oc3"]
 [ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="49_5qrjd"]
+[ext_resource type="Texture2D" uid="uid://6n3h5cem1yuu" path="res://Assets/mapSignRevamped.png" id="50_w8oc3"]
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]
 
@@ -619,11 +624,19 @@ animations = [{
 "speed": 1.0
 }]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mlc74"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_3drsm"]
+atlas = ExtResource("47_w8oc3")
+region = Rect2(85, 153, 85, 51)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xj0l1"]
+atlas = ExtResource("47_w8oc3")
+region = Rect2(595, 153, 85, 51)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jodah"]
 atlas = ExtResource("37_ot48q")
 region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_885bo"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_tke4u"]
 atlas = ExtResource("37_ot48q")
 region = Rect2(32, 0, 32, 32)
 
@@ -631,14 +644,25 @@ region = Rect2(32, 0, 32, 32)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_mlc74")
+"texture": SubResource("AtlasTexture_3drsm")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_885bo")
+"texture": SubResource("AtlasTexture_xj0l1")
 }],
 "loop": true,
 "name": &"default",
-"speed": 1.0
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jodah")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tke4u")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 2.0
 }]
 
 [sub_resource type="Gradient" id="Gradient_75buv"]
@@ -720,6 +744,23 @@ scale_max = 6.1299996
 scale_curve = SubResource("CurveTexture_885bo")
 color = Color(1, 0.7902349, 0.605322, 0.8627451)
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_oywcm"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(40.99, 53.18, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, 1, 0)
+spread = 113.841
+initial_velocity_max = 1.54
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_max = 35.28
+scale_curve = SubResource("CurveTexture_mlc74")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color = Color(0.51674455, 0.736904, 1, 1)
+color_ramp = SubResource("GradientTexture1D_f043x")
+
 [sub_resource type="Gradient" id="Gradient_5qrjd"]
 offsets = PackedFloat32Array(0, 0.5493274)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
@@ -749,6 +790,144 @@ grow_vertical = 2
 texture = ExtResource("1_mxd2g")
 script = ExtResource("1_h2yge")
 
+[node name="Fields Area" type="TextureRect" parent="." unique_id=145891107]
+process_mode = 3
+visible = false
+modulate = Color(0.7747451, 0.7240791, 0.766271, 1)
+layout_mode = 0
+offset_left = -70.47363
+offset_top = -41.0
+offset_right = 1243.0
+offset_bottom = 693.0
+texture = ExtResource("49_5qrjd")
+
+[node name="Rug" type="TextureRect" parent="Fields Area" unique_id=1625683152]
+self_modulate = Color(0.9853478, 0.90444106, 0.90809566, 0.7882353)
+layout_mode = 0
+offset_left = 427.47363
+offset_top = 35.0
+offset_right = 864.47363
+offset_bottom = 690.0
+texture = ExtResource("38_f043x")
+
+[node name="TextureRect" type="TextureRect" parent="Fields Area" unique_id=2035390757]
+self_modulate = Color(0.8392157, 0.43137255, 0.42745098, 0.10980392)
+layout_mode = 0
+offset_left = 104.47363
+offset_top = 39.0
+offset_right = 412.47363
+offset_bottom = 692.0
+texture = ExtResource("9_w8oc3")
+
+[node name="TextureRect2" type="TextureRect" parent="Fields Area" unique_id=1801385492]
+self_modulate = Color(0.8392157, 0.43137255, 0.42745098, 0.10980392)
+layout_mode = 0
+offset_left = 864.47363
+offset_top = 39.0
+offset_right = 1247.4736
+offset_bottom = 692.0
+texture = ExtResource("9_w8oc3")
+
+[node name="Forest Area" type="TextureRect" parent="." unique_id=1423353357]
+process_mode = 3
+visible = false
+modulate = Color(0.9059041, 0.74073046, 0.9564902, 1)
+layout_mode = 0
+offset_left = -14.0
+offset_top = -10.0
+offset_right = 1167.0
+offset_bottom = 660.0
+texture = ExtResource("12_pqe63")
+
+[node name="TextureRect" type="TextureRect" parent="Forest Area" unique_id=1364514032]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 647.0
+offset_top = 517.0
+offset_right = 1347.0
+offset_bottom = 817.0
+texture = ExtResource("4_4lqwv")
+
+[node name="TextureRect2" type="TextureRect" parent="Forest Area" unique_id=556298617]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 126.0
+offset_top = 531.0
+offset_right = 826.0
+offset_bottom = 831.0
+texture = ExtResource("4_4lqwv")
+
+[node name="TextureRect3" type="TextureRect" parent="Forest Area" unique_id=1027498767]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 368.6916
+offset_top = 39.89924
+offset_right = 1067.3733
+offset_bottom = 484.84753
+rotation = 1.5707964
+texture = ExtResource("6_oywcm")
+
+[node name="TextureRect4" type="TextureRect" parent="Forest Area" unique_id=519493310]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 378.614
+offset_top = 123.411156
+offset_right = 722.5697
+offset_bottom = 476.11942
+rotation = 3.1415927
+texture = ExtResource("4_4lqwv")
+
+[node name="TextureRect5" type="TextureRect" parent="Forest Area" unique_id=697906935]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 826.4647
+offset_top = 123.411194
+offset_right = 1618.2711
+offset_bottom = 476.11945
+rotation = 3.1415927
+texture = ExtResource("4_4lqwv")
+
+[node name="stone" type="TextureRect" parent="Forest Area" unique_id=2077777001]
+layout_mode = 0
+offset_left = 373.0
+offset_top = 126.0
+offset_right = 802.0
+offset_bottom = 555.0
+texture = ExtResource("5_gejqg")
+
+[node name="TextureRect8" type="TextureRect" parent="Forest Area" unique_id=472649278]
+modulate = Color(0, 0, 0, 1)
+top_level = true
+layout_mode = 0
+offset_left = 975.59045
+offset_top = 769.07056
+offset_right = 1550.2516
+offset_bottom = 975.2549
+rotation = 4.712389
+texture = ExtResource("6_oywcm")
+
+[node name="TextureRect6" type="TextureRect" parent="Forest Area" unique_id=434266]
+modulate = Color(0, 0, 0, 1)
+top_level = true
+layout_mode = 0
+offset_left = 1161.499
+offset_top = 279.16895
+offset_right = 1608.2871
+offset_bottom = 470.64954
+rotation = 1.5707964
+texture = ExtResource("6_oywcm")
+
+[node name="TextureRect9" type="TextureRect" parent="Forest Area" unique_id=1478774541]
+modulate = Color(0, 0, 0, 1)
+top_level = true
+layout_mode = 0
+offset_left = 1111.8657
+offset_top = 408.32098
+offset_right = 1333.6012
+offset_bottom = 575.6787
+rotation = 1.5707964
+texture = ExtResource("6_oywcm")
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=659444321]
 position = Vector2(576, 324)
 script = ExtResource("3_f043x")
@@ -774,37 +953,41 @@ script = ExtResource("7_ow1sv")
 [node name="Battle UI" type="Node" parent="." unique_id=1754841999]
 
 [node name="PlayerHealthBar2" parent="Battle UI" unique_id=1546897993 instance=ExtResource("5_1xcnr")]
-offset_left = 146.0
-offset_top = 548.0
-offset_right = 238.0
-offset_bottom = 564.0
-scale = Vector2(4, 4)
+offset_left = 155.0
+offset_top = 554.00006
+offset_right = 247.0
+offset_bottom = 570.00006
+scale = Vector2(3.5, 3.5)
 
 [node name="Player Info" type="Button" parent="Battle UI" unique_id=261525369]
 visible = false
+top_level = true
 offset_left = 15.0
 offset_top = 508.0
 offset_right = 139.0
 offset_bottom = 633.0
+toggle_mode = true
 text = "Press for Info"
 
 [node name="Reserve Button" type="Button" parent="Battle UI" unique_id=1926938624]
-offset_left = 527.0
-offset_top = 560.0
-offset_right = 693.0
-offset_bottom = 603.0
+offset_left = 577.0
+offset_top = 556.0
+offset_right = 692.0
+offset_bottom = 618.0
 
 [node name="Player Reserve" type="Label" parent="Battle UI/Reserve Button" unique_id=15672962]
 custom_minimum_size = Vector2(150, 40)
 layout_mode = 0
-offset_left = -11.000005
-offset_right = 148.06268
-offset_bottom = 40.0
+offset_left = -29.000004
+offset_top = 6.0
+offset_right = 121.0
+offset_bottom = 51.0
 scale = Vector2(1.2137691, 1)
 theme_override_colors/font_color = Color(0.99999994, 0.84508157, 0.98982567, 1)
 theme_override_fonts/font = ExtResource("36_1bveb")
 theme_override_font_sizes/font_size = 25
-text = "RESERVE (0/4)"
+text = "RESERVE
+(0/4)"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -812,14 +995,15 @@ vertical_alignment = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 158.0
-offset_top = 290.0
-offset_right = 281.0
-offset_bottom = 322.0
+offset_left = 493.0
+offset_top = 244.0
+offset_right = 616.0
+offset_bottom = 284.0
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.8500227, 0.484913, 1)
-theme_override_font_sizes/font_size = 22
-text = "Coins:"
+theme_override_fonts/font = ExtResource("36_b0nqf")
+theme_override_font_sizes/font_size = 40
+text = "200"
 
 [node name="Player Spend Particles" type="GPUParticles2D" parent="Battle UI" unique_id=1888397502]
 position = Vector2(161, 579)
@@ -828,10 +1012,10 @@ lifetime = 2.0
 process_material = SubResource("ParticleProcessMaterial_5qrjd")
 
 [node name="Player Spend" type="Label" parent="Battle UI" unique_id=70835638]
-offset_left = 171.0
-offset_top = 568.0
-offset_right = 201.0
-offset_bottom = 593.0
+offset_left = 163.0
+offset_top = 571.0
+offset_right = 193.0
+offset_bottom = 596.0
 theme_override_colors/font_color = Color(1, 0.43951198, 0.40865377, 1)
 theme_override_colors/font_outline_color = Color(0.5314025, 0, 0.023994911, 1)
 theme_override_constants/outline_size = 4
@@ -842,20 +1026,23 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="EnemyHealthBar" parent="Battle UI" unique_id=1945687937 instance=ExtResource("6_c2iwn")]
-offset_left = 1005.0
-offset_top = 104.0
-offset_right = 1097.0
-offset_bottom = 120.0
-scale = Vector2(4, 4)
+offset_left = 996.00006
+offset_top = 88.0
+offset_right = 1088.0
+offset_bottom = 104.0
+scale = Vector2(3.5, 3.5)
 
 [node name="EnemyHealthLabel" type="Label" parent="Battle UI" unique_id=1016348514]
-offset_left = 868.0
-offset_top = 5.0
-offset_right = 991.0
-offset_bottom = 37.0
-theme_override_colors/font_color = Color(0.9214317, 0.6317199, 0, 1)
-theme_override_fonts/font = ExtResource("7_3pt4j")
-theme_override_font_sizes/font_size = 22
+offset_left = 597.0
+offset_top = 43.0
+offset_right = 664.0
+offset_bottom = 83.0
+theme_override_colors/font_color = Color(1, 0.8509804, 0.4862745, 1)
+theme_override_fonts/font = ExtResource("36_b0nqf")
+theme_override_font_sizes/font_size = 40
+text = "200"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="Enemy Spend Particles" type="GPUParticles2D" parent="Battle UI" unique_id=862086434]
 position = Vector2(984, 74)
@@ -864,10 +1051,10 @@ lifetime = 2.0
 process_material = SubResource("ParticleProcessMaterial_n7vvl")
 
 [node name="Enemy Spend" type="Label" parent="Battle UI" unique_id=1980570160]
-offset_left = 953.0
-offset_top = 59.0
-offset_right = 983.0
-offset_bottom = 84.0
+offset_left = 954.0
+offset_top = 44.0
+offset_right = 984.0
+offset_bottom = 69.0
 theme_override_colors/font_color = Color(1, 0.43951198, 0.40865377, 1)
 theme_override_colors/font_outline_color = Color(0.5314025, 0, 0.023994911, 1)
 theme_override_constants/outline_size = 4
@@ -1078,10 +1265,10 @@ offset_right = 1136.3256
 offset_bottom = 137.97021
 
 [node name="Enemy_Portrait_Sprite" type="AnimatedSprite2D" parent="Enemy/Enemy_Portrait" unique_id=1083960378]
-position = Vector2(58.67501, 59.03)
+position = Vector2(58.674988, 58.03)
 scale = Vector2(1.9374993, 1.9375)
 sprite_frames = SubResource("SpriteFrames_8bkap")
-animation = &"THRIFTER"
+animation = &"DWARF"
 
 [node name="EnemyFrame" type="TextureRect" parent="Enemy" unique_id=1466787434]
 offset_left = 998.0
@@ -1136,6 +1323,16 @@ theme_override_font_sizes/font_size = 24
 text = "30"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Enemy Info" type="Button" parent="Enemy" unique_id=855080067]
+modulate = Color(1, 1, 1, 0)
+top_level = true
+offset_left = 1011.0
+offset_top = 13.0
+offset_right = 1141.0
+offset_bottom = 143.0
+toggle_mode = true
+action_mode = 0
 
 [node name="Player" type="Node2D" parent="." unique_id=1483072070]
 script = ExtResource("2_1bvp3")
@@ -1312,7 +1509,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Solar Blessing Icon" type="AnimatedSprite2D" parent="Player" unique_id=1498402891]
-visible = false
 self_modulate = Color(0.43529412, 0.1882353, 0, 0.47058824)
 position = Vector2(898, 259)
 scale = Vector2(1.921874, 1.921874)
@@ -1664,7 +1860,6 @@ script = ExtResource("16_6njx3")
 [node name="Progression Map" type="CanvasLayer" parent="." unique_id=442417840]
 process_mode = 3
 layer = 100
-visible = false
 offset = Vector2(0, 1000)
 transform = Transform2D(1, 0, 0, 1, 0, 1000)
 
@@ -1674,28 +1869,22 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("34_2oiod")
+texture = ExtResource("46_xgc63")
+
+[node name="Player_Sprite" type="AnimatedSprite2D" parent="Progression Map/MapBackground" unique_id=148271655]
+position = Vector2(104.56223, 439.00003)
+scale = Vector2(1.7999285, 2.0392153)
+sprite_frames = SubResource("SpriteFrames_f043x")
+autoplay = "default"
 
 [node name="Banner" type="TextureRect" parent="Progression Map/MapBackground" unique_id=1875690679]
 layout_mode = 0
-offset_left = 448.0
-offset_top = 48.0
-offset_right = 601.6
-offset_bottom = 88.0
+offset_left = -65.99999
+offset_top = -3.0517578e-05
+offset_right = 446.0
+offset_bottom = 255.99997
 scale = Vector2(2.5, 2.5)
-texture = ExtResource("35_8bkap")
-
-[node name="Banner Label" type="Label" parent="Progression Map/MapBackground/Banner" unique_id=770851896]
-self_modulate = Color(0.14509805, 0.12941177, 0.12156863, 1)
-layout_mode = 0
-offset_left = 25.599998
-offset_top = 9.599998
-offset_right = 127.6
-offset_bottom = 26.599998
-rotation = 0.09067865
-theme_override_fonts/font = ExtResource("36_b0nqf")
-text = "Twilight Zone"
-horizontal_alignment = 1
+texture = ExtResource("50_w8oc3")
 
 [node name="Enemy1" type="TextureRect" parent="Progression Map/MapBackground" unique_id=79812036]
 layout_mode = 0
@@ -1763,21 +1952,16 @@ position = Vector2(832, 432)
 [node name="Boss" type="Marker2D" parent="Progression Map" unique_id=728995645]
 position = Vector2(1024, 432)
 
-[node name="Player_Sprite" type="AnimatedSprite2D" parent="Progression Map" unique_id=148271655]
-position = Vector2(97, 431)
-scale = Vector2(2, 2.5)
-sprite_frames = SubResource("SpriteFrames_f043x")
-
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
-position = Vector2(577, 318)
+position = Vector2(599, 318)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.9019608, 0.5647059, 0.61960787)
-energy = 1.05
+energy = 1.1
 texture = SubResource("GradientTexture2D_c2iwn")
 texture_scale = 0.46
 
 [node name="Vignette" type="CanvasModulate" parent="." unique_id=1590582319]
-color = Color(0.7411765, 0.67058825, 0.72156864, 1)
+color = Color(0.7360586, 0.6517471, 0.7562498, 1)
 
 [node name="ParticleManager" type="Node2D" parent="." unique_id=2081468604]
 script = ExtResource("17_2ix4a")
@@ -1805,6 +1989,7 @@ randomness = 0.35
 process_material = SubResource("ParticleProcessMaterial_mlc74")
 
 [node name="Drowse Effect" type="TextureRect" parent="." unique_id=1015393589]
+visible = false
 modulate = Color(1, 1, 1, 0.92941177)
 self_modulate = Color(0, 0.34901962, 0.65882355, 0)
 layout_mode = 0
@@ -1814,7 +1999,16 @@ offset_right = 1173.4331
 offset_bottom = 660.0
 texture = ExtResource("12_pqe63")
 
+[node name="Player Slow Particles" type="GPUParticles2D" parent="Drowse Effect" unique_id=880728389]
+visible = false
+position = Vector2(104, 582)
+scale = Vector2(0.99999994, 0.99999994)
+amount = 64
+lifetime = 2.3499999999999996
+process_material = SubResource("ParticleProcessMaterial_oywcm")
+
 [node name="Dazzled Effect" type="TextureRect" parent="." unique_id=1304550081]
+visible = false
 self_modulate = Color(0.9843137, 0.08627451, 1, 0)
 layout_mode = 0
 offset_left = 1.0
@@ -1900,6 +2094,7 @@ offset_right = 246.24945
 offset_bottom = 233.0
 texture = SubResource("GradientTexture2D_4lqwv")
 
+[connection signal="toggled" from="Battle UI/Player Info" to="." method="_on_player_info_toggled"]
 [connection signal="pressed" from="Battle UI/Reserve Button" to="." method="_on_reserve_button_pressed"]
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_exited"]
@@ -1907,6 +2102,7 @@ texture = SubResource("GradientTexture2D_4lqwv")
 [connection signal="mouse_entered" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_exited"]
 [connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]
+[connection signal="toggled" from="Enemy/Enemy Info" to="." method="_on_enemy_info_toggled"]
 [connection signal="toggled" from="Player/Player Info" to="." method="_on_player_info_toggled"]
 [connection signal="pressed" from="Game Over UI/ColorRect/Main Menu" to="Game Over UI" method="_on_main_menu_pressed"]
 [connection signal="pressed" from="Game Over UI/ColorRect/Restart" to="." method="_on_restart_pressed"]

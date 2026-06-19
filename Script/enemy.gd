@@ -249,7 +249,7 @@ func setup(m,enemy):
 				coin = 40
 				max_playable_coins = 8
 				silver_flip_rate = 0.0
-				gold_flip_rate = 1.0
+				gold_flip_rate = 0.0
 				bounty = 50
 			type = Enemy.DWARF
 		Enemy.COLLECTOR:
@@ -1002,6 +1002,7 @@ func end_enemy_turn():
 		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
 		create_floating_label(turn_tally, "TALLY", "PLAYER")
 	if turn_slow: 
+		drowse_effect.visible = true
 		main.sound_manager.play_sound(SLOW)
 		main.sound_manager.play_sound(PASSIVE_PAYDOWN)
 		create_floating_label("", "DROWSE", "PLAYER")
@@ -1011,6 +1012,8 @@ func end_enemy_turn():
 		slow_motion.tween_property(Engine, "time_scale", 0.1, 0)
 		slow_motion.tween_property(Engine, "time_scale", 1, 0.5)
 	if turn_starstruck:
+		dazzled_effect.visible = true
+		dazzled_light.visible = true
 		main.sound_manager.play_sound(PASSIVE_PAYDOWN)
 		create_floating_label("", "STARSTRUCK", "PLAYER")
 		var dazzled_tween = create_tween()
@@ -1063,11 +1066,13 @@ func end_enemy_turn():
 	if pay_down_killed:
 		main.sound_manager.play_sound(PASSIVE_PAYDOWN)
 		main.player.trigger_temp_passive("pay_down","BANKRUPT")
+		var slow_motion = create_tween()
+		slow_motion.tween_property(Engine, "time_scale", 0.1, 0)
+		slow_motion.tween_property(Engine, "time_scale", 1, 0.5)
 
 	if pay_down_killed:
 		create_floating_label(debt, "DAMAGE", "ENEMY")
-	elif pay_down_debt_added:
-		create_floating_label(5, "DEBT", "ENEMY")
+
 
 
 	# 5. Player 'Payback' Revive Check

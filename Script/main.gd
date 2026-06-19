@@ -4,6 +4,8 @@ enum Turn {
 	PLAYER,
 	ENEMY
 }
+@onready var forest_area: TextureRect = $"Forest Area"
+@onready var fields_area: TextureRect = $"Fields Area"
 
 enum Enemy{
 	MAGE,
@@ -96,8 +98,8 @@ const TWILIGHT_ZONE___BATTLE_THEME_3 = preload("uid://bivy2e314q2fa")
 
 # --- PROGRESSION MAP ---
 @onready var progression_map: CanvasLayer = $"Progression Map"
-@onready var player_sprite: AnimatedSprite2D = $"Progression Map/Player_Sprite"
 @onready var banner: TextureRect = $"Progression Map/MapBackground/Banner"
+@onready var player_sprite: AnimatedSprite2D = $"Progression Map/MapBackground/Player_Sprite"
 
 @onready var map_markers: Array[Node] = [
 $"Progression Map/Enemy 1", 
@@ -127,8 +129,10 @@ $"Progression Map/Boss"
 @onready var player_slow_particles: GPUParticles2D = $"Battle UI/Re-Flip/Player Slow Particles"
 
 var slow_color = "#43a563"
-const PLAYER_INFORMATION_DISPLAY = preload("uid://c61s4yrsvak0l")
+const PLAYER_INFORMATION_DISPLAY = preload("res://Scene/PlayerInformationDisplay.tscn")
 var player_info_menu: Node = null
+const ENEMY_INFORMATION_DISPLAY = preload("res://Scene/EnemyInformationDisplay.tscn")
+var enemy_info_menu: Node = null
 
 @onready var player_lock_particles: GPUParticles2D = $"Player/Player Lock Particles"
 @onready var player_gain_particles: GPUParticles2D = $"Player/Player Gain Particles"
@@ -239,7 +243,7 @@ func switch_vignetter_color(to,duration):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-
+	forest_area.visible = true
 	await get_tree().create_timer(0.4).timeout
 	await _play_fake_coin_intro()
 	turn_calculation_box.visible = false
@@ -289,6 +293,7 @@ func toggle_pause():
 func battle_start():
 	re_flip_button.visible = true
 	player_reserve.visible = true
+	flip_button.disabled = true
 	switch_vignetter_color(vignetter_default,0.1)
 	switch_vignette_color(vignette_default,0.1)
 	battle_particles.emitting = true
@@ -408,6 +413,7 @@ func show_turn_ui(text):
 	tween.parallel().tween_property(turn_ui,"modulate",Color("ffffff"),0.2)
 	tween.parallel().tween_property(turn_ui, "position:y",target_position,0.2)
 	await get_tree().create_timer(1.0).timeout
+	print("=============================UI DONE")
 	turn_ui_label.text = text
 	tween = create_tween()
 	tween.parallel().tween_property(turn_ui,"modulate",Color("ffffff00"),0.2)
@@ -417,6 +423,7 @@ func show_turn_ui(text):
 			await get_tree().create_timer(1.0).timeout
 		endTurn_button.disabled = false
 	await get_tree().create_timer(1.0).timeout
+	print("=============================UI DONE")
 	
 func _on_end_run_pressed():
 	print("Main Script: Received End Run")
@@ -693,7 +700,7 @@ func check_defeat():
 		endTurn_button.disabled = true 
 		re_flip_button.disabled = true
 		reserve_button.disabled = true
-		if enemies_defeated == current_room:
+		if enemies_defeated == current_room or enemy.type == Enemy.TWILIGHT_SAGE:
 			enemies_defeated += 1
 			await handle_victory_flow()
 			return true
@@ -812,7 +819,7 @@ func reserve_left_over_coin():
 			player.trigger_temp_passive("simple_interest","SIMPLE INTEREST")
 
 func update_player_coin():
-	player_health_label.text = "Coins: " + str(player.coin)
+	player_health_label.text = str(player.coin)
 	
 func update_player_status():
 	if player.starstruck:
@@ -837,7 +844,7 @@ func update_player_status():
 		player_reserve.text = "Reserve: " + str(player.current_reserve) + "/" + str(player.max_reserve)
 	
 func update_enemy_coin():
-	enemy_health_label.text = "Coins: " + str(enemy.coin)
+	enemy_health_label.text = str(enemy.coin)
 	
 func update_player_stacks():
 	player_tally.visible = false
@@ -967,9 +974,8 @@ func _play_progression_cutscene(from_index: int, to_index: int) -> void:
 	slide_in.tween_property(progression_map, "offset:y", 0.0, 0.5).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 	
 	slide_in.tween_interval(0.3)
+
 	await slide_in.finished
-	
-	player_sprite.play("default") 
 	
 	var walk_tween = progression_map.create_tween()
 	
@@ -984,14 +990,24 @@ func _play_progression_cutscene(from_index: int, to_index: int) -> void:
 	await dramatic_pause.finished
 	sound_manager.stop_music()
 	sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
+	get_tree().paused = false
+	var bg_fade = create_tween()
+	if to_index == 2:
+		fields_area.visible = true
+		bg_fade.tween_property(forest_area,"modulate", Color("#0059a800"),0.6)
+		await bg_fade.finished
+		forest_area.visible = false
+	elif to_index == 5:
+		bg_fade.tween_property(fields_area,"modulate", Color("#0059a800"),0.6)
+		await bg_fade.finished
+		fields_area.visible = false
 	
 	var slide_out = progression_map.create_tween()
 	slide_out.tween_property(progression_map, "offset:y", -screen_height, 0.8).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN)
 	await slide_out.finished
 
 	progression_map.visible = false
-	get_tree().paused = false
-	
+
 
 
 func _show_temporary_passive(id: String, text: String, duration: float = 1.5):
@@ -1235,6 +1251,24 @@ func _on_player_info_toggled(toggled_on: bool) -> void:
 			player_info_menu.close()
 			player_info_menu = null
 
+func _on_enemy_info_toggled(toggled_on: bool) -> void:
+	print("toggled: ", toggled_on)
+	if toggled_on:
+		enemy_info_menu = ENEMY_INFORMATION_DISPLAY.instantiate()
+		add_child(enemy_info_menu)
+		enemy_info_menu.setup(enemy)
+		
+		await get_tree().process_frame
+		var screen_size = get_viewport_rect().size
+		var menu_size = enemy_info_menu.size
+		enemy_info_menu.global_position = Vector2((screen_size.x - menu_size.x) / 2,
+			(screen_size.y - menu_size.y) / 2)
+		enemy_info_menu.z_index = 100
+		enemy_info_menu.open()
+	else:
+		if enemy_info_menu != null and is_instance_valid(enemy_info_menu):
+			enemy_info_menu.close()
+			enemy_info_menu = null
 
 func _on_reserve_button_pressed() -> void:
 	player.reserve()

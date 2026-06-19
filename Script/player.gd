@@ -256,7 +256,7 @@ func gain_coin():
 	gain -= debt
 	debt -= temp
 	coin += gain
-	if has_active_income and has_debt and debt == 0:
+	if has_active_income and has_debt and debt == 0 and main.enemy.coin > 0:
 		has_debt = false
 		trigger_temp_passive("jar_o_savings","FULLY PAID")
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
@@ -357,15 +357,6 @@ func reset_stats():
 	has_deposit = false
 
 func refresh_start_of_battle_stats():
-	starstruck = false
-	var dazzled_tween = create_tween()
-	dazzled_tween.parallel().tween_property(dazzled_effect,"self_modulate", Color("#0059a800"),0.6)
-	dazzled_tween.parallel().tween_property(dazzled_light,"color", Color("#0059a800"),0.6)
-	
-	slow = false
-	var drowse_tween = create_tween()
-	drowse_tween.tween_property(drowse_effect,"self_modulate", Color("#0059a800"),0.6)
-
 	settle = 15
 	initial_max_reserve = max_reserve
 	lock = false
@@ -410,6 +401,19 @@ func refresh_start_of_battle_stats():
 	else:
 		lunar_blessing_icon.visible = false
 		
+	starstruck = false
+	var dazzled_tween = create_tween()
+	dazzled_tween.parallel().tween_property(dazzled_effect,"self_modulate", Color("#0059a800"),0.6)
+	dazzled_tween.parallel().tween_property(dazzled_light,"color", Color("#0059a800"),0.6)
+	await dazzled_tween.finished
+	dazzled_effect.visible = false
+	dazzled_light.visible = false
+	
+	slow = false
+	var drowse_tween = create_tween()
+	drowse_tween.tween_property(drowse_effect,"self_modulate", Color("#0059a800"),0.6)
+	await drowse_tween.finished
+	drowse_effect.visible = false
 	
 	
 	
@@ -417,6 +421,16 @@ func refresh_start_of_battle_stats():
 func _ready():
 	player_portrait.play("default")
 	all_in.text = ""
+	# --- NEW: THE PAIR PULSE HEARTBEAT ---
+# --- THE PAIR PULSE HEARTBEAT ---
+	var pulse_timer = Timer.new()
+	
+	# Increase this to 4 or 5 seconds to give the ripple time to finish!
+	pulse_timer.wait_time = 8.0 
+	
+	pulse_timer.autostart = true
+	pulse_timer.timeout.connect(trigger_board_pulse)
+	add_child(pulse_timer)
 
 func coin_calculation():
 	var is_left = true # true - Left Coin, false - Right Coin
@@ -878,6 +892,7 @@ func re_flip():
 	
 	
 func start_turn():
+	print("CURRENT PLAYED COIN " + str(current_played_coin))
 	if lock:
 		max_reserve = 0
 	if tally:
@@ -1105,11 +1120,16 @@ func end_turn():
 		slow = false
 		var drowse_tween = create_tween()
 		drowse_tween.tween_property(drowse_effect,"self_modulate", Color("#0059a800"),0.6)
+		await drowse_tween.finished
+		drowse_effect.visible = false
 	if starstruck:
 		starstruck = false
 		var dazzled_tween = create_tween()
 		dazzled_tween.parallel().tween_property(dazzled_effect,"self_modulate", Color("#0059a800"),0.6)
 		dazzled_tween.parallel().tween_property(dazzled_light,"color", Color("#0059a800"),0.6)
+		await dazzled_tween.finished
+		dazzled_effect.visible = false
+		dazzled_light.visible = false
 	gain += turn_gain
 	max_playable_coins = initial_max_playable_coins
 	
@@ -1511,7 +1531,7 @@ func activate_player_turn_end_passives():
 				coin.upgrade()
 				if has_inflation and coin.base_value == 6:
 					if coin.status == CoinStatus.SHINED:
-						coin.shined_stack += 1
+						coin.shine_stack += 1
 					else:
 						coin.add_status(CoinStatus.SHINED)
 				if coin.status == CoinStatus.VOIDED:
@@ -1601,6 +1621,22 @@ func trigger_temp_passive(id: String, text: String):
 	
 	await get_tree().create_timer(1.5).timeout
 	active_temp_ids.erase(id)
+
+func trigger_board_pulse() -> void:
+	var board_coins = get_tree().get_nodes_in_group("coins")
+	
+	for i in range(0, board_coins.size() - 1, 2):
+		var left_coin = board_coins[i]
+		var right_coin = board_coins[i + 1]
+		
+		if is_instance_valid(left_coin) and is_instance_valid(right_coin):
+			if not left_coin.reserved and not right_coin.reserved:
+				left_coin.pulse_glow()
+				right_coin.pulse_glow()
+				
+		# --- THE MAGIC STAGGER ---
+		# Wait 0.3 seconds before telling the next pair to pulse!
+		await get_tree().create_timer(1.0).timeout
 
 
 func show_tally_ui():

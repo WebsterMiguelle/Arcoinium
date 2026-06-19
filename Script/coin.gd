@@ -157,4 +157,22 @@ func refresh_sprite():
 		stamped.visible = true
 	if status == CoinStatus.SHINED and shine_stack > 0:
 		shine_stack_label.visible = true
-		shine_stack_label.text = "x" + str(shine_stack)
+		shine_stack_label.text = "x" + str(shine_stack+1)
+
+# Inside your Coin.gd script
+var glow_tween: Tween
+
+func pulse_glow() -> void:
+	# If it's already glowing, kill the old animation to prevent overlapping glitches
+	if glow_tween and glow_tween.is_running():
+		glow_tween.kill()
+		
+	glow_tween = create_tween().set_parallel(true)
+	
+	# Swell slightly and brighten the color
+	glow_tween.tween_property(self, "scale", Vector2(1.1, 1.1), 0.4).set_trans(Tween.TRANS_SINE)
+	glow_tween.tween_property(self, "modulate", Color(1.5, 1.5, 1.5, 1.0), 0.4).set_trans(Tween.TRANS_SINE)
+	
+	# Chain it to shrink back to normal slowly
+	glow_tween.chain().tween_property(self, "scale", Vector2(1.0, 1.0), 0.6).set_trans(Tween.TRANS_SINE)
+	glow_tween.chain().tween_property(self, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.6).set_trans(Tween.TRANS_SINE)

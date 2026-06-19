@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://dv278qg6j2epd"]
+
+[ext_resource type="Script" uid="uid://cp5p0q3pi07yk" path="res://Scene/dialogue_box.gd" id="1_t4nj5"]
+[ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="2_e54vf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h2smw"]
+bg_color = Color(0.12835406, 0.13816993, 0.12315822, 0.90000004)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.12156863, 0.09803922, 0.09803922, 1)
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+anti_aliasing = false
+
+[node name="Dialogue" type="Node2D" unique_id=1678281989]
+top_level = true
+script = ExtResource("1_t4nj5")
+
+[node name="Dialogue Panel" type="PanelContainer" parent="." unique_id=1443554992]
+offset_right = 400.0
+offset_bottom = 127.0
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_h2smw")
+
+[node name="MarginContainer" type="MarginContainer" parent="Dialogue Panel" unique_id=858318713]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Dialogue Info" type="Label" parent="Dialogue Panel/MarginContainer" unique_id=460021205]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("2_e54vf")
+theme_override_font_sizes/font_size = 25
+vertical_alignment = 3

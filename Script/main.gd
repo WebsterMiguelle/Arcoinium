@@ -33,7 +33,6 @@ var sun_caster_color = '#e56400'
 var moon_caster_color = '#1a54fb'
 var dawn_stance = '#ffcda0'
 var dusk_stance = '#8dacf7'
-@onready var battle_particles: GPUParticles2D = $"ParticleManager/Battle Particles"
 @onready var dusk_particles: GPUParticles2D = $"ParticleManager/Dusk Particles"
 @onready var dawn_particles: GPUParticles2D = $"ParticleManager/Dawn Particles"
 @onready var reserve_button: Button = $"Battle UI/Reserve Button"
@@ -41,6 +40,7 @@ var dusk_stance = '#8dacf7'
 @onready var player_reserve_rug: TextureRect = $"Player/Player Reserve Rug"
 @onready var vignette: CanvasModulate = $"../Vignette"
 @onready var vignetter: PointLight2D = $"../Vignetter"
+@onready var mist_particles: GPUParticles2D = $"ParticleManager/Mist Particles"
 
 var second_enemy
 var third_enemy
@@ -118,7 +118,12 @@ $"Progression Map/Boss"
 @onready var reflip_label: Label = $"Battle UI/Re-Flip/Reflip_Label"
 @onready var turn_calculation: Label = $"Battle UI/Turn Calculation Box/Turn Calculation"
 @onready var turn_calculation_box: TextureRect = $"Battle UI/Turn Calculation Box"
-
+@onready var turn_damage_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Damage Particle"
+@onready var turn_gain_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Gain Particle"
+@onready var turn_debt_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Debt Particle"
+@onready var turn_thrift_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Thrift Particle"
+@onready var turn_spend_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Spend Particle"
+@onready var turn_tally_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Tally Particle"
 
 @onready var player_health_bar = $"Battle UI/PlayerHealthBar2"
 @onready var player_gain: Label = $"Player/Player Gain"
@@ -246,6 +251,9 @@ func switch_vignetter_color(to,duration):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	forest_area.visible = true
+	dusk_particles.emitting = true
+	dawn_particles.emitting = false
+	
 	await get_tree().create_timer(0.4).timeout
 	await _play_fake_coin_intro()
 	turn_calculation_box.visible = false
@@ -287,8 +295,7 @@ func _input(event):
 func toggle_pause():
 	get_tree().paused = !get_tree().paused
 	pause_menu.visible = get_tree().paused
-	
-	battle_particles.emitting = !get_tree().paused
+
 	dusk_particles.emitting = !get_tree().paused
 	dawn_particles.emitting = !get_tree().paused
 	
@@ -298,9 +305,9 @@ func battle_start():
 	flip_button.disabled = true
 	switch_vignetter_color(vignetter_default,0.1)
 	switch_vignette_color(vignette_default,0.1)
-	battle_particles.emitting = true
-	dawn_particles.emitting = false
-	dusk_particles.emitting = false
+	
+	if fields_area.is_visible_in_tree():
+		mist_particles.emitting = true
 	
 	turn_ui.visible = false
 	var coins = get_tree().get_nodes_in_group("enemy coins")
@@ -509,6 +516,7 @@ func _on_endturn_pressed():
 
 func tally_end_turn():
 	if enemy.coin > 0 and player.coin > 0:
+		current_turn = Turn.ENEMY
 		show_turn_ui("TURN ENDED")
 		await player.end_turn()
 		turn_calculation_box.exit()
@@ -735,6 +743,7 @@ func check_defeat():
 	return null
 
 func handle_victory_flow():
+	mist_particles.emitting = false
 	endTurn_button.disabled = true
 	player.lock = false
 	player.slow = false
@@ -745,13 +754,10 @@ func handle_victory_flow():
 	player.max_reserve = player.initial_max_reserve
 	switch_vignetter_color(vignetter_default,1.0)
 	switch_vignette_color(vignette_default,1.0)
-	battle_particles.emitting = true
-	dusk_particles.emitting = false
-	dawn_particles.emitting = false
 	player.gain_coin()
 	sound_manager.play_sound(VICTORY)
 	turn_calculation_box.exit()
-	
+	current_turn = Turn.PLAYER
 	await show_turn_ui("VICTORY")
 	sound_manager.play_sound(PASSIVE_SPARE_CHANGE)
 	var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
@@ -1024,11 +1030,15 @@ func _play_progression_cutscene(from_index: int, to_index: int) -> void:
 		bg_fade.tween_property(forest_area,"modulate", Color("#0059a800"),0.6)
 		await bg_fade.finished
 		forest_area.visible = false
+		dusk_particles.emitting = false
+		dawn_particles.emitting = true
+		mist_particles.emitting = true
 	elif to_index == 4:
 		shop_area.visible = true
 		bg_fade.tween_property(fields_area,"modulate", Color("#0059a800"),0.6)
 		await bg_fade.finished
 		fields_area.visible = false
+		dawn_particles.emitting = false
 	elif to_index == 5:
 		bg_fade.tween_property(shop_area,"modulate", Color("#0059a800"),0.6)
 		await bg_fade.finished

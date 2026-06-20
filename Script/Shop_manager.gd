@@ -127,9 +127,9 @@ func generate_shop():
 		
 		var base_price = 10
 		match card.card_rank:
-			"S": base_price = 45
-			"A": base_price = 30
-			"B": base_price = 15
+			"S": base_price = 30
+			"A": base_price = 20
+			"B": base_price = 10
 			
 
 		card.price = base_price
@@ -167,7 +167,7 @@ func _on_card_bought(card_id, price, card):
 		if descriptions:
 			descriptions.text = ""
 		
-		coin_label.text = "Coins: " + str(player_ref.coin)
+		coin_label.text = str(player_ref.coin)
 		for c in container.get_children():
 			c.update_state(player_ref.coin)
 		
@@ -298,7 +298,7 @@ func _process(_delta: float) -> void:
 	if not visible or player_ref == null:
 		return
 		
-	coin_label.text = "Coins: " + str(player_ref.coin)
+	coin_label.text = str(player_ref.coin)
 
 func _on_proceed_pressed():
 	emit_signal("shop_closed")

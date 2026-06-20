@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://b5l2olg3cjqr0"]
+[gd_scene format=3 uid="uid://memld2b4qk28"]
 
 [ext_resource type="Script" uid="uid://qxyeds7oh4s7" path="res://Script/main.gd" id="1_h2yge"]
 [ext_resource type="Texture2D" uid="uid://bvtpq810pp6la" path="res://Assets/New Background.png" id="1_mxd2g"]
@@ -44,7 +44,6 @@
 [ext_resource type="Texture2D" uid="uid://c1oyqjdr6wop8" path="res://Assets/animated_reflipbutton-Sheet.png" id="26_wimqa"]
 [ext_resource type="FontFile" uid="uid://drm3kueev5jxy" path="res://Assets/Fonts/OXYGENE1.TTF" id="27_t372l"]
 [ext_resource type="Texture2D" uid="uid://dxhd5hgo3tcw" path="res://Assets/enemy_notif.tres" id="29_n7vvl"]
-[ext_resource type="FontFile" uid="uid://cmvd7gycedmwg" path="res://Assets/Fonts/GothicByte.ttf" id="30_cr44a"]
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="30_tcekk"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="36_1bveb"]
 [ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="36_b0nqf"]
@@ -52,7 +51,7 @@
 [ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="37_885bo"]
 [ext_resource type="Texture2D" uid="uid://2mfylmq5p56b" path="res://Assets/miniCoinCaster-Sheet.png" id="37_ot48q"]
 [ext_resource type="Texture2D" uid="uid://ba7v6aaoo0irq" path="res://Assets/mapIconElite.png" id="38_cr44a"]
-[ext_resource type="Script" uid="uid://bdpljan2t1woi" path="res://Scene/Shopkeeper.gd" id="38_ekncj"]
+[ext_resource type="Script" path="res://Scene/Shopkeeper.gd" id="38_ekncj"]
 [ext_resource type="Texture2D" uid="uid://bmkxblxwtg47d" path="res://Assets/Rug.png" id="38_f043x"]
 [ext_resource type="Texture2D" uid="uid://4aebywoijoue" path="res://Assets/mapIconShop.png" id="39_tcekk"]
 [ext_resource type="Texture2D" uid="uid://fl7tmytwihia" path="res://Assets/mapIconBoss.png" id="40_1bveb"]
@@ -60,6 +59,7 @@
 [ext_resource type="Texture2D" uid="uid://ccnxjfwwlc64x" path="res://Assets/miniCoinCasterRevamped-Sheet.png" id="47_w8oc3"]
 [ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="49_5qrjd"]
 [ext_resource type="Texture2D" uid="uid://6n3h5cem1yuu" path="res://Assets/mapSignRevamped.png" id="50_w8oc3"]
+[ext_resource type="Texture2D" uid="uid://bvg1hmi6pjwfb" path="res://Assets/Coins/sun_flip_upright.png" id="51_ekncj"]
 [ext_resource type="PackedScene" uid="uid://ca5q424cckfd0" path="res://Scene/KeeperHealthBar.tscn" id="60_txj2b"]
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]
@@ -1000,6 +1000,51 @@ fill = 1
 fill_from = Vector2(0.5232558, 0.48139533)
 fill_to = Vector2(0.8534884, 0.35581395)
 
+[sub_resource type="Gradient" id="Gradient_7n7pe"]
+offsets = PackedFloat32Array(0, 0.29828325, 0.80042917, 0.99785405)
+colors = PackedColorArray(1, 1, 1, 0.8627451, 0.5568628, 0.5568628, 0.5568628, 0, 0.7121502, 0.7121502, 0.7121502, 0.3023295, 1, 1, 1, 0.8627451)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fnsx1"]
+gradient = SubResource("Gradient_7n7pe")
+fill_from = Vector2(0.4871795, 0.8905983)
+fill_to = Vector2(0.46324787, 0.11111111)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ba4vs"]
+atlas = ExtResource("51_ekncj")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yxqnd"]
+atlas = ExtResource("51_ekncj")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_063jv"]
+atlas = ExtResource("51_ekncj")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hrq8p"]
+atlas = ExtResource("51_ekncj")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8givg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ba4vs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yxqnd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_063jv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hrq8p")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_4lqwv"]
 atlas = ExtResource("37_885bo")
 region = Rect2(0, 0, 64, 64)
@@ -1014,6 +1059,15 @@ animations = [{
 "name": &"default",
 "speed": 1.0
 }]
+
+[sub_resource type="Gradient" id="Gradient_5rsq1"]
+offsets = PackedFloat32Array(0, 0.14573991, 0.63901347, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.08744395, 0.08744395, 0.08744395, 0.91255605, 0, 0, 0, 0.030899167, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4lqwv"]
+gradient = SubResource("Gradient_5rsq1")
+fill = 1
+fill_from = Vector2(0.51111114, 0.48376068)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3drsm"]
 atlas = ExtResource("47_w8oc3")
@@ -1174,15 +1228,6 @@ colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 gradient = SubResource("Gradient_5qrjd")
 fill = 1
 fill_from = Vector2(0.50427353, 0.48034188)
-
-[sub_resource type="Gradient" id="Gradient_5rsq1"]
-offsets = PackedFloat32Array(0, 0.14573991, 0.63901347, 1)
-colors = PackedColorArray(0, 0, 0, 1, 0.08744395, 0.08744395, 0.08744395, 0.91255605, 0, 0, 0, 0.030899167, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_4lqwv"]
-gradient = SubResource("Gradient_5rsq1")
-fill = 1
-fill_from = Vector2(0.51111114, 0.48376068)
 
 [sub_resource type="Gradient" id="Gradient_jodah"]
 offsets = PackedFloat32Array(0, 0.29828325, 0.80042917, 0.99785405)
@@ -2215,8 +2260,13 @@ grow_vertical = 2
 text = "Restart"
 
 [node name="CardManager" type="CanvasLayer" parent="." unique_id=806531365]
-visible = false
 script = ExtResource("5_3amdw")
+
+[node name="CardShadow" type="TextureRect" parent="CardManager" unique_id=22572765]
+self_modulate = Color(0, 0, 0, 0.49803922)
+offset_right = 1155.0
+offset_bottom = 649.0
+texture = SubResource("GradientTexture2D_fnsx1")
 
 [node name="Background" type="ColorRect" parent="CardManager" unique_id=1035884839]
 anchors_preset = 15
@@ -2342,11 +2392,81 @@ color = Color(0.012920001, 0.012920001, 0.012920001, 1)
 [node name="Carpet" type="TextureRect" parent="ShopManager/Background" unique_id=1608078728]
 self_modulate = Color(0.6762465, 0.58899766, 0.6903054, 1)
 layout_mode = 0
-offset_left = 212.20172
+offset_left = 228.0
 offset_top = 69.0
-offset_right = 1080.8713
+offset_right = 1096.6697
 offset_bottom = 575.0
 texture = ExtResource("38_f043x")
+
+[node name="CarpetShadow" type="TextureRect" parent="ShopManager/Background" unique_id=732128589]
+self_modulate = Color(0.5956193, 0.34846383, 0.6177142, 0.5254902)
+layout_mode = 0
+offset_left = 224.0
+offset_top = 70.0
+offset_right = 1091.0
+offset_bottom = 568.0
+texture = ExtResource("12_pqe63")
+
+[node name="Decor2" type="TextureRect" parent="ShopManager/Background" unique_id=1455508599]
+self_modulate = Color(0.3870464, 0.28589675, 0.39399427, 1)
+layout_mode = 0
+offset_left = 1321.0
+offset_top = -74.0
+offset_right = 1868.6578
+offset_bottom = 258.25903
+rotation = 1.5707964
+texture = ExtResource("6_oywcm")
+
+[node name="Decor1" type="TextureRect" parent="ShopManager/Background" unique_id=587013930]
+self_modulate = Color(0.3870464, 0.28589675, 0.39399427, 1)
+layout_mode = 0
+offset_left = 83.0
+offset_top = 784.0
+offset_right = 630.65784
+offset_bottom = 1040.2429
+rotation = 4.712389
+texture = ExtResource("6_oywcm")
+
+[node name="ShopBanner" type="TextureRect" parent="ShopManager/Background" unique_id=1089289664]
+self_modulate = Color(0.3768461, 0.26143464, 0.40784156, 1)
+layout_mode = 0
+offset_left = 456.0
+offset_top = -20.0
+offset_right = 881.0
+offset_bottom = 89.0
+texture = ExtResource("23_tbp1y")
+
+[node name="Shop" type="Label" parent="ShopManager/Background" unique_id=1709692202]
+layout_mode = 0
+offset_left = 490.00003
+offset_top = 10.000004
+offset_right = 840.00006
+offset_bottom = 65.0
+rotation = 0.06981317
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("30_tcekk")
+theme_override_font_sizes/font_size = 40
+text = "KEEPER'S REST"
+horizontal_alignment = 1
+
+[node name="Current Player Coin" type="AnimatedSprite2D" parent="ShopManager/Background" unique_id=830879512]
+position = Vector2(266, 35)
+scale = Vector2(3.187499, 3.187499)
+sprite_frames = SubResource("SpriteFrames_8givg")
+autoplay = "default"
+frame_progress = 0.66955465
+
+[node name="CoinLabel" type="Label" parent="ShopManager/Background" unique_id=2058663755]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 0
+offset_left = 300.0
+offset_top = 20.0
+offset_right = 500.0
+offset_bottom = 120.0
+theme_override_colors/font_color = Color(1, 1, 0.5764706, 1)
+theme_override_fonts/font = ExtResource("36_b0nqf")
+theme_override_font_sizes/font_size = 41
+text = "200"
 
 [node name="CenterContainer" type="CenterContainer" parent="ShopManager/Background" unique_id=1050710308]
 custom_minimum_size = Vector2(200, 300)
@@ -2373,34 +2493,12 @@ theme_override_constants/h_separation = 60
 theme_override_constants/v_separation = 83
 columns = 4
 
-[node name="Shop" type="Label" parent="ShopManager/Background" unique_id=1709692202]
-layout_mode = 0
-offset_left = 51.0
-offset_top = 65.0
-offset_right = 163.0
-offset_bottom = 120.0
-theme_override_fonts/font = ExtResource("36_b0nqf")
-theme_override_font_sizes/font_size = 40
-text = "SHOP"
-horizontal_alignment = 1
-
-[node name="CoinLabel" type="Label" parent="ShopManager/Background" unique_id=2058663755]
-custom_minimum_size = Vector2(200, 100)
-layout_mode = 0
-offset_left = 909.0
-offset_top = 30.0
-offset_right = 1109.0
-offset_bottom = 130.0
-theme_override_fonts/font = ExtResource("30_cr44a")
-theme_override_font_sizes/font_size = 24
-horizontal_alignment = 2
-
 [node name="Descriptions" type="Label" parent="ShopManager/Background" unique_id=1569933575]
 layout_mode = 0
-offset_left = 20.0
-offset_top = 290.0
-offset_right = 204.0
-offset_bottom = 638.0
+offset_left = 29.0
+offset_top = 250.0
+offset_right = 213.0
+offset_bottom = 532.0
 theme_override_fonts/font = ExtResource("7_3pt4j")
 theme_override_font_sizes/font_size = 18
 text = "For each turn, apply 8 DEBT, 4 SPEND, and 2 THRIFT. If Enemy DEBT is greater than their Current Coins at the end of their turn, perish instantly."
@@ -2408,22 +2506,32 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="Shop Keeper_Portrait" type="AnimatedSprite2D" parent="ShopManager/Background" unique_id=1326461336]
-position = Vector2(113, 195)
+position = Vector2(118, 151)
 scale = Vector2(2.015625, 2)
 sprite_frames = SubResource("SpriteFrames_gejqg")
 
 [node name="ShopKeeper_Border" type="TextureRect" parent="ShopManager/Background/Shop Keeper_Portrait" unique_id=951122070]
-offset_left = -39.193798
-offset_top = -39.5
-offset_right = 39.689922
-offset_bottom = 39.89595
+offset_left = -39.68992
+offset_top = -40.0
+offset_right = 39.193817
+offset_bottom = 39.39595
 texture = ExtResource("7_0sxm5")
 
+[node name="Shadow" type="TextureRect" parent="ShopManager/Background" unique_id=2129375436]
+self_modulate = Color(1, 1, 1, 0.5764706)
+show_behind_parent = true
+layout_mode = 0
+offset_left = -47.0
+offset_top = 24.0
+offset_right = 263.36615
+offset_bottom = 298.0
+texture = SubResource("GradientTexture2D_4lqwv")
+
 [node name="Back" type="Button" parent="ShopManager" unique_id=1330755300]
-offset_left = 979.0
-offset_top = 591.0
-offset_right = 1080.0
-offset_bottom = 640.0
+offset_left = 995.0
+offset_top = 586.0
+offset_right = 1096.0
+offset_bottom = 635.0
 theme_override_font_sizes/font_size = 25
 text = "EXIT"
 icon_alignment = 1

@@ -270,7 +270,7 @@ func keeper_coin_calculation():
 	moon_count = 0
 	
 	if trust > 2:
-		total_thrift += 3
+		total_thrift += 2
 
 	var coins = get_tree().get_nodes_in_group("keeper_coins")
 	for coin in coins:

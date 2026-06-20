@@ -570,7 +570,7 @@ func enemy_coin_calculation():
 					if left_coin.state == 1 and right_coin.state == 1:
 						total_gain += (left_coin.base_value / 2) + (right_coin.base_value / 2)
 						if greed:
-							total_tally += 3
+							total_tally += 4
 					elif left_coin.state == 0 and right_coin.state == 0:
 						total_damage += (left_coin.base_value) + (right_coin.base_value)
 						total_thrift += 3

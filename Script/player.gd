@@ -348,8 +348,7 @@ func reset_stats():
 	has_withdraw = false
 	has_deposit = false
 
-func refresh_start_of_battle_stats():
-	coin = 500
+func refresh_start_of_battle_stats():	
 	settle = 15
 	initial_max_reserve = max_reserve
 	lock = false

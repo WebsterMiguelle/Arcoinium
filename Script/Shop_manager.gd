@@ -318,54 +318,56 @@ func is_card_owned(card_id: int) -> bool:
 		3: 
 			return main.player.has_golden_clover
 		4: 
-			return main.player.has_impromptu_flip
+			return main.player.has_merchant_scroll
 		5: 
-			return main.player.has_advanced_planning
+			return main.player.has_impromptu_flip
 		6: 
-			return main.player.has_value_increase
+			return main.player.has_advanced_planning
 		7: 
-			return main.player.has_lending_charge
+			return main.player.has_value_increase
 		8: 
-			return main.player.has_coin_snipe
+			return main.player.has_lending_charge
 		9: 
-			return main.player.has_simple_interest
+			return main.player.has_coin_snipe
 		10: 
-			return main.player.has_lucky_pair
+			return main.player.has_simple_interest
 		11: 
-			return main.player.has_sleight_of_hand
+			return main.player.has_lucky_pair
 		12: 
-			return main.player.has_piggy
+			return main.player.has_sleight_of_hand
 		13: 
-			return main.player.has_pocket_money
+			return main.player.has_piggy
 		14: 
-			return main.player.has_passive_income
+			return main.player.has_pocket_money
 		15: 
-			return main.player.has_magic_trick
+			return main.player.has_passive_income
 		16: 
-			return main.player.has_reimbursement
+			return main.player.has_magic_trick
 		17: 
-			return main.player.has_payback
+			return main.player.has_reimbursement
 		18: 
-			return main.player.has_loan_shark
+			return main.player.has_payback
 		19: 
-			return main.player.has_spare_change
+			return main.player.has_loan_shark
 		20: 
-			return main.player.has_triple_nickel
+			return main.player.has_spare_change
 		21: 
-			return main.player.has_inflation
+			return main.player.has_triple_nickel
 		22: 
-			return main.player.has_active_income
+			return main.player.has_inflation
 		23: 
-			return main.player.has_pay_down
+			return main.player.has_active_income
 		24: 
+			return main.player.has_pay_down
+		25: 
 			return main.player.has_refund
-		25:
-			return main.player.has_withdraw
 		26:
-			return main.player.has_deposit
+			return main.player.has_withdraw
 		27:
-			return main.player.has_dividend
+			return main.player.has_deposit
 		28:
+			return main.player.has_dividend
+		29:
 			return main.player.has_cash_out
 		_:
 			return false

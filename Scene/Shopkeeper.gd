@@ -24,6 +24,8 @@ enum Enemy{
 @onready var solar_glow: TextureRect = $"../Player/Solar Blessing Icon/Solar Glow"
 @onready var lunar_glow: TextureRect = $"../Player/Lunar Blessing Icon/Lunar Glow"
 
+const SHOPKEEPER_VOICE = preload("uid://c86gce7j7tjey")
+
 var main
 const FLOATING_LABEL = preload("uid://dwf6g2wuj1oe3")
 @onready var camera_2d: Camera2D = $"../Camera2D"

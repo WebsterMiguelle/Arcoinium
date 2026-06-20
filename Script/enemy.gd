@@ -8,6 +8,7 @@ enum CoinStatus{
 	DAZZLED
 }
 @onready var keeper_shadow: TextureRect = $"../Shopkeeper/Keeper Shadow"
+const SHOPKEEPER_VOICE = preload("uid://c86gce7j7tjey")
 
 var main
 const FLOATING_LABEL = preload("uid://dwf6g2wuj1oe3")
@@ -1093,6 +1094,9 @@ func end_enemy_turn():
 		main.player.debt += turn_debt
 		if main.player.has_active_income:
 			main.shopkeeper.status.text = "SETTLE YOUR DEBT."
+		else:
+			if turn_damage == 0:
+				main.shopkeeper.status.text = "PREPARING."
 		
 	if turn_thrift != 0: main.player.thrift += turn_thrift
 	if turn_spend != 0: main.player.spend += turn_spend
@@ -1125,6 +1129,21 @@ func end_enemy_turn():
 
 	if pay_down_killed:
 		create_floating_label(debt, "DAMAGE", "ENEMY")
+		
+	if main.player.starstruck and (main.player.has_merchant_scroll or main.player.has_active_income):
+		await get_tree().create_timer(1.0)
+		main.shopkeeper.status.text = "CUSTOMER. WAKE UP."
+		var keeper_tween = create_tween()
+		keeper_tween.tween_property(keeper_shadow,"self_modulate", Color("85007396"),0.2)
+		await get_tree().create_timer(1.0)
+		main.player.starstruck = false
+		var dazzled_tween = create_tween()
+		dazzled_tween.parallel().tween_property(dazzled_effect,"self_modulate", Color("#0059a800"),0.6)
+		dazzled_tween.parallel().tween_property(dazzled_light,"color", Color("#0059a800"),0.6)
+		dazzled_tween.tween_property(keeper_shadow,"self_modulate", Color("00000096"),0.6)
+		await dazzled_tween.finished
+		dazzled_effect.visible = false
+		dazzled_light.visible = false
 
 
 
@@ -1139,7 +1158,7 @@ func end_enemy_turn():
 		main.player.lock = false
 		main.player.slow = false
 	# -- Post-Turn Enemy Visuals (Stances & Vignettes) --
-	if main.player.coin > 0:
+	if main.player.coin > 0 and coin > 0:
 		if type == Enemy.TWILIGHT_SAGE:
 			if has_dusk_stance == true:
 				dawn_particles.emitting = false

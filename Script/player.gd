@@ -398,9 +398,13 @@ func refresh_start_of_battle_stats():
 		player_health_bar_2.change_to_void()
 	starstruck = false
 	
+	has_all_in = false
+	var all_in_tween = create_tween()
+	all_in_tween.tween_property(all_in_effect,"self_modulate", Color("ffffff00"),0.6)
+	await all_in_tween.finished
+	
 	var keeper_tween = create_tween()
 	keeper_tween.tween_property(keeper_shadow,"self_modulate", Color("00000096"),0.6)
-	
 	
 	var dazzled_tween = create_tween()
 	dazzled_tween.parallel().tween_property(dazzled_effect,"self_modulate", Color("#0059a800"),0.6)
@@ -415,15 +419,11 @@ func refresh_start_of_battle_stats():
 	await drowse_tween.finished
 	drowse_effect.visible = false
 	
-	has_all_in = false
-	var all_in_tween = create_tween()
-	all_in_tween.tween_property(all_in_effect,"self_modulate", Color("ffffff00"),0.6)
-	await all_in_tween.finished
-	
 	has_extra_turn = false
 	var extra_tween = create_tween()
 	extra_tween.tween_property(extra_turn_effect,"self_modulate", Color("ffffff00"),0.6)
 	await extra_tween.finished
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	player_portrait.play("default")

@@ -492,7 +492,6 @@ func start_player_turn():
 		check_defeat()
 
 func start_keeper_turn():
-	main.shopkeeper.max_playable_coins += 2
 	current_turn = Turn.KEEPER
 	show_turn_ui("SHOPKEEPER'S TURN")
 	coin_deck.reset_sigils()
@@ -500,15 +499,17 @@ func start_keeper_turn():
 	if shopkeeper.has_fully_paid:
 		shopkeeper.status.text = "FULLY PAID!"
 		player.trigger_temp_passive("jar_o_savings","FULLY PAID")
-	else:
-		shopkeeper.status.text = "COUNTER TURN!"
 		player.trigger_temp_passive("merchant_scroll","MERCHANT'S SCROLL")
 	await shopkeeper.start_keeper_turn()
 	shopkeeper.has_keeper_turn = false
-	if player.debt > 0:
-		shopkeeper.status.text = "SETTLE YOUR DEBT."
+	main.shopkeeper.max_playable_coins += 2
+	if player.has_active_income:
+		if player.debt > 0:
+			shopkeeper.status.text = "SETTLE YOUR DEBT."
+		else:
+			shopkeeper.status.text = "NO DEBT YET."
 	else:
-		shopkeeper.status.text = "NO DEBT YET."
+		shopkeeper.status.text = "CUSTOMER ARE YOU ALRIGHT?"
 	if enemy.coin > 0:
 		await get_tree().create_timer(0.6).timeout
 		if shopkeeper.has_scroll_turn:

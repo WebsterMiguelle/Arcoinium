@@ -1754,7 +1754,7 @@ horizontal_alignment = 1
 script = ExtResource("38_ekncj")
 
 [node name="Keeper Shadow" type="TextureRect" parent="Shopkeeper" unique_id=935502447]
-self_modulate = Color(0.5197705, 6.5120905e-05, 0.4513312, 0.5882353)
+self_modulate = Color(0, 0, 0, 0.5882353)
 offset_left = 534.0
 offset_top = 499.0
 offset_right = 1237.0

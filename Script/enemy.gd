@@ -1132,7 +1132,7 @@ func end_enemy_turn():
 		
 	if main.player.starstruck and (main.player.has_merchant_scroll or main.player.has_active_income):
 		await get_tree().create_timer(1.0)
-		main.shopkeeper.status.text = "CUSTOMER. WAKE UP."
+		main.shopkeeper.status.text = "CUSTOMER. FOCUS."
 		var keeper_tween = create_tween()
 		keeper_tween.tween_property(keeper_shadow,"self_modulate", Color("85007396"),0.2)
 		await get_tree().create_timer(1.0)

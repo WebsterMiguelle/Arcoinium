@@ -346,7 +346,8 @@ func battle_start():
 	flip_button.pressed.connect(_on_flip_pressed)
 	endTurn_button.pressed.connect(_on_endturn_pressed)
 	re_flip_button.pressed.connect(_on_re_flip_pressed)
-	if player.has_active_income:
+	if player.has_active_income or player.has_merchant_scroll:
+		keeper_health_label.text = "0"
 		shopkeeper.setup(self)
 		shopkeeper.visible = true
 	else:
@@ -491,12 +492,17 @@ func start_player_turn():
 		check_defeat()
 
 func start_keeper_turn():
+	main.shopkeeper.max_playable_coins += 2
 	current_turn = Turn.KEEPER
-	player.trigger_temp_passive("jar_o_savings","FULLY PAID")
 	show_turn_ui("SHOPKEEPER'S TURN")
 	coin_deck.reset_sigils()
 	sound_manager.play_sound(TURN_PLAYER)
-	shopkeeper.status.text = "FULLY PAID!"
+	if shopkeeper.has_fully_paid:
+		shopkeeper.status.text = "FULLY PAID!"
+		player.trigger_temp_passive("jar_o_savings","FULLY PAID")
+	else:
+		shopkeeper.status.text = "COUNTER TURN!"
+		player.trigger_temp_passive("merchant_scroll","MERCHANT'S SCROLL")
 	await shopkeeper.start_keeper_turn()
 	shopkeeper.has_keeper_turn = false
 	if player.debt > 0:
@@ -505,7 +511,11 @@ func start_keeper_turn():
 		shopkeeper.status.text = "NO DEBT YET."
 	if enemy.coin > 0:
 		await get_tree().create_timer(0.6).timeout
-		start_enemy_turn()
+		if shopkeeper.has_scroll_turn:
+			shopkeeper.has_scroll_turn = false
+			start_player_turn()
+		else:
+			start_enemy_turn()
 	else:
 		check_defeat()
 		
@@ -520,7 +530,10 @@ func start_enemy_turn():
 			await get_tree().create_timer(0.6).timeout
 			if player.coin > 0:
 				if !player.has_extra_turn:
-					start_player_turn()
+					if player.has_merchant_scroll and shopkeeper.has_scroll_turn:
+						start_keeper_turn()
+					else:
+						start_player_turn()
 				else:
 					sound_manager.play_sound(EXTRA_TURN)
 					current_turn = Turn.PLAYER
@@ -541,7 +554,10 @@ func _on_endturn_pressed():
 			await get_tree().create_timer(1.0).timeout
 			if !player.has_extra_turn:
 				if current_turn == Turn.ENEMY:
-					start_player_turn()
+					if shopkeeper.has_scroll_turn:
+						start_keeper_turn()
+					else:
+						start_player_turn()
 				else:
 					if player.has_active_income and shopkeeper.has_keeper_turn:
 						start_keeper_turn()
@@ -891,7 +907,7 @@ func reserve_left_over_coin():
 
 func update_player_coin():
 	player_health_label.text = str(player.coin)
-	if player.has_active_income:
+	if player.has_active_income or player.has_merchant_scroll:
 		keeper_health_label.text = str(shopkeeper.coin)
 	
 func update_player_status():
@@ -1216,9 +1232,6 @@ func show_all_passive_notifications():
 	if player.has_deposit:
 		trigger_passive("deposit", "DEPOSIT")
 
-	# --- SHOP PASSIVE (PERSISTENT) ---
-	if player.has_merchant_scroll:
-		trigger_passive("merchant_scroll", "MERCHANT SCROLL")
 
 
 		

@@ -541,6 +541,16 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Gradient" id="Gradient_e0ffi"]
+offsets = PackedFloat32Array(0, 0.38412017, 0.7017167, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.96121526, 1, 1, 1, 0.3497854, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7n7pe"]
+gradient = SubResource("Gradient_e0ffi")
+fill = 1
+fill_from = Vector2(0.4974359, 0.4940171)
+fill_to = Vector2(0.7948718, 0.20683761)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_nnpy2"]
 atlas = ExtResource("37_885bo")
 region = Rect2(0, 0, 64, 64)
@@ -1326,42 +1336,6 @@ offset_right = 802.0
 offset_bottom = 555.0
 texture = ExtResource("5_gejqg")
 
-[node name="foreground3" type="TextureRect" parent="Forest Area" unique_id=472649278]
-visible = false
-modulate = Color(0, 0, 0, 1)
-top_level = true
-layout_mode = 0
-offset_left = 975.59045
-offset_top = 769.07056
-offset_right = 1550.2516
-offset_bottom = 975.2549
-rotation = 4.712389
-texture = ExtResource("6_oywcm")
-
-[node name="foreground2" type="TextureRect" parent="Forest Area" unique_id=434266]
-visible = false
-modulate = Color(0, 0, 0, 1)
-top_level = true
-layout_mode = 0
-offset_left = 1161.499
-offset_top = 279.16895
-offset_right = 1608.2871
-offset_bottom = 470.64954
-rotation = 1.5707964
-texture = ExtResource("6_oywcm")
-
-[node name="foreground" type="TextureRect" parent="Forest Area" unique_id=1478774541]
-visible = false
-modulate = Color(0, 0, 0, 1)
-top_level = true
-layout_mode = 0
-offset_left = 1111.8657
-offset_top = 408.32098
-offset_right = 1333.6012
-offset_bottom = 575.6787
-rotation = 1.5707964
-texture = ExtResource("6_oywcm")
-
 [node name="Camera2D" type="Camera2D" parent="." unique_id=659444321]
 position = Vector2(576, 324)
 script = ExtResource("3_f043x")
@@ -1779,6 +1753,14 @@ horizontal_alignment = 1
 [node name="Shopkeeper" type="Node2D" parent="." unique_id=283991134]
 script = ExtResource("38_ekncj")
 
+[node name="Keeper Shadow" type="TextureRect" parent="Shopkeeper" unique_id=935502447]
+self_modulate = Color(0.5197705, 6.5120905e-05, 0.4513312, 0.5882353)
+offset_left = 534.0
+offset_top = 499.0
+offset_right = 1237.0
+offset_bottom = 699.0
+texture = SubResource("GradientTexture2D_7n7pe")
+
 [node name="KeeperHealthBar" parent="Shopkeeper" unique_id=1067755888 instance=ExtResource("60_txj2b")]
 offset_left = 992.0
 offset_top = 620.0
@@ -1810,10 +1792,10 @@ toggle_mode = true
 action_mode = 0
 
 [node name="Status" type="Label" parent="Shopkeeper" unique_id=226059882]
-offset_left = 838.0
-offset_top = 551.0
+offset_left = 731.0
+offset_top = 540.0
 offset_right = 989.0
-offset_bottom = 568.0
+offset_bottom = 577.0
 theme_override_colors/font_color = Color(1, 0.83137256, 1, 1)
 theme_override_constants/outline_size = 4
 text = "FULLY PAID"
@@ -2658,7 +2640,7 @@ text = "Your Turn Ends After:
 
 
 
-Flips"
+Flips / Reserve"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -2696,13 +2678,6 @@ offset_bottom = 649.0
 texture = SubResource("GradientTexture2D_tke4u")
 
 [node name="All In Effect" type="TextureRect" parent="." unique_id=1021368821]
-visible = false
-layout_mode = 0
-offset_right = 1155.0
-offset_bottom = 649.0
-texture = SubResource("GradientTexture2D_ryobp")
-
-[node name="Fully Paid Effect" type="TextureRect" parent="." unique_id=848962353]
 visible = false
 layout_mode = 0
 offset_right = 1155.0

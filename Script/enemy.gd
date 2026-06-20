@@ -7,6 +7,7 @@ enum CoinStatus{
 	VOIDED,
 	DAZZLED
 }
+@onready var keeper_shadow: TextureRect = $"../Shopkeeper/Keeper Shadow"
 
 var main
 const FLOATING_LABEL = preload("uid://dwf6g2wuj1oe3")
@@ -245,7 +246,7 @@ func setup(m,enemy):
 				bounty = 25
 			else:
 				max_coin = 999
-				coin = 999
+				coin = 40
 				max_playable_coins = 8
 				silver_flip_rate = 0.0
 				gold_flip_rate = 0.0
@@ -458,7 +459,7 @@ func flip():
 	c.add_to_group("enemy_coins")
 	add_child(c);
 	main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,c.global_position)
-	var loan_damage:int = ceil(debt * 0.05)
+	var loan_damage:int = ceil(debt * 0.02)
 	if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
 		take_damage(loan_damage)
 		create_floating_label(loan_damage,"DAMAGE","ENEMY")
@@ -502,7 +503,6 @@ func enemy_coin_calculation():
 			var left_coin
 			var right_coin
 			for coin in coins:
-				total_debt += 1
 				if coin.state == 0:
 					sun_count +=1
 				else: 
@@ -876,7 +876,7 @@ func end_enemy_turn():
 			c.refresh_sprite()
 			main.sound_manager.play_sound(COIN_FLIP)
 			enemy_coin_calculation()
-			var loan_damage:int = ceil(debt * 0.05)
+			var loan_damage:int = ceil(debt * 0.02)
 			if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
 				take_damage(loan_damage)
 				create_floating_label(loan_damage,"DAMAGE","ENEMY")
@@ -895,7 +895,7 @@ func end_enemy_turn():
 			var shine_chance = randi_range(0,1)
 			if shine_chance == 1:
 				main.sound_manager.play_sound(COIN_FLIP)
-				var loan_damage:int = ceil(debt * 0.05)
+				var loan_damage:int = ceil(debt * 0.02)
 				if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
 					take_damage(loan_damage)
 					create_floating_label(loan_damage,"DAMAGE","ENEMY")
@@ -1008,6 +1008,13 @@ func end_enemy_turn():
 	# -- Final Hit Impacts & Floating Labels (The runes have arrived!) --
 	var shake_power = 0
 	if turn_damage > 0:
+		if main.player.has_merchant_scroll: 
+			main.shopkeeper.has_scroll_turn = true
+			main.shopkeeper.coin = main.shopkeeper.max_playable_coins
+			main.shopkeeper.status.text = "CUSTOMER HURT. READY TO FLIP."
+			var keeper_tween = create_tween()
+			keeper_tween.tween_property(keeper_shadow,"self_modulate", Color("85007396"),0.2)
+			
 		# I MOVED THE HIT PARTICLES AND SOUNDS HERE!
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE, main.player_portrait.global_position)
 		if turn_damage <= 10: 

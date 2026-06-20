@@ -22,6 +22,10 @@ enum Enemy{
 	MOON_CASTER,
 	TWILIGHT_SAGE
 }
+
+
+@onready var keeper_shadow: TextureRect = $"../Shopkeeper/Keeper Shadow"
+
 @onready var camera_2d: Camera2D = $"../Camera2D"
 const FLOATING_LABEL = preload("uid://dwf6g2wuj1oe3")
 @onready var all_in: Label = $"../Battle UI/All In"
@@ -263,9 +267,12 @@ func gain_coin():
 		has_debt = false
 		main.shopkeeper.has_keeper_turn = true
 		main.shopkeeper.status.text = "I AM READY TO FLIP."
-		main.shopkeeper.max_playable_coins += 2
 		main.shopkeeper.coin = main.shopkeeper.max_playable_coins
-
+		main.shopkeeper.has_fully_paid = true
+		
+		var keeper_tween = create_tween()
+		keeper_tween.tween_property(keeper_shadow,"self_modulate", Color("85007396"),0.2)
+	
 	if gain > 0:
 		if temp2 != 0 and main.enemy.has_audit:
 			main.enemy.gain += temp2
@@ -311,7 +318,7 @@ func reset_stats():
 
 	#INNOVATOR PASSIVES
 
-	has_inflation = true
+	has_inflation = false
 	has_payback = false
 	has_lucky_pair = false
 	has_value_increase = false
@@ -319,24 +326,24 @@ func reset_stats():
 	#SHOOTER PASSIVES
 	has_spare_change = false
 	has_triple_nickel = false
-	has_refund = true #Note: This is ALL IN
+	has_refund = false #Note: This is ALL IN
 	has_coin_snipe = false
 
 	#INVESTOR PASSIVES
 
 	has_active_income = false #Note: This is FULLY PAID
 	has_pocket_money = false
-	has_passive_income = true
+	has_passive_income = false
 	has_simple_interest = false
 
 	#DEBTOR PASSIVES
 
-	has_pay_down = true #Note: This is BANKRUPT
+	has_pay_down = false #Note: This is BANKRUPT
 	has_reimbursement = false #Note: This is TAX EVASION
 	has_loan_shark = false
 	has_lending_charge = false
 
-	has_cash_out = true
+	has_cash_out = false
 	has_dividend = false
 	has_withdraw = false
 	has_deposit = false
@@ -390,6 +397,11 @@ func refresh_start_of_battle_stats():
 	if has_pay_down:
 		player_health_bar_2.change_to_void()
 	starstruck = false
+	
+	var keeper_tween = create_tween()
+	keeper_tween.tween_property(keeper_shadow,"self_modulate", Color("00000096"),0.6)
+	
+	
 	var dazzled_tween = create_tween()
 	dazzled_tween.parallel().tween_property(dazzled_effect,"self_modulate", Color("#0059a800"),0.6)
 	dazzled_tween.parallel().tween_property(dazzled_light,"color", Color("#0059a800"),0.6)
@@ -475,11 +487,11 @@ func coin_calculation():
 			elif left_coin.state == 0 and right_coin.state == 1:
 				total_damage += (left_coin.base_value / 2)
 				total_gain += (right_coin.base_value / 2)
-				if has_lending_charge: total_debt += 3
+				if has_lending_charge: total_debt += 2
 			else:
 				total_damage += (right_coin.base_value / 2)
 				total_gain += (left_coin.base_value / 2)
-				if has_lending_charge: total_debt += 3
+				if has_lending_charge: total_debt += 2
 			left_coin = null
 			right_coin = null
 		else:
@@ -1160,7 +1172,9 @@ func end_turn():
 			main.sound_manager.play_sound(DEBTED_ATTACK)
 			create_floating_label(turn_void, "DAMAGE", "ENEMY")
 		debt += turn_void
-		main.shopkeeper.status.text = "SETTLE YOUR DEBT."
+		if has_active_income:
+			main.shopkeeper.status.text = "SETTLE YOUR DEBT."
+
 			
 	# Determine if enemy is immune to debt before applying
 	var is_debt_immune = (main.enemy.type == Enemy.COLLECTOR) and greed

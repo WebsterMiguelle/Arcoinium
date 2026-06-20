@@ -245,7 +245,7 @@ func setup(m,enemy):
 				bounty = 25
 			else:
 				max_coin = 999
-				coin = 40
+				coin = 999
 				max_playable_coins = 8
 				silver_flip_rate = 0.0
 				gold_flip_rate = 0.0
@@ -502,6 +502,7 @@ func enemy_coin_calculation():
 			var left_coin
 			var right_coin
 			for coin in coins:
+				total_debt += 1
 				if coin.state == 0:
 					sun_count +=1
 				else: 
@@ -848,6 +849,14 @@ func start_enemy_turn():
 
 
 func end_enemy_turn():
+	
+	main.turn_damage_particle.emitting = false
+	main.turn_gain_particle.emitting = false
+	main.turn_debt_particle.emitting = false
+	main.turn_thrift_particle.emitting = false
+	main.turn_spend_particle.emitting = false
+	main.turn_tally_particle.emitting = false
+	
 	main.coin_deck.sigil_pressed()
 	
 	
@@ -1075,6 +1084,8 @@ func end_enemy_turn():
 			main.sound_manager.play_sound(DEBTED_ATTACK)
 			create_floating_label(turn_debt, "DAMAGE", "ENEMY")
 		main.player.debt += turn_debt
+		if main.player.has_active_income:
+			main.shopkeeper.status.text = "SETTLE YOUR DEBT."
 		
 	if turn_thrift != 0: main.player.thrift += turn_thrift
 	if turn_spend != 0: main.player.spend += turn_spend

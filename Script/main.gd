@@ -2,7 +2,8 @@ extends TextureRect
 
 enum Turn {
 	PLAYER,
-	ENEMY
+	ENEMY,
+	KEEPER
 }
 @onready var forest_area: TextureRect = $"Forest Area"
 @onready var fields_area: TextureRect = $"Fields Area"
@@ -25,6 +26,8 @@ enum Enemy{
 
 @onready var player = $Player
 @onready var enemy = $Enemy
+@onready var shopkeeper: Node2D = $Shopkeeper
+
 @onready var main: TextureRect = $"."
 var greed_color = '#ffa889'
 var vignette_default = '#bdabb8'
@@ -162,6 +165,8 @@ var enemy_info_menu: Node = null
 
 @onready var enemy_health_bar = $"Battle UI/EnemyHealthBar"
 @onready var enemy_health_label: Label = $"Battle UI/EnemyHealthLabel"
+@onready var keeper_health_bar: Control = $Shopkeeper/KeeperHealthBar
+@onready var keeper_health_label: Label = $Shopkeeper/KeeperHealthLabel
 @onready var enemy_gain: Label = $"Enemy/Enemy Gain"
 @onready var enemy_debt: Label = $"Enemy/Enemy Debt"
 @onready var enemy_thrift: Label = $"Enemy/Enemy Thrift"
@@ -328,6 +333,8 @@ func battle_start():
 	reserved_coin = null
 	player.refresh_start_of_battle_stats()
 	enemy.refresh_start_of_battle_stats()
+	if player.has_active_income:
+		shopkeeper.refresh_start_of_battle_stats()
 	enemy.reset_passives()
 	show_all_passive_notifications()
 
@@ -339,6 +346,12 @@ func battle_start():
 	flip_button.pressed.connect(_on_flip_pressed)
 	endTurn_button.pressed.connect(_on_endturn_pressed)
 	re_flip_button.pressed.connect(_on_re_flip_pressed)
+	if player.has_active_income:
+		shopkeeper.setup(self)
+		shopkeeper.visible = true
+	else:
+		shopkeeper.visible = false
+
 	var enemy_id = current_enemy_index
 	match enemy_id:
 		0: 
@@ -439,6 +452,8 @@ func show_turn_ui(text):
 				turn_portrait.play("MOON_CASTER")
 			8:
 				turn_portrait.play("TWILIGHT_SAGE")
+	elif current_turn == Turn.KEEPER:
+		turn_portrait.play("SHOPKEEPER")
 	else:
 		turn_portrait.play("COIN_CASTER")
 
@@ -474,7 +489,26 @@ func start_player_turn():
 		await player.start_turn()
 	else:
 		check_defeat()
-			
+
+func start_keeper_turn():
+	current_turn = Turn.KEEPER
+	player.trigger_temp_passive("jar_o_savings","FULLY PAID")
+	show_turn_ui("SHOPKEEPER'S TURN")
+	coin_deck.reset_sigils()
+	sound_manager.play_sound(TURN_PLAYER)
+	shopkeeper.status.text = "FULLY PAID!"
+	await shopkeeper.start_keeper_turn()
+	shopkeeper.has_keeper_turn = false
+	if player.debt > 0:
+		shopkeeper.status.text = "SETTLE YOUR DEBT."
+	else:
+		shopkeeper.status.text = "NO DEBT YET."
+	if enemy.coin > 0:
+		await get_tree().create_timer(0.6).timeout
+		start_enemy_turn()
+	else:
+		check_defeat()
+		
 func start_enemy_turn():
 	if enemy.coin > 0:
 		current_turn = Turn.ENEMY
@@ -491,6 +525,7 @@ func start_enemy_turn():
 					sound_manager.play_sound(EXTRA_TURN)
 					current_turn = Turn.PLAYER
 					show_turn_ui("EXTRA TURN")
+					current_turn = Turn.ENEMY
 					player.extra_turn()
 			else:
 				check_defeat()
@@ -508,7 +543,10 @@ func _on_endturn_pressed():
 				if current_turn == Turn.ENEMY:
 					start_player_turn()
 				else:
-					start_enemy_turn()
+					if player.has_active_income and shopkeeper.has_keeper_turn:
+						start_keeper_turn()
+					else:
+						start_enemy_turn()
 			else:
 				sound_manager.play_sound(EXTRA_TURN)
 				show_turn_ui("EXTRA TURN")
@@ -853,6 +891,8 @@ func reserve_left_over_coin():
 
 func update_player_coin():
 	player_health_label.text = str(player.coin)
+	if player.has_active_income:
+		keeper_health_label.text = str(shopkeeper.coin)
 	
 func update_player_status():
 	if player.starstruck:

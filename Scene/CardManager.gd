@@ -20,7 +20,7 @@ var all_cards = [
 	{"id": 1, "name": "Lunar Blessing", "rank": "B", "desc": "When 8 or more MOON Coins are played this turn, all Even Flips next turn are guaranteed MOON."},
 	{"id": 2, "name": "Wish Bone", "rank": "B", "desc": "+20% SILVER Flip Rate."},
 	{"id": 3, "name": "Golden Clover", "rank": "B", "desc": "+10% GOLD Flip Rate."},
-	{"id": 4, "name": "Merchant's Scroll", "rank": "B", "desc": "25% Shop Discount. The Shopkeeper will stock 1 extra S-Rank Passive."},
+	{"id": 4, "name": "Merchant's Scroll", "rank": "B", "desc": "25% Shop Discount. Gain the Shopkeeper's Trust, empowering her while stocking 1 additional S-Rank Passive."},
 	{"id": 5, "name": "Flip Sequence", "rank": "B", "desc": "Flip the Last Coin played to its other side. For each Flip/Upgrade that occurred during End Turn Sequence, Deal 1 DAMAGE."},
 	{"id": 6, "name": "Seal of Approval", "rank": "B", "desc": "The first 2 Coins placed on the Arcane Circle become STAMPED. At the end of the turn, Remove all STAMP from Played Coins and Upgrade them."},
 	{"id": 7, "name": "Value Increase", "rank": "B", "desc": "Upgrade all RESERVED Coins next turn."},
@@ -41,7 +41,7 @@ var all_cards = [
 	{"id": 21, "name": "Triple Nickel", "rank": "A", "desc": "+20% SILVER Flip Rate. Your first 3 Flips each turn are guaranteed SHINED SILVER Coins."},
 
 	{"id": 22, "name": "Inflation", "rank": "S", "desc": "You Cannot Manually Reserve. Each Re-Flip has a 50% Chance for each Coin to Upgrade. Upgrading Beyond Gold consumes 1 Coin and applies SHINE. SHINE is now Stackable."},
-	{"id": 23, "name": "Fully Paid", "rank": "S", "desc": "Everytime you SETTLE all your DEBT, Deal 15 DAMAGE and apply 4 THRIFT. For each successful SETTLE, DAMAGE further increases by 15."},
+	{"id": 23, "name": "Fully Paid", "rank": "S", "desc": "Shopkeeper accompanies you. Everytime you SETTLE all your DEBT, Shopkeeper gains a Turn and Flips 2 SHINED GOLD SUN Coins. For each successful SETTLE, Shopkeeper additionally flips 2 Coins."},
 	{"id": 24, "name": "Bankrupt", "rank": "S", "desc": "Your Coin Bar will only flip VOIDED Coins. For each VOIDED Coin Played/Cleansed, apply 2 DEBT to Self/Enemy. Execute the enemy if their DEBT is higher than their Coins."},
 	{"id": 25, "name": "All In", "rank": "S", "desc": "If the Arcane Circle is empty at End Turn, automatically Flip 20 SILVER Coins with a 50% Chance of being STAMPED. Each Statused Coin flipped this way deals 3 DAMAGE."},
 	{"id": 26, "name": "Withdraw", "rank": "B", "desc": "Removing a RESERVED Coin deals 1 DAMAGE. Statused Coins deal 3 DAMAGE instead."},
@@ -189,6 +189,7 @@ func apply_reward(card_id):
 		4:
 			print("Merchant Scroll Passive")
 			main.player.has_merchant_scroll = true
+			main.shopkeeper.trust += 1
 		5:
 			print("Impromptu Flip Passive")
 			main.player.has_impromptu_flip = true

@@ -33,7 +33,7 @@ signal hp_changed(new_hp)
 @onready var player_portrait: AnimatedSprite2D = $Player_Portrait
 var active_temp_ids: Dictionary = {}
 @onready var passives_bar: GridContainer = $"../Battle UI/PassivesBar"
-
+@onready var player_health_bar_2: Button = $"../Battle UI/PlayerHealthBar2"
 #SCENES
 const PASSIVE_BAR_ICON = preload("res://Scene/Passive_Bar_Icon.tscn")
 @onready var drowse_effect: TextureRect = $"../Drowse Effect"
@@ -46,6 +46,8 @@ const PASSIVE_BAR_ICON = preload("res://Scene/Passive_Bar_Icon.tscn")
 @onready var solar_glow: TextureRect = $"Solar Blessing Icon/Solar Glow"
 @onready var lunar_blessing_icon: AnimatedSprite2D = $"Lunar Blessing Icon"
 @onready var lunar_glow: TextureRect = $"Lunar Blessing Icon/Lunar Glow"
+@onready var extra_turn_effect: TextureRect = $"../Extra Turn Effect"
+@onready var all_in_effect: TextureRect = $"../All In Effect"
 
 const COIN = preload("uid://ddet242jm5v23")
 var main
@@ -93,6 +95,7 @@ const DEBT_EFFECT_PARTICLE = preload("uid://c52tpyupg2ynl")
 const SPEND_EFFECT_PARTICLE = preload("uid://m3n67qiuvr7i")
 const SPEND_EXPLOSION_PARTICLE = preload("uid://bgfgq2kw3njao")
 const VOID_REMOVED_PARTICLE = preload("uid://b360j7dt7jml1")
+const INFLATION_PARTICLE = preload("uid://bq67mkmrnr14p")
 
 #PLAYER STATS
 var greed = false
@@ -258,30 +261,10 @@ func gain_coin():
 	coin += gain
 	if has_active_income and has_debt and debt == 0 and main.enemy.coin > 0:
 		has_debt = false
-		trigger_temp_passive("jar_o_savings","FULLY PAID")
-		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
-		main.enemy.take_damage(settle)
-		thrifted_attack += 4
-		create_floating_label(settle,"SETTLE","ENEMY")
-		var shake_power = 0
-		if settle <= 15: 
-			main.sound_manager.play_sound(DAMAGE_LIGHT)
-			shake_power += 0.25
-		elif settle <= 30: 
-			main.sound_manager.play_sound(DAMAGE_MODERATE)
-			shake_power += 0.5
-		else: 
-			main.sound_manager.play_sound(DAMAGE_HEAVY)
-			shake_power += 1.0
-
-		camera_2d.add_trauma(shake_power)
-		if settle >= 30:
-			main.sound_manager.play_sound(CRITICAL)
-			var slow_motion = create_tween()
-			slow_motion.tween_property(Engine, "time_scale", 0.5, 0)
-			slow_motion.tween_property(Engine, "time_scale", 1, 0.2)
-
-		settle += 15
+		main.shopkeeper.has_keeper_turn = true
+		main.shopkeeper.status.text = "I AM READY TO FLIP."
+		main.shopkeeper.max_playable_coins += 2
+		main.shopkeeper.coin = main.shopkeeper.max_playable_coins
 
 	if gain > 0:
 		if temp2 != 0 and main.enemy.has_audit:
@@ -290,6 +273,8 @@ func gain_coin():
 		main.sound_manager.play_sound(GAIN_EFFECT)
 		create_floating_label(gain,"GAIN","PLAYER")
 	elif debt > 0:
+		if has_active_income and !main.shopkeeper.has_keeper_turn:
+			main.shopkeeper.status.text = "SETTLE YOUR DEBT."
 		if greed and main.enemy.has_audit:
 			main.enemy.gain += temp
 		particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,main.player_debt.global_position)
@@ -326,7 +311,7 @@ func reset_stats():
 
 	#INNOVATOR PASSIVES
 
-	has_inflation = false
+	has_inflation = true
 	has_payback = false
 	has_lucky_pair = false
 	has_value_increase = false
@@ -341,22 +326,23 @@ func reset_stats():
 
 	has_active_income = false #Note: This is FULLY PAID
 	has_pocket_money = false
-	has_passive_income = false
+	has_passive_income = true
 	has_simple_interest = false
 
 	#DEBTOR PASSIVES
 
-	has_pay_down = false #Note: This is BANKRUPT
+	has_pay_down = true #Note: This is BANKRUPT
 	has_reimbursement = false #Note: This is TAX EVASION
 	has_loan_shark = false
 	has_lending_charge = false
 
-	has_cash_out = false
+	has_cash_out = true
 	has_dividend = false
 	has_withdraw = false
 	has_deposit = false
 
 func refresh_start_of_battle_stats():
+	coin = 500
 	settle = 15
 	initial_max_reserve = max_reserve
 	lock = false
@@ -401,6 +387,8 @@ func refresh_start_of_battle_stats():
 	else:
 		lunar_blessing_icon.visible = false
 		
+	if has_pay_down:
+		player_health_bar_2.change_to_void()
 	starstruck = false
 	var dazzled_tween = create_tween()
 	dazzled_tween.parallel().tween_property(dazzled_effect,"self_modulate", Color("#0059a800"),0.6)
@@ -415,8 +403,15 @@ func refresh_start_of_battle_stats():
 	await drowse_tween.finished
 	drowse_effect.visible = false
 	
+	has_all_in = false
+	var all_in_tween = create_tween()
+	all_in_tween.tween_property(all_in_effect,"self_modulate", Color("ffffff00"),0.6)
+	await all_in_tween.finished
 	
-	
+	has_extra_turn = false
+	var extra_tween = create_tween()
+	extra_tween.tween_property(extra_turn_effect,"self_modulate", Color("ffffff00"),0.6)
+	await extra_tween.finished
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	player_portrait.play("default")
@@ -827,7 +822,9 @@ func flip():
 	
 	if has_inflation and current_played_coin >= max_playable_coins:
 		toggle_button(main.flip_button,true)
-		
+	
+	if coin == 0:
+		main.check_defeat()
 
 
 
@@ -835,6 +832,9 @@ func re_flip():
 
 	main.sound_manager.play_sound(COIN_REFLIP)
 	main.sound_manager.play_sound(COIN_FLIP)
+	
+	if has_inflation:
+		main.particle_manager.spawn_particle(INFLATION_PARTICLE,main.re_flip_button.global_position)
 	
 	if reflip_tween:
 		reflip_tween.kill()
@@ -924,6 +924,7 @@ func re_flip():
 		
 	if current_re_flip == max_re_flip or current_played_coin == 0:
 		toggle_button(main.re_flip_button,true)
+
 
 
 	await get_tree().create_timer(0.1).timeout
@@ -1101,6 +1102,18 @@ func start_turn():
 	
 
 func end_turn():
+	
+	if has_extra_turn:
+		var extra_tween = create_tween()
+		extra_tween.tween_property(extra_turn_effect,"self_modulate", Color("00000000"),0.6)
+	
+	main.turn_damage_particle.emitting = false
+	main.turn_gain_particle.emitting = false
+	main.turn_debt_particle.emitting = false
+	main.turn_thrift_particle.emitting = false
+	main.turn_spend_particle.emitting = false
+	main.turn_tally_particle.emitting = false
+	
 	if tally:
 		hide_tally_ui()
 	print("ENDED TURN!?")
@@ -1114,6 +1127,11 @@ func end_turn():
 
 	await activate_player_turn_end_passives()
 	
+	
+	if has_all_in:
+		var all_in_tween = create_tween()
+		all_in_tween.tween_property(all_in_effect,"self_modulate", Color("ffffff00"),0.6)
+		
 	if main.enemy.coin == 0: return
 
 	# ==========================================
@@ -1142,6 +1160,7 @@ func end_turn():
 			main.sound_manager.play_sound(DEBTED_ATTACK)
 			create_floating_label(turn_void, "DAMAGE", "ENEMY")
 		debt += turn_void
+		main.shopkeeper.status.text = "SETTLE YOUR DEBT."
 			
 	# Determine if enemy is immune to debt before applying
 	var is_debt_immune = (main.enemy.type == Enemy.COLLECTOR) and greed
@@ -1342,8 +1361,12 @@ func end_turn():
 		trigger_temp_passive("cash_out","CASH OUT")
 		has_extra_turn = true
 		return
-	
+
 	has_extra_turn = false
+	has_all_in = false
+	extra_turn_effect.visible = false
+	all_in_effect.visible = false
+	
 	
 	
 func activate_pre_battle_passives():
@@ -1481,6 +1504,10 @@ func activate_player_turn_end_passives():
 	if has_refund and current_played_coin == 0 and !has_all_in:
 		main.show_turn_ui("ALL IN")
 		trigger_temp_passive("refund","ALL IN")
+		all_in_effect.self_modulate.a = 0
+		all_in_effect.visible = true
+		var all_in_tween = create_tween()
+		all_in_tween.tween_property(all_in_effect,"self_modulate", Color("ffffffff"),0.3)
 		has_all_in = true
 		var all_in_coin = 20
 		main.sound_manager.play_sound(PASSIVE_PAYBACK)
@@ -1629,6 +1656,10 @@ func activate_player_turn_end_passives():
 		lunar_glow.visible = true
 
 func extra_turn():
+	extra_turn_effect.self_modulate.a = 0
+	extra_turn_effect.visible = true
+	var extra_tween = create_tween()
+	extra_tween.tween_property(extra_turn_effect,"self_modulate", Color("000000ff"),0.3)
 	await start_turn()
 	toggle_button(main.flip_button,true)
 	toggle_button(main.reserve_button,true)

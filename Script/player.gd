@@ -487,11 +487,11 @@ func coin_calculation():
 			elif left_coin.state == 0 and right_coin.state == 1:
 				total_damage += (left_coin.base_value / 2)
 				total_gain += (right_coin.base_value / 2)
-				if has_lending_charge: total_debt += 2
+				if has_lending_charge: total_debt += 3
 			else:
 				total_damage += (right_coin.base_value / 2)
 				total_gain += (left_coin.base_value / 2)
-				if has_lending_charge: total_debt += 2
+				if has_lending_charge: total_debt += 3
 			left_coin = null
 			right_coin = null
 		else:

@@ -318,7 +318,7 @@ func reset_stats():
 
 	#INNOVATOR PASSIVES
 
-	has_inflation = false
+	has_inflation = true
 	has_payback = false
 	has_lucky_pair = false
 	has_value_increase = false
@@ -466,11 +466,11 @@ func coin_calculation():
 		if coin.state == 0 and !coin.reserved:
 			sun_count += 1
 			if coin.status == CoinStatus.SHINED: 
-				shined_sun_boost += 3 + coin.shine_stack
+				shined_sun_boost += 3 * coin.shine_stack
 		elif coin.state == 1 and !coin.reserved:
 			moon_count +=1
 			if coin.status == CoinStatus.SHINED:
-				shined_moon_boost += 3 + coin.shine_stack
+				shined_moon_boost += 3 * coin.shine_stack
 		if coin.status == CoinStatus.VOIDED:
 			coin.base_value = 0
 		if left_coin != null and right_coin != null and left_coin.reserved == false and right_coin.reserved == false:

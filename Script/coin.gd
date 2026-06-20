@@ -20,7 +20,7 @@ enum CoinStatus{
 
 #COIN VARIABLES
 var is_stamped = false
-var shine_stack = 0
+var shine_stack = 1
 var initial_status = CoinStatus.NONE #If VOIDED, remember what status it was beforehand.
 var type
 var base_value:int
@@ -40,7 +40,7 @@ func setup(s,pos):
 	type = CoinType.COPPER
 	base_value = 2
 	status = CoinStatus.NONE
-	shine_stack = 0
+	shine_stack = 1
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -157,7 +157,7 @@ func refresh_sprite():
 		stamped.visible = true
 	if status == CoinStatus.SHINED and shine_stack > 0:
 		shine_stack_label.visible = true
-		shine_stack_label.text = "x" + str(shine_stack+1)
+		shine_stack_label.text = "x" + str(shine_stack)
 
 # Inside your Coin.gd script
 var glow_tween: Tween

@@ -5,7 +5,7 @@ var is_already_calculating
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	self.visible = false
+	self.visible = true
 	target_x = global_position.x
 
 func entrance(is_calcu):

@@ -148,7 +148,6 @@ var sun_caster_color = '#e56400'
 var moon_caster_color = '#1a54fb'
 var dawn_stance = '#ffcda0'
 var dusk_stance = '#8dacf7'
-@onready var battle_particles: GPUParticles2D = $"../ParticleManager/Battle Particles"
 @onready var dusk_particles: GPUParticles2D = $"../ParticleManager/Dusk Particles"
 @onready var dawn_particles: GPUParticles2D = $"../ParticleManager/Dawn Particles"
 
@@ -394,21 +393,19 @@ func setup(m,enemy):
 				bounty = 0
 				type = Enemy.TWILIGHT_SAGE
 				has_dusk_stance = false
-				battle_particles.emitting = false
 				dawn_particles.emitting = true
 				switch_vignette_color(dawn_stance,0.4)
 				trigger_enemy_passive("DAWN STANCE: Play as Many MOON Coins.", 5.0)
 			else:
 				has_radiant = true
 				max_coin = 999
-				coin = 900
+				coin = 750
 				max_playable_coins = 16
 				silver_flip_rate = 0
 				gold_flip_rate = 1
 				bounty = 0
 				type = Enemy.TWILIGHT_SAGE
 				has_dusk_stance = false
-				battle_particles.emitting = false
 				dawn_particles.emitting = true
 				switch_vignette_color(dawn_stance,0.4)
 				trigger_enemy_passive("DAWN STANCE: Play as Many MOON Coins.", 5.0)
@@ -690,6 +687,45 @@ func enemy_coin_calculation():
 				else:
 					pass
 				is_left = !is_left
+	
+	#TURN SPELL PARTICLES
+	var damage_potency:int = ceil(total_damage / 5)
+	var gain_potency:int = ceil(total_gain / 5)
+	var debt_potency:int = ceil(total_debt / 3)
+	var thrift_potency:int = total_thrift
+	var spend_potency:int = ceil(total_spend/3)
+	if damage_potency == 0:
+		main.turn_damage_particle.emitting = false
+	else:
+		main.turn_damage_particle.emitting = true
+	if gain_potency == 0:
+		main.turn_gain_particle.emitting = false
+	else:
+		main.turn_gain_particle.emitting = true
+	if debt_potency == 0:
+		main.turn_debt_particle.emitting = false
+	else:
+		main.turn_debt_particle.emitting = true
+	if thrift_potency == 0:
+		main.turn_thrift_particle.emitting = false
+	else:
+		main.turn_thrift_particle.emitting = true
+	if spend_potency == 0:
+		main.turn_spend_particle.emitting = false
+	else:
+		main.turn_spend_particle.emitting = true
+	if total_tally == 0:
+		main.turn_tally_particle.emitting = false
+	else:
+		main.turn_tally_particle.emitting = true
+	main.turn_damage_particle.amount = 6 * (damage_potency)
+	main.turn_gain_particle.amount = 6 * (gain_potency)
+	main.turn_debt_particle.amount = 6 * (debt_potency)
+	main.turn_thrift_particle.amount = 6 * (thrift_potency)
+	main.turn_spend_particle.amount = 6 * (spend_potency)
+	main.turn_tally_particle.amount = total_tally
+	
+	
 	var text = ""
 	if coins != null:
 		if total_damage != 0: 
@@ -911,7 +947,7 @@ func end_enemy_turn():
 
 	particle_manager.despawn_emitting_particles()
 	
-	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0 or turn_lock or turn_slow or turn_starstruck or turn_tally > 0:
+	if turn_damage > 0 or turn_gain > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0 or turn_lock or turn_slow or turn_starstruck or turn_tally > 0:
 		main.turn_calculation_box.exit()
 	elif coin <= 0:
 		# I combined your double-exit check here so the box doesn't glitch by trying to close twice!
@@ -1058,7 +1094,6 @@ func end_enemy_turn():
 	if turn_starstruck: main.player.starstruck = true
 	# 4. Player 'Pay Down' Passive Check
 	var pay_down_killed = false
-	var pay_down_debt_added = false
 	if main.player.has_pay_down:
 		if debt > coin:
 			coin = 0

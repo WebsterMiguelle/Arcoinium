@@ -6,6 +6,7 @@ enum Turn {
 }
 @onready var forest_area: TextureRect = $"Forest Area"
 @onready var fields_area: TextureRect = $"Fields Area"
+@onready var shop_area: TextureRect = $"Shop Area"
 
 enum Enemy{
 	MAGE,
@@ -32,7 +33,6 @@ var sun_caster_color = '#e56400'
 var moon_caster_color = '#1a54fb'
 var dawn_stance = '#ffcda0'
 var dusk_stance = '#8dacf7'
-@onready var battle_particles: GPUParticles2D = $"ParticleManager/Battle Particles"
 @onready var dusk_particles: GPUParticles2D = $"ParticleManager/Dusk Particles"
 @onready var dawn_particles: GPUParticles2D = $"ParticleManager/Dawn Particles"
 @onready var reserve_button: Button = $"Battle UI/Reserve Button"
@@ -40,6 +40,7 @@ var dusk_stance = '#8dacf7'
 @onready var player_reserve_rug: TextureRect = $"Player/Player Reserve Rug"
 @onready var vignette: CanvasModulate = $"../Vignette"
 @onready var vignetter: PointLight2D = $"../Vignetter"
+@onready var mist_particles: GPUParticles2D = $"ParticleManager/Mist Particles"
 
 var second_enemy
 var third_enemy
@@ -117,7 +118,12 @@ $"Progression Map/Boss"
 @onready var reflip_label: Label = $"Battle UI/Re-Flip/Reflip_Label"
 @onready var turn_calculation: Label = $"Battle UI/Turn Calculation Box/Turn Calculation"
 @onready var turn_calculation_box: TextureRect = $"Battle UI/Turn Calculation Box"
-
+@onready var turn_damage_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Damage Particle"
+@onready var turn_gain_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Gain Particle"
+@onready var turn_debt_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Debt Particle"
+@onready var turn_thrift_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Thrift Particle"
+@onready var turn_spend_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Spend Particle"
+@onready var turn_tally_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Tally Particle"
 
 @onready var player_health_bar = $"Battle UI/PlayerHealthBar2"
 @onready var player_gain: Label = $"Player/Player Gain"
@@ -165,8 +171,9 @@ var enemy_info_menu: Node = null
 var enemy_notif_tween: Tween = null
 var enemy_notif_base_pos: Vector2
 
-@onready var turn_ui: ColorRect = $"Battle UI/Turn UI"
+@onready var turn_ui: TextureRect = $"Battle UI/Turn UI"
 @onready var turn_ui_label: Label = $"Battle UI/Turn UI/Turn UI Label"
+@onready var turn_portrait: AnimatedSprite2D = $"Battle UI/Turn UI/PortraitBG/Turn Portrait"
 
 @onready var passive_manager = $PassiveManager
 @onready var passive_label = $"Battle UI/PassiveContainer"
@@ -244,6 +251,9 @@ func switch_vignetter_color(to,duration):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	forest_area.visible = true
+	dusk_particles.emitting = true
+	dawn_particles.emitting = false
+	
 	await get_tree().create_timer(0.4).timeout
 	await _play_fake_coin_intro()
 	turn_calculation_box.visible = false
@@ -285,8 +295,7 @@ func _input(event):
 func toggle_pause():
 	get_tree().paused = !get_tree().paused
 	pause_menu.visible = get_tree().paused
-	
-	battle_particles.emitting = !get_tree().paused
+
 	dusk_particles.emitting = !get_tree().paused
 	dawn_particles.emitting = !get_tree().paused
 	
@@ -296,9 +305,9 @@ func battle_start():
 	flip_button.disabled = true
 	switch_vignetter_color(vignetter_default,0.1)
 	switch_vignette_color(vignette_default,0.1)
-	battle_particles.emitting = true
-	dawn_particles.emitting = false
-	dusk_particles.emitting = false
+	
+	if fields_area.is_visible_in_tree():
+		mist_particles.emitting = true
 	
 	turn_ui.visible = false
 	var coins = get_tree().get_nodes_in_group("enemy coins")
@@ -405,10 +414,34 @@ func show_turn_ui(text):
 	turn_ui_label.text = text
 	turn_ui.modulate = Color("ffffff00")
 	turn_ui.global_position = get_viewport_rect().size / 2
-	turn_ui.global_position.x -= 600
+	turn_ui.global_position.x -= 350
+	turn_ui.global_position.y += 10
 	
 	var target_position = turn_ui.global_position.y - 40
 	
+	if current_turn == Turn.ENEMY:
+		match current_enemy_index:
+			0: 
+				turn_portrait.play("MAGE")
+			1: 
+				turn_portrait.play("DWARF")
+			2: 
+				turn_portrait.play("COLLECTOR")
+			3: 
+				turn_portrait.play("TRADER")
+			4: 
+				turn_portrait.play("THRIFTER")
+			5:
+				turn_portrait.play("ARISTOCRAT")
+			6: 
+				turn_portrait.play("SUN_CASTER")
+			7: 
+				turn_portrait.play("MOON_CASTER")
+			8:
+				turn_portrait.play("TWILIGHT_SAGE")
+	else:
+		turn_portrait.play("COIN_CASTER")
+
 	var tween = create_tween()
 	tween.parallel().tween_property(turn_ui,"modulate",Color("ffffff"),0.2)
 	tween.parallel().tween_property(turn_ui, "position:y",target_position,0.2)
@@ -435,8 +468,8 @@ func _on_end_run_pressed():
 	
 func start_player_turn():
 	if player.coin > 0:
-		show_turn_ui("PLAYER TURN")
 		current_turn = Turn.PLAYER
+		show_turn_ui("YOUR TURN")
 		sound_manager.play_sound(TURN_PLAYER)
 		await player.start_turn()
 	else:
@@ -444,9 +477,9 @@ func start_player_turn():
 			
 func start_enemy_turn():
 	if enemy.coin > 0:
-		show_turn_ui("ENEMY'S TURN")
-		coin_deck.reset_sigils()
 		current_turn = Turn.ENEMY
+		show_turn_ui("ENEMY TURN")
+		coin_deck.reset_sigils()
 		sound_manager.play_sound(TURN_ENEMY)
 		await enemy.start_enemy_turn()
 		if enemy.coin > 0:
@@ -456,6 +489,7 @@ func start_enemy_turn():
 					start_player_turn()
 				else:
 					sound_manager.play_sound(EXTRA_TURN)
+					current_turn = Turn.PLAYER
 					show_turn_ui("EXTRA TURN")
 					player.extra_turn()
 			else:
@@ -482,6 +516,7 @@ func _on_endturn_pressed():
 
 func tally_end_turn():
 	if enemy.coin > 0 and player.coin > 0:
+		current_turn = Turn.ENEMY
 		show_turn_ui("TURN ENDED")
 		await player.end_turn()
 		turn_calculation_box.exit()
@@ -708,6 +743,7 @@ func check_defeat():
 	return null
 
 func handle_victory_flow():
+	mist_particles.emitting = false
 	endTurn_button.disabled = true
 	player.lock = false
 	player.slow = false
@@ -718,13 +754,10 @@ func handle_victory_flow():
 	player.max_reserve = player.initial_max_reserve
 	switch_vignetter_color(vignetter_default,1.0)
 	switch_vignette_color(vignette_default,1.0)
-	battle_particles.emitting = true
-	dusk_particles.emitting = false
-	dawn_particles.emitting = false
 	player.gain_coin()
 	sound_manager.play_sound(VICTORY)
 	turn_calculation_box.exit()
-	
+	current_turn = Turn.PLAYER
 	await show_turn_ui("VICTORY")
 	sound_manager.play_sound(PASSIVE_SPARE_CHANGE)
 	var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
@@ -997,10 +1030,19 @@ func _play_progression_cutscene(from_index: int, to_index: int) -> void:
 		bg_fade.tween_property(forest_area,"modulate", Color("#0059a800"),0.6)
 		await bg_fade.finished
 		forest_area.visible = false
-	elif to_index == 5:
+		dusk_particles.emitting = false
+		dawn_particles.emitting = true
+		mist_particles.emitting = true
+	elif to_index == 4:
+		shop_area.visible = true
 		bg_fade.tween_property(fields_area,"modulate", Color("#0059a800"),0.6)
 		await bg_fade.finished
 		fields_area.visible = false
+		dawn_particles.emitting = false
+	elif to_index == 5:
+		bg_fade.tween_property(shop_area,"modulate", Color("#0059a800"),0.6)
+		await bg_fade.finished
+		shop_area.visible = false
 	
 	var slide_out = progression_map.create_tween()
 	slide_out.tween_property(progression_map, "offset:y", -screen_height, 0.8).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN)

@@ -62,6 +62,7 @@ func play_standard_attack(start_node: Node, target_node: Node, damage: int) -> v
 	
 func spawn_single_trail(start_pos: Vector2, end_pos: Vector2, control_point: Vector2, runes_count: int) -> void:
 	for i in range(runes_count):
+		print("i")
 		var projectile = ATTACK_RUNES_PARTICLES.instantiate()
 		projectile.play("default")
 		add_child(projectile)

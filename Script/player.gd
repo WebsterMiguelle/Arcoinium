@@ -334,7 +334,7 @@ func reset_stats():
 	#SHOOTER PASSIVES
 	has_spare_change = false
 	has_triple_nickel = false
-	has_refund = false #Note: This is ALL IN
+	has_refund = true #Note: This is ALL IN
 	has_coin_snipe = false
 
 	#INVESTOR PASSIVES
@@ -500,6 +500,42 @@ func coin_calculation():
 	if has_lending_charge and all_sun_moon:
 		total_debt *= 2
 	var text = ""
+
+	#TURN SPELL PARTICLES
+	
+
+	var damage_potency:int = ceil(total_damage / 5)
+	var gain_potency:int = ceil(total_gain / 5)
+	var debt_potency:int = ceil(total_debt / 5)
+	var thrift_potency:int = total_thrift
+	var spend_potency:int = ceil(total_spend/3)
+	if damage_potency == 0:
+		main.turn_damage_particle.emitting = false
+	else:
+		main.turn_damage_particle.emitting = true
+	if gain_potency == 0:
+		main.turn_gain_particle.emitting = false
+	else:
+		main.turn_gain_particle.emitting = true
+	if debt_potency == 0:
+		main.turn_debt_particle.emitting = false
+	else:
+		main.turn_debt_particle.emitting = true
+	if thrift_potency == 0:
+		main.turn_thrift_particle.emitting = false
+	else:
+		main.turn_thrift_particle.emitting = true
+	if spend_potency == 0:
+		main.turn_spend_particle.emitting = false
+	else:
+		main.turn_spend_particle.emitting = true
+	main.turn_tally_particle.emitting = false
+	main.turn_damage_particle.amount = 6 * (damage_potency)
+	main.turn_gain_particle.amount = 6 * (gain_potency)
+	main.turn_debt_particle.amount = 6 * (debt_potency)
+	main.turn_thrift_particle.amount = 6 * (thrift_potency)
+	main.turn_spend_particle.amount = 6 * (spend_potency)
+	
 	if coins != null:
 		if total_damage != 0: 
 			text += "\nDAMAGE: " + str(total_damage)
@@ -509,6 +545,7 @@ func coin_calculation():
 			text += "\nGAIN: " + str(total_gain)
 			if shined_moon_boost > 0:
 				text += " (+" + str(shined_moon_boost) + ")"
+
 		if total_debt != 0:
 			text += "\nDEBT: " + str(total_debt)
 		if total_thrift != 0:
@@ -713,6 +750,8 @@ func flip():
 	if has_pay_down:
 		c.add_status(CoinStatus.VOIDED)
 	if has_all_in:
+		toggle_button(main.re_flip_button,true)
+		toggle_button(main.reserve_button,true)
 		c.upgrade_to_silver()
 		var stamp_chance = randi_range(0,1)
 		if stamp_chance == 1: c.is_stamped = true

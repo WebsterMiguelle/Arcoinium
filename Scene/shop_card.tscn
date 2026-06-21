@@ -234,6 +234,10 @@ region = Rect2(352, 32, 32, 32)
 atlas = ExtResource("3_bku1w")
 region = Rect2(160, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_5k42d"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(288, 0, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_a1sy7"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(64, 64, 32, 32)
@@ -250,6 +254,10 @@ region = Rect2(32, 0, 32, 32)
 atlas = ExtResource("3_bku1w")
 region = Rect2(0, 64, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_wa4is"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(128, 0, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_4y3wg"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(256, 0, 32, 32)
@@ -265,10 +273,6 @@ region = Rect2(96, 0, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_vu828"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(192, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_wa4is"]
-atlas = ExtResource("3_bku1w")
-region = Rect2(128, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dahd3"]
 atlas = ExtResource("3_bku1w")
@@ -293,10 +297,6 @@ region = Rect2(128, 32, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_suegg"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(192, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_5k42d"]
-atlas = ExtResource("3_bku1w")
-region = Rect2(288, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ko8ob"]
 atlas = ExtResource("3_bku1w")
@@ -390,6 +390,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_5k42d")
+}],
+"loop": false,
+"name": &"Full Moon",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_a1sy7")
 }],
 "loop": false,
@@ -422,6 +430,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_wa4is")
+}],
+"loop": false,
+"name": &"Keeper\'s Scroll",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_4y3wg")
 }],
 "loop": false,
@@ -450,14 +466,6 @@ animations = [{
 }],
 "loop": false,
 "name": &"Magic Trick",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_wa4is")
-}],
-"loop": false,
-"name": &"Merchant\'s Scroll",
 "speed": 5.0
 }, {
 "frames": [{
@@ -506,14 +514,6 @@ animations = [{
 }],
 "loop": false,
 "name": &"Seal of Approval",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5k42d")
-}],
-"loop": false,
-"name": &"Simple Interest",
 "speed": 5.0
 }, {
 "frames": [{
@@ -597,14 +597,15 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_nn8ao")
 position = Vector2(76, 115.5)
 scale = Vector2(3.059, 2.9375)
 sprite_frames = SubResource("SpriteFrames_23lek")
-animation = &"unfurl-down"
+animation = &"B"
 frame = 4
+frame_progress = 0.8559642
 
 [node name="Icon" type="AnimatedSprite2D" parent="." unique_id=1661363716]
 position = Vector2(76, 71)
 scale = Vector2(3.0625002, 2.9375)
 sprite_frames = SubResource("SpriteFrames_u5k1i")
-animation = &"Coin Barrage"
+animation = &"Keeper\'s Scroll"
 
 [node name="Label" type="Label" parent="." unique_id=594536539]
 layout_mode = 0

@@ -271,6 +271,7 @@ func flip():
 		main.sound_manager.play_sound(DAMAGE_HEAVY)
 		main.enemy.take_damage(10)
 		create_floating_label(10,"DAMAGE","ENEMY")
+		upgraded_flip_count = 0
 
 func keeper_coin_calculation():
 	pair_count.text = ""
@@ -630,7 +631,7 @@ func activate_turn_end_passives():
 		
 		#PRIORITY 1: UNUPGRADED COINS
 		for coin in coins:
-			if coin.state == 0 and sun_sun_count > 0 and coin.base_value < 6:
+			if  sun_sun_count > 0 and coin.base_value < 6:
 				coin.upgrade_to_gold()
 				sun_sun_count -= 1
 				coin.refresh_sprite()
@@ -647,8 +648,9 @@ func activate_turn_end_passives():
 		#PRIORITY 2: UNSHINED GOLD COINS
 		if sun_sun_count > 0:
 			for coin in coins:
-				if coin.state == 0 and sun_sun_count > 0 and coin.status == CoinStatus.NONE:
-					coin.add_status(CoinStatus.SHINED)
+				if sun_sun_count > 0 and coin.status == CoinStatus.NONE:
+					if main.player.has_inflation:
+						coin.add_status(CoinStatus.SHINED)
 					sun_sun_count -= 1
 					coin.refresh_sprite()
 					main.sound_manager.play_sound(COIN_FLIP)

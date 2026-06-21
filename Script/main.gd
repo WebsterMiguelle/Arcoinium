@@ -330,6 +330,11 @@ func battle_start():
 	coins = get_tree().get_nodes_in_group("enemy_coins")
 	for coin in coins:
 		coin.queue_free()
+		
+	coins = get_tree().get_nodes_in_group("keeper_coins")
+	for coin in coins:
+		coin.queue_free()
+		
 	reserved_coin = null
 	player.refresh_start_of_battle_stats()
 	enemy.refresh_start_of_battle_stats()
@@ -499,7 +504,9 @@ func start_keeper_turn():
 	if shopkeeper.has_fully_paid:
 		shopkeeper.status.text = "FULLY PAID!"
 		player.trigger_temp_passive("jar_o_savings","FULLY PAID")
-		player.trigger_temp_passive("merchant_scroll","MERCHANT'S SCROLL")
+	
+	if shopkeeper.has_scroll_turn:
+		player.trigger_temp_passive("merchant_scroll","KEEPER'S SCROLL")
 	await shopkeeper.start_keeper_turn()
 	shopkeeper.has_keeper_turn = false
 	main.shopkeeper.max_playable_coins += 2

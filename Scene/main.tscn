@@ -2653,7 +2653,6 @@ position = Vector2(832, 432)
 position = Vector2(1024, 432)
 
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
-visible = false
 position = Vector2(599, 318)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.9019608, 0.5647059, 0.61960787)
@@ -2662,7 +2661,6 @@ texture = SubResource("GradientTexture2D_c2iwn")
 texture_scale = 0.46
 
 [node name="Vignette" type="CanvasModulate" parent="." unique_id=1590582319]
-visible = false
 color = Color(0.7360586, 0.6517471, 0.7562498, 1)
 
 [node name="ParticleManager" type="Node2D" parent="." unique_id=2081468604]

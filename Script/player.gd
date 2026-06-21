@@ -284,7 +284,6 @@ func gain_coin():
 			main.enemy.gain += temp2
 		particle_manager.spawn_particle(GAIN_EFFECT_PARTICLE,main.player_gain.global_position)
 		main.sound_manager.play_sound(GAIN_EFFECT)
-		create_floating_label(gain,"GAIN","PLAYER")
 	elif debt > 0:
 		if has_active_income and !main.shopkeeper.has_keeper_turn:
 			main.shopkeeper.status.text = "SETTLE YOUR DEBT."
@@ -677,6 +676,7 @@ func reserve(is_generated = false, pickpocketed = false, dazzled = false):
 			main.sound_manager.play_sound(DAMAGE_HEAVY)
 			main.enemy.take_damage(10)
 			create_floating_label(10,"DAMAGE","ENEMY")
+			upgraded_flip_count = 0
 	
 	if dazzled:
 		c.add_status(CoinStatus.DAZZLED)
@@ -689,6 +689,7 @@ func reserve(is_generated = false, pickpocketed = false, dazzled = false):
 		else:
 			gain_amount += 3
 		create_floating_label(gain_amount,"GAIN","PLAYER")
+		gain += gain_amount
 		
 	add_child(c)
 
@@ -831,6 +832,7 @@ func flip():
 		main.sound_manager.play_sound(DAMAGE_HEAVY)
 		main.enemy.take_damage(10)
 		create_floating_label(10,"DAMAGE","ENEMY")
+		upgraded_flip_count = 0
 		
 	add_child(c)
 	if c.reserved == false:
@@ -1565,23 +1567,7 @@ func activate_player_turn_end_passives():
 		await get_tree().create_timer(1.0).timeout
 		if main.enemy.coin == 0:
 			return
-	if has_impromptu_flip and latest_coin != null:
-		if latest_coin.state == 0:
-			latest_coin.state = 1
-		else:
-			latest_coin.state = 0
-		if latest_coin.status == CoinStatus.VOIDED: latest_coin.add_status(latest_coin.initial_status)
-		latest_coin.refresh_sprite()
-		trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
-		main.sound_manager.play_sound(COIN_FLIP)
-		main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
-		main.sound_manager.play_sound(DAMAGE_LIGHT)
-		main.enemy.take_damage(1)
-		create_floating_label(1,"DAMAGE","ENEMY")
-		coin_calculation()
-		await get_tree().create_timer(0.6).timeout
-		if main.enemy.coin == 0:
-			return
+	
 	if has_magic_trick and current_played_coin >= 8:
 		trigger_temp_passive("magic_trick","MAGIC TRICK")
 		coins = get_tree().get_nodes_in_group("coins")
@@ -1709,7 +1695,7 @@ func activate_player_turn_end_passives():
 		
 		#PRIORITY 1: UNUPGRADED COINS
 		for coin in coins:
-			if coin.state == 0 and sun_sun_count > 0 and coin.base_value < 6:
+			if  sun_sun_count > 0 and coin.base_value < 6:
 				coin.upgrade_to_gold()
 				sun_sun_count -= 1
 				coin.refresh_sprite()
@@ -1726,8 +1712,9 @@ func activate_player_turn_end_passives():
 		#PRIORITY 2: UNSHINED GOLD COINS
 		if sun_sun_count > 0:
 			for coin in coins:
-				if coin.state == 0 and sun_sun_count > 0 and coin.status == CoinStatus.NONE:
-					coin.add_status(CoinStatus.SHINED)
+				if  sun_sun_count > 0 and coin.status == CoinStatus.NONE:
+					if has_inflation:
+						coin.add_status(CoinStatus.SHINED)
 					sun_sun_count -= 1
 					coin.refresh_sprite()
 					main.sound_manager.play_sound(COIN_FLIP)
@@ -1743,7 +1730,7 @@ func activate_player_turn_end_passives():
 		#PRIORITY 3: SHINED GOLD COINS
 		if sun_sun_count > 0:
 			for coin in coins:
-				if coin.state == 0 and sun_sun_count > 0:
+				if sun_sun_count > 0:
 					if has_inflation:
 						coin.shine_stack += 1
 					sun_sun_count -= 1

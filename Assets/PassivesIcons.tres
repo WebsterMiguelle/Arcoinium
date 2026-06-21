@@ -34,6 +34,10 @@ region = Rect2(352, 32, 32, 32)
 atlas = ExtResource("1_ikq2d")
 region = Rect2(160, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_t4qmh"]
+atlas = ExtResource("1_ikq2d")
+region = Rect2(288, 0, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_rnsjw"]
 atlas = ExtResource("1_ikq2d")
 region = Rect2(64, 64, 32, 32)
@@ -50,6 +54,10 @@ region = Rect2(32, 0, 32, 32)
 atlas = ExtResource("1_ikq2d")
 region = Rect2(0, 64, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_b1jxh"]
+atlas = ExtResource("1_ikq2d")
+region = Rect2(128, 0, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_34grr"]
 atlas = ExtResource("1_ikq2d")
 region = Rect2(256, 0, 32, 32)
@@ -65,10 +73,6 @@ region = Rect2(96, 0, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_h14xp"]
 atlas = ExtResource("1_ikq2d")
 region = Rect2(192, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_b1jxh"]
-atlas = ExtResource("1_ikq2d")
-region = Rect2(128, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_o0t0r"]
 atlas = ExtResource("1_ikq2d")
@@ -93,10 +97,6 @@ region = Rect2(128, 32, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_x1aa5"]
 atlas = ExtResource("1_ikq2d")
 region = Rect2(192, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_t4qmh"]
-atlas = ExtResource("1_ikq2d")
-region = Rect2(288, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fobic"]
 atlas = ExtResource("1_ikq2d")
@@ -194,6 +194,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_t4qmh")
+}],
+"loop": true,
+"name": &"Full Moon",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_rnsjw")
 }],
 "loop": true,
@@ -226,6 +234,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_b1jxh")
+}],
+"loop": true,
+"name": &"Keeper\'s Scroll",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_34grr")
 }],
 "loop": true,
@@ -254,14 +270,6 @@ animations = [{
 }],
 "loop": true,
 "name": &"Magic Trick",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_b1jxh")
-}],
-"loop": true,
-"name": &"Merchant\'s Scroll",
 "speed": 5.0
 }, {
 "frames": [{
@@ -310,14 +318,6 @@ animations = [{
 }],
 "loop": true,
 "name": &"Seal of Approval",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_t4qmh")
-}],
-"loop": true,
-"name": &"Simple Interest",
 "speed": 5.0
 }, {
 "frames": [{

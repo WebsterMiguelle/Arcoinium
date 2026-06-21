@@ -353,7 +353,7 @@ func reset_stats():
 	has_withdraw = false
 	has_deposit = false
 
-func refresh_start_of_battle_stats():	
+func refresh_start_of_battle_stats():
 	settle = 15
 	initial_max_reserve = max_reserve
 	lock = false
@@ -990,7 +990,6 @@ func start_turn():
 	has_all_in = false
 	flip_clicks = 0
 	latest_coin = null
-	upgraded_flip_count = 0
 	
 	if thrift != 0:
 		main.sound_manager.play_sound(THRIFT_FLAME)
@@ -1018,6 +1017,7 @@ func start_turn():
 	else:
 		current_played_coin = 0
 		current_reserve = 0
+		upgraded_flip_count = 0
 		main.coin_deck.reset_sigils()
 	current_re_flip = 0
 	latest_coin = null
@@ -1077,7 +1077,13 @@ func start_turn():
 							main.enemy.take_damage(1)
 						has_withdraw_damage = true
 				if has_value_increase:
-					coin.upgrade()
+					if coin.base_value < 6:
+						coin.upgrade()
+					else:
+						if has_inflation and coin.status == CoinStatus.SHINED:
+							coin.shine_stack += 1
+						elif coin.initial_status == CoinStatus.NONE:
+							coin.add_status(CoinStatus.SHINED)
 				latest_coin = COIN.instantiate()
 				latest_coin.setup(coin.state,pos)
 				latest_coin.copy_coin(coin)
@@ -1457,6 +1463,7 @@ func activate_pre_battle_passives():
 				toggle_button(main.flip_button,true)
 			coin_calculation()
 			pocket_money_coins -= 1
+			upgraded_flip_count += 1
 			await get_tree().create_timer(0.1).timeout
 		main.endTurn_button.disabled = false
 		toggle_button(main.re_flip_button,false)

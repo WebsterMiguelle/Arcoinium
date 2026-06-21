@@ -34,7 +34,7 @@ var all_cards = [
 	{"id": 4, "name": "Keeper's Scroll", "rank": "B", "desc": "I shall accompany you. When you receive Damage, I gain a Turn and will flip 1 STAMPED COPPER MOON-SUN Pair. Max Coin Flip increases by 2 each succeeding turn."},
 	{"id": 5, "name": "Flip Sequence", "rank": "B", "desc": "Flip the Last Coin played to its other side. For each Flip/Upgrade that occurred during End Turn Sequence, Deal 1 DAMAGE."},
 	{"id": 6, "name": "Seal of Approval", "rank": "B", "desc": "The first 2 Coins placed on the Arcane Circle become STAMPED. At the end of the turn, Remove all STAMP from Played Coins and Upgrade them."},
-	{"id": 7, "name": "Value Increase", "rank": "B", "desc": "Upgrade all RESERVED Coins next turn."},
+	{"id": 7, "name": "Value Increase", "rank": "B", "desc": "Upgrade all RESERVED Coins next turn. Upgrading Beyond Gold applies SHINE instead."},
 	{"id": 8, "name": "Lending Charge", "rank": "B", "desc": "SUN-MOON Pairs apply 3 DEBT. If all played Pairs are SUN-MOON, apply double DEBT."},
 	{"id": 9, "name": "Coin Snipe", "rank": "B", "desc": "Flipping a SILVER/GOLD Coin deals 1 DAMAGE. Generated Coins deal 3 DAMAGE instead."},
 	{"id": 10, "name": "Full Moon", "rank": "B", "desc": "For each MOON-MOON Pair played, 1 Moon Coin becomes SHINED at the end of the turn."},

@@ -228,7 +228,7 @@ var upgraded_flip_count = 0
 @export var has_cash_out = false
 @export var has_dividend = false
 @export var has_withdraw = false
-@export var has_deposit = false
+@export var has_deposit = true
 
 #ENEMY PASSIVES
 
@@ -1420,7 +1420,7 @@ func end_turn():
 func activate_pre_battle_passives():
 	
 	payback_used = false
-	payback_coins = 8
+	payback_coins = 12
 	pocket_money_coins = 8
 	current_played_coin = 0
 	if has_pocket_money:
@@ -1463,7 +1463,7 @@ func activate_pre_battle_passives():
 
 func activate_player_turn_start_passives():
 	previous_player_flips = 0
-	
+	upgraded_flip_count = 0
 	#PAYBACK
 	if has_payback and payback_used and payback_coins != 0:
 		trigger_temp_passive("payback","PAYBACK")
@@ -1474,6 +1474,7 @@ func activate_player_turn_start_passives():
 		print("PAYBACK: " + str(payback_coins))
 		main.sound_manager.play_sound(PASSIVE_PAYBACK)
 		var is_deck_full = false
+		payback_used = false
 		while payback_coins != 0:
 				
 			var state = 0
@@ -1485,6 +1486,16 @@ func activate_player_turn_start_passives():
 				c.reserved = true
 				current_reserve += 1
 				c.add_to_group("reserved coins")
+				if has_deposit:
+					trigger_temp_passive("deposit","DEPOSIT")
+					var gain_amount = 0
+					if c.status == CoinStatus.NONE:
+						gain_amount += 1
+					else:
+						gain_amount += 3
+					create_floating_label(gain_amount,"GAIN","PLAYER")
+					gain += gain_amount
+					
 			else:
 				c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
 				c.add_to_group("coins")
@@ -1492,12 +1503,12 @@ func activate_player_turn_start_passives():
 			if current_played_coin <= 2 and has_advanced_planning:
 				c.is_stamped = true
 			#Guaranteed Silver Flips
-			c.upgrade_to_gold()
+			c.upgrade_to_silver()
 			c.add_status(CoinStatus.SHINED)
 			add_child(c);
 			
 			latest_coin = c
-
+			upgraded_flip_count += 1
 			main.sound_manager.play_sound(COIN_FLIP)
 			main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,c.global_position)
 			if (current_played_coin == max_playable_coins and current_reserve >= max_reserve) or coin == 1:
@@ -1508,6 +1519,14 @@ func activate_player_turn_start_passives():
 				main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
 				main.enemy.take_damage(3)
 				create_floating_label(3,"DAMAGE","ENEMY")
+			if main.enemy.coin > 0 and has_triple_nickel and upgraded_flip_count % 10 == 0  and upgraded_flip_count != 0:
+				trigger_temp_passive("triple_nickel","COIN BARRAGE")
+				main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
+				main.sound_manager.play_sound(DAMAGE_HEAVY)
+				main.enemy.take_damage(10)
+				create_floating_label(10,"DAMAGE","ENEMY")
+				upgraded_flip_count = 0
+
 			coin_calculation()
 			payback_coins -= 1
 			await get_tree().create_timer(0.1).timeout
@@ -1568,6 +1587,23 @@ func activate_player_turn_end_passives():
 		if main.enemy.coin == 0:
 			return
 	
+	if has_impromptu_flip and latest_coin != null:
+		if latest_coin.state == 0:
+			latest_coin.state = 1
+		else:
+			latest_coin.state = 0
+		if latest_coin.status == CoinStatus.VOIDED: latest_coin.add_status(latest_coin.initial_status)
+		latest_coin.refresh_sprite()
+		trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
+		main.sound_manager.play_sound(COIN_FLIP)
+		main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
+		main.sound_manager.play_sound(DAMAGE_LIGHT)
+		main.enemy.take_damage(1)
+		create_floating_label(1,"DAMAGE","ENEMY")
+		coin_calculation()
+		await get_tree().create_timer(0.6).timeout
+		if main.enemy.coin == 0:
+			return
 	if has_magic_trick and current_played_coin >= 8:
 		trigger_temp_passive("magic_trick","MAGIC TRICK")
 		coins = get_tree().get_nodes_in_group("coins")

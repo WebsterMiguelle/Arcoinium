@@ -7,6 +7,8 @@ enum CoinStatus{
 	VOIDED,
 	DAZZLED
 }
+
+
 @onready var keeper_shadow: TextureRect = $"../Shopkeeper/Keeper Shadow"
 const SHOPKEEPER_VOICE = preload("uid://c86gce7j7tjey")
 @onready var pair_count: Label = $"../Battle UI/Turn Calculation Box/Pair Count"
@@ -144,6 +146,7 @@ var has_sunlit_curse = false
 var has_midnight_curse = false
 var has_dusk_stance = false
 
+var heavy_hit_count = 0
 
 var vignette_default = '#bdabb8'
 var vignetter_default = '#ffe6909e'
@@ -193,6 +196,7 @@ func reset_passives():
 	has_dusk_stance = false
 
 func refresh_start_of_battle_stats():
+	heavy_hit_count = 0
 	has_audit = false
 	has_benchmark = false
 	has_radiant = false
@@ -1028,6 +1032,7 @@ func end_enemy_turn():
 			main.sound_manager.play_sound(DAMAGE_MODERATE)
 			shake_power += 0.5
 		else: 
+			heavy_hit_count += 1
 			main.sound_manager.play_sound(DAMAGE_HEAVY)
 			shake_power += 1.0
 		
@@ -1151,15 +1156,17 @@ func end_enemy_turn():
 
 
 	# 5. Player 'Payback' Revive Check
-	if main.player.has_payback and !main.player.payback_used and main.player.coin <= 0: 
-		main.player.coin = 1
+	if main.player.has_payback and heavy_hit_count == 4: 
 		main.player.payback_used = true
-		main.player.payback_coins = 12
+		main.player.payback_coins = 8
 		main.player.debt = 0
 		main.player.spend = 0
 		main.player.thrift = 0
 		main.player.lock = false
 		main.player.slow = false
+		main.player.starstruck = false
+		main.player.tally = 0
+		heavy_hit_count = 0
 	# -- Post-Turn Enemy Visuals (Stances & Vignettes) --
 	if main.player.coin > 0 and coin > 0:
 		if type == Enemy.TWILIGHT_SAGE:

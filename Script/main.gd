@@ -490,7 +490,10 @@ func _on_end_run_pressed():
 func start_player_turn():
 	if player.coin > 0:
 		current_turn = Turn.PLAYER
-		show_turn_ui("YOUR TURN")
+		if player.payback_used:
+			show_turn_ui("PAYBACK")
+		else:
+			show_turn_ui("YOUR TURN")
 		sound_manager.play_sound(TURN_PLAYER)
 		await player.start_turn()
 	else:

@@ -75,8 +75,19 @@ const LINES = {
 		"Go. The real world awaits you." ],
 	"sk_defeat": [
 		"Hmph. You still have much to learn.",
-		"Return when you are ready, Caster." ]
-	
+		"Return when you are ready, Caster." ],
+	"adv_welcome": [
+		"Back so soon? Let's talk about the\ndeeper stuff." ],
+	"adv_debt_intro": [
+		"Watch your numbers\nevery flip could cost you." ],
+	"adv_coin_tiers_transition": [
+		"Now, not all coins are equal.\nLet me show you Silver and Gold." ],
+	"adv_coin_status_transition": [
+		"Good eye. Now, coins can carry\ntheir own effects too." ],
+	"adv_coin_status_intro": [
+		"Check your Portrait\n-each coin tells its own story." ],
+	"adv_all_done": [
+		"That's the advanced mode.\nThe rest you learn in the field." ]
 }
 const LINE_DURATION = 3.0
 const CHARS_PER_SECOND = 10.0

@@ -56,7 +56,8 @@ const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
 enum Enemy{
 	SHOP_KEEPER
 }
-
+#MODE SET 
+var advance_mode: bool = false
 
 #ENEMY STATS
 var greed = false
@@ -151,14 +152,6 @@ func switch_vignetter_color(to,duration):
 func _process(delta: float) -> void:
 	pass
 
-func reset_passives():
-	has_value_added_tax = false
-	has_fair_trade = false
-	has_learn_to_save = false
-	has_fully_paid = false
-	has_sunlit_curse = false
-	has_midnight_curse = false
-	has_dusk_stance = false
 
 func refresh_start_of_battle_stats():
 	gain = 0
@@ -184,16 +177,25 @@ func gain_coin():
 
 func setup(m,enemy):
 	main = m
+	if main.has_method("_ready") and "advance_mode" in main:
+		advance_mode = main.advance_mode
 	print("Hello" + str(enemy))
 	match enemy:
 		Enemy.SHOP_KEEPER:
-			max_coin = 200
-			coin = 20
-			max_playable_coins = 6
-			silver_flip_rate = 0.0
-			gold_flip_rate = 0.0
 			type = Enemy.SHOP_KEEPER
-				
+			if advance_mode:
+				max_coin = 200
+				coin = 50
+				max_playable_coins = 5
+				debt = 2
+				silver_flip_rate = 0.4
+				gold_flip_rate = 0.15
+			else:
+				max_coin = 200
+				coin  = 30
+				max_playable_coins = 4
+				silver_flip_rate = 0.0
+				gold_flip_rate = 0.0
 
 func flip():
 	main.sound_manager.play_sound(COIN_FLIP)
@@ -253,8 +255,8 @@ func enemy_coin_calculation():
 			for coin in coins:
 				if coin.state == 0: 
 					total_damage += coin.base_value
-					if greed: total_spend += 1
-					sun_count +=1
+					if advance_mode:
+						total_debt += 1
 				else:
 					moon_count +=1
 					

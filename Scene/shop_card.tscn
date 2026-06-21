@@ -214,6 +214,10 @@ region = Rect2(32, 64, 32, 32)
 atlas = ExtResource("3_bku1w")
 region = Rect2(128, 64, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_ea05u"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(32, 32, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_igsup"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(320, 0, 32, 32)
@@ -234,6 +238,10 @@ region = Rect2(160, 0, 32, 32)
 atlas = ExtResource("3_bku1w")
 region = Rect2(64, 64, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_m5f78"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(160, 32, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_s4jp2"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(32, 0, 32, 32)
@@ -249,10 +257,6 @@ region = Rect2(256, 0, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_x055m"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(96, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_m5f78"]
-atlas = ExtResource("3_bku1w")
-region = Rect2(160, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fllxr"]
 atlas = ExtResource("3_bku1w")
@@ -306,10 +310,6 @@ region = Rect2(0, 32, 32, 32)
 atlas = ExtResource("3_bku1w")
 region = Rect2(64, 32, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ea05u"]
-atlas = ExtResource("3_bku1w")
-region = Rect2(32, 32, 32, 32)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_n4edy"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(224, 0, 32, 32)
@@ -346,6 +346,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"Cash Out",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ea05u")
+}],
+"loop": false,
+"name": &"Coin Barrage",
 "speed": 5.0
 }, {
 "frames": [{
@@ -390,6 +398,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_m5f78")
+}],
+"loop": false,
+"name": &"Gold Rush",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_s4jp2")
 }],
 "loop": false,
@@ -418,14 +434,6 @@ animations = [{
 }],
 "loop": false,
 "name": &"Loan Shark",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_m5f78")
-}],
-"loop": false,
-"name": &"Lucky Pair",
 "speed": 5.0
 }, {
 "frames": [{
@@ -534,14 +542,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ea05u")
-}],
-"loop": false,
-"name": &"Triple Nickel",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_n4edy")
 }],
 "loop": false,
@@ -604,7 +604,7 @@ frame = 4
 position = Vector2(76, 71)
 scale = Vector2(3.0625002, 2.9375)
 sprite_frames = SubResource("SpriteFrames_u5k1i")
-animation = &"Fully Paid"
+animation = &"Coin Barrage"
 
 [node name="Label" type="Label" parent="." unique_id=594536539]
 layout_mode = 0

@@ -155,7 +155,7 @@ func refresh_sprite():
 			dazzled.play("gold_head" if state == 0 else "gold_tail")
 	if is_stamped:
 		stamped.visible = true
-	if status == CoinStatus.SHINED and shine_stack > 0:
+	if status == CoinStatus.SHINED and shine_stack > 1:
 		shine_stack_label.visible = true
 		shine_stack_label.text = "x" + str(shine_stack)
 

@@ -51,7 +51,7 @@
 [ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="37_885bo"]
 [ext_resource type="Texture2D" uid="uid://2mfylmq5p56b" path="res://Assets/miniCoinCaster-Sheet.png" id="37_ot48q"]
 [ext_resource type="Texture2D" uid="uid://ba7v6aaoo0irq" path="res://Assets/mapIconElite.png" id="38_cr44a"]
-[ext_resource type="Script" path="res://Scene/Shopkeeper.gd" id="38_ekncj"]
+[ext_resource type="Script" uid="uid://bdpljan2t1woi" path="res://Scene/Shopkeeper.gd" id="38_ekncj"]
 [ext_resource type="Texture2D" uid="uid://bmkxblxwtg47d" path="res://Assets/Rug.png" id="38_f043x"]
 [ext_resource type="Texture2D" uid="uid://4aebywoijoue" path="res://Assets/mapIconShop.png" id="39_tcekk"]
 [ext_resource type="Texture2D" uid="uid://fl7tmytwihia" path="res://Assets/mapIconBoss.png" id="40_1bveb"]
@@ -1406,7 +1406,6 @@ script = ExtResource("7_ow1sv")
 [node name="Battle UI" type="Node" parent="." unique_id=1754841999]
 
 [node name="Turn Calculation Box" type="TextureRect" parent="Battle UI" unique_id=1091749495]
-visible = false
 offset_left = -6.0
 offset_top = 110.0
 offset_right = 399.0
@@ -1466,12 +1465,12 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Spell Decor" type="TextureRect" parent="Battle UI/Turn Calculation Box" unique_id=957011128]
-self_modulate = Color(0.69803923, 0.33333334, 0, 0.33333334)
+self_modulate = Color(0.46877682, 0.2151056, 0, 0.33333334)
 layout_mode = 0
-offset_left = 45.154694
-offset_top = 248.0
-offset_right = 195.12154
-offset_bottom = 287.0
+offset_left = 45.0
+offset_top = 237.0
+offset_right = 194.96684
+offset_bottom = 263.0
 texture = ExtResource("9_w8oc3")
 
 [node name="Turn Spend Particle" type="GPUParticles2D" parent="Battle UI/Turn Calculation Box" unique_id=2025819612]
@@ -1518,6 +1517,24 @@ process_material = SubResource("ParticleProcessMaterial_tke4u")
 position = Vector2(121, 139)
 scale = Vector2(3.6187499, 3.6996188)
 texture = SubResource("GradientTexture2D_xj0l1")
+
+[node name="Pair Count" type="Label" parent="Battle UI/Turn Calculation Box" unique_id=52278358]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 0
+offset_left = 90.00001
+offset_top = 244.0
+offset_right = 240.0
+offset_bottom = 328.0
+scale = Vector2(1.2137691, 1)
+theme_override_colors/font_color = Color(0.8439926, 0.5731644, 0.41773322, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("7_3pt4j")
+theme_override_font_sizes/font_size = 14
+text = "
+2 𖤓 𖤓
+6 𖤓 ☾
+1 ☾ ☾"
+vertical_alignment = 1
 
 [node name="PlayerHealthBar2" parent="Battle UI" unique_id=1546897993 instance=ExtResource("5_1xcnr")]
 offset_left = 155.0
@@ -2260,6 +2277,7 @@ grow_vertical = 2
 text = "Restart"
 
 [node name="CardManager" type="CanvasLayer" parent="." unique_id=806531365]
+visible = false
 script = ExtResource("5_3amdw")
 
 [node name="CardShadow" type="TextureRect" parent="CardManager" unique_id=22572765]
@@ -2454,7 +2472,7 @@ position = Vector2(266, 35)
 scale = Vector2(3.187499, 3.187499)
 sprite_frames = SubResource("SpriteFrames_8givg")
 autoplay = "default"
-frame_progress = 0.66955465
+frame_progress = 0.2939294
 
 [node name="CoinLabel" type="Label" parent="ShopManager/Background" unique_id=2058663755]
 custom_minimum_size = Vector2(200, 100)
@@ -2635,6 +2653,7 @@ position = Vector2(832, 432)
 position = Vector2(1024, 432)
 
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
+visible = false
 position = Vector2(599, 318)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.9019608, 0.5647059, 0.61960787)
@@ -2643,6 +2662,7 @@ texture = SubResource("GradientTexture2D_c2iwn")
 texture_scale = 0.46
 
 [node name="Vignette" type="CanvasModulate" parent="." unique_id=1590582319]
+visible = false
 color = Color(0.7360586, 0.6517471, 0.7562498, 1)
 
 [node name="ParticleManager" type="Node2D" parent="." unique_id=2081468604]

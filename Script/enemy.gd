@@ -9,6 +9,7 @@ enum CoinStatus{
 }
 @onready var keeper_shadow: TextureRect = $"../Shopkeeper/Keeper Shadow"
 const SHOPKEEPER_VOICE = preload("uid://c86gce7j7tjey")
+@onready var pair_count: Label = $"../Battle UI/Turn Calculation Box/Pair Count"
 
 var main
 const FLOATING_LABEL = preload("uid://dwf6g2wuj1oe3")
@@ -210,7 +211,6 @@ func gain_coin():
 	if gain > 0:
 		particle_manager.spawn_particle(GAIN_EFFECT_PARTICLE,main.enemy_gain.global_position)
 		main.sound_manager.play_sound(GAIN_EFFECT)
-		create_floating_label(gain,"GAIN","ENEMY")
 	elif debt > 0:
 		particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,main.enemy_debt.global_position)
 		main.sound_manager.play_sound(DEBT_EFFECT)
@@ -471,6 +471,7 @@ func flip():
 
 
 func enemy_coin_calculation():
+	pair_count.text = ""
 	print("Calculating DMG and Gain of Enemy")
 	var total_damage = 0
 	var total_gain = 0
@@ -486,6 +487,7 @@ func enemy_coin_calculation():
 	
 	var shined_sun_boost = 0
 	var shined_moon_boost = 0
+	
 	@warning_ignore("confusable_local_usage", "shadowed_variable")
 	var type = type
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
@@ -967,7 +969,8 @@ func end_enemy_turn():
 	if turn_damage > 0:
 		main.sound_manager.play_sound(COIN_ATTACK_PARTICLE) # The firing sound
 		particle_manager.trigger_attack(main.coin_deck, main.player_portrait, turn_damage, "")
-		
+	if turn_gain > 0:
+		create_floating_label(turn_gain,"GAIN","ENEMY")
 
 	if turn_debt != 0: 
 		main.sound_manager.play_sound(DEBTED_ATTACK)

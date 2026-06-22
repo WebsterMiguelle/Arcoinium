@@ -65,8 +65,7 @@ theme_override_fonts/font = ExtResource("4_d80n4")
 theme_override_font_sizes/font_size = 40
 text = "Coins:
 Silver Flip Rate:
-Gold Flip Rate:
-"
+Gold Flip Rate:"
 vertical_alignment = 1
 
 [node name="Control" type="Control" parent="ProfilePanel/MarginContainer/VBoxContainer" unique_id=1351307598]
@@ -84,10 +83,14 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(120, 250)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_constants/line_spacing = 2
 theme_override_fonts/font = ExtResource("4_d80n4")
-theme_override_font_sizes/font_size = 40
-text = "Enemy Story Goes here"
-autowrap_mode = 3
+theme_override_font_sizes/font_size = 17
+text = "Apprentice mages are mages in training, taken in by a more powerful mage as their own. Be it out of pity or the goodness of the mages' heart, no one ever knows. They say there is a chance for an apprentice mage to take over their masters' repertoire. 
+
+But being taken in is already a telling sign that it's all they will ever be. It is not surprising if an apprentice mage suddenly disappears, stricken with the grief of not being something more.They're not much of a threat, but they will try to take down whoever threatens their masters' seats in power"
+autowrap_mode = 2
+clip_text = true
 
 [node name="StatusEffectsPanel" type="PanelContainer" parent="." unique_id=710897952]
 layout_mode = 2
@@ -165,13 +168,13 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="EnemyAbility" type="Label" parent="EnemyMechanics/MarginContainer/VBoxContainer" unique_id=2086748791]
-custom_minimum_size = Vector2(120, 120)
+custom_minimum_size = Vector2(120, 150)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
 theme_override_fonts/font = ExtResource("4_d80n4")
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 20
 text = "Insert Enemy Ability here"
-autowrap_mode = 3
+autowrap_mode = 2
 clip_text = true
 
 [node name="Tip" type="Label" parent="EnemyMechanics/MarginContainer/VBoxContainer" unique_id=1237834155]
@@ -181,14 +184,13 @@ theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
 theme_override_fonts/font = ExtResource("3_db5qw")
 theme_override_font_sizes/font_size = 36
 text = "Tip!"
-autowrap_mode = 3
 
 [node name="PlayerTip" type="Label" parent="EnemyMechanics/MarginContainer/VBoxContainer" unique_id=527254046]
-custom_minimum_size = Vector2(120, 120)
+custom_minimum_size = Vector2(120, 150)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
 theme_override_fonts/font = ExtResource("4_d80n4")
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 20
 text = "Insert Enemy Tips here"
-autowrap_mode = 3
+autowrap_mode = 2
 clip_text = true

@@ -110,6 +110,17 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_2gtc7")
 action_mode = 0
 text = "BACK"
 
+[node name="Archive Button" type="Button" parent="." unique_id=1385593860]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 0
+offset_left = 393.0
+offset_top = 551.0
+offset_right = 543.0
+offset_bottom = 596.0
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = SubResource("StyleBoxFlat_2gtc7")
+action_mode = 0
+
 [node name="Dialogue Area" type="Marker2D" parent="." unique_id=399608582]
 position = Vector2(445, 70)
 
@@ -119,3 +130,4 @@ position = Vector2(445, 70)
 [connection signal="pressed" from="Advance Mode" to="." method="_on_advance_mode_pressed"]
 [connection signal="mouse_entered" from="Back Button" to="." method="_on_back_button_mouse_entered"]
 [connection signal="pressed" from="Back Button" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Archive Button" to="." method="_on_archive_button_pressed"]

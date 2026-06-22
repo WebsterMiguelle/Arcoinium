@@ -413,6 +413,7 @@ func refresh_start_of_battle_stats():
 	var all_in_tween = create_tween()
 	all_in_tween.tween_property(all_in_effect,"self_modulate", Color("ffffff00"),0.6)
 	await all_in_tween.finished
+	all_in_effect.visible = false
 	
 	var keeper_tween = create_tween()
 	keeper_tween.tween_property(keeper_shadow,"self_modulate", Color("00000096"),0.6)
@@ -434,6 +435,7 @@ func refresh_start_of_battle_stats():
 	var extra_tween = create_tween()
 	extra_tween.tween_property(extra_turn_effect,"self_modulate", Color("ffffff00"),0.6)
 	await extra_tween.finished
+	extra_turn_effect.visible = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

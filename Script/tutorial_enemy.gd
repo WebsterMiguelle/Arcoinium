@@ -1,6 +1,13 @@
 #Enemy
 extends Node
 
+enum CoinStatus {
+	NONE,
+	SHINED,
+	VOIDED,
+	DAZZLED
+}
+
 var main
 const FLOATING_LABEL = preload("uid://dwf6g2wuj1oe3")
 @onready var camera_2d: Camera2D = $"../Camera2D"
@@ -82,7 +89,7 @@ var gold_flip_rate = 0.00: #Chance to Flip a Gold Coin
 		gold_flip_rate = clamp(value,0.0,100.0) 
 
 #STATUS EFFECTS
-
+var has_radiant = false
 var gain = 0: #Coin to be gained next turn
 	set(value):
 		gain = clamp(value,0,1000) 
@@ -190,12 +197,14 @@ func setup(m,enemy):
 				debt = 2
 				silver_flip_rate = 0.4
 				gold_flip_rate = 0.15
+				has_radiant = true 
 			else:
 				max_coin = 200
 				coin  = 30
 				max_playable_coins = 4
 				silver_flip_rate = 0.0
 				gold_flip_rate = 0.0
+				has_radiant = false
 
 func flip():
 	main.sound_manager.play_sound(COIN_FLIP)
@@ -250,11 +259,12 @@ func enemy_coin_calculation():
 	var type = type
 	var coins = get_tree().get_nodes_in_group("enemy_coins")
 	match type:
-
 		Enemy.SHOP_KEEPER:
 			for coin in coins:
 				if coin.state == 0: 
 					total_damage += coin.base_value
+					if advance_mode and coin.status == CoinStatus.SHINED:
+						total_damage += 2
 					if advance_mode:
 						total_debt += 1
 				else:
@@ -337,6 +347,49 @@ func start_enemy_turn():
 func end_enemy_turn():
 	main.coin_deck.sigil_pressed()
 	
+	var has_dazzle = false
+	var coins = get_tree().get_nodes_in_group("enemy_coins")
+	for c in coins:
+		if c.status == CoinStatus.DAZZLED:
+			has_dazzle = true
+			if c.state == 0:
+				c.state = 1
+			else:
+				c.state = 0
+			c.add_status(CoinStatus.NONE)
+			c.refresh_sprite()
+			main.sound_manager.play_sound(COIN_FLIP)
+			enemy_coin_calculation()
+			await get_tree().create_timer(0.1).timeout
+	if has_dazzle:
+		await get_tree().create_timer(0.6).timeout
+			
+	var radiant_fired = false
+	if has_radiant:
+		coins = get_tree().get_nodes_in_group("enemy_coins")
+		for c in coins:
+			var shine_chance = randi_range(0, 9)
+			if shine_chance == 0:
+				main.sound_manager.play_sound(COIN_FLIP)
+				c.status = CoinStatus.SHINED
+				c.initial_status = c.status
+				c.refresh_sprite()
+				enemy_coin_calculation()  
+				radiant_fired = true
+				await get_tree().create_timer(0.15).timeout
+		var player_coins = get_tree().get_nodes_in_group("coins")
+		for c in player_coins:
+			var shine_chance = randi_range(0, 5)
+			if shine_chance == 0:
+				main.sound_manager.play_sound(COIN_FLIP)
+				c.status = CoinStatus.SHINED
+				c.initial_status = c.status
+				c.refresh_sprite()
+				radiant_fired = true
+				await get_tree().create_timer(0.15).timeout
+		if radiant_fired:
+			await get_tree().create_timer(0.6).timeout
+	
 	# ==========================================
 	# PHASE 1: MATH & LOGIC (Instantly calculate everything)
 	# ==========================================
@@ -394,7 +447,7 @@ func end_enemy_turn():
 	
 
 	# Clean up the played coins visually
-	var coins = get_tree().get_nodes_in_group("enemy_coins")
+	coins = get_tree().get_nodes_in_group("enemy_coins")
 	for c in coins:
 		main.particle_manager.spawn_particle(COIN_PLAY_PARTICLE, c.global_position)
 		c.queue_free()
@@ -466,6 +519,10 @@ func end_enemy_turn():
 	if main.player.coin > 0:
 		main.check_defeat()
 	main.coin_deck.sigil_unlight_()
+	
+	if advance_mode and radiant_fired:
+		await get_tree().create_timer(0.5).timeout
+		main.on_enemy_radiant_fired()
 	
 	
 func toggle_button(btn: Button, make_disabled: bool) -> void:

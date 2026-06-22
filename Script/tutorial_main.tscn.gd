@@ -103,7 +103,7 @@ var adv_coin_tiers_done  = false
 var adv_coin_status_done  = false   
 var adv_flip_count  = 0       
 var adv_tier_flip_count = 0  
-
+var adv_coin_status_radiant_seen = false
 
 
 const DIALOGUE_BOX = preload("uid://dv278qg6j2epd")
@@ -274,31 +274,44 @@ func _adv_lock_except_flip() -> void:
 	reserve_button.disabled = true
 	reserve_button.visible  = true
 	
-func _adv_start_coin_tiers_tutorial() -> void:
-	adv_tier_flip_count = 0
-	_say("adv_coin_tiers_intro")
-	_show_tutorial(
-		"Coin Tiers",
-		"Coins come in three tiers:\nCopper, Silver, and Gold.\nSilver and Gold coins flip with\nhigher Heads odds — keep flipping!",
-		player_health_bar.global_position,
-		-120,
-		[flip_button, re_flip_button, endTurn_button]
-	)
+func _tutorial_force_shine_coin() -> void:
+	if not advance_mode:
+		return
+	var coin = player.latest_coin
+	if coin == null:
+		var coins = get_tree().get_nodes_in_group("coins")
+		if coins.size() > 0:
+			coin = coins.back()
+	if coin != null:
+		coin.add_status(coin.CoinStatus.SHINED)
+		coin.refresh_sprite()
+		coin.pulse_glow()
+
+
 	
-func _adv_start_coin_status_tutorial() -> void:
+func _adv_start_shine_tutorial() -> void:
+	_tutorial_force_shine_coin()
+	await get_tree().create_timer(0.8).timeout
 	_say("adv_coin_status_intro")
-	_show_tutorial(
-		"Coin Status Effects",
-		"Coins can carry Status Effects like\nGain, Thrift, or Spend.\nThese trigger when a coin lands\nHeads or Tails — inspect your coins\nto learn what each one does!",
-		player_portrait.global_position,
-		-120,
-		[flip_button, re_flip_button, endTurn_button, reserve_button]
-	)
+	_show_tutorial("Coin Status Effects","See those glowing coins?\nThat's SHINED — a Coin Status Effect.\nShined Heads coins boost Damage.\nShined Tails boost Gain.\nInspect your coins to learn more!",coin_deck.global_position, -120,[flip_button, re_flip_button, endTurn_button, reserve_button])
 	await _wait_for_spell_inspection()
 	while player_info_menu != null and is_instance_valid(player_info_menu):
 		await get_tree().process_frame
 	_close_current_tutorial()
-	adv_coin_status_done = true
+	adv_coin_status_radiant_seen = true
+	
+	await get_tree().create_timer(0.5).timeout
+	_adv_start_coin_tiers_tutorial()
+	
+	
+func _adv_start_coin_tiers_tutorial() -> void:
+	adv_tier_flip_count = 0
+	_say("adv_coin_tiers_intro")
+	_show_tutorial("Coin Tiers","Coins come in three tiers:\nCopper, Silver, and Gold.\nSilver and Gold coins flip with\nhigher Heads odds — keep flipping!",player_health_bar.global_position,-120,[flip_button, re_flip_button, endTurn_button])
+	
+	await current_tutorial.closed
+	
+	adv_coin_tiers_done = true
 	_say("adv_all_done")
 	_adv_unlock_all()
 	start_player_turn()
@@ -342,6 +355,9 @@ func _ready():
 	if not re_flip_button.pressed.is_connected(_on_re_flip_pressed):
 		re_flip_button.pressed.connect(_on_re_flip_pressed)      
 	battle_start()
+	
+func on_enemy_radiant_fired() -> void:
+	pass
 	
 func _input(event):
 	if event.is_action_pressed("ui_cancel"): # ESC key
@@ -482,6 +498,14 @@ func start_player_turn():
 			endTurn_button.visible  = true
 			endTurn_button.disabled = false
 			return
+		if !adv_debt_done and player.debt > 0:
+			adv_debt_done = true   
+			await get_tree().create_timer(0.8).timeout  
+			_say("adv_debt_intro")
+			_show_tutorial("Status Effects: Debt","See how your Gain was reduced?\nThat's Debt at work — it cancels out\nyour Coin Gain at the start of your turn.\nThe higher your Debt, the less you gain!",player_debt.global_position,-120,[flip_button, endTurn_button])
+			await current_tutorial.closed
+			_adv_start_shine_tutorial()
+			return
 		return
 	
 	if !has_encountered_flip:
@@ -516,14 +540,6 @@ func start_enemy_turn():
 	if not defeat:
 		_close_current_tutorial()
 		await get_tree().create_timer(1.0).timeout
-		
-		if advance_mode and !adv_debt_done and player.debt > 0:
-			_say("adv_debt_intro")
-			_show_tutorial(
-				"Status Effects: Debt",
-				"See that Debt number on your portrait?\nDebt blocks your Coin Gain at end of turn.\nThe more Debt you have, the less you gain!",player_debt.global_position,-120,[flip_button, endTurn_button])
-			adv_debt_done = true
-			return
 		start_player_turn()
 		
 func _show_coin_spells_tutorial() -> void:
@@ -601,15 +617,6 @@ func _on_flip_pressed():
 	await check_defeat()
 	
 	if advance_mode:
-		if adv_debt_done and !adv_coin_tiers_done:
-			adv_tier_flip_count += 1
-			if adv_tier_flip_count >= 8:
-				adv_coin_tiers_done = true
-				_close_current_tutorial()
-				_say("adv_coin_status_transition")
-				await get_tree().create_timer(2.5).timeout
-				_adv_start_coin_status_tutorial()
-			return
 		return
 		
 	if !has_encountered_flip:

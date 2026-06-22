@@ -87,7 +87,9 @@ const LINES = {
 	"adv_coin_status_intro": [
 		"Check your Portrait\n-each coin tells its own story." ],
 	"adv_all_done": [
-		"That's the advanced mode.\nThe rest you learn in the field." ]
+		"That's the advanced mode.\nThe rest you learn in the field." ],
+	"adv_enemy_turn": [
+		"My turn. Watch what Debt does to your Gain." ]
 }
 const LINE_DURATION = 3.0
 const CHARS_PER_SECOND = 10.0

@@ -93,6 +93,9 @@ func add_status(stat):
 		status = stat
 	
 func refresh_sprite():
+	if not is_inside_tree():
+		return
+		
 	var appear_tween = create_tween()
 	
 	appear_tween.tween_property(animated_sprite_2d, "position:y", 0, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)

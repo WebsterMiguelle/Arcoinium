@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://cxpfdg3bbd11p"]
+
+[ext_resource type="Script" uid="uid://cdqgsasbjpq42" path="res://Script/status_spell_archive.gd" id="1_34ewj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k3unw"]
+bg_color = Color(0.4950528, 0.27644643, 0.030817397, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.8786192, 0.72857714, 0.30201375, 1)
+
+[node name="Status_Spell Archive" type="ColorRect" unique_id=1084128084]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12591085, 0.12591085, 0.12591082, 1)
+script = ExtResource("1_34ewj")
+
+[node name="BUFF" type="Button" parent="." unique_id=1711466704]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 0
+offset_left = 55.0
+offset_top = 217.0
+offset_right = 255.0
+offset_bottom = 267.0
+theme_override_font_sizes/font_size = 25
+text = "BUFFs"
+
+[node name="DEBUFF" type="Button" parent="." unique_id=1745311677]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 0
+offset_left = 54.0
+offset_top = 307.0
+offset_right = 254.0
+offset_bottom = 357.0
+theme_override_font_sizes/font_size = 25
+text = "DEBUFFs"
+
+[node name="Coin Status" type="Button" parent="." unique_id=1379363037]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 0
+offset_left = 55.0
+offset_top = 133.0
+offset_right = 255.0
+offset_bottom = 183.0
+theme_override_font_sizes/font_size = 25
+text = "Status Effects"
+
+[node name="Back" type="Button" parent="." unique_id=1924394241]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 0
+offset_left = 32.0
+offset_top = 33.0
+offset_right = 182.0
+offset_bottom = 83.0
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_k3unw")
+text = "Back"
+
+[node name="Frame" type="ColorRect" parent="." unique_id=1021503777]
+custom_minimum_size = Vector2(800, 550)
+layout_mode = 0
+offset_left = 315.0
+offset_top = 40.0
+offset_right = 1115.0
+offset_bottom = 590.0
+color = Color(0.6028429, 0.6028429, 0.602843, 1)
+
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]

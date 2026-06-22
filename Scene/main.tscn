@@ -1406,6 +1406,7 @@ script = ExtResource("7_ow1sv")
 [node name="Battle UI" type="Node" parent="." unique_id=1754841999]
 
 [node name="Turn Calculation Box" type="TextureRect" parent="Battle UI" unique_id=1091749495]
+visible = false
 offset_left = -6.0
 offset_top = 110.0
 offset_right = 399.0
@@ -2175,6 +2176,7 @@ offset_bottom = 34.34147
 texture = SubResource("GradientTexture2D_xgc63")
 
 [node name="Game Over UI" type="CanvasLayer" parent="." unique_id=994626979]
+visible = false
 script = ExtResource("13_0y2cb")
 
 [node name="ColorRect" type="ColorRect" parent="Game Over UI" unique_id=1423685417]

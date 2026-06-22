@@ -87,6 +87,13 @@ const SPEND_DAMAGE_PARTICLE = preload("uid://dmgnoylltbfre")
 const THRIFT_DAMAGE_PARTICLE = preload("uid://bvrulyxw02bom")
 const DEBT_DAMAGE_PARTICLE = preload("uid://1g21u656k60k")
 
+const ALL_IN = preload("uid://lwuew0lbc6d7")
+const ALL_IN_STAMP = preload("uid://bo7ip21oxj6eq")
+const PIGGY = preload("uid://hpygqai2v7qw")
+const VOIDED = preload("uid://ctvrb7nmqgd06")
+const VOID_CLEANSE = preload("uid://bjqr2dvvwifnq")
+const CASH_OUT = preload("uid://dm2mpsfe2sli8")
+const DAZZLE = preload("uid://b3o76gt2qs7pj")
 
 
 #PARTICLES
@@ -313,11 +320,11 @@ func reset_stats():
 	has_solar_coin = false
 	has_lunar_coin = false
 	has_merchant_scroll = false
-	has_impromptu_flip = false  #Note: This is FLIP SEQUENCE
-	has_advanced_planning = false #Note: This is SEAL OF APPROVAL
+	has_impromptu_flip = true  #Note: This is FLIP SEQUENCE
+	has_advanced_planning = true #Note: This is SEAL OF APPROVAL
 
 	#A-Rank
-	has_magic_trick = false
+	has_magic_trick = true
 	has_sleight_of_hand = false #Note: This is PICKPOCKET
 	has_piggy = false
 
@@ -325,14 +332,14 @@ func reset_stats():
 
 	has_inflation = false
 	has_payback = false
-	has_lucky_pair = false
+	has_lucky_pair = false #Note: This is Now Gold Rush
 	has_value_increase = false
 
 	#SHOOTER PASSIVES
-	has_spare_change = false
-	has_triple_nickel = false
-	has_refund = false #Note: This is ALL IN
-	has_coin_snipe = false
+	has_spare_change = false 
+	has_triple_nickel = false #Note: This is COIN BARRAGE
+	has_refund = true #Note: This is ALL IN
+	has_coin_snipe = true
 
 	#INVESTOR PASSIVES
 
@@ -348,7 +355,7 @@ func reset_stats():
 	has_loan_shark = false
 	has_lending_charge = false
 
-	has_cash_out = false
+	has_cash_out = true
 	has_dividend = false
 	has_withdraw = false
 	has_deposit = false
@@ -632,6 +639,7 @@ func reserve(is_generated = false, pickpocketed = false, dazzled = false):
 		var dazzle_chance = randi_range(0,1)
 		if dazzle_chance == 1:
 			c.add_status(CoinStatus.DAZZLED)
+			
 	
 	c.add_to_group("reserved coins")
 	#Silver/Gold Flip Rate
@@ -785,7 +793,7 @@ func flip():
 		
 		if main.enemy.coin > 0 and (c.status != CoinStatus.NONE or c.is_stamped):
 			main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
-			main.sound_manager.play_sound(SPENDED_FLIP)
+			main.sound_manager.play_sound(ALL_IN_STAMP)
 			main.enemy.take_damage(3)
 			create_floating_label(3,"DAMAGE","ENEMY")
 		
@@ -897,6 +905,7 @@ func re_flip():
 			continue
 		if c.status == CoinStatus.VOIDED:
 			c.status = c.initial_status
+			main.sound_manager.play_sound(VOID_CLEANSE)
 			main.particle_manager.spawn_particle(VOID_REMOVED_PARTICLE,c.global_position)
 			if has_pay_down:
 				debted_attack += 2
@@ -1282,6 +1291,7 @@ func end_turn():
 	if has_piggy:
 		
 		trigger_temp_passive("piggy","PIGGY")
+		main.sound_manager.play_sound(PIGGY)
 		var type = latest_pair_left_coin.type
 		latest_pair_left_coin.setup(latest_pair_left_coin.state,main.coin_deck.get_reserve_slot())
 		latest_pair_left_coin.reserved = true
@@ -1558,6 +1568,7 @@ func activate_player_turn_end_passives():
 				coin.state = 0
 			coin.add_status(CoinStatus.NONE)
 			coin.refresh_sprite()
+			main.sound_manager.play_sound(ALL_IN_STAMP)
 			main.sound_manager.play_sound(COIN_FLIP)
 			coin_calculation()
 			if has_impromptu_flip:
@@ -1582,6 +1593,7 @@ func activate_player_turn_end_passives():
 		has_all_in = true
 		var all_in_coin = 20
 		main.sound_manager.play_sound(PASSIVE_PAYBACK)
+		main.sound_manager.play_sound(ALL_IN)
 		while main.enemy.coin > 0 and all_in_coin != 0 and coin > 1:
 			flip()
 			coin_calculation()
@@ -1596,7 +1608,9 @@ func activate_player_turn_end_passives():
 			latest_coin.state = 1
 		else:
 			latest_coin.state = 0
-		if latest_coin.status == CoinStatus.VOIDED: latest_coin.add_status(latest_coin.initial_status)
+		if latest_coin.status == CoinStatus.VOIDED: 
+			latest_coin.add_status(latest_coin.initial_status)
+			main.sound_manager.play_sound(VOID_CLEANSE)
 		latest_coin.refresh_sprite()
 		trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 		main.sound_manager.play_sound(COIN_FLIP)
@@ -1666,14 +1680,15 @@ func activate_player_turn_end_passives():
 		for coin in coins:
 			if coin.is_stamped:
 				coin.is_stamped = false
-				coin.upgrade()
 				if has_inflation and coin.base_value == 6:
 					if coin.status == CoinStatus.SHINED:
 						coin.shine_stack += 1
 					else:
 						coin.add_status(CoinStatus.SHINED)
+				coin.upgrade()
 				if coin.status == CoinStatus.VOIDED:
 					coin.status = coin.initial_status
+					main.sound_manager.play_sound(VOID_CLEANSE)
 					if has_pay_down:
 						debted_attack += 2
 				coin.refresh_sprite()
@@ -1799,6 +1814,7 @@ func activate_player_turn_end_passives():
 		lunar_glow.visible = true
 
 func extra_turn():
+	main.sound_manager.play_sound(CASH_OUT)
 	extra_turn_effect.self_modulate.a = 0
 	extra_turn_effect.visible = true
 	var extra_tween = create_tween()

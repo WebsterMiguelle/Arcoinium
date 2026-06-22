@@ -19,6 +19,7 @@ extends HBoxContainer
 @onready var player_tip: Label =$EnemyMechanics/MarginContainer/VBoxContainer/PlayerTip
 
 var is_closing: bool = false
+var is_open: bool = false
 var slide_distance: float = 30.0 
 var target_y: float
 var stagger_delay: float = 0.1
@@ -29,13 +30,15 @@ var stagger_delay: float = 0.1
 const ENEMY_DATA = {
 	0: { # MAGE
 		"name": "Mage",
-		"story": "A wandering apprentice learning the basic arts of coin casting.",
+		"story": "Apprentice mages are mages in training, taken in by a more powerful mage as their own. Be it out of pity or the goodness of the mages' heart, no one ever knows. They say there is a chance for an apprentice mage to take over their masters' repertoire. But being taken in is already a telling sign that it's all they will ever be. It is not surprising if an apprentice mage suddenly disappears, stricken with the grief of not being something more.They're not much of a threat, but they will try to take down whoever threatens their masters' seats in power.",
 		"ability": "Flips standard coins. Simple and predictable.",
 		"tip": "A great target to build your Reserve against!"
 	},
 	1: { # DWARF
 		"name": "Dwarf",
-		"story": "A sturdy subterranean miner with a heavy purse.",
+		"story": "Coin dwarves are generally pleasant, unless provoked. They spend most of their days searching for coins that have been tossed out in hopes to add it to their stash.
+	However, when they get desperate, they may target whoever they think exudes an abundance of coins. Some say they are what becomes of the missing apprentice mages after losing their minds – destined to search for a value that isn’t there anymore.
+",
 		"ability": "SUN pairs deal combined damage. MOON flips apply THRIFT in Greed mode.",
 		"tip": "Watch out for HEAD-HEAD pairs dealing massive damage."
 	},
@@ -93,30 +96,23 @@ func setup(enemy_node: Node) -> void:
 	# ==========================================
 	# 1. POPULATE STATIC LORE & TIPS
 	# ==========================================
-	enemy_name.text = data["name"]
-	story_label.text = data["story"]
-	enemy_ability.text = data["ability"]
-	player_tip.text = data["tip"]
+	enemy_name.text = data["name"] 
+	
+	# Pass in the Label, the Text, the Max Height (e.g., 180 pixels), and Default Font Size
+	set_and_shrink_text(story_label, data["story"], 250.0, 32)
+	set_and_shrink_text(enemy_ability, data["ability"], 120.0, 32)
+	set_and_shrink_text(player_tip, data["tip"], 100.0, 32)
 	
 	# ==========================================
 	# 2. POPULATE LIVE COMBAT STATS
 	# ==========================================
 	var stats_text = ""
-	
-	# Shows current vs max coins (e.g., "Coins: 120 / 200")
 	stats_text += "Coins: " + str(enemy_node.coin) + " / " + str(enemy_node.max_coin) + "\n"
-	
-	# Converts the decimal rates to clean percentages
 	stats_text += "Silver Flip Rate: " + str(enemy_node.silver_flip_rate * 100) + "%\n"
 	stats_text += "Gold Flip Rate: " + str(enemy_node.gold_flip_rate * 100) + "%"
 	
-	enemy_stats.text = stats_text
-	# ==========================================
-	# 3. POPULATE LIVE STATUS EFFECTS
-	# ==========================================
-	gain.text = "Gain ( " + str(enemy_node.gain) + " )"
-	debt.text = "Debt ( " + str(enemy_node.debt) + " )"
-	thrift.text = "Thrift ( " + str(enemy_node.thrift) + " )"
+	# Give the stats block its own max height as well
+	set_and_shrink_text(enemy_stats, stats_text, 100.0, 32)
 	
 func open() -> void:
 	target_y = global_position.y
@@ -127,6 +123,7 @@ func open() -> void:
 	for child in get_children():
 		tween.tween_property(child, "modulate:a", 1.0, 0.3).set_delay(delay).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 		delay += stagger_delay
+	tween.chain().tween_callback(func(): is_open = true)
 
 func close() -> void:
 	if is_closing: return
@@ -140,3 +137,31 @@ func close() -> void:
 		delay += stagger_delay
 	tween.tween_property(self, "global_position:y", target_y + slide_distance, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tween.chain().tween_callback(self.queue_free)
+	
+func _input(event: InputEvent) -> void:
+	if is_open and not is_closing:
+		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			var menu_box = get_global_rect()
+			var mouse_pos = get_global_mouse_position()
+			if not menu_box.has_point(mouse_pos):
+				close()
+				get_viewport().set_input_as_handled()
+				
+func set_and_shrink_text(label: Label, new_text: String, max_height: float, default_font_size: int = 16) -> void:
+	label.text = new_text
+	var current_size = default_font_size
+	
+	var font = label.get_theme_font("font")
+	
+	var max_width = label.size.x
+	if max_width == 0: 
+		max_width = label.custom_minimum_size.x
+		
+	var text_height = font.get_multiline_string_size(new_text, HORIZONTAL_ALIGNMENT_LEFT, max_width, current_size).y
+	
+	while text_height > max_height and current_size > 16:
+		current_size -= 2
+		text_height = font.get_multiline_string_size(new_text, HORIZONTAL_ALIGNMENT_LEFT, max_width, current_size).y
+		
+	label.add_theme_font_size_override("font_size", current_size)
+	label.custom_minimum_size.y = max_height

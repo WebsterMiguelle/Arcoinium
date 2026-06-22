@@ -421,11 +421,8 @@ func refresh_start_of_battle_stats():
 func _ready():
 	player_portrait.play("default")
 	all_in.text = ""
-	# --- NEW: THE PAIR PULSE HEARTBEAT ---
-# --- THE PAIR PULSE HEARTBEAT ---
+
 	var pulse_timer = Timer.new()
-	
-	# Increase this to 4 or 5 seconds to give the ripple time to finish!
 	pulse_timer.wait_time = 8.0 
 	
 	pulse_timer.autostart = true

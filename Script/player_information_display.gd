@@ -17,6 +17,7 @@ const PASSIVE_BAR_ICON = preload("uid://dldde8yrawlpn")
 @onready var thrift_info: Label = $StatusEffectsPanel/MarginContainer/VBoxContainer/ThriftBox/ThriftInfo
 
 var is_closing: bool = false
+var is_open: bool = false
 var slide_distance: float = 30.0 
 var target_y: float
 var stagger_delay: float = 0.1
@@ -204,6 +205,7 @@ func open() -> void:
 	for child in get_children():
 		tween.tween_property(child, "modulate:a", 1.0, 0.3).set_delay(delay).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 		delay += stagger_delay
+	tween.chain().tween_callback(func(): is_open = true)
 
 func close() -> void:
 	if is_closing: return
@@ -279,4 +281,13 @@ func populate_stats(player:Node) -> void:
 	
 	gain_info.text = "Gain " + str(player.gain) + " coins next turn."
 	debt_info.text = "Pay " + str(player.debt) + " coins to start gaining."
-	thrift_info.text = "Cannot place " + str(player.thrift) + " coins on the Arcane Circle."
+	thrift_info.text = "Cannot place " + str(player.thrift) + " coins \non the Arcane Circle."
+
+func _input(event: InputEvent) -> void:
+	if is_open and not is_closing:
+		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			var menu_box = get_global_rect()
+			var mouse_pos = get_global_mouse_position()
+			if not menu_box.has_point(mouse_pos):
+				close()
+				get_viewport().set_input_as_handled()

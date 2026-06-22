@@ -110,6 +110,8 @@ $"Progression Map/Elite Enemy",
 $"Progression Map/Shop", 
 $"Progression Map/Boss"
 ]
+@onready var player_info: Button = $"Player/Player Info"
+@onready var enemy_info: Button = $"Enemy/Enemy Info"
 
 @onready var endTurn_button = $"Battle UI/Endturn"
 @onready var flip_button = $"Battle UI/PlayerHealthBar2"
@@ -723,9 +725,11 @@ func check_defeat():
 	if player.coin <= 0:
 		if player.has_payback:
 			if player.payback_used:
+				trigger_dramatic_slowdown()
 				game_over_ui.visible = true
 				trigger_game_over(false)
 		else:
+			trigger_dramatic_slowdown()
 			game_over_ui.visible = true
 			trigger_game_over(false)
 		return true
@@ -736,6 +740,7 @@ func check_defeat():
 		re_flip_button.disabled = true
 		reserve_button.disabled = true
 		if enemies_defeated == current_room or enemy.type == Enemy.TWILIGHT_SAGE:
+			trigger_dramatic_slowdown()
 			enemies_defeated += 1
 			await handle_victory_flow()
 			return true
@@ -1292,6 +1297,7 @@ func _on_player_info_toggled(toggled_on: bool) -> void:
 		if player_info_menu != null and is_instance_valid(player_info_menu):
 			player_info_menu.close()
 			player_info_menu = null
+			player_info.button_pressed = false
 
 func _on_enemy_info_toggled(toggled_on: bool) -> void:
 	print("toggled: ", toggled_on)
@@ -1311,6 +1317,7 @@ func _on_enemy_info_toggled(toggled_on: bool) -> void:
 		if enemy_info_menu != null and is_instance_valid(enemy_info_menu):
 			enemy_info_menu.close()
 			enemy_info_menu = null
+			enemy_info.button_pressed = false
 
 func _on_reserve_button_pressed() -> void:
 	player.reserve()
@@ -1318,3 +1325,9 @@ func _on_reserve_button_pressed() -> void:
 		reserve_button.disabled = true
 	else:
 		reserve_button.disabled = false
+		
+	
+func trigger_dramatic_slowdown() -> void:
+	Engine.time_scale = 0.3 
+	await get_tree().create_timer(1.0, true, false, true).timeout 
+	Engine.time_scale = 1.0

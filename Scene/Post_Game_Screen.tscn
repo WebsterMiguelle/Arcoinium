@@ -1,0 +1,209 @@
+[gd_scene format=3 uid="uid://c7uk7pxxcix85"]
+
+[ext_resource type="Script" uid="uid://3th5khuabl8w" path="res://Script/PostGameScreen.gd" id="1_5tsft"]
+[ext_resource type="Texture2D" uid="uid://dphewlg2nehap" path="res://Assets/brickbackground.png" id="2_jy4eg"]
+[ext_resource type="Texture2D" uid="uid://bb4db6cd7ttu5" path="res://Assets/leftopenbrickbackground.png" id="3_2qvm5"]
+[ext_resource type="Texture2D" uid="uid://cdf6nfo07ua" path="res://Assets/rightopenbrickbackground.png" id="4_nn5qr"]
+[ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="5_jy4eg"]
+[ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="6_id72q"]
+[ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="7_bnefy"]
+[ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="7_qjnbp"]
+[ext_resource type="Texture2D" uid="uid://b0ex51pplf24g" path="res://Assets/CoinDeck3.png" id="8_qjnbp"]
+
+[node name="PostGameScreen" type="Control" unique_id=1373690295]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5tsft")
+
+[node name="RightSideBricks" type="Control" parent="." unique_id=1088233663]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -415.0
+offset_right = -415.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Tile" type="TextureRect" parent="RightSideBricks" unique_id=1021120493]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -182.99997
+offset_right = -63.39997
+offset_bottom = -518.4
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(5, 5)
+texture = ExtResource("2_jy4eg")
+stretch_mode = 1
+
+[node name="OpenTile" type="TextureRect" parent="RightSideBricks" unique_id=2140324965]
+visible = false
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -320.00003
+offset_right = -288.00003
+offset_bottom = -518.39996
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(5, 5)
+texture = ExtResource("3_2qvm5")
+stretch_mode = 1
+
+[node name="LeftSideBricks" type="Control" parent="." unique_id=1165224931]
+anchors_preset = 0
+offset_left = 400.0
+offset_right = 725.0
+offset_bottom = 644.0
+
+[node name="Tile" type="TextureRect" parent="LeftSideBricks" unique_id=285390513]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_right = -285.0
+offset_bottom = -514.4
+grow_vertical = 2
+scale = Vector2(5, 5)
+texture = ExtResource("2_jy4eg")
+stretch_mode = 1
+
+[node name="OpenTile" type="TextureRect" parent="LeftSideBricks" unique_id=2077510360]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 0.062111802
+offset_left = 160.0
+offset_right = 192.0
+offset_bottom = 89.59999
+grow_vertical = 2
+scale = Vector2(5, 5)
+texture = ExtResource("4_nn5qr")
+stretch_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="DarkOverlay" type="ColorRect" parent="." unique_id=1792636301]
+modulate = Color(1, 1, 1, 0.627451)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="UILayer" type="Control" parent="." unique_id=53936575]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="UILayer" unique_id=1214022973]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -264.0
+offset_top = -312.0
+offset_right = 264.0
+offset_bottom = 312.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_jy4eg")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/TextureRect" unique_id=1529107101]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = -4
+
+[node name="Control" type="Control" parent="UILayer/TextureRect/VBoxContainer" unique_id=1624110839]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+
+[node name="EndResult" type="Label" parent="UILayer/TextureRect/VBoxContainer" unique_id=1499300970]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("6_id72q")
+theme_override_font_sizes/font_size = 80
+text = "YOU WIN"
+horizontal_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="UILayer/TextureRect/VBoxContainer" unique_id=566868722]
+layout_mode = 2
+theme_override_constants/margin_left = 45
+theme_override_constants/margin_right = 45
+
+[node name="TextureRect" type="TextureRect" parent="UILayer/TextureRect/VBoxContainer/MarginContainer2" unique_id=1671615197]
+custom_minimum_size = Vector2(0, 35.3)
+layout_mode = 2
+texture = ExtResource("7_qjnbp")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TextureRect/VBoxContainer" unique_id=1433606968]
+layout_mode = 2
+theme_override_constants/margin_left = 69
+
+[node name="EndStats" type="Label" parent="UILayer/TextureRect/VBoxContainer/MarginContainer" unique_id=1956321141]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_constants/line_spacing = 0
+theme_override_fonts/font = ExtResource("7_bnefy")
+theme_override_font_sizes/font_size = 35
+text = "Remaining Coins:
+Highest DMG:
+Total DMG:
+Highest GAIN:
+Total GAIN:
+Enemies Defeated:
+Sun Coins Flipped:
+Moon Coins Flipped:
+Total Flips:
+Total Re-Flips:
+Total Reserve Coins:"
+
+[node name="HomeButton" type="TextureButton" parent="UILayer" unique_id=871401980]
+modulate = Color(0, 0.18333316, 1, 1)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 815.9999
+offset_top = -166.99998
+offset_right = 911.9999
+offset_bottom = -70.999985
+grow_vertical = 2
+scale = Vector2(3.5, 3.5)
+texture_normal = ExtResource("8_qjnbp")
+stretch_mode = 0
+
+[node name="RetryButton" type="TextureButton" parent="UILayer" unique_id=276855568]
+modulate = Color(1, 0.07058824, 0.39215687, 1)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -167.0
+offset_right = 96.0
+offset_bottom = -71.0
+grow_vertical = 2
+scale = Vector2(3.5, 3.5)
+texture_normal = ExtResource("8_qjnbp")
+stretch_mode = 0

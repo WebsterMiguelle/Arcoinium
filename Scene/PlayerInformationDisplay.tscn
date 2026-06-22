@@ -26,19 +26,22 @@ texture = ExtResource("2_6esm0")
 texture = ExtResource("2_6esm0")
 
 [node name="PlayerInformationDisplay" type="HBoxContainer" unique_id=2082350649]
-custom_minimum_size = Vector2(1080, 400)
+z_index = 10
+custom_minimum_size = Vector2(1080, 500)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -517.0
-offset_top = -272.0
-offset_right = 563.0
-offset_bottom = 335.0
+offset_left = -540.0
+offset_top = -266.5
+offset_right = 540.0
+offset_bottom = 321.17377
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.9716186, 0.91292155)
+size_flags_horizontal = 4
+size_flags_vertical = 4
 mouse_filter = 2
 theme_override_constants/separation = 10
 script = ExtResource("1_sry02")
@@ -70,6 +73,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Coins" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=1862259072]
+custom_minimum_size = Vector2(250, 100)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
 theme_override_fonts/font = ExtResource("3_6esm0")
@@ -186,7 +190,6 @@ vertical_alignment = 1
 
 [node name="StatusEffectsPanel" type="PanelContainer" parent="." unique_id=710897952]
 layout_mode = 2
-size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_tx20m")
 
@@ -244,7 +247,6 @@ theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
 theme_override_fonts/font = ExtResource("3_6esm0")
 theme_override_font_sizes/font_size = 32
 text = "Receive x Damage next turn"
-autowrap_mode = 2
 
 [node name="ThriftBox" type="VBoxContainer" parent="StatusEffectsPanel/MarginContainer/VBoxContainer" unique_id=1001523064]
 layout_mode = 2
@@ -262,12 +264,11 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
 theme_override_fonts/font = ExtResource("3_6esm0")
 theme_override_font_sizes/font_size = 32
-text = "Cannot place x coins on the Arcane Circle"
-autowrap_mode = 2
+text = "Cannot place x coins 
+on the Arcane Circle"
 
 [node name="PassivesPanel" type="PanelContainer" parent="." unique_id=1386994785]
 layout_mode = 2
-size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_70qsu")
 
@@ -282,7 +283,7 @@ theme_override_constants/margin_bottom = 44
 [node name="VBoxContainer" type="VBoxContainer" parent="PassivesPanel/MarginContainer" unique_id=459575857]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 37
+theme_override_constants/separation = 20
 
 [node name="Passives" type="Label" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=968639581]
 layout_mode = 2
@@ -310,7 +311,7 @@ text = "Passive Name"
 autowrap_mode = 3
 
 [node name="Passive_desc" type="Label" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=527254046]
-custom_minimum_size = Vector2(250, 250)
+custom_minimum_size = Vector2(250, 200)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
 theme_override_fonts/font = ExtResource("3_6esm0")

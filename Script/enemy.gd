@@ -61,8 +61,8 @@ const SLOW = preload("uid://f5jmno7qyhek")
 
 const DAZZLE = preload("uid://b3o76gt2qs7pj")
 const VOIDED = preload("uid://ctvrb7nmqgd06")
-const STARSTRUCK = preload("uid://bdhft60g0dfmo")
-const STARSTRUCK_2 = preload("uid://d3wmb0uie38rs")
+
+const STARSTRUCK = preload("uid://ca4b2ulhiuuoo")
 
 
 const DEBTED_ATTACK = preload("uid://ddf31ka4126fv")

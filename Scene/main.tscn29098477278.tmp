@@ -798,28 +798,6 @@ gradient = SubResource("Gradient_7n7pe")
 fill_from = Vector2(0.4871795, 0.8905983)
 fill_to = Vector2(0.46324787, 0.11111111)
 
-[sub_resource type="Gradient" id="Gradient_ryobp"]
-offsets = PackedFloat32Array(0, 0.5)
-colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_e0ffi"]
-gradient = SubResource("Gradient_ryobp")
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4lqwv"]
-atlas = ExtResource("37_885bo")
-region = Rect2(0, 0, 64, 64)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_gejqg"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_4lqwv")
-}],
-"loop": true,
-"name": &"default",
-"speed": 1.0
-}]
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_ba4vs"]
 atlas = ExtResource("51_ekncj")
 region = Rect2(0, 0, 16, 16)
@@ -855,6 +833,30 @@ animations = [{
 "name": &"default",
 "speed": 5.0
 }]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4lqwv"]
+atlas = ExtResource("37_885bo")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gejqg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4lqwv")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_5rsq1"]
+offsets = PackedFloat32Array(0, 0.14573991, 0.63901347, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.08744395, 0.08744395, 0.08744395, 0.91255605, 0, 0, 0, 0.030899167, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4lqwv"]
+gradient = SubResource("Gradient_5rsq1")
+fill = 1
+fill_from = Vector2(0.51111114, 0.48376068)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3drsm"]
 atlas = ExtResource("47_w8oc3")
@@ -1015,15 +1017,6 @@ colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 gradient = SubResource("Gradient_5qrjd")
 fill = 1
 fill_from = Vector2(0.50427353, 0.48034188)
-
-[sub_resource type="Gradient" id="Gradient_5rsq1"]
-offsets = PackedFloat32Array(0, 0.23390558, 0.71030045, 1)
-colors = PackedColorArray(0, 0, 0, 1, 0.08744395, 0.08744395, 0.08744395, 0.91255605, 0, 0, 0, 0.030899167, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_4lqwv"]
-gradient = SubResource("Gradient_5rsq1")
-fill_from = Vector2(0.4905983, 0.47350428)
-fill_to = Vector2(0, 0.47350428)
 
 [sub_resource type="Gradient" id="Gradient_jodah"]
 offsets = PackedFloat32Array(0, 0.29828325, 0.80042917, 0.99785405)
@@ -1202,6 +1195,7 @@ script = ExtResource("7_ow1sv")
 [node name="Battle UI" type="Node" parent="." unique_id=1754841999]
 
 [node name="Turn Calculation Box" type="TextureRect" parent="Battle UI" unique_id=1091749495]
+visible = false
 offset_left = -6.0
 offset_top = 110.0
 offset_right = 399.0
@@ -1310,11 +1304,8 @@ texture = ExtResource("49_5qrjd")
 process_material = SubResource("ParticleProcessMaterial_tke4u")
 
 [node name="Turn Spell Light" type="PointLight2D" parent="Battle UI/Turn Calculation Box" unique_id=459779385]
-light_mask = 0
-z_index = -5
 position = Vector2(121, 139)
 scale = Vector2(3.6187499, 3.6996188)
-range_z_max = 5
 texture = SubResource("GradientTexture2D_xj0l1")
 
 [node name="Pair Count" type="Label" parent="Battle UI/Turn Calculation Box" unique_id=52278358]
@@ -1341,7 +1332,6 @@ offset_top = 554.00006
 offset_right = 247.0
 offset_bottom = 570.00006
 scale = Vector2(3.5, 3.5)
-mouse_default_cursor_shape = 2
 
 [node name="Player Info" type="Button" parent="Battle UI" unique_id=261525369]
 visible = false
@@ -1350,7 +1340,6 @@ offset_left = 15.0
 offset_top = 508.0
 offset_right = 139.0
 offset_bottom = 633.0
-mouse_default_cursor_shape = 2
 toggle_mode = true
 text = "Press for Info"
 
@@ -1359,7 +1348,6 @@ offset_left = 577.0
 offset_top = 556.0
 offset_right = 692.0
 offset_bottom = 618.0
-mouse_default_cursor_shape = 2
 
 [node name="Player Reserve" type="Label" parent="Battle UI/Reserve Button" unique_id=15672962]
 custom_minimum_size = Vector2(150, 40)
@@ -1570,7 +1558,6 @@ offset_left = 453.0
 offset_top = 201.0
 offset_right = 697.0
 offset_bottom = 445.0
-mouse_default_cursor_shape = 2
 
 [node name="PassiveContainer" type="VBoxContainer" parent="Battle UI" unique_id=709571412]
 custom_minimum_size = Vector2(200, 160)
@@ -1644,6 +1631,17 @@ offset_top = 492.0
 offset_right = 1153.0
 offset_bottom = 647.0
 texture = ExtResource("7_0sxm5")
+
+[node name="Keeper Info" type="Button" parent="Shopkeeper" unique_id=283003178]
+modulate = Color(1, 1, 1, 0)
+show_behind_parent = true
+custom_minimum_size = Vector2(150, 150)
+offset_left = 1078.0
+offset_top = 507.0
+offset_right = 1228.0
+offset_bottom = 657.0
+toggle_mode = true
+action_mode = 0
 
 [node name="Status" type="Label" parent="Shopkeeper" unique_id=226059882]
 offset_left = 731.0
@@ -1751,6 +1749,16 @@ theme_override_font_sizes/font_size = 24
 text = "30"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Enemy Info" type="Button" parent="Enemy" unique_id=855080067]
+modulate = Color(1, 1, 1, 0)
+top_level = true
+offset_left = 1011.0
+offset_top = 13.0
+offset_right = 1141.0
+offset_bottom = 143.0
+toggle_mode = true
+action_mode = 0
 
 [node name="Player" type="Node2D" parent="." unique_id=1483072070]
 script = ExtResource("2_1bvp3")
@@ -1890,6 +1898,17 @@ text = "30"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Player Info" type="Button" parent="Player" unique_id=2130563291]
+modulate = Color(1, 1, 1, 0)
+show_behind_parent = true
+custom_minimum_size = Vector2(150, 150)
+offset_left = -1.0
+offset_top = 502.0
+offset_right = 149.0
+offset_bottom = 652.0
+toggle_mode = true
+action_mode = 0
+
 [node name="Player Tally" type="TextureRect" parent="Player" unique_id=1191166538]
 self_modulate = Color(0.9047755, 0.66126776, 3.85046e-07, 1)
 top_level = true
@@ -2015,7 +2034,6 @@ offset_right = 374.5
 offset_bottom = 272.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_default_cursor_shape = 2
 text = "Main Menu"
 
 [node name="Restart" type="Button" parent="Game Over UI/ColorRect" unique_id=1995089938]
@@ -2032,7 +2050,6 @@ offset_right = -96.5
 offset_bottom = 272.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_default_cursor_shape = 2
 text = "Restart"
 
 [node name="CardManager" type="CanvasLayer" parent="." unique_id=806531365]
@@ -2081,9 +2098,9 @@ theme_override_constants/separation = 20
 
 [node name="Card_Description" type="Label" parent="CardManager/Background" unique_id=2092561966]
 layout_mode = 0
-offset_left = 158.0
-offset_top = 530.0
-offset_right = 994.0
+offset_left = 64.0
+offset_top = 542.0
+offset_right = 1088.0
 offset_bottom = 615.0
 theme_override_fonts/font = ExtResource("30_tcekk")
 theme_override_font_sizes/font_size = 30
@@ -2104,24 +2121,6 @@ text = "CHOOSE 2 SCROLLS"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
-
-[node name="Player_Portrait" type="AnimatedSprite2D" parent="CardManager" unique_id=2044661901]
-position = Vector2(75.5, 570.99994)
-scale = Vector2(2.015625, 2)
-sprite_frames = SubResource("SpriteFrames_5rsq1")
-autoplay = "default"
-
-[node name="Player Info Passive Screen" type="Button" parent="CardManager" unique_id=1353706742]
-modulate = Color(1, 1, 1, 0)
-show_behind_parent = true
-custom_minimum_size = Vector2(150, 150)
-offset_left = -1.0
-offset_top = 502.0
-offset_right = 149.0
-offset_bottom = 652.0
-mouse_default_cursor_shape = 2
-toggle_mode = true
-action_mode = 0
 
 [node name="PauseMenu" type="CanvasLayer" parent="." unique_id=722870696]
 process_mode = 3
@@ -2187,56 +2186,56 @@ color = Color(0.012920001, 0.012920001, 0.012920001, 1)
 [node name="Carpet" type="TextureRect" parent="ShopManager/Background" unique_id=1608078728]
 self_modulate = Color(0.6762465, 0.58899766, 0.6903054, 1)
 layout_mode = 0
-offset_left = 76.0
+offset_left = 228.0
 offset_top = 69.0
-offset_right = 944.6697
+offset_right = 1096.6697
 offset_bottom = 575.0
 texture = ExtResource("38_f043x")
 
 [node name="CarpetShadow" type="TextureRect" parent="ShopManager/Background" unique_id=732128589]
 self_modulate = Color(0.5956193, 0.34846383, 0.6177142, 0.5254902)
 layout_mode = 0
-offset_left = 80.0
-offset_top = 67.0
-offset_right = 947.0
-offset_bottom = 565.0
+offset_left = 224.0
+offset_top = 70.0
+offset_right = 1091.0
+offset_bottom = 568.0
 texture = ExtResource("12_pqe63")
 
 [node name="Decor2" type="TextureRect" parent="ShopManager/Background" unique_id=1455508599]
 self_modulate = Color(0.3870464, 0.28589675, 0.39399427, 1)
 layout_mode = 0
-offset_left = 1137.2156
-offset_top = -70.00001
-offset_right = 1684.8734
-offset_bottom = 254.52863
+offset_left = 1321.0
+offset_top = -74.0
+offset_right = 1868.6578
+offset_bottom = 258.25903
 rotation = 1.5707964
 texture = ExtResource("6_oywcm")
 
 [node name="Decor1" type="TextureRect" parent="ShopManager/Background" unique_id=587013930]
 self_modulate = Color(0.3870464, 0.28589675, 0.39399427, 1)
 layout_mode = 0
-offset_left = -60.0
-offset_top = 693.0
-offset_right = 487.65784
-offset_bottom = 949.2429
+offset_left = 83.0
+offset_top = 784.0
+offset_right = 630.65784
+offset_bottom = 1040.2429
 rotation = 4.712389
 texture = ExtResource("6_oywcm")
 
 [node name="ShopBanner" type="TextureRect" parent="ShopManager/Background" unique_id=1089289664]
 self_modulate = Color(0.3768461, 0.26143464, 0.40784156, 1)
 layout_mode = 0
-offset_left = 314.0
-offset_top = 6.0
-offset_right = 739.0
-offset_bottom = 115.0
+offset_left = 456.0
+offset_top = -20.0
+offset_right = 881.0
+offset_bottom = 89.0
 texture = ExtResource("23_tbp1y")
 
 [node name="Shop" type="Label" parent="ShopManager/Background" unique_id=1709692202]
 layout_mode = 0
-offset_left = 353.0
-offset_top = 32.000008
-offset_right = 703.0
-offset_bottom = 87.0
+offset_left = 490.00003
+offset_top = 10.000004
+offset_right = 840.00006
+offset_bottom = 65.0
 rotation = 0.06981317
 theme_override_constants/outline_size = 2
 theme_override_fonts/font = ExtResource("30_tcekk")
@@ -2244,120 +2243,92 @@ theme_override_font_sizes/font_size = 40
 text = "KEEPER'S REST"
 horizontal_alignment = 1
 
-[node name="Shadow" type="TextureRect" parent="ShopManager/Background" unique_id=2129375436]
-self_modulate = Color(1, 1, 1, 0.7882353)
+[node name="Current Player Coin" type="AnimatedSprite2D" parent="ShopManager/Background" unique_id=830879512]
+position = Vector2(266, 35)
+scale = Vector2(3.187499, 3.187499)
+sprite_frames = SubResource("SpriteFrames_8givg")
+autoplay = "default"
+frame_progress = 0.2939294
+
+[node name="CoinLabel" type="Label" parent="ShopManager/Background" unique_id=2058663755]
+custom_minimum_size = Vector2(200, 100)
 layout_mode = 0
-offset_left = 790.0
-offset_top = -10.0
-offset_right = 1157.3662
-offset_bottom = 662.0
-texture = SubResource("GradientTexture2D_e0ffi")
+offset_left = 300.0
+offset_top = 20.0
+offset_right = 500.0
+offset_bottom = 120.0
+theme_override_colors/font_color = Color(1, 1, 0.5764706, 1)
+theme_override_fonts/font = ExtResource("36_b0nqf")
+theme_override_font_sizes/font_size = 41
+text = "200"
 
-[node name="Shop Keeper_Portrait" type="AnimatedSprite2D" parent="ShopManager/Background" unique_id=1326461336]
-position = Vector2(1043, 137)
-scale = Vector2(2.015625, 2)
-sprite_frames = SubResource("SpriteFrames_gejqg")
+[node name="CenterContainer" type="CenterContainer" parent="ShopManager/Background" unique_id=1050710308]
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -22.0
+offset_top = -150.0
+offset_right = 178.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="ShopKeeper_Border" type="TextureRect" parent="ShopManager/Background/Shop Keeper_Portrait" unique_id=951122070]
-offset_left = -38.697678
-offset_top = -37.0
-offset_right = 40.18605
-offset_bottom = 42.39595
-texture = ExtResource("7_0sxm5")
+[node name="VBoxContainer" type="VBoxContainer" parent="ShopManager/Background/CenterContainer" unique_id=1502406012]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="CardContainer" type="GridContainer" parent="ShopManager/Background/CenterContainer/VBoxContainer" unique_id=1467760452]
+layout_mode = 2
+theme_override_constants/h_separation = 60
+theme_override_constants/v_separation = 83
+columns = 4
 
 [node name="Descriptions" type="Label" parent="ShopManager/Background" unique_id=1569933575]
 layout_mode = 0
-offset_left = 957.0
-offset_top = 222.0
-offset_right = 1141.0
-offset_bottom = 504.0
+offset_left = 29.0
+offset_top = 250.0
+offset_right = 213.0
+offset_bottom = 532.0
 theme_override_fonts/font = ExtResource("7_3pt4j")
 theme_override_font_sizes/font_size = 18
 text = "For each turn, apply 8 DEBT, 4 SPEND, and 2 THRIFT. If Enemy DEBT is greater than their Current Coins at the end of their turn, perish instantly."
 horizontal_alignment = 1
 autowrap_mode = 3
 
+[node name="Shop Keeper_Portrait" type="AnimatedSprite2D" parent="ShopManager/Background" unique_id=1326461336]
+position = Vector2(118, 151)
+scale = Vector2(2.015625, 2)
+sprite_frames = SubResource("SpriteFrames_gejqg")
+
+[node name="ShopKeeper_Border" type="TextureRect" parent="ShopManager/Background/Shop Keeper_Portrait" unique_id=951122070]
+offset_left = -39.68992
+offset_top = -40.0
+offset_right = 39.193817
+offset_bottom = 39.39595
+texture = ExtResource("7_0sxm5")
+
+[node name="Shadow" type="TextureRect" parent="ShopManager/Background" unique_id=2129375436]
+self_modulate = Color(1, 1, 1, 0.5764706)
+show_behind_parent = true
+layout_mode = 0
+offset_left = -47.0
+offset_top = 24.0
+offset_right = 263.36615
+offset_bottom = 298.0
+texture = SubResource("GradientTexture2D_4lqwv")
+
 [node name="Back" type="Button" parent="ShopManager" unique_id=1330755300]
-offset_left = 989.0
-offset_top = 565.0
-offset_right = 1090.0
-offset_bottom = 614.0
+offset_left = 995.0
+offset_top = 586.0
+offset_right = 1096.0
+offset_bottom = 635.0
 theme_override_font_sizes/font_size = 25
 text = "EXIT"
 icon_alignment = 1
-
-[node name="Keeper Shadow" type="TextureRect" parent="ShopManager" unique_id=2077444615]
-self_modulate = Color(0, 0, 0, 0.5568628)
-offset_left = -86.0
-offset_top = 336.0
-offset_right = 240.0
-offset_bottom = 755.0
-texture = SubResource("GradientTexture2D_7n7pe")
-
-[node name="Player_Portrait" type="AnimatedSprite2D" parent="ShopManager" unique_id=1353703413]
-position = Vector2(75.5, 570.99994)
-scale = Vector2(2.015625, 2)
-sprite_frames = SubResource("SpriteFrames_5rsq1")
-autoplay = "default"
-
-[node name="Current Player Coin" type="AnimatedSprite2D" parent="ShopManager" unique_id=830879512]
-position = Vector2(44, 468)
-scale = Vector2(3.187499, 3.187499)
-sprite_frames = SubResource("SpriteFrames_8givg")
-autoplay = "default"
-frame_progress = 0.2939294
-
-[node name="CoinLabel" type="Label" parent="ShopManager" unique_id=2058663755]
-custom_minimum_size = Vector2(200, 100)
-offset_left = 77.0
-offset_top = 452.0
-offset_right = 277.0
-offset_bottom = 552.0
-theme_override_colors/font_color = Color(1, 1, 0.5764706, 1)
-theme_override_fonts/font = ExtResource("36_b0nqf")
-theme_override_font_sizes/font_size = 41
-text = "200"
-
-[node name="CenterContainer" type="CenterContainer" parent="ShopManager" unique_id=1050710308]
-custom_minimum_size = Vector2(200, 300)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -138.0
-offset_top = -150.0
-offset_right = 62.0
-offset_bottom = 150.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="ShopManager/CenterContainer" unique_id=1502406012]
-layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="CardContainer" type="GridContainer" parent="ShopManager/CenterContainer/VBoxContainer" unique_id=1467760452]
-layout_mode = 2
-theme_override_constants/h_separation = 60
-theme_override_constants/v_separation = 83
-columns = 4
-
-[node name="PlayerFrame" type="TextureRect" parent="ShopManager" unique_id=1769237003]
-offset_top = 493.0
-offset_right = 154.0
-offset_bottom = 648.0
-texture = ExtResource("7_0sxm5")
-
-[node name="Player Info Shop Screen" type="Button" parent="ShopManager" unique_id=374949882]
-modulate = Color(1, 1, 1, 0)
-show_behind_parent = true
-custom_minimum_size = Vector2(150, 150)
-offset_left = -1.0
-offset_top = 502.0
-offset_right = 149.0
-offset_bottom = 652.0
-toggle_mode = true
-action_mode = 0
 
 [node name="PassiveManager" type="Node" parent="." unique_id=870229377]
 script = ExtResource("16_6njx3")
@@ -2527,7 +2498,6 @@ position = Vector2(826.5, 68.5)
 scale = Vector2(17.671875, 2.2031252)
 color = Color(0.91764706, 0.7372549, 1, 0)
 energy = 3.28
-range_z_max = 5
 texture = SubResource("GradientTexture2D_5rsq1")
 
 [node name="Tally Effect" type="TextureRect" parent="." unique_id=1482077241]
@@ -2615,45 +2585,6 @@ offset_right = 1155.0
 offset_bottom = 649.0
 texture = SubResource("GradientTexture2D_ryobp")
 
-[node name="Enemy Info" type="Button" parent="." unique_id=855080067]
-modulate = Color(1, 1, 1, 0)
-top_level = true
-layout_mode = 0
-offset_left = 1011.0
-offset_top = 13.0
-offset_right = 1141.0
-offset_bottom = 143.0
-mouse_default_cursor_shape = 2
-toggle_mode = true
-action_mode = 0
-
-[node name="Player Info" type="Button" parent="." unique_id=2130563291]
-modulate = Color(1, 1, 1, 0)
-show_behind_parent = true
-custom_minimum_size = Vector2(150, 150)
-layout_mode = 0
-offset_left = -1.0
-offset_top = 502.0
-offset_right = 149.0
-offset_bottom = 652.0
-tooltip_text = "
-"
-mouse_default_cursor_shape = 2
-toggle_mode = true
-action_mode = 0
-
-[node name="Keeper Info" type="Button" parent="." unique_id=1920635139]
-modulate = Color(1, 1, 1, 0)
-top_level = true
-layout_mode = 0
-offset_left = 1011.0
-offset_top = 502.0
-offset_right = 1141.0
-offset_bottom = 632.0
-mouse_default_cursor_shape = 2
-toggle_mode = true
-action_mode = 0
-
 [connection signal="toggled" from="Battle UI/Player Info" to="." method="_on_player_info_toggled"]
 [connection signal="pressed" from="Battle UI/Reserve Button" to="." method="_on_reserve_button_pressed"]
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]
@@ -2662,14 +2593,11 @@ action_mode = 0
 [connection signal="mouse_entered" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_exited"]
 [connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]
+[connection signal="toggled" from="Enemy/Enemy Info" to="." method="_on_enemy_info_toggled"]
+[connection signal="toggled" from="Player/Player Info" to="." method="_on_player_info_toggled"]
 [connection signal="pressed" from="Game Over UI/ColorRect/Main Menu" to="Game Over UI" method="_on_main_menu_pressed"]
 [connection signal="pressed" from="Game Over UI/ColorRect/Restart" to="." method="_on_restart_pressed"]
-[connection signal="toggled" from="CardManager/Player Info Passive Screen" to="." method="_on_player_info_passive_screen_toggled"]
 [connection signal="pressed" from="PauseMenu/Panel/Resume" to="PauseMenu" method="_on_resume_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/EndRun" to="PauseMenu" method="_on_end_run_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/Quit" to="PauseMenu" method="_on_quit_pressed"]
 [connection signal="pressed" from="ShopManager/Back" to="ShopManager" method="_on_back_pressed"]
-[connection signal="toggled" from="ShopManager/Player Info Shop Screen" to="." method="_on_player_info_shop_screen_toggled"]
-[connection signal="toggled" from="Enemy Info" to="." method="_on_enemy_info_toggled"]
-[connection signal="toggled" from="Player Info" to="." method="_on_player_info_toggled"]
-[connection signal="toggled" from="Keeper Info" to="." method="_on_keeper_info_toggled"]

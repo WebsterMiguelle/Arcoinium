@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://bmy7mewa8qp5l"]
+
+[ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="1_1yguh"]
+[ext_resource type="Script" uid="uid://dfufb3cpukinq" path="res://Scene/status_effect.gd" id="1_4cy08"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="2_4cy08"]
+
+[node name="StatusEffect" type="HFlowContainer" unique_id=1377339001]
+anchors_preset = -1
+anchor_right = 0.22700001
+anchor_bottom = 0.15
+offset_right = 46.49597
+offset_bottom = -24.200005
+script = ExtResource("1_4cy08")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1468604001]
+layout_mode = 2
+
+[node name="Status Name" type="Label" parent="VBoxContainer" unique_id=1728469752]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0.5220239, 0.8199239, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("1_1yguh")
+theme_override_font_sizes/font_size = 32
+text = "GAIN (1)"
+
+[node name="Description" type="Label" parent="VBoxContainer" unique_id=1986840341]
+custom_minimum_size = Vector2(312.345, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.083911665, 0.083911665, 0.083911665, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("2_4cy08")
+theme_override_font_sizes/font_size = 24
+text = "Gain 1 Coin at the start of next turn."
+autowrap_mode = 3

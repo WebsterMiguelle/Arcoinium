@@ -2,6 +2,9 @@ extends HBoxContainer
 const PASSIVE_BAR_ICON = preload("uid://dldde8yrawlpn")
 @onready var passives_container: GridContainer = $PassivesPanel/MarginContainer/VBoxContainer/GridContainer
 var player_node
+
+@onready var trust_stats: Label = $"StatsBoxPanel/MarginContainer/VBoxContainer/Trust Stats"
+
 @onready var status_container: VFlowContainer = $StatusEffectsPanel/MarginContainer/StatusContainer
 const STATUS_EFFECT = preload("uid://bmy7mewa8qp5l")
 enum Status{
@@ -27,7 +30,11 @@ enum Status{
 	RADIANT,
 	
 	MOMENTUM,
-	TRUST
+	TRUST,
+	UNCHARGABLE,
+	COUNTER,
+	FULLY_PAID,
+	FOCUSED
 }
 
 @onready var passive_name: Label = $PassivesPanel/MarginContainer/VBoxContainer/Passive_name
@@ -214,9 +221,9 @@ func _ready() -> void:
 		child.modulate.a = 0.0
 	
 
-func setup(player:Node) -> void:
+func setup(keeper:Node,player:Node) -> void:
 	populate_passives(player)
-	populate_stats(player)
+	populate_stats(keeper,player)
 	
 func open() -> void:
 	target_y = global_position.y
@@ -287,85 +294,55 @@ func clear_passive_details() -> void:
 	passive_name.text = "Passive Name"
 	passive_desc.text = "Hover over a passive to view details."
 
-func populate_stats(player:Node) -> void:
+func populate_stats(keeper:Node,player:Node) -> void:
 	var stats_text = ""
-	stats_text += "Coins: " + str(player.coin) + "\n"
-	stats_text += "Silver Flip Rate: " + str(int(player.silver_flip_rate * 100)) + "%\n"
-	stats_text += "Gold Flip Rate: " + str(int(player.gold_flip_rate * 100)) + "%\n"
-	stats_text += "Max Reflips: " + str(player.max_re_flip) + "\n"
-	stats_text += "Max Reserve: " + str(player.max_reserve) + "\n"
+	stats_text += "Coins: " + str(keeper.coin) + "\n"
+	stats_text += "Max Flip: " + str(keeper.max_playable_coins) + "\n"
+	stats_text += "Trust Level: " + str(keeper.trust) + "\n"
+	
+	trust_stats.text += "\nLevel 1: Base Form"
+	if keeper.trust > 1: trust_stats.text += "\nLevel 2: SPEND Magic Learned"
+	if keeper.trust > 2: trust_stats.text += "\nLevel 3: THRIFT Magic Learned"
+	if keeper.trust > 3: trust_stats.text += "\nLevel 4: RADIANT State Learned"
 	
 	coins.text = stats_text
 	
 		# ==========================================
 	# 3. POPULATE STATUS EFFECTS
 	# ==========================================
+	if player.has_active_income:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.FULLY_PAID,1)
+		s.add_to_group("keeper_status")
+		status_container.add_child(s)
 	
-	if player.starstruck:
+	if player.has_merchant_scroll:
 		var s = STATUS_EFFECT.instantiate()
-		s.set_status(Status.STARSTRUCK,1)
-		s.add_to_group("player_status")
+		s.set_status(Status.COUNTER,1)
+		s.add_to_group("keeper_status")
 		status_container.add_child(s)
-	if player.slow:
+	
+	if keeper.trust > 3:
 		var s = STATUS_EFFECT.instantiate()
-		s.set_status(Status.DROWSE,1)
-		s.add_to_group("player_status")
+		s.set_status(Status.RADIANT,1)
+		s.add_to_group("keeper_status")
 		status_container.add_child(s)
-	if player.lock:
-		var s = STATUS_EFFECT.instantiate()
-		s.set_status(Status.VOIDED,1)
-		s.add_to_group("player_status")
-		status_container.add_child(s)
-	if player.tally_counter > 0:
-		var s = STATUS_EFFECT.instantiate()
-		s.set_status(Status.TALLY,player.tally_counter)
-		s.add_to_group("player_status")
-		status_container.add_child(s)
-	if player.has_sunlit_curse:
-		var s = STATUS_EFFECT.instantiate()
-		s.set_status(Status.SUNLIT_CURSE,1)
-		s.add_to_group("player_status")
-		status_container.add_child(s)
-	if player.has_midnight_curse:
-		var s = STATUS_EFFECT.instantiate()
-		s.set_status(Status.MOONLIT_CURSE,1)
-		s.add_to_group("player_status")
-		status_container.add_child(s)
-	if player.solar_blessing:
-		var s = STATUS_EFFECT.instantiate()
-		s.set_status(Status.SOLAR_BLESSED,1)
-		s.add_to_group("player_status")
-		status_container.add_child(s)
-	if player.lunar_blessing:
-		var s = STATUS_EFFECT.instantiate()
-		s.set_status(Status.LUNAR_BLESSED,1)
-		s.add_to_group("player_status")
-		status_container.add_child(s)
-	if player.sealed:
-		var s = STATUS_EFFECT.instantiate()
-		s.set_status(Status.SEALED,1)
-		s.add_to_group("player_status")
-		status_container.add_child(s)
-	if player.gain > 0:
-		var s = STATUS_EFFECT.instantiate()
-		s.set_status(Status.GAIN,player.gain)
-		s.add_to_group("player_status")
-		status_container.add_child(s)
-	if player.debt > 0:
-		var s = STATUS_EFFECT.instantiate()
-		s.set_status(Status.DEBT,player.debt)
-		s.add_to_group("player_status")
-		status_container.add_child(s)
-	if player.thrift > 0:
-		var s = STATUS_EFFECT.instantiate()
-		s.set_status(Status.THRIFT,player.thrift)
-		s.add_to_group("player_status")
-		status_container.add_child(s)
-	if player.spend > 0:
-		var s = STATUS_EFFECT.instantiate()
-		s.set_status(Status.SPEND,player.spend)
-		s.add_to_group("player_status")
-		status_container.add_child(s)
+	
+	var s = STATUS_EFFECT.instantiate()
+	s.set_status(Status.MOMENTUM,1)
+	s.add_to_group("keeper_status")
+	status_container.add_child(s)
+	
+	s = STATUS_EFFECT.instantiate()
+	s.set_status(Status.UNCHARGABLE,1)
+	s.add_to_group("keeper_status")
+	status_container.add_child(s)
+	
+	s = STATUS_EFFECT.instantiate()
+	s.set_status(Status.FOCUSED,1)
+	s.add_to_group("keeper_status")
+	status_container.add_child(s)
+	
 	
 func _input(event: InputEvent) -> void:
 	if is_open and not is_closing:

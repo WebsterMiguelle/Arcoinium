@@ -1,18 +1,43 @@
 extends HBoxContainer
 
+enum Status{
+	GAIN,
+	DEBT,
+	THRIFT,
+	SPEND,
+	
+	DROWSE,
+	VOIDED,
+	TALLY,
+	STARSTRUCK,
+	SEALED,
+	SUNLIT_CURSE,
+	MOONLIT_CURSE,
+	SOLAR_BLESSED,
+	LUNAR_BLESSED,
+	
+	BENCHMARK,
+	AUDIT,
+	SETTLE,
+	EMPOWERED,
+	RADIANT,
+	
+	MOMENTUM,
+	TRUST,
+	UNCHARGABLE
+}
+
+const STATUS_EFFECT = preload("uid://bmy7mewa8qp5l")
 
 # --- LEFT PANEL (Enemy Lore) ---
 # Update these paths to match exactly where your labels are in the EnemyLore container!
 @onready var enemy_name: Label = $ProfilePanel/MarginContainer/VBoxContainer/EnemyName
-@onready var enemy_stats: Label = $ProfilePanel/MarginContainer/VBoxContainer/EnemyStats
-
+@onready var enemy_stats: Label = $ProfilePanel/MarginContainer/VBoxContainer/HBoxContainer/EnemyStats
+@onready var portrait: AnimatedSprite2D = $ProfilePanel/MarginContainer/VBoxContainer/HBoxContainer/Portrait
 @onready var story_label: Label = $ProfilePanel/MarginContainer/VBoxContainer/EnemyLore
+@onready var status_container: VFlowContainer = $StatusEffectsPanel/MarginContainer/StatusContainer
 
 # --- MIDDLE PANEL (Status Effects) ---
-@onready var gain: Label = $StatusEffectsPanel/MarginContainer/VBoxContainer/Gain
-@onready var debt: Label = $StatusEffectsPanel/MarginContainer/VBoxContainer/Debt
-@onready var thrift: Label = $StatusEffectsPanel/MarginContainer/VBoxContainer/Thrift
-
 
 # --- RIGHT PANEL (Mechanics) ---
 @onready var enemy_ability: Label =$EnemyMechanics/MarginContainer/VBoxContainer/EnemyAbility
@@ -23,73 +48,91 @@ var is_open: bool = false
 var slide_distance: float = 30.0 
 var target_y: float
 var stagger_delay: float = 0.1
+var enemy_node
 # ==========================================
 # THE ENEMY DATABASE
 # Keys map directly to your Enemy enum (0 = MAGE, 1 = DWARF, etc.)
 # ==========================================
-const ENEMY_DATA = {
+var ENEMY_DATA = {
 	0: { # MAGE
-		"name": "Mage",
-		"story": "Apprentice mages are mages in training, taken in by a more powerful mage as their own. Be it out of pity or the goodness of the mages' heart, no one ever knows. They say there is a chance for an apprentice mage to take over their masters' repertoire. But being taken in is already a telling sign that it's all they will ever be. It is not surprising if an apprentice mage suddenly disappears, stricken with the grief of not being something more.They're not much of a threat, but they will try to take down whoever threatens their masters' seats in power.",
+		"name": "Apprentice Mage",
+		"story": "Apprentice Mages are not much of a threat, often blinded by their desperation to become like their masters.",
 		"ability": "Flips standard coins. Simple and predictable.",
-		"tip": "A great target to build your Reserve against!"
+		"tip": "A great target to build your RESERVE against!",
+		"greed":"Much more aggresive in flipping. Applies SPEND for each SUN Flip.",
+		"greed tip": "Don't overspend your first few turns. GAIN Coins first to build momentum."
 	},
 	1: { # DWARF
-		"name": "Dwarf",
-		"story": "Coin dwarves are generally pleasant, unless provoked. They spend most of their days searching for coins that have been tossed out in hopes to add it to their stash.
-	However, when they get desperate, they may target whoever they think exudes an abundance of coins. Some say they are what becomes of the missing apprentice mages after losing their minds – destined to search for a value that isn’t there anymore.
-",
-		"ability": "SUN pairs deal combined damage. MOON flips apply THRIFT in Greed mode.",
-		"tip": "Watch out for HEAD-HEAD pairs dealing massive damage."
+		"name": "Coin Dwarf",
+		"story": "Generally pleasant unless provoked. Do not get in the way of them and their coins.",
+		"ability": "SUN pairs deal combined damage.",
+		"tip": "Watch out for HEAD-HEAD pairs dealing massive damage.",
+		"greed": "Flips more Coins than usual. Applies THRIFT for each MOON Flip.",
+		"greed tip": "THRIFT reduces max playable coins. Make every Coin Pair count."
 	},
 	2: { # COLLECTOR
-		"name": "Collector",
-		"story": "Obsessed with rare coins, they will tax you for every flip.",
-		"ability": "Value Added Tax. Mixed pairs (SUN/MOON) apply DEBT.",
-		"tip": "Avoid playing mixed pairs, and beware of their high Silver/Gold flip rates!"
+		"name": "Tax Collector",
+		"story": "Questionable forms of tax collections, often overlooked by The Council. Best not to offend them.",
+		"ability": "SUN-MOON Pairs apply DEBT. Whenever you settle your DEBT, he self-applies GAIN.",
+		"tip": "It's better to play aggresively. GAINing may cause lifesteal if you have current DEBT!",
+		"greed": "Applies DEBT that can lifesteal. Additionally STAMPs your Odd Coin Flips.",
+		"greed tip": "He will try to limit your board control. Utilize RESERVE to strategize upcoming Odd Flips."
 	},
 	3: { # TRADER
 		"name": "Trader",
-		"story": "A merchant of equivalence. What you give is what you get.",
-		"ability": "Fair Trade: Copies your number of played coins.",
-		"tip": "If you play aggressively, the Trader hits back just as hard. Control your flips!"
+		"story": "Mysteriously comes in and out of towns trying to settle infamously striking deals.",
+		"ability": "Copies your number of played coins.",
+		"tip": "You can hide some of your Coins in the Reserve. These are not counted as Played Coins.",
+		"greed": "Copies your number of played coins. This time, he will VOID your Reserve.",
+		"greed tip": "No more hiding Coins in the Reserve. Play fair and square, and control your Flip Count!"
 	},
 	4: { # THRIFTER
 		"name": "Thrifter",
-		"story": "Frugal and punishing. They hoard wealth and punish spenders.",
-		"ability": "Learn to Save: Applies THRIFT for non-matching pairs.",
-		"tip": "Only play perfect pairs (SUN-SUN or MOON-MOON) to avoid crippling THRIFT."
+		"story": "Known to rarely come out of their home, unless they really, really need to. Had an interesting encounter with a Trader once.",
+		"ability": "Applies THRIFT on SUN Pairs.",
+		"tip": "He will try to limit your Max Coin Flips. Make each Coin Pair count.",
+		"greed": "SUN Pairs apply THRIFT. MOON Pairs apply TALLY.",
+		"greed tip": "Tally is Stackable. You can RESERVE Coins in advance if you have no Tally."
 	},
 	5: { # ARISTOCRAT
 		"name": "Aristocrat",
-		"story": "Born into unimaginable wealth, but drowning in inherited debt.",
-		"ability": "Fully Paid: Starts with massive DEBT. If DEBT reaches 0, you die.",
-		"tip": "DO NOT clear their DEBT! Use direct damage, not DEBT-clearing passives."
+		"story": "Aside from their over-inflated ego, Aristocrats are nothing more than a boot-licking pawn of The Council.",
+		"ability": "Starts with massive DEBT. If DEBT reaches 0, you lose.",
+		"tip": "Play as aggressive as possible. She cannot deal damage but will attempt to clear her DEBT quickly!",
+		"greed": "You instantly perish if her DEBT reaches 0. Applies STARSTRUCK at the end of her turn.",
+		"greed tip": "When Coins are DAZZLED, carefully set it up to be MOON to deal more damage."
 	},
 	6: { # SUN_CASTER
 		"name": "Sun Caster",
-		"story": "A zealot of the blazing dawn. Their flames burn the greedy.",
-		"ability": "Sunlit Curse: Powers up if you play 9 or more SUN coins.",
-		"tip": "Limit your SUN coin usage. Pivot to MOON coins to starve their power."
+		"story": "A corrupted vessel of the sun who both reflect the same arrogance, power, and greed.",
+		"ability": "Powers up if you play 9 or more SUN coins.",
+		"tip": "Limit your SUN coin usage. Pivot to MOON coins to starve their power.",
+		"greed": "GUARANTEED SUN FLIP Curse. Powers up if you play 9 or more SUN Coins.",
+		"greed tip": "Utilize Re-Flips and careful Flip Count to avoid the 9 SUN activation."
 	},
 	7: { # MOON_CASTER
 		"name": "Moon Caster",
-		"story": "A scholar of the midnight sky. They draw power from the shadows.",
-		"ability": "Midnight Curse: Powers up if you play 9 or more MOON coins.",
-		"tip": "Limit your MOON coin usage. Focus on SUN damage to win."
+		"story": "A chosen vessel of the corruption of the moon due to their greed, often seen seeking a fight from Sun Caster.",
+		"ability": "Powers up if you play 9 or more MOON coins.",
+		"tip": "Limit your MOON coin usage. Focus on SUN damage to win.",
+		"greed": "GUARANTEED MOON FLIP Curse. Powers up if you play 9 or more MOON Coins.",
+		"greed tip": "Utilize Re-Flips and careful Flip Count to avoid the 9 MOON activation."
 	},
 	8: { # TWILIGHT_SAGE
 		"name": "Twilight Sage",
-		"story": "Master of both dawn and dusk. The rules change every turn.",
-		"ability": "Stance Shifter: Alternates between Dawn and Dusk stances.",
-		"tip": "Pay attention to the background color! Play MOON during Dawn, and SUN during Dusk."
+		"story": "Merely a vessel for the opposing forces in the Twilight Zone, but was once a great and powerful mage.",
+		"ability": "Alternates between Dawn and Dusk stances.",
+		"tip": "Pay attention to the background color! Play MOON during Dawn, and SUN during Dusk.",
+		"greed": "Switches between Dawn and Dusk. Applies DROWSE during Dawn, and VOIDED during Dusk.",
+		"greed tip": "Time your combo accordingly. Some turns will have a Locked Reserve, some have ineffective Re-Flips."
 	}
 }
 func _ready() -> void:
 	for child in get_children():
 		child.modulate.a = 0.0
 		
-func setup(enemy_node: Node) -> void:
+func setup(enemy: Node) -> void:
+	enemy_node = enemy
 	var type_id = enemy_node.type # Grabs the enum integer (0-8)
 	var data = ENEMY_DATA[type_id]
 	
@@ -97,7 +140,9 @@ func setup(enemy_node: Node) -> void:
 	# 1. POPULATE STATIC LORE & TIPS
 	# ==========================================
 	enemy_name.text = data["name"] 
-	
+	if enemy_node.greed:
+		data["ability"] = data["greed"]
+		data["tip"] = data["greed tip"]
 	# Pass in the Label, the Text, the Max Height (e.g., 180 pixels), and Default Font Size
 	set_and_shrink_text(story_label, data["story"], 250.0, 32)
 	set_and_shrink_text(enemy_ability, data["ability"], 120.0, 32)
@@ -108,11 +153,69 @@ func setup(enemy_node: Node) -> void:
 	# ==========================================
 	var stats_text = ""
 	stats_text += "Coins: " + str(enemy_node.coin) + " / " + str(enemy_node.max_coin) + "\n"
-	stats_text += "Silver Flip Rate: " + str(enemy_node.silver_flip_rate * 100) + "%\n"
-	stats_text += "Gold Flip Rate: " + str(enemy_node.gold_flip_rate * 100) + "%"
-	
+	stats_text += "Silver Flip Rate: " + str(int(enemy_node.silver_flip_rate * 100)) + "%\n"
+	stats_text += "Gold Flip Rate: " + str(int(enemy_node.gold_flip_rate * 100)) + "%\n"
+	stats_text += "Max Flip: " + str(enemy_node.max_playable_coins) + "\n"
 	# Give the stats block its own max height as well
 	set_and_shrink_text(enemy_stats, stats_text, 100.0, 32)
+	portrait.play(str(enemy_node.type))
+	
+	# ==========================================
+	# 3. POPULATE STATUS EFFECTS
+	# ==========================================
+	if enemy_node.has_benchmark:
+		print("I AM TRADER")
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.BENCHMARK,1)
+		s.add_to_group("enemy_status")
+		status_container.add_child(s)
+	if enemy_node.has_audit:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.AUDIT,1)
+		s.add_to_group("enemy_status")
+		status_container.add_child(s)
+	if enemy_node.settle > 0:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.SETTLE,enemy_node.settle)
+		s.add_to_group("enemy_status")
+		status_container.add_child(s)
+	if enemy_node.has_radiant:
+		var s = STATUS_EFFECT.instantiate()
+		if enemy_node.greed:s.set_status(Status.RADIANT,1)
+		s.add_to_group("enemy_status")
+		status_container.add_child(s)
+	if enemy_node.has_empowered:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.EMPOWERED,1)
+		s.add_to_group("enemy_status")
+		status_container.add_child(s)
+	if enemy_node.unchargable:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.UNCHARGABLE,1)
+		s.add_to_group("enemy_status")
+		status_container.add_child(s)
+		
+	if enemy_node.gain > 0:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.GAIN,enemy_node.gain)
+		s.add_to_group("enemy_status")
+		status_container.add_child(s)
+	if enemy_node.debt > 0:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.DEBT,enemy_node.debt)
+		s.add_to_group("enemy_status")
+		status_container.add_child(s)
+	if enemy_node.thrift > 0:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.THRIFT,enemy_node.thrift)
+		s.add_to_group("enemy_status")
+		status_container.add_child(s)
+	if enemy_node.spend > 0:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.SPEND,enemy_node.spend)
+		s.add_to_group("enemy_status")
+		status_container.add_child(s)
+		
 	
 func open() -> void:
 	target_y = global_position.y
@@ -159,7 +262,7 @@ func set_and_shrink_text(label: Label, new_text: String, max_height: float, defa
 		
 	var text_height = font.get_multiline_string_size(new_text, HORIZONTAL_ALIGNMENT_LEFT, max_width, current_size).y
 	
-	while text_height > max_height and current_size > 16:
+	while text_height > max_height and current_size > 24:
 		current_size -= 2
 		text_height = font.get_multiline_string_size(new_text, HORIZONTAL_ALIGNMENT_LEFT, max_width, current_size).y
 		

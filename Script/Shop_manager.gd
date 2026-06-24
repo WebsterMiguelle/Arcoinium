@@ -1,11 +1,11 @@
 extends CanvasLayer
 const SHOPKEEPER_VOICE = preload("uid://c86gce7j7tjey")
-@onready var container = $Background/CenterContainer/VBoxContainer/CardContainer
+@onready var container: GridContainer = $CenterContainer/VBoxContainer/CardContainer
 const Shop_card = preload("res://Scene/shop_card.tscn")
 @onready var bg = $Background
 @onready var back_button: Button = $Back
 @onready var main = get_node("/root/Main")
-@onready var coin_label = $Background/CoinLabel
+@onready var coin_label: Label = $CoinLabel
 @onready var player: Node2D = $"../Player"
 @onready var carpet: TextureRect = $Background/Carpet
 @onready var shop_keeper: AnimatedSprite2D = $"Background/Shop Keeper_Portrait"
@@ -39,7 +39,7 @@ var all_cards = [
 	{"id": 9, "name": "Coin Snipe", "rank": "B", "desc": "Flipping a SILVER/GOLD Coin deals 1 DAMAGE. Generated Coins deal 3 DAMAGE instead."},
 	{"id": 10, "name": "Full Moon", "rank": "B", "desc": "For each MOON-MOON Pair played, 1 Moon Coin becomes SHINED at the end of the turn."},
 
-	{"id": 11, "name": "Gold Rush", "rank": "A", "desc": "+10% Gold Flip Rate. For each SUN-SUN Pair played, 1 Random Coin is Upgraded to Gold."},
+	{"id": 11, "name": "Gold Rush", "rank": "A", "desc": "+10% Gold Flip Rate. For each SUN-SUN Pair played, 1 Random Coin is Upgraded to GOLD."},
 	{"id": 12, "name": "Pickpocket", "rank": "A", "desc": "+2 Re-Flips. Re-Flipping deals 1 DAMAGE and generates a RESERVED Coin with a Random Status Effect."},
 	{"id": 13, "name": "Piggy", "rank": "A", "desc": "Piggy accompanies you. At the end of the turn, Piggy will Generate and RESERVE a SHINED copy of your last Coin Pair."},
 	{"id": 14, "name": "Pocket Money", "rank": "A", "desc": "Generate 8 STAMPED SILVER MOON Coins at the start of each battle. Half of these Coins will be RESERVED."},
@@ -147,6 +147,8 @@ func generate_shop():
 
 # NEW: Update the label when hovered
 func _on_card_hovered(description_text: String) -> void:
+	if is_instance_valid(main.player_info_menu):
+		return
 	main.sound_manager.play_sound(SCROLL_HOVERED)
 	if descriptions:
 		descriptions.text = description_text
@@ -307,8 +309,10 @@ func _on_proceed_pressed():
 	queue_free()
 
 func _on_back_pressed() -> void:
+	if is_instance_valid(main.player_info_menu):
+		return
 	close_shop()
-	
+		
 func is_card_owned(card_id: int) -> bool:
 	match card_id:
 		0: 

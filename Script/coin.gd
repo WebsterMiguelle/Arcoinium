@@ -4,6 +4,9 @@ extends Node2D
 @onready var dazzled: AnimatedSprite2D = $DAZZLED
 @onready var stamped: TextureRect = $STAMPED
 @onready var shine_stack_label: Label = $"Shine Stack Label"
+@onready var control: Control = $Control
+@onready var pop_up: VFlowContainer = $"Pop-Up"
+const COIN_STATUS_EFFECT = preload("uid://b7frpsmw0r6p")
 
 enum CoinType{
 	COPPER,
@@ -179,3 +182,29 @@ func pulse_glow() -> void:
 	# Chain it to shrink back to normal slowly
 	glow_tween.chain().tween_property(self, "scale", Vector2(1.0, 1.0), 0.6).set_trans(Tween.TRANS_SINE)
 	glow_tween.chain().tween_property(self, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.6).set_trans(Tween.TRANS_SINE)
+
+
+func _on_control_mouse_entered() -> void:
+	print("Mouse In")
+	if status != CoinStatus.NONE:
+		var s = COIN_STATUS_EFFECT.instantiate()
+		if status == CoinStatus.SHINED:
+			s.set_status(status,shine_stack)
+		else:
+			s.set_status(status,1)
+		s.add_to_group("coin_status")
+		pop_up.add_child(s)
+
+	if is_stamped:
+		var s = COIN_STATUS_EFFECT.instantiate()
+		s.set_status(4,1)
+		s.add_to_group("coin_status")
+		pop_up.add_child(s)
+
+func _on_control_mouse_exited() -> void:
+	print("Mouse Out")
+	var coin_status = get_tree().get_nodes_in_group("coin_status")
+	if coin_status.size() == 0:
+		return
+	for c in coin_status:
+		c.queue_free()

@@ -72,6 +72,8 @@ func _process(_delta: float) -> void:
 	pass
 
 func _on_pressed() -> void:
+	if is_instance_valid(main.player_info_menu):
+		return
 	main.sound_manager.play_sound(SCROLL_OPEN)
 	glow_panel.visible = false
 	var tween = create_tween()
@@ -86,6 +88,8 @@ func _on_pressed() -> void:
 	emit_signal("card_selected", card_id)
 	
 func _on_mouse_entered() -> void:
+	if is_instance_valid(main.player_info_menu):
+		return
 	pivot_offset = size / 2.0
 	var tween = create_tween()
 	tween.tween_property(self, "scale", hover_scale, 0.2).set_trans(Tween.TRANS_SINE)

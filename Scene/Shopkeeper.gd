@@ -98,6 +98,7 @@ var moon_count = 0
 
 
 #ENEMY STATS
+var combat_won = 0
 var has_fully_paid = false #Fully Paid Turn. Else, Scroll Counter Turn.
 var has_scroll_turn = false #Merchant Scroll Turn
 var has_keeper_turn = false #Gains a Turn after Coin Caster if this is true
@@ -192,6 +193,8 @@ func _process(delta: float) -> void:
 
 
 func refresh_start_of_battle_stats():
+	if trust > 3: has_radiant = true
+	else:has_radiant = false
 	coin = 0
 	has_audit = false
 	has_benchmark = false
@@ -506,7 +509,24 @@ func activate_turn_end_passives():
 	if main.enemy.coin == 0:
 		return
 		
-
+	if has_radiant:
+		coins = get_tree().get_nodes_in_group("keeper_coins")
+		for c in coins:
+			var shine_chance = randi_range(0,1)
+			if shine_chance == 1:
+				main.sound_manager.play_sound(COIN_FLIP)
+				c.add_status(CoinStatus.SHINED)
+				c.refresh_sprite()
+				if main.player.has_impromptu_flip:
+					main.player.trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
+					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
+					main.sound_manager.play_sound(DAMAGE_LIGHT)
+					main.enemy.take_damage(1)
+					create_floating_label(1,"DAMAGE","ENEMY")
+				keeper_coin_calculation()
+				await get_tree().create_timer(0.1).timeout
+		await get_tree().create_timer(0.6).timeout
+		
 	if main.player.has_magic_trick and current_played_coin >= 8:
 		main.player.trigger_temp_passive("magic_trick","MAGIC TRICK")
 		coins = get_tree().get_nodes_in_group("keeper_coins")

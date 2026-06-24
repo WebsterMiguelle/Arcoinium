@@ -123,7 +123,8 @@ var has_audit = false #For each DEBT Settled by the opposing side, apply 1 GAIN 
 var has_radiant = false #At the end of each turn, each Coin has a 50% Chance to be SHINED.
 var has_benchmark = false #Can only play the same amount of Coins by the opposing side.
 var settle = 0 #Whenever a DEBT was cleared, detonate settle as Damage.
-
+var has_empowered = false #100% Gold Flip Rate
+var unchargable = false #Immune to DEBT
 var gain = 0: #Coin to be gained next turn
 	set(value):
 		gain = clamp(value,0,1000) 
@@ -203,6 +204,7 @@ func reset_passives():
 	has_dusk_stance = false
 
 func refresh_start_of_battle_stats():
+	unchargable = false
 	heavy_hit_count = 0
 	has_audit = false
 	has_benchmark = false
@@ -276,6 +278,8 @@ func setup(m,enemy):
 				bounty = 50
 				trigger_enemy_passive("AUDIT: For each DEBT you settled, The Collector self-applies 1 GAIN.", 5.0)
 			else:
+				main.player.sealed = true
+				unchargable = true
 				max_coin = 100
 				coin = 80
 				max_playable_coins = 12
@@ -397,6 +401,7 @@ func setup(m,enemy):
 				main.player.has_midnight_curse = true
 				trigger_enemy_passive("You have GUARANTEED MOON FLIPS. Avoid Playing 9 or More MOON Coins.", 5.0)
 		Enemy.TWILIGHT_SAGE:
+			has_empowered = true
 			if !greed:
 				max_coin = 500
 				coin = 300
@@ -453,7 +458,8 @@ func flip():
 	@warning_ignore("shadowed_variable")
 	var c = COIN.instantiate()
 	c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
-
+	if has_empowered:
+		c.upgrade_to_gold()
 	var loan_dazzle_chance = debt
 	var loan_success = randi_range(1,100)
 	if main.player.has_loan_shark and loan_success <= loan_dazzle_chance:
@@ -788,16 +794,20 @@ func start_enemy_turn():
 			gold_flip_rate = 1
 			switch_vignetter_color(sun_caster_color,0.4)
 			trigger_enemy_passive("You played " + str(main.player.sun_count) + " Sun Coins. Sun Caster powered up!", 3.0)
+			has_empowered = true
 		else:
 			gold_flip_rate = 0
+			has_empowered = false
 
 	if type == Enemy.MOON_CASTER:
 		if main.player.moon_count >= 9:
 			gold_flip_rate = 1
 			switch_vignetter_color(moon_caster_color,0.4)
 			trigger_enemy_passive("You played " + str(main.player.moon_count) + " Moon Coins. Moon Caster powered up!", 3.0)
+			has_empowered = true
 		else:
 			gold_flip_rate = 0
+			has_empowered = false
 	
 
 	#Initialize Stats

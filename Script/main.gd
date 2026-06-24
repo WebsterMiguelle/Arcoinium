@@ -8,6 +8,15 @@ enum Turn {
 @onready var forest_area: TextureRect = $"Forest Area"
 @onready var fields_area: TextureRect = $"Fields Area"
 @onready var shop_area: TextureRect = $"Shop Area"
+@onready var player_info_passive_screen: Button = $"CardManager/Player Info Passive Screen"
+@onready var card_manager: CanvasLayer = $CardManager
+@onready var player_info_shop_screen: Button = $"ShopManager/Player Info Shop Screen"
+@onready var shop_manager: CanvasLayer = $ShopManager
+
+@onready var turn_spell_light: PointLight2D = $"Battle UI/Turn Calculation Box/Turn Spell Light"
+@onready var dazzled_light: PointLight2D = $"Dazzled Effect/Dazzled Light"
+@onready var keeper_info: Button = $"Keeper Info"
+
 
 enum Enemy{
 	MAGE,
@@ -20,7 +29,6 @@ enum Enemy{
 	MOON_CASTER,
 	TWILIGHT_SAGE
 }
-
 
 
 
@@ -113,8 +121,9 @@ $"Progression Map/Elite Enemy",
 $"Progression Map/Shop", 
 $"Progression Map/Boss"
 ]
-@onready var player_info: Button = $"Player/Player Info"
-@onready var enemy_info: Button = $"Enemy/Enemy Info"
+@onready var player_info: Button = $"Player Info"
+@onready var enemy_info: Button = $"Enemy Info"
+
 
 @onready var endTurn_button = $"Battle UI/Endturn"
 @onready var flip_button = $"Battle UI/PlayerHealthBar2"
@@ -144,6 +153,8 @@ const PLAYER_INFORMATION_DISPLAY = preload("res://Scene/PlayerInformationDisplay
 var player_info_menu: Node = null
 const ENEMY_INFORMATION_DISPLAY = preload("res://Scene/EnemyInformationDisplay.tscn")
 var enemy_info_menu: Node = null
+const KEEPER_INFORMATION_DISPLAY = preload("uid://c8vfntelui3b7")
+var keeper_info_menu: Node = null
 
 @onready var player_lock_particles: GPUParticles2D = $"Player/Player Lock Particles"
 @onready var player_gain_particles: GPUParticles2D = $"Player/Player Gain Particles"
@@ -240,7 +251,6 @@ var is_surrender = false
 
 var current_enemy_index
 var current_room
-@onready var shop_manager: CanvasLayer = $ShopManager
 
 func _on_item_purchased(card_id,price):
 	update_player_coin()
@@ -490,6 +500,15 @@ func _on_end_run_pressed():
 
 	
 func start_player_turn():
+	endTurn_button.mouse_default_cursor_shape = 2
+	flip_button.mouse_default_cursor_shape = 2
+	reserve_button.mouse_default_cursor_shape = 2
+	re_flip_button.mouse_default_cursor_shape = 2
+	
+	enemy_info.visible = true
+	player_info.visible = true
+	if player.has_merchant_scroll or player.has_fully_paid:
+		keeper_info.visible = true
 	if player.coin > 0:
 		current_turn = Turn.PLAYER
 		if player.payback_used:
@@ -550,7 +569,7 @@ func start_enemy_turn():
 				else:
 					sound_manager.play_sound(EXTRA_TURN)
 					current_turn = Turn.PLAYER
-					show_turn_ui("EXTRA TURN")
+					show_turn_ui("CASH OUT")
 					current_turn = Turn.ENEMY
 					player.extra_turn()
 			else:
@@ -559,6 +578,18 @@ func start_enemy_turn():
 			check_defeat()
 
 func _on_endturn_pressed():
+	endTurn_button.mouse_default_cursor_shape = 8
+	flip_button.mouse_default_cursor_shape = 8
+	reserve_button.mouse_default_cursor_shape = 8
+	re_flip_button.mouse_default_cursor_shape = 8
+	
+	if is_instance_valid(enemy_info_menu):
+		return
+	if is_instance_valid(player_info_menu):
+		return
+	enemy_info.visible = false
+	player_info.visible = false
+	keeper_info.visible = false
 	if enemy.coin > 0 and player.coin > 0:
 		await player.end_turn()
 		turn_calculation_box.exit()
@@ -578,10 +609,13 @@ func _on_endturn_pressed():
 						start_enemy_turn()
 			else:
 				sound_manager.play_sound(EXTRA_TURN)
-				show_turn_ui("EXTRA TURN")
+				show_turn_ui("CASH OUT")
 				player.extra_turn()
 
 func tally_end_turn():
+	enemy_info.visible = false
+	player_info.visible = false
+	keeper_info.visible = false
 	if enemy.coin > 0 and player.coin > 0:
 		current_turn = Turn.ENEMY
 		show_turn_ui("TURN ENDED")
@@ -594,7 +628,7 @@ func tally_end_turn():
 				start_enemy_turn()
 			else:
 				sound_manager.play_sound(EXTRA_TURN)
-				show_turn_ui("EXTRA TURN")
+				show_turn_ui("CASH OUT")
 				player.extra_turn()
 				player.has_extra_turn = false
 
@@ -861,6 +895,13 @@ func handle_victory_flow():
 	#wait show_map()
 	
 func progression_after_victory():
+	player.refresh_start_of_battle_stats()
+	if player.has_merchant_scroll or player.has_fully_paid:
+		shopkeeper.combat_won += 1
+		if shopkeeper.combat_won == 3:
+			shopkeeper.trust += 1
+		shopkeeper.refresh_start_of_battle_stats()
+
 	#var map = MAP_SCENE.instantiate()
 	#map.setup(current_room)
 	#add_child(map)
@@ -910,16 +951,15 @@ func reserve_left_over_coin():
 		left_coin.reserved = true
 		var target_pos = coin_deck.get_reserve_slot()
 		var tween = create_tween()
-		left_coin.refresh_sprite()
 		sound_manager.play_sound(COIN_FLIP)
-		tween.tween_property(left_coin,"position:x",target_pos[0],0.2)
-		tween.tween_property(left_coin,"position:y",target_pos[1],0.2)
-		left_coin.add_to_group("reserved coins")
+		var c = COIN.instantiate()
+		c.setup(0,main.coin_deck.get_reserve_slot())
+		c.copy_coin(left_coin)
+		c.add_to_group("reserved coins")
+		player.add_child(c)
+		left_coin.queue_free()
 		coins = get_tree().get_nodes_in_group("reserved coins")
 		player.current_reserve = coins.size()
-		if player.has_simple_interest: 
-			player.gain += 1
-			player.trigger_temp_passive("simple_interest","SIMPLE INTEREST")
 
 func update_player_coin():
 	player_health_label.text = str(player.coin)
@@ -1344,6 +1384,7 @@ func trigger_passive_effect(text: String):
 	show_passive_notification(text, 1.5)
 
 func _on_player_info_toggled(toggled_on: bool) -> void:
+
 	print("toggled: ", toggled_on)
 	if toggled_on:
 		player_info_menu = PLAYER_INFORMATION_DISPLAY.instantiate()
@@ -1395,3 +1436,64 @@ func trigger_dramatic_slowdown() -> void:
 	Engine.time_scale = 0.3 
 	await get_tree().create_timer(1.0, true, false, true).timeout 
 	Engine.time_scale = 1.0
+
+
+func _on_player_info_passive_screen_toggled(toggled_on: bool) -> void:
+	print("toggled: ", toggled_on)
+	if toggled_on:
+		player_info_menu = PLAYER_INFORMATION_DISPLAY.instantiate()
+		card_manager.add_child(player_info_menu)
+		player_info_menu.setup(player)
+		
+		await get_tree().process_frame
+		var screen_size = get_viewport_rect().size
+		var menu_size = player_info_menu.size
+		player_info_menu.global_position = Vector2((screen_size.x - menu_size.x) / 2,
+			(screen_size.y - menu_size.y) / 2)
+		player_info_menu.z_index = 100
+		player_info_menu.open()
+	else:
+		if player_info_menu != null and is_instance_valid(player_info_menu):
+			player_info_menu.close()
+			player_info_menu = null
+			player_info.button_pressed = false
+
+
+func _on_player_info_shop_screen_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		player_info_menu = PLAYER_INFORMATION_DISPLAY.instantiate()
+		shop_manager.add_child(player_info_menu)
+		player_info_menu.setup(player)
+		
+		await get_tree().process_frame
+		var screen_size = get_viewport_rect().size
+		var menu_size = player_info_menu.size
+		player_info_menu.global_position = Vector2((screen_size.x - menu_size.x) / 2,
+			(screen_size.y - menu_size.y) / 2)
+		player_info_menu.z_index = 100
+		player_info_menu.open()
+	else:
+		if player_info_menu != null and is_instance_valid(player_info_menu):
+			player_info_menu.close()
+			player_info_menu = null
+			player_info.button_pressed = false
+
+
+func _on_keeper_info_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		keeper_info_menu = KEEPER_INFORMATION_DISPLAY.instantiate()
+		add_child(keeper_info_menu)
+		keeper_info_menu.setup(shopkeeper,player)
+		
+		await get_tree().process_frame
+		var screen_size = get_viewport_rect().size
+		var menu_size = keeper_info_menu.size
+		keeper_info_menu.global_position = Vector2((screen_size.x - menu_size.x) / 2,
+			(screen_size.y - menu_size.y) / 2)
+		keeper_info_menu.z_index = 100
+		keeper_info_menu.open()
+	else:
+		if keeper_info_menu != null and is_instance_valid(keeper_info_menu):
+			keeper_info_menu.close()
+			player_info_menu = null
+			keeper_info.button_pressed = false

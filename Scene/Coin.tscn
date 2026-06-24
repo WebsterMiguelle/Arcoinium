@@ -319,7 +319,7 @@ scale_min = 0.0
 scale_max = 7.62
 scale_curve = SubResource("CurveTexture_36o68")
 
-[node name="Coin" type="Node2D" unique_id=1898979683]
+[node name="Coin" type="Node2D" unique_id=222727710]
 script = ExtResource("1_byqvs")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1217145718]
@@ -344,6 +344,7 @@ scale = Vector2(0.24999999, 0.24999994)
 color = Color(0.9999996, 0.92378306, 0.7951896, 1)
 energy = 3.16
 blend_mode = 2
+range_z_max = 5
 texture = SubResource("GradientTexture2D_36o68")
 
 [node name="Shine Stack Label" type="Label" parent="." unique_id=627600969]
@@ -384,6 +385,7 @@ scale = Vector2(0.25, 0.24999996)
 color = Color(0.9872803, 0.75462484, 1, 1)
 energy = 2.25
 blend_mode = 2
+range_z_max = 5
 texture = SubResource("GradientTexture2D_36o68")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="DAZZLED" unique_id=1242080159]
@@ -400,3 +402,25 @@ offset_right = 76.0
 offset_bottom = 38.0
 texture = ExtResource("5_36o68")
 expand_mode = 1
+
+[node name="Control" type="Control" parent="." unique_id=386406435]
+z_index = 10
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -38.0
+offset_right = 40.0
+offset_bottom = -0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+
+[node name="Pop-Up" type="VFlowContainer" parent="." unique_id=1148801643]
+offset_left = 92.0
+offset_top = -33.0
+offset_right = 288.0
+offset_bottom = 69.0
+
+[connection signal="mouse_entered" from="Control" to="." method="_on_control_mouse_entered"]
+[connection signal="mouse_exited" from="Control" to="." method="_on_control_mouse_exited"]

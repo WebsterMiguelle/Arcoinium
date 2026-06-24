@@ -206,6 +206,7 @@ offset_right = -0.29600525
 offset_bottom = 0.18399048
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_default_cursor_shape = 2
 text = "CARD"
 script = ExtResource("1_08wl6")
 metadata/_edit_use_anchors_ = true

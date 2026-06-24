@@ -29,7 +29,7 @@ var all_cards = [
 	{"id": 9, "name": "Coin Snipe", "rank": "B", "desc": "Flipping a SILVER/GOLD Coin deals 1 DAMAGE. Generated Coins deal 3 DAMAGE instead."},
 	{"id": 10, "name": "Full Moon", "rank": "B", "desc": "For each MOON-MOON Pair played, 1 Moon Coin becomes SHINED at the end of the turn."},
 
-	{"id": 11, "name": "Gold Rush", "rank": "A", "desc": "+10% Gold Flip Rate. For each SUN-SUN Pair played, 1 Random Coin is Upgraded to Gold."},
+	{"id": 11, "name": "Gold Rush", "rank": "A", "desc": "+10% Gold Flip Rate. For each SUN-SUN Pair played, 1 Random Coin is Upgraded to GOLD."},
 	{"id": 12, "name": "Pickpocket", "rank": "A", "desc": "+2 Re-Flips. Re-Flipping deals 1 DAMAGE and generates a RESERVED Coin with a Random Status Effect."},
 	{"id": 13, "name": "Piggy", "rank": "A", "desc": "Piggy accompanies you. At the end of the turn, Piggy will Generate and RESERVE a SHINED copy of your last Coin Pair."},
 	{"id": 14, "name": "Pocket Money", "rank": "A", "desc": "Generate 8 STAMPED SILVER MOON Coins at the start of each battle. Half of these Coins will be RESERVED."},
@@ -342,6 +342,8 @@ func is_card_owned(card_id: int) -> bool:
 			return false
 
 func _on_card_hovered(description_text: String) -> void:
+	if is_instance_valid(main.player_info_menu):
+		return
 	# Add [center] tags if you want the text to always be centered!
 	main.sound_manager.play_sound(SCROLL_HOVERED)
 	card_description.text = description_text

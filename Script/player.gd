@@ -322,7 +322,7 @@ func reset_stats():
 	has_lunar_coin = false
 	has_merchant_scroll = false
 	has_impromptu_flip = false  #Note: This is FLIP SEQUENCE
-	has_advanced_planning = false #Note: This is SEAL OF APPROVAL
+	has_advanced_planning = true #Note: This is SEAL OF APPROVAL
 
 	#A-Rank
 	has_magic_trick = false

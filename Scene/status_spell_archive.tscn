@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://cxpfdg3bbd11p"]
 
 [ext_resource type="Script" uid="uid://cdqgsasbjpq42" path="res://Script/status_spell_archive.gd" id="1_34ewj"]
+[ext_resource type="Texture2D" uid="uid://ctr0wbykggnh2" path="res://Assets/Detailed_Scroll_1-Sheet.png" id="2_24qry"]
+[ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="2_70jjv"]
+[ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="3_70jjv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k3unw"]
 bg_color = Color(0.4950528, 0.27644643, 0.030817397, 1)
@@ -9,6 +12,21 @@ border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
 border_color = Color(0.8786192, 0.72857714, 0.30201375, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wid86"]
+atlas = ExtResource("2_24qry")
+region = Rect2(192, 0, 48, 80)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5pbod"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wid86")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Status_Spell Archive" type="ColorRect" unique_id=1084128084]
 anchors_preset = 15
@@ -19,26 +37,6 @@ grow_vertical = 2
 color = Color(0.12591085, 0.12591085, 0.12591082, 1)
 script = ExtResource("1_34ewj")
 
-[node name="BUFF" type="Button" parent="." unique_id=1711466704]
-custom_minimum_size = Vector2(200, 50)
-layout_mode = 0
-offset_left = 55.0
-offset_top = 217.0
-offset_right = 255.0
-offset_bottom = 267.0
-theme_override_font_sizes/font_size = 25
-text = "BUFFs"
-
-[node name="DEBUFF" type="Button" parent="." unique_id=1745311677]
-custom_minimum_size = Vector2(200, 50)
-layout_mode = 0
-offset_left = 54.0
-offset_top = 307.0
-offset_right = 254.0
-offset_bottom = 357.0
-theme_override_font_sizes/font_size = 25
-text = "DEBUFFs"
-
 [node name="Coin Status" type="Button" parent="." unique_id=1379363037]
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 0
@@ -48,6 +46,16 @@ offset_right = 255.0
 offset_bottom = 183.0
 theme_override_font_sizes/font_size = 25
 text = "Status Effects"
+
+[node name="Entity" type="Button" parent="." unique_id=1745311677]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 0
+offset_left = 54.0
+offset_top = 209.0
+offset_right = 254.0
+offset_bottom = 259.0
+theme_override_font_sizes/font_size = 25
+text = "Entity Effect"
 
 [node name="Back" type="Button" parent="." unique_id=1924394241]
 custom_minimum_size = Vector2(150, 50)
@@ -60,13 +68,83 @@ theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_k3unw")
 text = "Back"
 
-[node name="Frame" type="ColorRect" parent="." unique_id=1021503777]
-custom_minimum_size = Vector2(800, 550)
+[node name="Frame" type="TextureRect" parent="." unique_id=723124363]
+custom_minimum_size = Vector2(400, 400)
 layout_mode = 0
-offset_left = 315.0
-offset_top = 40.0
-offset_right = 1115.0
-offset_bottom = 590.0
-color = Color(0.6028429, 0.6028429, 0.602843, 1)
+offset_left = 291.0
+offset_top = 110.0
+offset_right = 841.0
+offset_bottom = 610.0
+texture = ExtResource("2_70jjv")
 
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1862214172]
+custom_minimum_size = Vector2(480, 440)
+layout_mode = 0
+offset_left = 327.0
+offset_top = 144.0
+offset_right = 807.0
+offset_bottom = 584.0
+
+[node name="GridContainer" type="GridContainer" parent="ScrollContainer" unique_id=835719774]
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 3
+
+[node name="CardView" type="Control" parent="." unique_id=549921628]
+custom_minimum_size = Vector2(200, 250)
+anchors_preset = 0
+offset_left = 904.0
+offset_top = 221.0
+offset_right = 1104.0
+offset_bottom = 471.0
+
+[node name="Sprite" type="AnimatedSprite2D" parent="CardView" unique_id=1068468462]
+position = Vector2(92, 120)
+scale = Vector2(6, 6)
+sprite_frames = SubResource("SpriteFrames_5pbod")
+
+[node name="Icon" type="Node2D" parent="CardView" unique_id=1930209707]
+
+[node name="CardName" type="Label" parent="CardView" unique_id=1828618820]
+custom_minimum_size = Vector2(200, 20)
+layout_mode = 0
+offset_left = -10.0
+offset_top = 134.0
+offset_right = 190.0
+offset_bottom = 176.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "AAA"
+horizontal_alignment = 1
+vertical_alignment = 3
+
+[node name="Description" type="Label" parent="CardView" unique_id=2078480707]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 0
+offset_left = -7.0
+offset_top = 185.0
+offset_right = 193.0
+offset_bottom = 285.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "AAA"
+horizontal_alignment = 3
+vertical_alignment = 3
+
+[node name="Title" type="Label" parent="." unique_id=1994822205]
+custom_minimum_size = Vector2(600, 100)
+layout_mode = 0
+offset_left = 275.0
+offset_top = 4.0
+offset_right = 891.0
+offset_bottom = 114.0
+theme_override_fonts/font = ExtResource("3_70jjv")
+theme_override_font_sizes/font_size = 90
+text = "Status and Spell"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="Coin Status" to="." method="_on_coin_status_pressed"]
+[connection signal="pressed" from="Entity" to="." method="_on_entity_pressed"]
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]

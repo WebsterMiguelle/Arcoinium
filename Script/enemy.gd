@@ -61,6 +61,7 @@ const SLOW = preload("uid://f5jmno7qyhek")
 
 const DAZZLE = preload("uid://b3o76gt2qs7pj")
 const VOIDED = preload("uid://ctvrb7nmqgd06")
+
 const STARSTRUCK = preload("uid://ca4b2ulhiuuoo")
 
 
@@ -474,7 +475,7 @@ func flip():
 		c.upgrade_to_gold()
 
 	c.add_to_group("enemy_coins")
-	add_child(c);
+	main.add_child(c);
 	main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,c.global_position)
 	var loan_damage:int = ceil(debt * 0.02)
 	if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:

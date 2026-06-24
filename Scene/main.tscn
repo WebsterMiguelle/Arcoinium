@@ -2145,31 +2145,40 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Resume" type="Button" parent="PauseMenu/Panel" unique_id=496970523]
-custom_minimum_size = Vector2(200, 100)
+custom_minimum_size = Vector2(200, 80)
 layout_mode = 0
 offset_left = 200.0
 offset_top = 37.0
 offset_right = 400.0
-offset_bottom = 137.0
+offset_bottom = 117.0
 text = "Resume"
 
 [node name="EndRun" type="Button" parent="PauseMenu/Panel" unique_id=1637342553]
-custom_minimum_size = Vector2(200, 100)
+custom_minimum_size = Vector2(200, 80)
 layout_mode = 0
 offset_left = 204.0
-offset_top = 166.0
+offset_top = 163.0
 offset_right = 404.0
-offset_bottom = 266.0
+offset_bottom = 243.0
 text = "Endrun"
 
 [node name="Quit" type="Button" parent="PauseMenu/Panel" unique_id=1056057779]
-custom_minimum_size = Vector2(200, 100)
+custom_minimum_size = Vector2(200, 50)
 layout_mode = 0
 offset_left = 200.0
-offset_top = 305.0
+offset_top = 371.0
 offset_right = 400.0
-offset_bottom = 405.0
+offset_bottom = 451.0
 text = "Main Menu"
+
+[node name="Setting" type="Button" parent="PauseMenu/Panel" unique_id=734109908]
+custom_minimum_size = Vector2(200, 80)
+layout_mode = 0
+offset_left = 200.0
+offset_top = 264.0
+offset_right = 400.0
+offset_bottom = 344.0
+text = "Setting"
 
 [node name="ShopManager" type="CanvasLayer" parent="." unique_id=248022412]
 layer = 5
@@ -2669,6 +2678,7 @@ action_mode = 0
 [connection signal="pressed" from="PauseMenu/Panel/Resume" to="PauseMenu" method="_on_resume_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/EndRun" to="PauseMenu" method="_on_end_run_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/Quit" to="PauseMenu" method="_on_quit_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/Setting" to="PauseMenu" method="_on_setting_pressed"]
 [connection signal="pressed" from="ShopManager/Back" to="ShopManager" method="_on_back_pressed"]
 [connection signal="toggled" from="ShopManager/Player Info Shop Screen" to="." method="_on_player_info_shop_screen_toggled"]
 [connection signal="toggled" from="Enemy Info" to="." method="_on_enemy_info_toggled"]

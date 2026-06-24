@@ -13,6 +13,10 @@ const COIN = preload("res://Scene/coin.tscn")
 var card_nodes: Array = []
 var current_filter: String = ""
 
+const ENTITY_ICON_NODES = {
+	"Tally": "Tally Effect",
+	
+}
 var all_cards = [
 	{"id": 0, "name": "Shine","rank": "unfurl_down","type": "Coin" ,"desc": "Description"},
 	{"id": 1, "name": "Dazzle","rank": "unfurl_down","type": "Coin" ,"desc": "Description"},
@@ -57,7 +61,10 @@ func _on_effect_card_pressed(data: Dictionary) -> void:
 
 	if view_name: view_name.text = data["name"]
 	if view_desc: view_desc.text = data["desc"]
-	if data["type"] == "Coin": show_coin_icon(data)
+	if data["type"] == "Coin":
+		show_coin_icon(data)
+	elif data["type"] == "Entity":
+		show_entity_icon(data)
 	if view_rank: view_rank.play(data["rank"])
 
 func _on_back_pressed() -> void:
@@ -107,4 +114,6 @@ func show_coin_icon(data):
 	c.position = Vector2(15, 35)
 	c.refresh_sprite()
 
-		
+func show_entity_icon(data: Dictionary) -> void:
+	pass
+	

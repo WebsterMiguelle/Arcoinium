@@ -31,13 +31,13 @@ var all_cards = [
 
 	{"id": 11, "name": "Gold Rush", "rank": "A", "desc": "+10% Gold Flip Rate. For each SUN-SUN Pair played, 1 Random Coin is Upgraded to Gold."},
 	{"id": 12, "name": "Pickpocket", "rank": "A", "desc": "+2 Re-Flips. Re-Flipping deals 1 DAMAGE and generates a RESERVED Coin with a Random Status Effect."},
-	{"id": 13, "name": "Piggy", "rank": "A", "desc": "Piggy accompanies you. At the end of the turn, Piggy will Generate and RESERVE a SHINED copy of your last Coin Pair."},
+	{"id": 13, "name": "Piggy", "rank": "A", "desc": "End Turn: Generate and RESERVE a SHINED copy of your last Coin Pair."},
 	{"id": 14, "name": "Pocket Money", "rank": "A", "desc": "Generate 8 STAMPED SILVER MOON Coins at the start of each battle. Half of these Coins will be RESERVED."},
 	{"id": 15, "name": "Passive Income", "rank": "A", "desc": "Generate RESERVED DAZZLED Coins equal to 10% of Enemy Damage taken."},
 	{"id": 16, "name": "Magic Trick", "rank": "A", "desc": "If you played 8+ Coins, the 1st Coin Pair generates copies of itself into the 2nd, 3rd, and 4th Pair at the end of the turn."},
 	{"id": 17, "name": "Tax Evasion", "rank": "A", "desc": "When DEBT is applied to you, halve it, return the removed DEBT to the Enemy, and deal DAMAGE equal to the returned DEBT."},
 	{"id": 18, "name": "Payback", "rank": "A", "desc": "After taking Heavy Damage 4 times, cleanse all Debuffs and generate 12 SHINED SILVER SUN Coins next turn. Reset the counter afterwards."},
-	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "Loan Shark accompanies you. For each Enemy Coin Flip, Loan Shark detonates 2% of their DEBT as DAMAGE. Each Enemy Coin Flip has a chance equal to their current DEBT (up to 100%) to become DAZZLED."},
+	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "For each Enemy Coin Flip, detonate 2% of their DEBT as DAMAGE. Each Enemy Coin Flip has a chance equal to their current DEBT (up to 100%) to become DAZZLED."},
 	{"id": 20, "name": "Spare Change", "rank": "A", "desc": "Re-Flipping retrieves all RESERVED Coins. Retrieving a STAMPED Coin restores 1 Re-Flip."},
 	{"id": 21, "name": "Coin Barrage", "rank": "A", "desc": "+20% Silver Flip Rate. Every time you Flip 10 SILVER/GOLD Coins in a turn, deal 10 Damage."},
 

@@ -2173,6 +2173,7 @@ text = "Main Menu"
 
 [node name="ShopManager" type="CanvasLayer" parent="." unique_id=248022412]
 layer = 5
+visible = false
 script = ExtResource("6_1xcnr")
 
 [node name="Background" type="ColorRect" parent="ShopManager" unique_id=2038950803]

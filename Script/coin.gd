@@ -5,7 +5,7 @@ extends Node2D
 @onready var stamped: TextureRect = $STAMPED
 @onready var shine_stack_label: Label = $"Shine Stack Label"
 @onready var control: Control = $Control
-@onready var pop_up: VFlowContainer = $"Pop-Up"
+@onready var pop_up: VFlowContainer = $"PanelContainer/MarginContainer/Pop-Up"
 const COIN_STATUS_EFFECT = preload("uid://b7frpsmw0r6p")
 
 enum CoinType{

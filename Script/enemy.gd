@@ -24,7 +24,6 @@ const SPEND_DAMAGE_PARTICLE = preload("uid://dmgnoylltbfre")
 const THRIFT_DAMAGE_PARTICLE = preload("uid://bvrulyxw02bom")
 const DEBT_DAMAGE_PARTICLE = preload("uid://1g21u656k60k")
 
-const ALL_IN_STAMP = preload("uid://bo7ip21oxj6eq")
 
 @onready var drowse_effect: TextureRect = $"../Drowse Effect"
 @onready var dazzled_effect: TextureRect = $"../Dazzled Effect"
@@ -58,12 +57,6 @@ const GAIN_EFFECT = preload("uid://cr366klr6aivy")
 const SPENDED_FLIP = preload("uid://dgu0hy8kwo343")
 const SPEND = preload("uid://bvbtrait4prdi")
 const SLOW = preload("uid://f5jmno7qyhek")
-
-const DAZZLE = preload("uid://b3o76gt2qs7pj")
-const VOIDED = preload("uid://ctvrb7nmqgd06")
-const STARSTRUCK = preload("uid://bdhft60g0dfmo")
-const STARSTRUCK_2 = preload("uid://d3wmb0uie38rs")
-
 
 const DEBTED_ATTACK = preload("uid://ddf31ka4126fv")
 const SPENDED_ATTACK = preload("uid://lfprp4w7saas")
@@ -888,7 +881,6 @@ func end_enemy_turn():
 				c.state = 0
 			c.add_status(CoinStatus.NONE)
 			c.refresh_sprite()
-			main.sound_manager.play_sound(ALL_IN_STAMP)
 			main.sound_manager.play_sound(COIN_FLIP)
 			enemy_coin_calculation()
 			var loan_damage:int = ceil(debt * 0.02)
@@ -1063,7 +1055,7 @@ func end_enemy_turn():
 		main.sound_manager.play_sound(SPEND)
 		create_floating_label(turn_spend, "SPEND", "PLAYER")
 	if turn_lock: 
-		main.sound_manager.play_sound(VOIDED)
+		main.sound_manager.play_sound(RESERVE_LOCK)
 		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
 		create_floating_label("", "VOID", "PLAYER")
 	if turn_tally: 
@@ -1083,7 +1075,6 @@ func end_enemy_turn():
 	if turn_starstruck:
 		dazzled_effect.visible = true
 		dazzled_light.visible = true
-		main.sound_manager.play_sound(STARSTRUCK)
 		main.sound_manager.play_sound(PASSIVE_PAYDOWN)
 		create_floating_label("", "STARSTRUCK", "PLAYER")
 		var dazzled_tween = create_tween()
@@ -1149,7 +1140,6 @@ func end_enemy_turn():
 		
 	if main.player.starstruck and (main.player.has_merchant_scroll or main.player.has_active_income):
 		await get_tree().create_timer(1.0)
-		main.sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
 		main.shopkeeper.status.text = "CUSTOMER. FOCUS."
 		var keeper_tween = create_tween()
 		keeper_tween.tween_property(keeper_shadow,"self_modulate", Color("85007396"),0.2)

@@ -10,6 +10,19 @@
 [ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="7_qjnbp"]
 [ext_resource type="Texture2D" uid="uid://b0ex51pplf24g" path="res://Assets/CoinDeck3.png" id="8_qjnbp"]
 
+[sub_resource type="Gradient" id="Gradient_75buv"]
+offsets = PackedFloat32Array(0, 0.22742476)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bnefy"]
+gradient = SubResource("Gradient_75buv")
+width = 512
+height = 512
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
 [node name="PostGameScreen" type="Control" unique_id=1373690295]
 layout_mode = 3
 anchors_preset = 15
@@ -207,3 +220,15 @@ grow_vertical = 2
 scale = Vector2(3.5, 3.5)
 texture_normal = ExtResource("8_qjnbp")
 stretch_mode = 0
+
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=1852200988]
+position = Vector2(568, 103)
+scale = Vector2(17.921875, 10.046875)
+color = Color(1, 0.9019608, 0.5647059, 0.61960787)
+energy = 1.1
+texture = SubResource("GradientTexture2D_bnefy")
+texture_scale = 0.46
+
+[node name="Vignette" type="CanvasModulate" parent="." unique_id=1169181578]
+position = Vector2(573, 356)
+color = Color(0.7360586, 0.6517471, 0.7562498, 1)

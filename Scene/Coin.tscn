@@ -403,26 +403,13 @@ offset_bottom = 38.0
 texture = ExtResource("5_36o68")
 expand_mode = 1
 
-[node name="Control" type="Control" parent="." unique_id=386406435]
-z_index = 10
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -38.0
-offset_right = 40.0
-offset_bottom = -0.5
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(2, 2)
-
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1204775582]
 self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(200, 500)
 offset_left = 83.0
 offset_top = -48.0
 offset_right = 487.0
-offset_bottom = 252.0
+offset_bottom = 452.0
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1506074374]
 layout_mode = 2
@@ -430,6 +417,13 @@ layout_mode = 2
 [node name="Pop-Up" type="VFlowContainer" parent="PanelContainer/MarginContainer" unique_id=1148801643]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+
+[node name="Control" type="PanelContainer" parent="." unique_id=1286517029]
+self_modulate = Color(1, 1, 1, 0)
+offset_left = 83.0
+offset_top = -48.0
+offset_right = 487.0
+offset_bottom = 452.0
 
 [connection signal="mouse_entered" from="Control" to="." method="_on_control_mouse_entered"]
 [connection signal="mouse_exited" from="Control" to="." method="_on_control_mouse_exited"]

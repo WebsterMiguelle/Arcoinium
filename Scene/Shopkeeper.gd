@@ -256,7 +256,7 @@ func flip():
 	else:
 		c.is_stamped = true
 	c.add_to_group("keeper_coins")
-	add_child(c);
+	main.add_child(c);
 	main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,c.global_position)
 	
 	
@@ -785,7 +785,7 @@ func end_turn():
 		latest_pair_left_coin.status = CoinStatus.SHINED
 		latest_pair_left_coin.initial_status = CoinStatus.SHINED
 		latest_pair_left_coin.add_to_group("reserved coins")
-		add_child(latest_pair_left_coin)
+		main.add_child(latest_pair_left_coin)
 		
 		if main.player.has_coin_snipe:
 			main.player.trigger_temp_passive("coin_snipe","COIN SNIPE")
@@ -801,7 +801,7 @@ func end_turn():
 		latest_pair_right_coin.status = CoinStatus.SHINED
 		latest_pair_right_coin.initial_status = CoinStatus.SHINED
 		latest_pair_right_coin.add_to_group("reserved coins")
-		add_child(latest_pair_right_coin)
+		main.add_child(latest_pair_right_coin)
 		main.player.current_reserve += 2
 		
 		if main.player.has_simple_interest: 

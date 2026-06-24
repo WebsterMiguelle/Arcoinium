@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://bce80haxrb33g" path="res://Scene/shined.gd" id="4_hncfd"]
 [ext_resource type="Texture2D" uid="uid://cna4umj0n4yt" path="res://Assets/Blocking coin deck1.png" id="5_36o68"]
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="5_yekfk"]
+[ext_resource type="PackedScene" uid="uid://b7frpsmw0r6p" path="res://Scene/Coin Status Effect.tscn" id="7_4l3rx"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hncfd"]
 atlas = ExtResource("2_jea4o")
@@ -416,11 +417,32 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(2, 2)
 
-[node name="Pop-Up" type="VFlowContainer" parent="." unique_id=1148801643]
-offset_left = 92.0
-offset_top = -33.0
-offset_right = 288.0
-offset_bottom = 69.0
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1204775582]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(200, 500)
+offset_left = 83.0
+offset_top = -48.0
+offset_right = 487.0
+offset_bottom = 252.0
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1506074374]
+layout_mode = 2
+
+[node name="Pop-Up" type="VFlowContainer" parent="PanelContainer/MarginContainer" unique_id=1148801643]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="CoinStatusEffect" parent="PanelContainer/MarginContainer/Pop-Up" unique_id=1377339001 instance=ExtResource("7_4l3rx")]
+layout_mode = 2
+
+[node name="CoinStatusEffect2" parent="PanelContainer/MarginContainer/Pop-Up" unique_id=1382125996 instance=ExtResource("7_4l3rx")]
+layout_mode = 2
+
+[node name="CoinStatusEffect3" parent="PanelContainer/MarginContainer/Pop-Up" unique_id=991979087 instance=ExtResource("7_4l3rx")]
+layout_mode = 2
+
+[node name="CoinStatusEffect4" parent="PanelContainer/MarginContainer/Pop-Up" unique_id=1514889463 instance=ExtResource("7_4l3rx")]
+layout_mode = 2
 
 [connection signal="mouse_entered" from="Control" to="." method="_on_control_mouse_entered"]
 [connection signal="mouse_exited" from="Control" to="." method="_on_control_mouse_exited"]

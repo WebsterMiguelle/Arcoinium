@@ -96,6 +96,8 @@ func _animate_entrance():
 	tween.parallel().tween_property(icon_sprite, "self_modulate:a", 1.0, 0.4)
 
 func _on_mouse_entered() -> void:
+	if is_instance_valid(main.player_info_menu):
+		return
 	# Even if disabled (can't afford), we can still float and show the description!
 	pivot_offset = size / 2.0
 	var tween = create_tween()
@@ -123,7 +125,8 @@ func _on_mouse_exited() -> void:
 	card_unhovered.emit()
 
 func _on_pressed() -> void:
-	
+	if is_instance_valid(main.player_info_menu):
+		return
 	if stock <= 0:
 		return
 	main.sound_manager.play_sound(SCROLL_OPEN)

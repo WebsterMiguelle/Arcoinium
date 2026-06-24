@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://b7frpsmw0r6p"]
+
+[ext_resource type="Script" uid="uid://dop41cnfkwih4" path="res://Scene/coin_status_effect.gd" id="1_erk4p"]
+[ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="2_i710r"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="3_ju84k"]
+
+[node name="CoinStatusEffect" type="HFlowContainer" unique_id=1377339001]
+z_index = 5
+anchors_preset = -1
+anchor_right = 0.22700001
+anchor_bottom = 0.15
+offset_right = 39.49597
+offset_bottom = -54.200005
+script = ExtResource("1_erk4p")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1468604001]
+layout_mode = 2
+
+[node name="Status Name" type="Label" parent="VBoxContainer" unique_id=1728469752]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.66387457, 0, 0.023598652, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("2_i710r")
+theme_override_font_sizes/font_size = 32
+text = "VOIDED"
+
+[node name="Description" type="Label" parent="VBoxContainer" unique_id=1986840341]
+custom_minimum_size = Vector2(200.44, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.083911665, 0.083911665, 0.083911665, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("3_ju84k")
+theme_override_font_sizes/font_size = 24
+text = "Gain 1 Coin at the start of next turn."
+autowrap_mode = 3

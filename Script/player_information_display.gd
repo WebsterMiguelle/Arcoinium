@@ -1,21 +1,39 @@
 extends HBoxContainer
 const PASSIVE_BAR_ICON = preload("uid://dldde8yrawlpn")
 @onready var passives_container: GridContainer = $PassivesPanel/MarginContainer/VBoxContainer/GridContainer
+var player_node
+@onready var status_container: VFlowContainer = $StatusEffectsPanel/MarginContainer/StatusContainer
+const STATUS_EFFECT = preload("uid://bmy7mewa8qp5l")
+enum Status{
+	GAIN,
+	DEBT,
+	THRIFT,
+	SPEND,
+	
+	DROWSE,
+	VOIDED,
+	TALLY,
+	STARSTRUCK,
+	SEALED,
+	SUNLIT_CURSE,
+	MOONLIT_CURSE,
+	SOLAR_BLESSED,
+	LUNAR_BLESSED,
+	
+	BENCHMARK,
+	AUDIT,
+	SETTLE,
+	EMPOWERED,
+	RADIANT,
+	
+	MOMENTUM,
+	TRUST
+}
 
 @onready var passive_name: Label = $PassivesPanel/MarginContainer/VBoxContainer/Passive_name
 @onready var passive_desc: Label = $PassivesPanel/MarginContainer/VBoxContainer/Passive_desc
 
-@onready var coins: Label = $StatsBoxPanel/MarginContainer/VBoxContainer/Coins
-
-@onready var gain: Label = $StatusEffectsPanel/MarginContainer/VBoxContainer/GainBox/Gain
-@onready var gain_info: Label = $StatusEffectsPanel/MarginContainer/VBoxContainer/GainBox/GainInfo
-
-@onready var debt: Label = $StatusEffectsPanel/MarginContainer/VBoxContainer/DebtBox/Debt
-@onready var debt_info: Label = $StatusEffectsPanel/MarginContainer/VBoxContainer/DebtBox/DebtInfo
-
-@onready var thrift: Label = $StatusEffectsPanel/MarginContainer/VBoxContainer/ThriftBox/Thrift
-@onready var thrift_info: Label = $StatusEffectsPanel/MarginContainer/VBoxContainer/ThriftBox/ThriftInfo
-
+@onready var coins: Label = $StatsBoxPanel/MarginContainer/VBoxContainer/HBoxContainer/Coins
 var is_closing: bool = false
 var is_open: bool = false
 var slide_distance: float = 30.0 
@@ -246,7 +264,7 @@ func show_passive_details(p_name: String, p_desc: String) -> void:
 	passive_name.text = p_name
 	passive_desc.text = p_desc
 	# 2. Reset the font size to your maximum/default size (e.g., 16)
-	var current_font_size = 20 
+	var current_font_size = 24 
 	passive_desc.add_theme_font_size_override("font_size", current_font_size)
 	
 	# 3. Force Godot to calculate the new text dimensions
@@ -268,21 +286,83 @@ func clear_passive_details() -> void:
 func populate_stats(player:Node) -> void:
 	var stats_text = ""
 	stats_text += "Coins: " + str(player.coin) + "\n"
-	stats_text += "Silver Flip Rate: " + str(player.silver_flip_rate * 100) + "%\n"
-	stats_text += "Gold Flip Rate: " + str(player.gold_flip_rate * 100) + "%\n"
-	stats_text += "Max Playable Coins: " + str(player.max_playable_coins) + "\n"
+	stats_text += "Silver Flip Rate: " + str(int(player.silver_flip_rate * 100)) + "%\n"
+	stats_text += "Gold Flip Rate: " + str(int(player.gold_flip_rate * 100)) + "%\n"
 	stats_text += "Max Reflips: " + str(player.max_re_flip) + "\n"
-	stats_text += "Max Reserve: " + str(player.max_reserve)
+	stats_text += "Max Reserve: " + str(player.max_reserve) + "\n"
 	
 	coins.text = stats_text
-	gain.text = "Gain ( " + str(player.gain) + " )"
-	debt.text = "Debt ( " + str(player.debt) + " )"
-	thrift.text = "Thrift ( " + str(player.thrift) + " )"
 	
-	gain_info.text = "Gain " + str(player.gain) + " coins next turn."
-	debt_info.text = "Pay " + str(player.debt) + " coins to start gaining."
-	thrift_info.text = "Cannot place " + str(player.thrift) + " coins \non the Arcane Circle."
-
+		# ==========================================
+	# 3. POPULATE STATUS EFFECTS
+	# ==========================================
+	
+	if player.starstruck:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.STARSTRUCK,1)
+		s.add_to_group("player_status")
+		status_container.add_child(s)
+	if player.slow:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.DROWSE,1)
+		s.add_to_group("player_status")
+		status_container.add_child(s)
+	if player.lock:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.VOIDED,1)
+		s.add_to_group("player_status")
+		status_container.add_child(s)
+	if player.tally_counter > 0:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.TALLY,player.tally_counter)
+		s.add_to_group("player_status")
+		status_container.add_child(s)
+	if player.has_sunlit_curse:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.SUNLIT_CURSE,1)
+		s.add_to_group("player_status")
+		status_container.add_child(s)
+	if player.has_midnight_curse:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.MOONLIT_CURSE,1)
+		s.add_to_group("player_status")
+		status_container.add_child(s)
+	if player.solar_blessing:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.SOLAR_BLESSED,1)
+		s.add_to_group("player_status")
+		status_container.add_child(s)
+	if player.lunar_blessing:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.LUNAR_BLESSED,1)
+		s.add_to_group("player_status")
+		status_container.add_child(s)
+	if player.sealed:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.SEALED,1)
+		s.add_to_group("player_status")
+		status_container.add_child(s)
+	if player.gain > 0:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.GAIN,player.gain)
+		s.add_to_group("player_status")
+		status_container.add_child(s)
+	if player.debt > 0:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.DEBT,player.debt)
+		s.add_to_group("player_status")
+		status_container.add_child(s)
+	if player.thrift > 0:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.THRIFT,player.thrift)
+		s.add_to_group("player_status")
+		status_container.add_child(s)
+	if player.spend > 0:
+		var s = STATUS_EFFECT.instantiate()
+		s.set_status(Status.SPEND,player.spend)
+		s.add_to_group("player_status")
+		status_container.add_child(s)
+	
 func _input(event: InputEvent) -> void:
 	if is_open and not is_closing:
 		if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:

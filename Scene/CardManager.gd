@@ -1,3 +1,4 @@
+#CardManager
 extends CanvasLayer
 @onready var main = get_node("/root/Main")
 @onready var passive_manager = get_node("/root/Main/PassiveManager")

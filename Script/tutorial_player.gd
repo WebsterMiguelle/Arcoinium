@@ -1,4 +1,12 @@
-extends Node2D
+#player tutorial
+extends Node2D 
+
+enum CoinStatus {
+	NONE,
+	SHINED,
+	VOIDED,
+	DAZZLED
+}
 
 enum Enemy{
 	SHOP_KEEPER
@@ -84,6 +92,9 @@ var silver_flip_rate = 0.1: #Chance to Flip a Silver Coin
 var gold_flip_rate = 0.05: #Chance to Flip a Gold Coin
 	set(value): 
 		gold_flip_rate = clamp(value,0.0,100.0) 
+var shine_flip_rate = 0.25: #Chance to Flip a Shined Coin
+	set(value):
+		shine_flip_rate = clamp(value,0.0,100.0)
 
 #STATUS EFFECTS
 var lock = false #Reserve is Locked
@@ -199,11 +210,13 @@ func coin_calculation():
 	var total_damage = 0
 	var total_gain = 0
 	var total_debt = 0
-	var total_thrift = 0
+	var total_thrift = 0	
 	var total_spend = 0
+
+
+	var shined_sun_boost = 0
+	var shined_moon_boost = 0
 	
-	var shined_sun_multiplier = 1
-	var shined_moon_multiplier = 1
 	sun_count = 0
 	moon_count = 0
 	var coins = get_tree().get_nodes_in_group("coins")
@@ -214,8 +227,12 @@ func coin_calculation():
 			right_coin = coin
 		if coin.state == 0 and !coin.reserved:
 			sun_count += 1
+			if coin.status == CoinStatus.SHINED:
+				shined_sun_boost += 3 + coin.shine_stack
 		elif coin.state == 1 and !coin.reserved:
 			moon_count +=1
+			if coin.status == CoinStatus.SHINED:
+				shined_moon_boost += 3 + coin.shine_stack
 		if left_coin != null and right_coin != null and left_coin.reserved == false and right_coin.reserved == false:
 			# 1. HEAD-HEAD PAIR
 			if left_coin.state == 0 and right_coin.state == 0:
@@ -242,12 +259,12 @@ func coin_calculation():
 	if coins != null:
 		if total_damage != 0: 
 			text += "\nDAMAGE: " + str(total_damage)
-			if shined_sun_multiplier > 1:
-				text += " (x" + str(shined_sun_multiplier) + ")"
+			if shined_sun_boost > 1:
+				text += " (x" + str(shined_sun_boost) + ")"
 		if total_gain != 0:
 			text += "\nGAIN: " + str(total_gain)
-			if shined_moon_multiplier > 1:
-				text += " (x" + str(shined_moon_multiplier) + ")"
+			if shined_moon_boost > 1:
+				text += " (x" + str(shined_moon_boost) + ")"
 		if total_debt != 0:
 			text += "\nDEBT: " + str(total_debt)
 		if total_thrift != 0:
@@ -261,7 +278,7 @@ func coin_calculation():
 	if text != "":
 		sun_moon_count.text = "𖤓 " + str(sun_count) + " ☾ " + str(moon_count)
 		main.turn_calculation_box.entrance(true)
-	return [total_damage,total_gain,total_debt,total_thrift, total_spend,shined_sun_multiplier, shined_moon_multiplier]
+	return [total_damage,total_gain,total_debt,total_thrift, total_spend,shined_sun_boost, shined_moon_boost]
 
 func reserve():
 	print("RESERVE")
@@ -298,6 +315,14 @@ func reserve():
 		
 	if c.base_value > 2:
 		main.sound_manager.play_sound(COIN_UPGRADE)
+		
+	if main.advance_mode:
+		var shine_chance = randf()
+		if shine_chance <= shine_flip_rate:
+			c.add_status(c.CoinStatus.SHINED)
+			c.refresh_sprite()
+			c.pulse_glow()
+		
 	take_damage(1)
 	add_child(c)
 
@@ -319,6 +344,9 @@ func flip():
 		toggle_button(main.re_flip_button,false)
 		
 	var state = randi() % 2
+	
+	if main.advance_mode and not main.adv_debt_done and flip_clicks <= 2:
+		state = 0
 	
 	if state == 0:
 		main.total_heads += 1
@@ -352,6 +380,13 @@ func flip():
 		
 	if c.base_value > 2:
 		main.sound_manager.play_sound(COIN_UPGRADE)
+		
+	if main.advance_mode:
+		var shine_chance = randf()
+		if shine_chance <= shine_flip_rate:
+			c.add_status(c.CoinStatus.SHINED)
+			c.refresh_sprite()
+			c.pulse_glow()
 
 	take_damage(1)
 	if spend > 0:
@@ -376,6 +411,10 @@ func flip():
 		toggle_button(main.flip_button,true)
 		toggle_button(main.reserve_button,true)
 	coin_calculation()
+	
+	if main.advance_mode and not main.adv_debt_done and flip_clicks >= 2:
+		toggle_button(main.flip_button,true)
+		
 	if main.enemy.coin > 0:
 		main.check_defeat()
 
@@ -519,8 +558,8 @@ func end_turn():
 	# PHASE 1: MATH & LOGIC (Instantly calculate everything)
 	# ==========================================
 	var calculations = coin_calculation()
-	var turn_damage:int = calculations[0] * calculations[5]
-	var turn_gain:int = calculations[1] * calculations[6]
+	var turn_damage:int = calculations[0] + calculations[5]
+	var turn_gain:int = calculations[1] + calculations[6]
 	var turn_debt = calculations[2]
 	var turn_thrift = calculations[3]
 	var turn_spend = calculations[4]

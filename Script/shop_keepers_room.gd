@@ -3,6 +3,7 @@ extends ColorRect
 @onready var dialogue_area: Marker2D = $"Dialogue Area"
 const DIALOGUE = preload("uid://dv278qg6j2epd")
 
+var tutorial_advance_mode: bool = false
 var dialogue: Node2D = null
 var has_encountered_basic = false
 var has_encountered_advance = false
@@ -63,7 +64,8 @@ func _on_advance_mode_mouse_entered() -> void:
 	has_encountered_advance = true
 	
 func _on_advance_mode_pressed() -> void:
-	SceneTransition.load_scene("res://Scene/Main_Menu.tscn")
+	SceneTransition.tutorial_advance_mode = true
+	SceneTransition.load_scene("res://Scene/tutorial_main.tscn")
 
 func _on_basic_mode_mouse_entered() -> void:
 	
@@ -80,4 +82,9 @@ func _on_basic_mode_mouse_entered() -> void:
 	has_encountered_basic = true
 
 func _on_basic_mode_pressed() -> void:
+	SceneTransition.tutorial_advance_mode = false
 	SceneTransition.load_scene("res://Scene/tutorial_main.tscn")
+
+
+func _on_archive_button_pressed() -> void:
+	SceneTransition.load_scene("res://Scene/archive.tscn")

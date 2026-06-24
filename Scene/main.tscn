@@ -897,12 +897,12 @@ animations = [{
 "speed": 2.0
 }]
 
-[sub_resource type="Gradient" id="Gradient_75buv"]
+[sub_resource type="Gradient" id="Gradient_fnsx1"]
 offsets = PackedFloat32Array(0, 0.22742476)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_c2iwn"]
-gradient = SubResource("Gradient_75buv")
+gradient = SubResource("Gradient_fnsx1")
 width = 512
 height = 512
 use_hdr = true
@@ -2241,12 +2241,12 @@ offset_right = 739.0
 offset_bottom = 115.0
 texture = ExtResource("23_tbp1y")
 
-[node name="Shop" type="Label" parent="ShopManager/Background" unique_id=1709692202]
+[node name="Shop" type="Label" parent="ShopManager/Background/ShopBanner" unique_id=1709692202]
 layout_mode = 0
-offset_left = 353.0
-offset_top = 32.000008
-offset_right = 703.0
-offset_bottom = 87.0
+offset_left = 39.0
+offset_top = 26.000008
+offset_right = 389.0
+offset_bottom = 81.0
 rotation = 0.06981317
 theme_override_constants/outline_size = 2
 theme_override_fonts/font = ExtResource("30_tcekk")

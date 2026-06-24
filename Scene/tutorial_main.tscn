@@ -1069,7 +1069,7 @@ text = "Restart"
 
 [node name="PauseMenu" type="CanvasLayer" parent="." unique_id=722870696]
 process_mode = 3
-layer = 5
+layer = 10000
 visible = false
 script = ExtResource("36_ismbn")
 
@@ -1088,31 +1088,40 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Resume" type="Button" parent="PauseMenu/Panel" unique_id=496970523]
-custom_minimum_size = Vector2(200, 100)
+custom_minimum_size = Vector2(200, 80)
 layout_mode = 0
 offset_left = 200.0
 offset_top = 37.0
 offset_right = 400.0
-offset_bottom = 137.0
+offset_bottom = 117.0
 text = "Resume"
 
 [node name="EndRun" type="Button" parent="PauseMenu/Panel" unique_id=1637342553]
-custom_minimum_size = Vector2(200, 100)
+custom_minimum_size = Vector2(200, 80)
 layout_mode = 0
 offset_left = 204.0
 offset_top = 166.0
 offset_right = 404.0
-offset_bottom = 266.0
+offset_bottom = 246.0
 text = "Endrun"
 
 [node name="Quit" type="Button" parent="PauseMenu/Panel" unique_id=1056057779]
-custom_minimum_size = Vector2(200, 100)
+custom_minimum_size = Vector2(200, 80)
 layout_mode = 0
-offset_left = 200.0
-offset_top = 305.0
-offset_right = 400.0
-offset_bottom = 405.0
+offset_left = 204.0
+offset_top = 371.0
+offset_right = 404.0
+offset_bottom = 451.0
 text = "Main Menu"
+
+[node name="Setting" type="Button" parent="PauseMenu/Panel" unique_id=397550484]
+custom_minimum_size = Vector2(200, 80)
+layout_mode = 0
+offset_left = 204.0
+offset_top = 275.0
+offset_right = 404.0
+offset_bottom = 355.0
+text = "Setting"
 
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
 position = Vector2(577, 318)
@@ -1167,3 +1176,4 @@ gizmo_extents = 0.0
 [connection signal="pressed" from="PauseMenu/Panel/Resume" to="PauseMenu" method="_on_resume_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/EndRun" to="PauseMenu" method="_on_end_run_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/Quit" to="PauseMenu" method="_on_quit_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/Setting" to="PauseMenu" method="_on_setting_pressed"]

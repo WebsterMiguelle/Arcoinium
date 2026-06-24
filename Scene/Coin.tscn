@@ -420,10 +420,9 @@ layout_mode = 2
 
 [node name="Control" type="PanelContainer" parent="." unique_id=1286517029]
 self_modulate = Color(1, 1, 1, 0)
-offset_left = 83.0
-offset_top = -48.0
-offset_right = 487.0
-offset_bottom = 452.0
+offset_top = -41.0
+offset_right = 80.0
+offset_bottom = 39.0
 
 [connection signal="mouse_entered" from="Control" to="." method="_on_control_mouse_entered"]
 [connection signal="mouse_exited" from="Control" to="." method="_on_control_mouse_exited"]

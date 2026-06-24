@@ -74,10 +74,6 @@ region = Rect2(96, 0, 32, 32)
 atlas = ExtResource("1_ikq2d")
 region = Rect2(192, 32, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_j2x6b"]
-atlas = ExtResource("1_ikq2d")
-region = Rect2(128, 0, 32, 32)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_o0t0r"]
 atlas = ExtResource("1_ikq2d")
 region = Rect2(224, 32, 32, 32)
@@ -278,14 +274,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_j2x6b")
-}],
-"loop": true,
-"name": &"Merchant\'s Scroll",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_o0t0r")
 }],
 "loop": true,
@@ -386,10 +374,5 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 5.0
-}, {
-"frames": [],
-"loop": true,
-"name": &"new_animation",
 "speed": 5.0
 }]

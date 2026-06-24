@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://bdhft60g0dfmo"
-path="res://.godot/imported/starstruck.wav-fc3d07800f4ba23495b0ef3e440d9d1c.sample"
+uid="uid://hpygqai2v7qw"
+path="res://.godot/imported/piggy.wav-994aae309ab75b5103c979fd9c59eb91.sample"
 
 [deps]
 
-source_file="res://SFX/starstruck.wav"
-dest_files=["res://.godot/imported/starstruck.wav-fc3d07800f4ba23495b0ef3e440d9d1c.sample"]
+source_file="res://SFX/piggy.wav"
+dest_files=["res://.godot/imported/piggy.wav-994aae309ab75b5103c979fd9c59eb91.sample"]
 
 [params]
 

@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://bdhft60g0dfmo"
-path="res://.godot/imported/starstruck.wav-fc3d07800f4ba23495b0ef3e440d9d1c.sample"
+uid="uid://b3o76gt2qs7pj"
+path="res://.godot/imported/dazzle.wav-4b0f2dcf29a5c51f27ce0d4f7db6058f.sample"
 
 [deps]
 
-source_file="res://SFX/starstruck.wav"
-dest_files=["res://.godot/imported/starstruck.wav-fc3d07800f4ba23495b0ef3e440d9d1c.sample"]
+source_file="res://SFX/dazzle.wav"
+dest_files=["res://.godot/imported/dazzle.wav-4b0f2dcf29a5c51f27ce0d4f7db6058f.sample"]
 
 [params]
 

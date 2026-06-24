@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://qf6cqyf1iup" path="res://Script/passive_archive.gd" id="1_xj8pw"]
 [ext_resource type="Texture2D" uid="uid://ctr0wbykggnh2" path="res://Assets/Detailed_Scroll_1-Sheet.png" id="2_3jht6"]
 [ext_resource type="Texture2D" uid="uid://eeepgts0tvpj" path="res://Assets/Passive_Icons.png" id="3_kid0q"]
-[ext_resource type="Texture2D" uid="uid://bmkxblxwtg47d" path="res://Assets/Rug.png" id="4_pr7qv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kid0q"]
 atlas = ExtResource("2_3jht6")
@@ -555,7 +554,7 @@ sprite_frames = SubResource("SpriteFrames_dc0ti")
 position = Vector2(101.99999, 75.99999)
 scale = Vector2(6, 6)
 sprite_frames = SubResource("SpriteFrames_dl26b")
-animation = &"Merchant\'s Scroll"
+animation = &"Bankrupt"
 
 [node name="CardName" type="Label" parent="CardView" unique_id=1220422312]
 custom_minimum_size = Vector2(200, 30)
@@ -625,14 +624,14 @@ offset_bottom = 342.0
 theme_override_font_sizes/font_size = 25
 text = "S - RANK"
 
-[node name="Frame" type="TextureRect" parent="." unique_id=1844933160]
+[node name="Frame" type="ColorRect" parent="." unique_id=940350812]
 custom_minimum_size = Vector2(580, 500)
 layout_mode = 0
 offset_left = 259.0
 offset_top = 108.0
 offset_right = 839.0
 offset_bottom = 608.0
-texture = ExtResource("4_pr7qv")
+color = Color(0.63866097, 0.638661, 0.63866097, 1)
 
 [node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=847607217]
 custom_minimum_size = Vector2(580, 500)

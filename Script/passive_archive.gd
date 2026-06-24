@@ -1,4 +1,3 @@
-#Passive Archive
 extends ColorRect
 @onready var Card_Container = $"ScrollContainer/GridContainer"
 @onready var Card_View = $"CardView"

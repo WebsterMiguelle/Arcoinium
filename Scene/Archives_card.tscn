@@ -200,7 +200,6 @@ metadata/_edit_use_anchors_ = true
 position = Vector2(74, 118)
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_wnubr")
-animation = &"unfurl_down"
 
 [node name="Label" type="Label" parent="." unique_id=1508505840]
 texture_filter = 1
@@ -221,11 +220,8 @@ autowrap_mode = 3
 position = Vector2(73, 73)
 scale = Vector2(3, 3)
 sprite_frames = ExtResource("4_m5yap")
+animation = &"All In"
 
-[node name="IconContainer" type="Node2D" parent="." unique_id=1681592906]
-position = Vector2(73, 73)
-
-[connection signal="card_selected" from="." to="." method="_on_card_selected"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="." to="." method="_on_pressed"]

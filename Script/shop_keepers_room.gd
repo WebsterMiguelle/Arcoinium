@@ -84,7 +84,3 @@ func _on_basic_mode_mouse_entered() -> void:
 func _on_basic_mode_pressed() -> void:
 	SceneTransition.tutorial_advance_mode = false
 	SceneTransition.load_scene("res://Scene/tutorial_main.tscn")
-
-
-func _on_archive_button_pressed() -> void:
-	SceneTransition.load_scene("res://Scene/archive.tscn")

@@ -77,6 +77,8 @@ const DEBTED_ATTACK = preload("uid://ddf31ka4126fv")
 const SPENDED_ATTACK = preload("uid://lfprp4w7saas")
 const THRIFTED_ATTACK = preload("uid://dtx4a0j6atomh")
 const PASSIVE_COIN_SNIPE = preload("uid://b0rkegpstg6g4")
+const SHOPKEEPER_BATTLE_VOICE = preload("uid://cec837paqvvj")
+const PIGGY = preload("uid://hpygqai2v7qw")
 
 #PARTICLES
 const COIN_ADD_PARTICLE = preload("uid://s6va71jul34t")
@@ -419,6 +421,7 @@ func keeper_coin_calculation():
 	return [total_damage,total_gain,total_debt,total_thrift, total_spend, shined_sun_boost, shined_moon_boost, void_count]
 
 func start_keeper_turn():
+	main.sound_manager.play_sound(SHOPKEEPER_BATTLE_VOICE)
 	flip_clicks = 0
 	upgraded_flip_count = 0
 	toggle_button(main.flip_button,true)
@@ -582,12 +585,12 @@ func activate_turn_end_passives():
 		for coin in coins:
 			if coin.is_stamped:
 				coin.is_stamped = false
-				coin.upgrade()
 				if main.player.has_inflation and coin.base_value == 6:
 					if coin.status == CoinStatus.SHINED:
 						coin.shine_stack += 1
 					else:
 						coin.add_status(CoinStatus.SHINED)
+				coin.upgrade()
 				if coin.status == CoinStatus.VOIDED:
 					coin.status = coin.initial_status
 					if main.player.has_pay_down:
@@ -758,6 +761,7 @@ func end_turn():
 	var latest_pair_left_coin
 	var latest_pair_right_coin
 	if main.player.has_piggy:
+		main.sound_manager.play_sound(PIGGY)
 		latest_pair_left_coin = COIN.instantiate()
 		latest_pair_right_coin = COIN.instantiate()
 		

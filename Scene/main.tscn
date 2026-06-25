@@ -1189,10 +1189,12 @@ script = ExtResource("3_hspdg")
 [node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1219776385]
 process_mode = 3
 stream = SubResource("AudioStreamPolyphonic_hspdg")
+bus = &"SFX"
 
 [node name="BGMPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=526912258]
 process_mode = 3
 stream = SubResource("AudioStream_ot48q")
+bus = &"BGM"
 
 [node name="CoinDeck" parent="." unique_id=955153148 instance=ExtResource("4_2wwxx")]
 position = Vector2(576, 330.285)
@@ -2467,7 +2469,7 @@ position = Vector2(832, 432)
 [node name="Boss" type="Marker2D" parent="Progression Map" unique_id=728995645]
 position = Vector2(1024, 432)
 
-[node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384 groups=["point_light"]]
 position = Vector2(599, 318)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.9019608, 0.5647059, 0.61960787)
@@ -2478,7 +2480,7 @@ texture_scale = 0.46
 [node name="Vignette" type="CanvasModulate" parent="." unique_id=1590582319]
 color = Color(0.7360586, 0.6517471, 0.7562498, 1)
 
-[node name="ParticleManager" type="Node2D" parent="." unique_id=2081468604]
+[node name="ParticleManager" type="Node2D" parent="." unique_id=2081468604 groups=["particle_manager"]]
 script = ExtResource("17_2ix4a")
 
 [node name="Dusk Particles" type="GPUParticles2D" parent="ParticleManager" unique_id=1557261977]

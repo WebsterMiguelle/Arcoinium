@@ -5,7 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://dgf4sjexlhcro" path="res://Assets/tutorialScreenShopkeeper.png" id="3_at7dl"]
 [ext_resource type="Texture2D" uid="uid://bj5nyxg8bmc1k" path="res://Assets/backgroundBanner.png" id="4_c41qw"]
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="5_y1smu"]
-[ext_resource type="Texture2D" uid="uid://bivk5jj1h0vgt" path="res://Assets/CoinBarBackGround.png" id="6_at7dl"]
 
 [sub_resource type="Gradient" id="Gradient_75buv"]
 offsets = PackedFloat32Array(0, 0.22742476)
@@ -146,7 +145,6 @@ action_mode = 0
 text = "BACK"
 
 [node name="Archive Button" type="Button" parent="." unique_id=1385593860]
-self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(150, 45)
 layout_mode = 0
 offset_left = 933.0
@@ -157,14 +155,6 @@ theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = SubResource("StyleBoxFlat_2gtc7")
 action_mode = 0
 text = "ARCHIVE"
-
-[node name="TextureRect" type="TextureRect" parent="Archive Button" unique_id=512718938]
-layout_mode = 0
-offset_left = -77.0
-offset_top = -31.0
-offset_right = 209.0
-offset_bottom = 99.0
-texture = ExtResource("6_at7dl")
 
 [connection signal="mouse_entered" from="Basic Mode" to="." method="_on_basic_mode_mouse_entered"]
 [connection signal="pressed" from="Basic Mode" to="." method="_on_basic_mode_pressed"]

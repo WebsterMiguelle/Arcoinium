@@ -8,6 +8,7 @@ enum CoinStatus{
 	DAZZLED
 }
 
+const LOAN_SHARK_BITE = preload("uid://xbuhunh3hna4")
 
 @onready var keeper_shadow: TextureRect = $"../Shopkeeper/Keeper Shadow"
 const SHOPKEEPER_VOICE = preload("uid://c86gce7j7tjey")
@@ -211,7 +212,7 @@ func refresh_start_of_battle_stats():
 	has_radiant = false
 	settle = 0
 	gain = 0
-	debt = 0
+	debt = 50
 	thrift = 0
 	spend = 0
 	current_played_coin = 0
@@ -479,6 +480,12 @@ func flip():
 	main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,c.global_position)
 	var loan_damage:int = ceil(debt * 0.02)
 	if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
+		var bite = LOAN_SHARK_BITE.instantiate()
+		bite.global_position = main.enemy_portrait.global_position
+		bite.global_position.x += randi_range(-40,40)
+		bite.global_position.y += randi_range(-10,80)
+		add_child(bite)
+		
 		take_damage(loan_damage)
 		create_floating_label(loan_damage,"DAMAGE","ENEMY")
 		main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
@@ -903,6 +910,11 @@ func end_enemy_turn():
 			enemy_coin_calculation()
 			var loan_damage:int = ceil(debt * 0.02)
 			if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
+				var bite = LOAN_SHARK_BITE.instantiate()
+				bite.global_position = main.enemy_portrait.global_position
+				bite.global_position.x += randi_range(-10,10)
+				bite.global_position.y += randi_range(-10,10)
+				add_child(bite)
 				take_damage(loan_damage)
 				create_floating_label(loan_damage,"DAMAGE","ENEMY")
 				main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
@@ -922,6 +934,12 @@ func end_enemy_turn():
 				main.sound_manager.play_sound(COIN_FLIP)
 				var loan_damage:int = ceil(debt * 0.02)
 				if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
+					var bite = LOAN_SHARK_BITE.instantiate()
+					bite.global_position = main.enemy_portrait.global_position
+					bite.global_position.x += randi_range(-10,10)
+					bite.global_position.y += randi_range(-10,10)
+					add_child(bite)
+					
 					take_damage(loan_damage)
 					create_floating_label(loan_damage,"DAMAGE","ENEMY")
 					main.player.trigger_temp_passive("loan_shark","LOAN SHARK")

@@ -761,23 +761,25 @@ func end_turn():
 	var latest_pair_left_coin
 	var latest_pair_right_coin
 	if main.player.has_piggy:
-		main.sound_manager.play_sound(PIGGY)
-		latest_pair_left_coin = COIN.instantiate()
-		latest_pair_right_coin = COIN.instantiate()
-		
+		latest_pair_left_coin = null
+		latest_pair_right_coin = null
 	for coin in coins:
 		if main.player.has_piggy and is_left and !coin.reserved:
+			latest_pair_left_coin = COIN.instantiate()
 			latest_pair_left_coin.copy_coin(coin)
 			is_left = false
 		elif main.player.has_piggy and !is_left and !coin.reserved:
+			latest_pair_right_coin = COIN.instantiate()
 			latest_pair_right_coin.copy_coin(coin)
 			is_left = true
 		if coin.reserved == false:
 			main.particle_manager.spawn_particle(COIN_PLAY_PARTICLE,coin.global_position)
 			coin.queue_free()
 			
-	if main.player.has_piggy:
+	if main.player.has_piggy and latest_pair_left_coin != null and latest_pair_right_coin != null:
 		main.player.trigger_temp_passive("piggy","PIGGY")
+		main.sound_manager.play_sound(PIGGY)
+		main.player.piggy.shine()
 		var type = latest_pair_left_coin.type
 		latest_pair_left_coin.setup(latest_pair_left_coin.state,main.coin_deck.get_reserve_slot())
 		latest_pair_left_coin.reserved = true

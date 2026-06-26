@@ -18,6 +18,13 @@ enum Turn {
 @onready var keeper_info: Button = $"Keeper Info"
 
 
+@onready var loan_shark: AnimatedSprite2D = $"Battle UI/LoanShark"
+@onready var loan_splash: Marker2D = $"Battle UI/LoanShark/Loan Splash"
+@onready var loan_enter: Marker2D = $"Battle UI/LoanShark/Loan Enter"
+
+
+const DEBT_EFFECT_PARTICLE = preload("uid://c52tpyupg2ynl")
+const DEBT_DAMAGE_PARTICLE = preload("uid://1g21u656k60k")
 enum Enemy{
 	MAGE,
 	DWARF,
@@ -556,6 +563,13 @@ func start_enemy_turn():
 		show_turn_ui("ENEMY TURN")
 		coin_deck.reset_sigils()
 		sound_manager.play_sound(TURN_ENEMY)
+		if main.player.has_loan_shark and enemy.debt > 0:
+			sound_manager.play_sound(PASSIVE_JAR_O_SAVINGS)
+			particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,loan_enter.global_position)
+			particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,loan_enter.global_position)
+			particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,loan_enter.global_position)
+			particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,loan_enter.global_position)
+			loan_shark.play("default")
 		await enemy.start_enemy_turn()
 		if enemy.coin > 0:
 			await get_tree().create_timer(0.6).timeout
@@ -1496,3 +1510,10 @@ func _on_keeper_info_toggled(toggled_on: bool) -> void:
 			keeper_info_menu.close()
 			player_info_menu = null
 			keeper_info.button_pressed = false
+
+
+func _on_loan_shark_animation_finished() -> void:
+			particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,loan_splash.global_position)
+			particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,loan_splash.global_position)
+			particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,loan_splash.global_position)
+			particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,loan_splash.global_position)

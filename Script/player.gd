@@ -53,6 +53,10 @@ const PASSIVE_BAR_ICON = preload("res://Scene/Passive_Bar_Icon.tscn")
 @onready var lunar_glow: TextureRect = $"Lunar Blessing Icon/Lunar Glow"
 @onready var extra_turn_effect: TextureRect = $"../Extra Turn Effect"
 @onready var all_in_effect: TextureRect = $"../All In Effect"
+@onready var piggy: Node2D = $"../Piggy"
+
+var piggy_x = 943.21
+var piggy_y = 259.925
 
 const COIN = preload("uid://ddet242jm5v23")
 var main
@@ -327,7 +331,7 @@ func reset_stats():
 	#A-Rank
 	has_magic_trick = false
 	has_sleight_of_hand = false #Note: This is PICKPOCKET
-	has_piggy = false
+	has_piggy = true
 
 	#INNOVATOR PASSIVES
 
@@ -353,7 +357,7 @@ func reset_stats():
 
 	has_pay_down = false #Note: This is BANKRUPT
 	has_reimbursement = false #Note: This is TAX EVASION
-	has_loan_shark = false
+	has_loan_shark = true
 	has_lending_charge = false
 
 	has_cash_out = false
@@ -362,6 +366,11 @@ func reset_stats():
 	has_deposit = false
 
 func refresh_start_of_battle_stats():
+	if has_piggy:
+		piggy.visible = true
+		piggy.setup(piggy_x,piggy_y,main)
+	else:
+		piggy.visible = false
 	sealed = false
 	settle = 15
 	initial_max_reserve = max_reserve
@@ -1279,22 +1288,25 @@ func end_turn():
 	var coins = get_tree().get_nodes_in_group("coins")
 	var is_left = true
 	if has_piggy:
-		latest_pair_left_coin = COIN.instantiate()
-		latest_pair_right_coin = COIN.instantiate()
+		latest_pair_left_coin = null
+		latest_pair_right_coin = null
 	for coin in coins:
 		if has_piggy and is_left and !coin.reserved:
+			latest_pair_left_coin = COIN.instantiate()
 			latest_pair_left_coin.copy_coin(coin)
 			is_left = false
 		elif has_piggy and !is_left and !coin.reserved:
+			latest_pair_right_coin = COIN.instantiate()
 			latest_pair_right_coin.copy_coin(coin)
 			is_left = true
 		if coin.reserved == false:
 			main.particle_manager.spawn_particle(COIN_PLAY_PARTICLE,coin.global_position)
 			coin.queue_free()
 			
-	if has_piggy:
+	if has_piggy and latest_pair_left_coin != null and latest_pair_right_coin != null:
 		trigger_temp_passive("piggy","PIGGY")
 		main.sound_manager.play_sound(PIGGY)
+		piggy.shine()
 		var type = latest_pair_left_coin.type
 		latest_pair_left_coin.setup(latest_pair_left_coin.state,main.coin_deck.get_reserve_slot())
 		latest_pair_left_coin.reserved = true

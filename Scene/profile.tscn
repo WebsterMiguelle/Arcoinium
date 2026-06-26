@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://bqvc4dk3e6bkl" path="res://Script/profile.gd" id="1_ljn20"]
 [ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="2_bvju4"]
 [ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="2_huopf"]
+[ext_resource type="Texture2D" uid="uid://bmkxblxwtg47d" path="res://Assets/Rug.png" id="2_oqtqq"]
 [ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="3_aul7u"]
 [ext_resource type="Texture2D" uid="uid://r5gatuytbe0t" path="res://Assets/taxCollector.png" id="3_oqtqq"]
 [ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="4_6j1ob"]
@@ -326,14 +327,14 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Twilight Sage"
 
-[node name="Frame" type="ColorRect" parent="." unique_id=1473770119]
+[node name="Frame" type="TextureRect" parent="." unique_id=776675147]
 custom_minimum_size = Vector2(800, 550)
 layout_mode = 0
 offset_left = 300.0
 offset_top = 45.0
 offset_right = 1100.0
 offset_bottom = 595.0
-color = Color(0.46740663, 0.20995983, 0, 1)
+texture = ExtResource("2_oqtqq")
 
 [node name="Player" type="Control" parent="Frame" unique_id=1548490419]
 custom_minimum_size = Vector2(800, 550)
@@ -362,7 +363,7 @@ offset_top = 35.0
 offset_right = 665.0
 offset_bottom = 85.0
 theme_override_font_sizes/font_size = 30
-text = "Statistics"
+text = "Information"
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
@@ -414,7 +415,7 @@ offset_top = 35.0
 offset_right = 665.0
 offset_bottom = 85.0
 theme_override_font_sizes/font_size = 30
-text = "Statistics"
+text = "Information"
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
@@ -466,7 +467,7 @@ offset_top = 35.0
 offset_right = 665.0
 offset_bottom = 85.0
 theme_override_font_sizes/font_size = 30
-text = "Statistics"
+text = "Information"
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
@@ -518,7 +519,7 @@ offset_top = 35.0
 offset_right = 665.0
 offset_bottom = 85.0
 theme_override_font_sizes/font_size = 30
-text = "Statistics"
+text = "Information"
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
@@ -570,7 +571,7 @@ offset_top = 35.0
 offset_right = 665.0
 offset_bottom = 85.0
 theme_override_font_sizes/font_size = 30
-text = "Statistics"
+text = "Information"
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
@@ -622,7 +623,7 @@ offset_top = 35.0
 offset_right = 665.0
 offset_bottom = 85.0
 theme_override_font_sizes/font_size = 30
-text = "Statistics"
+text = "Information"
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
@@ -674,7 +675,7 @@ offset_top = 35.0
 offset_right = 665.0
 offset_bottom = 85.0
 theme_override_font_sizes/font_size = 30
-text = "Statistics"
+text = "Information"
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
@@ -726,7 +727,7 @@ offset_top = 35.0
 offset_right = 665.0
 offset_bottom = 85.0
 theme_override_font_sizes/font_size = 30
-text = "Statistics"
+text = "Information"
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
@@ -778,7 +779,7 @@ offset_top = 35.0
 offset_right = 665.0
 offset_bottom = 85.0
 theme_override_font_sizes/font_size = 30
-text = "Statistics"
+text = "Information"
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
@@ -830,7 +831,7 @@ offset_top = 35.0
 offset_right = 665.0
 offset_bottom = 85.0
 theme_override_font_sizes/font_size = 30
-text = "Statistics"
+text = "Information"
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
@@ -882,7 +883,7 @@ offset_top = 35.0
 offset_right = 665.0
 offset_bottom = 85.0
 theme_override_font_sizes/font_size = 30
-text = "Statistics"
+text = "Information"
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true

@@ -1189,10 +1189,12 @@ script = ExtResource("3_hspdg")
 [node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1219776385]
 process_mode = 3
 stream = SubResource("AudioStreamPolyphonic_hspdg")
+bus = &"SFX"
 
 [node name="BGMPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=526912258]
 process_mode = 3
 stream = SubResource("AudioStream_ot48q")
+bus = &"BGM"
 
 [node name="CoinDeck" parent="." unique_id=955153148 instance=ExtResource("4_2wwxx")]
 position = Vector2(576, 330.285)
@@ -2145,31 +2147,40 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Resume" type="Button" parent="PauseMenu/Panel" unique_id=496970523]
-custom_minimum_size = Vector2(200, 100)
+custom_minimum_size = Vector2(200, 80)
 layout_mode = 0
 offset_left = 200.0
 offset_top = 37.0
 offset_right = 400.0
-offset_bottom = 137.0
+offset_bottom = 117.0
 text = "Resume"
 
 [node name="EndRun" type="Button" parent="PauseMenu/Panel" unique_id=1637342553]
-custom_minimum_size = Vector2(200, 100)
+custom_minimum_size = Vector2(200, 80)
 layout_mode = 0
 offset_left = 204.0
-offset_top = 166.0
+offset_top = 163.0
 offset_right = 404.0
-offset_bottom = 266.0
+offset_bottom = 243.0
 text = "Endrun"
 
 [node name="Quit" type="Button" parent="PauseMenu/Panel" unique_id=1056057779]
-custom_minimum_size = Vector2(200, 100)
+custom_minimum_size = Vector2(200, 50)
 layout_mode = 0
 offset_left = 200.0
-offset_top = 305.0
+offset_top = 371.0
 offset_right = 400.0
-offset_bottom = 405.0
+offset_bottom = 451.0
 text = "Main Menu"
+
+[node name="Setting" type="Button" parent="PauseMenu/Panel" unique_id=734109908]
+custom_minimum_size = Vector2(200, 80)
+layout_mode = 0
+offset_left = 200.0
+offset_top = 264.0
+offset_right = 400.0
+offset_bottom = 344.0
+text = "Setting"
 
 [node name="ShopManager" type="CanvasLayer" parent="." unique_id=248022412]
 layer = 5
@@ -2458,7 +2469,7 @@ position = Vector2(832, 432)
 [node name="Boss" type="Marker2D" parent="Progression Map" unique_id=728995645]
 position = Vector2(1024, 432)
 
-[node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384 groups=["point_light"]]
 position = Vector2(599, 318)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.9019608, 0.5647059, 0.61960787)
@@ -2469,7 +2480,7 @@ texture_scale = 0.46
 [node name="Vignette" type="CanvasModulate" parent="." unique_id=1590582319]
 color = Color(0.7360586, 0.6517471, 0.7562498, 1)
 
-[node name="ParticleManager" type="Node2D" parent="." unique_id=2081468604]
+[node name="ParticleManager" type="Node2D" parent="." unique_id=2081468604 groups=["particle_manager"]]
 script = ExtResource("17_2ix4a")
 
 [node name="Dusk Particles" type="GPUParticles2D" parent="ParticleManager" unique_id=1557261977]
@@ -2669,6 +2680,7 @@ action_mode = 0
 [connection signal="pressed" from="PauseMenu/Panel/Resume" to="PauseMenu" method="_on_resume_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/EndRun" to="PauseMenu" method="_on_end_run_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/Quit" to="PauseMenu" method="_on_quit_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/Setting" to="PauseMenu" method="_on_setting_pressed"]
 [connection signal="pressed" from="ShopManager/Back" to="ShopManager" method="_on_back_pressed"]
 [connection signal="toggled" from="ShopManager/Player Info Shop Screen" to="." method="_on_player_info_shop_screen_toggled"]
 [connection signal="toggled" from="Enemy Info" to="." method="_on_enemy_info_toggled"]

@@ -26,6 +26,8 @@ var dusk_stance = '#8dacf7'
 @onready var player_reserve_rug: TextureRect = $"Player/Player Reserve Rug"
 @onready var vignette: CanvasModulate = $"../Vignette"
 @onready var vignetter: PointLight2D = $"../Vignetter"
+@onready var turn_spell_light: PointLight2D = $"Battle UI/Turn Calculation Box/Turn Spell Light"
+
 
 var second_enemy
 var third_enemy

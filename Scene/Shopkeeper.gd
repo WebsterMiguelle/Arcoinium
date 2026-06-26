@@ -753,7 +753,10 @@ func end_turn():
 	# 4. Tracking / High Scores
 	main.total_damage_dealt += turn_damage
 	if turn_damage > main.highest_damage_dealt: main.highest_damage_dealt = turn_damage
-
+	
+	main.total_gain += turn_gain
+	if turn_gain > main.highest_gain: main.highest_gain = turn_gain
+	
 	# 5. Piggy & Reserve Logic
 	main.reserve_left_over_coin()
 	var coins = get_tree().get_nodes_in_group("keeper_coins")

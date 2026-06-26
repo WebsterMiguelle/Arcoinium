@@ -2746,6 +2746,22 @@ mouse_default_cursor_shape = 2
 toggle_mode = true
 action_mode = 0
 
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1025872508]
+
+[node name="Timer" type="Label" parent="CanvasLayer" unique_id=1354476235]
+custom_minimum_size = Vector2(120, 30)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -60.0
+offset_right = 60.0
+offset_bottom = 30.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 25
+text = "00:00:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [connection signal="toggled" from="Battle UI/Player Info" to="." method="_on_player_info_toggled"]
 [connection signal="pressed" from="Battle UI/Reserve Button" to="." method="_on_reserve_button_pressed"]
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]

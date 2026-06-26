@@ -281,6 +281,12 @@ func gain_coin():
 	gain -= debt
 	debt -= temp
 	coin += gain
+	
+	if temp2 > 0:
+		main.total_debt_applied += temp2
+		if temp2 > main.highest_debt_applied:
+			main.highest_debt_applied = temp2
+			
 	if has_active_income and has_debt and debt == 0 and main.enemy.coin > 0:
 		has_debt = false
 		main.shopkeeper.has_keeper_turn = true

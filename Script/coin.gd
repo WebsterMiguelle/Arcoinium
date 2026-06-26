@@ -32,6 +32,7 @@ var reserved:bool
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_PAUSABLE
 	refresh_sprite()
 
 func setup(s,pos):
@@ -46,6 +47,7 @@ func setup(s,pos):
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+@warning_ignore("unused_parameter")
 func _process(delta: float) -> void:
 	pass
 	
@@ -98,7 +100,7 @@ func refresh_sprite():
 	if not is_inside_tree():
 		return
 		
-	var appear_tween = create_tween()
+	var appear_tween = make_tween()
 	
 	appear_tween.tween_property(animated_sprite_2d, "position:y", 0, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	appear_tween.parallel().tween_property(animated_sprite_2d, "modulate:a", 1.0, 0.2)
@@ -172,7 +174,7 @@ func pulse_glow() -> void:
 	if glow_tween and glow_tween.is_running():
 		glow_tween.kill()
 		
-	glow_tween = create_tween().set_parallel(true)
+	glow_tween = make_tween().set_parallel(true)
 	
 	# Swell slightly and brighten the color
 	glow_tween.tween_property(self, "scale", Vector2(1.1, 1.1), 0.4).set_trans(Tween.TRANS_SINE)
@@ -207,3 +209,8 @@ func _on_control_mouse_exited() -> void:
 		return
 	for c in coin_status:
 		c.queue_free()
+		
+func make_tween() -> Tween:
+	var t = create_tween()
+	t.set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
+	return t

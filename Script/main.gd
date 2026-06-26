@@ -225,6 +225,9 @@ const PASSIVE_SCENE = preload("res://Scene/passsive_notification.tscn")
 #COIN
 const COIN = preload("uid://ddet242jm5v23")
 
+#Timer
+@onready var timer_label = $CanvasLayer/Timer
+
 #CALCULATIONS
 var damage = 0
 var gain = 0
@@ -233,6 +236,7 @@ var reserved_coin = null
 var current_turn = Turn.PLAYER
 var total_damage_dealt = 0
 var highest_damage_dealt = 0
+
 
 #GameStatistics
 var total_damage = 0
@@ -246,6 +250,10 @@ var total_flips = 0
 var total_reflips = 0
 var total_passives = 0
 var overall_reserved_coins = 0
+var run_timer: float = 0.0
+var run_timer_active: bool = false
+var total_debt_applied: int = 0
+var highest_debt_applied: int = 0
 
 var overall_total_damage: int = 0
 var overall_highest_damage: int = 0
@@ -323,6 +331,10 @@ func toggle_pause():
 	dawn_particles.emitting = !get_tree().paused
 	
 func battle_start():
+	if not run_timer_active:
+		run_timer = 0.0
+		run_timer_active = true
+		
 	re_flip_button.visible = true
 	player_reserve.visible = true
 	flip_button.disabled = true
@@ -443,6 +455,12 @@ func _process(delta: float) -> void:
 	update_player_stacks()
 	update_enemy_stacks()
 	update_player_status()
+	
+	if run_timer_active:
+		run_timer += delta
+		var minutes = int(run_timer) / 60
+		var seconds = int(run_timer) % 60
+		timer_label.text = "%02d:%02d" % [minutes, seconds]
 
 func show_turn_ui(text):
 	sound_manager.play_sound(TURN_REVEAL)
@@ -710,6 +728,8 @@ func _on_flip_pressed():
 	player.flip()
 	
 func trigger_game_over(player_won: bool):
+	run_timer_active = false
+	timer_label.visible = false
 	sound_manager.play_sound(DEATH)
 	sound_manager.stop_music()
 	if player_won:
@@ -740,7 +760,10 @@ func trigger_game_over(player_won: bool):
 	"tails": total_tails,
 	"flips": total_flips,
 	"reflips": total_reflips,
-	"total_reserved_coins": overall_reserved_coins
+	"total_reserved_coins": overall_reserved_coins,
+	"total_debt_applied": total_debt_applied,     
+	"highest_debt_applied": highest_debt_applied,
+	"run_time": run_timer
 }
 	game_over_ui.show_stats(stats)
 	game_over_ui.visible = true
@@ -902,10 +925,14 @@ func handle_victory_flow():
 	if total_gain > overall_highest_gain:
 		overall_highest_gain = total_gain
 	
+	total_damage_dealt = 0
+	highest_damage_dealt = 0
+	total_gain = 0
+	highest_gain = 0
+	
 	player.coin += enemy.bounty
 	await progression_after_victory()
-	#wait reward_manager.show_card_selection_async()
-	#wait show_map()
+	
 	
 func progression_after_victory():
 	player.refresh_start_of_battle_stats()

@@ -280,7 +280,6 @@ func _ready():
 	passive_manager.setup(self)
 	player.setup(self)
 	#show_enemy_passive("Hello!", 3.0)
-	game_over_ui.visible = false
 	pause_menu.visible = false
 	turn_ui.visible = false
 	print(reward_manager)

@@ -8,7 +8,26 @@
 [ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="6_id72q"]
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="7_bnefy"]
 [ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="7_qjnbp"]
-[ext_resource type="Texture2D" uid="uid://b0ex51pplf24g" path="res://Assets/CoinDeck3.png" id="8_qjnbp"]
+[ext_resource type="FontFile" uid="uid://cmvd7gycedmwg" path="res://Assets/Fonts/GothicByte.ttf" id="8_bnefy"]
+[ext_resource type="PackedScene" uid="uid://dldde8yrawlpn" path="res://Scene/Passive_Bar_Icon.tscn" id="9_bjpar"]
+[ext_resource type="Texture2D" uid="uid://dms5d0v8hxacy" path="res://Assets/EndScrollTextSeparator.png" id="10_4dvkt"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="12_4dvkt"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qjnbp"]
+texture = ExtResource("5_jy4eg")
+
+[sub_resource type="Gradient" id="Gradient_75buv"]
+offsets = PackedFloat32Array(0, 0.22742476)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bnefy"]
+gradient = SubResource("Gradient_75buv")
+width = 512
+height = 512
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
 
 [node name="PostGameScreen" type="Control" unique_id=1373690295]
 layout_mode = 3
@@ -111,99 +130,302 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="UILayer" unique_id=1214022973]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -264.0
-offset_top = -312.0
-offset_right = 264.0
-offset_bottom = 312.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("5_jy4eg")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/TextureRect" unique_id=1529107101]
+[node name="HBoxContainer" type="HBoxContainer" parent="UILayer" unique_id=24724235]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 42.0
+offset_bottom = -51.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = -4
+theme_override_constants/separation = 10
+alignment = 1
 
-[node name="Control" type="Control" parent="UILayer/TextureRect/VBoxContainer" unique_id=1624110839]
+[node name="LeftPanel" type="PanelContainer" parent="UILayer/HBoxContainer" unique_id=656188626]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_qjnbp")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/HBoxContainer/LeftPanel" unique_id=1860638158]
+layout_mode = 2
+theme_override_constants/margin_left = 110
+theme_override_constants/margin_right = 110
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer" unique_id=1529107101]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Separator" type="Control" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=1624110839]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 
-[node name="EndResult" type="Label" parent="UILayer/TextureRect/VBoxContainer" unique_id=1499300970]
+[node name="EndResult" type="Label" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=1499300970]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
 theme_override_fonts/font = ExtResource("6_id72q")
-theme_override_font_sizes/font_size = 80
+theme_override_font_sizes/font_size = 70
 text = "YOU WIN"
 horizontal_alignment = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="UILayer/TextureRect/VBoxContainer" unique_id=566868722]
+[node name="Mini_message" type="Label" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=448727867]
 layout_mode = 2
-theme_override_constants/margin_left = 45
-theme_override_constants/margin_right = 45
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_constants/line_spacing = -10
+theme_override_fonts/font = ExtResource("7_bnefy")
+theme_override_font_sizes/font_size = 24
+text = "You have completed your goal... 
+For now..."
+horizontal_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="UILayer/TextureRect/VBoxContainer/MarginContainer2" unique_id=1671615197]
+[node name="MarginContainer2" type="MarginContainer" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=1393549144]
+layout_mode = 2
+theme_override_constants/margin_left = -55
+theme_override_constants/margin_right = -55
+
+[node name="TextureRect" type="TextureRect" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/MarginContainer2" unique_id=1671615197]
 custom_minimum_size = Vector2(0, 35.3)
 layout_mode = 2
 texture = ExtResource("7_qjnbp")
 
-[node name="MarginContainer" type="MarginContainer" parent="UILayer/TextureRect/VBoxContainer" unique_id=1433606968]
+[node name="PassivesGrid" type="GridContainer" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=950681572]
+custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
-theme_override_constants/margin_left = 69
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 38
+columns = 4
 
-[node name="EndStats" type="Label" parent="UILayer/TextureRect/VBoxContainer/MarginContainer" unique_id=1956321141]
+[node name="PassiveIcon" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1693144057 instance=ExtResource("9_bjpar")]
+layout_mode = 2
+
+[node name="PassiveIcon13" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=776098950 instance=ExtResource("9_bjpar")]
+layout_mode = 2
+
+[node name="PassiveIcon14" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1240878891 instance=ExtResource("9_bjpar")]
+layout_mode = 2
+
+[node name="PassiveIcon15" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1828163532 instance=ExtResource("9_bjpar")]
+layout_mode = 2
+
+[node name="PassiveIcon16" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=378565047 instance=ExtResource("9_bjpar")]
+layout_mode = 2
+
+[node name="PassiveIcon2" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=791940373 instance=ExtResource("9_bjpar")]
+layout_mode = 2
+
+[node name="PassiveIcon3" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1905446685 instance=ExtResource("9_bjpar")]
+layout_mode = 2
+
+[node name="PassiveIcon4" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=677956357 instance=ExtResource("9_bjpar")]
+layout_mode = 2
+
+[node name="PassiveIcon5" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1073656637 instance=ExtResource("9_bjpar")]
+layout_mode = 2
+
+[node name="PassiveIcon6" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1033445925 instance=ExtResource("9_bjpar")]
+layout_mode = 2
+
+[node name="PassiveIcon7" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1603542556 instance=ExtResource("9_bjpar")]
+layout_mode = 2
+
+[node name="PassiveIcon8" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=487638123 instance=ExtResource("9_bjpar")]
+layout_mode = 2
+
+[node name="PassiveIcon9" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1837883304 instance=ExtResource("9_bjpar")]
+layout_mode = 2
+
+[node name="PassiveIcon10" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1607528259 instance=ExtResource("9_bjpar")]
+layout_mode = 2
+
+[node name="PassiveIcon11" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1633647465 instance=ExtResource("9_bjpar")]
+layout_mode = 2
+
+[node name="PassiveIcon12" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=947728286 instance=ExtResource("9_bjpar")]
+layout_mode = 2
+
+[node name="MarginContainer3" type="MarginContainer" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=2051817045]
+layout_mode = 2
+theme_override_constants/margin_left = -55
+theme_override_constants/margin_right = -55
+
+[node name="Scroll End" type="TextureRect" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/MarginContainer3" unique_id=1320178549]
+custom_minimum_size = Vector2(0, 35.3)
+layout_mode = 2
+texture = ExtResource("10_4dvkt")
+
+[node name="MarginContainer4" type="MarginContainer" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=777119397]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/MarginContainer4" unique_id=670018188]
+layout_mode = 2
+theme_override_constants/separation = 80
+
+[node name="MainMenu" type="Button" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer" unique_id=185810542]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
-theme_override_constants/line_spacing = 0
-theme_override_fonts/font = ExtResource("7_bnefy")
+theme_override_fonts/font = ExtResource("12_4dvkt")
 theme_override_font_sizes/font_size = 35
-text = "Remaining Coins:
-Highest DMG:
-Total DMG:
-Highest GAIN:
-Total GAIN:
-Enemies Defeated:
-Sun Coins Flipped:
-Moon Coins Flipped:
-Total Flips:
-Total Re-Flips:
-Total Reserve Coins:"
+text = "Main Menu"
+flat = true
 
-[node name="HomeButton" type="TextureButton" parent="UILayer" unique_id=871401980]
-modulate = Color(0, 0.18333316, 1, 1)
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 815.9999
-offset_top = -166.99998
-offset_right = 911.9999
-offset_bottom = -70.999985
-grow_vertical = 2
-scale = Vector2(3.5, 3.5)
-texture_normal = ExtResource("8_qjnbp")
-stretch_mode = 0
+[node name="TryAgain" type="Button" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer" unique_id=872656919]
+custom_minimum_size = Vector2(1.585, 3.325)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Try Again"
+flat = true
 
-[node name="RetryButton" type="TextureButton" parent="UILayer" unique_id=276855568]
-modulate = Color(1, 0.07058824, 0.39215687, 1)
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -167.0
-offset_right = 96.0
-offset_bottom = -71.0
-grow_vertical = 2
-scale = Vector2(3.5, 3.5)
-texture_normal = ExtResource("8_qjnbp")
-stretch_mode = 0
+[node name="RightPanel" type="PanelContainer" parent="UILayer/HBoxContainer" unique_id=283692974]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_qjnbp")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/HBoxContainer/RightPanel" unique_id=1999306132]
+layout_mode = 2
+theme_override_constants/margin_left = 130
+theme_override_constants/margin_right = 130
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer" unique_id=1612164832]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Separator" type="Control" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=124649028]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+
+[node name="StatisticsTitle" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=1331788762]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("8_bnefy")
+theme_override_font_sizes/font_size = 60
+text = "Statistics"
+horizontal_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=2092226716]
+layout_mode = 2
+theme_override_constants/margin_left = -65
+theme_override_constants/margin_right = -65
+
+[node name="ScrollStart" type="TextureRect" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer2" unique_id=1849099629]
+custom_minimum_size = Vector2(0, 35.3)
+layout_mode = 2
+texture = ExtResource("7_qjnbp")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=1962954101]
+layout_mode = 2
+theme_override_constants/margin_left = -68
+
+[node name="STATISTICS" type="VBoxContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer" unique_id=1817037017]
+layout_mode = 2
+theme_override_constants/separation = -5
+
+[node name="RemainingCoins" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=724196916]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Remaining Coins:"
+
+[node name="HighestDMG" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=406728396]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Highest DMG:"
+
+[node name="TotalDMG" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=2063730054]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Total DMG:"
+
+[node name="HighestGAIN" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=704317158]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Highest GAIN:"
+
+[node name="TotalGAIN" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=1051787290]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Total GAIN:"
+
+[node name="EnemiesDefeated" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=362417951]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Enemies Defeated:"
+
+[node name="SunCoinsFlipped" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=816772709]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Sun Coins Flipped:"
+
+[node name="MoonCoinsFlipped" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=2134333]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Moon Coins Flipped:"
+
+[node name="TotalFlips" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=228294584]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Total Flips:"
+
+[node name="TotalReflips" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=1785475800]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Total Re-Flips:"
+
+[node name="TotalReserveCoins" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=372922674]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Total Reserve Coins:"
+
+[node name="MarginContainer3" type="MarginContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=1918130806]
+layout_mode = 2
+theme_override_constants/margin_left = -65
+theme_override_constants/margin_right = -65
+
+[node name="ScrollEnd" type="TextureRect" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer3" unique_id=1073009843]
+custom_minimum_size = Vector2(0, 35.3)
+layout_mode = 2
+texture = ExtResource("10_4dvkt")
+
+[node name="Grade" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=1002470231]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("8_bnefy")
+theme_override_font_sizes/font_size = 60
+text = "SS+"
+horizontal_alignment = 1
+
+[node name="Vignette" type="Node" parent="." unique_id=1512864058]
+
+[node name="Vignetter" type="PointLight2D" parent="Vignette" unique_id=1852200988]
+position = Vector2(291, 81)
+scale = Vector2(17.921875, 10.046875)
+color = Color(1, 0.9019608, 0.5647059, 0.61960787)
+energy = 1.1
+texture = SubResource("GradientTexture2D_bnefy")
+texture_scale = 0.46
+metadata/_edit_lock_ = true
+
+[node name="Vignette" type="CanvasModulate" parent="Vignette" unique_id=1169181578]
+position = Vector2(573, 356)
+color = Color(0.7360586, 0.6517471, 0.7562498, 1)
+metadata/_edit_lock_ = true

@@ -9,6 +9,9 @@ enum CoinStatus{
 }
 
 const LOAN_SHARK_BITE = preload("uid://xbuhunh3hna4")
+@onready var passive_income: AnimatedSprite2D = $"../Player/PassiveIncome"
+@onready var tax_evasion: Marker2D = $"../TaxEvasion"
+const TAX_EVASION_PARTICLE = preload("uid://da2fh3ch8p4y5")
 
 @onready var keeper_shadow: TextureRect = $"../Shopkeeper/Keeper Shadow"
 const SHOPKEEPER_VOICE = preload("uid://c86gce7j7tjey")
@@ -212,7 +215,7 @@ func refresh_start_of_battle_stats():
 	has_radiant = false
 	settle = 0
 	gain = 0
-	debt = 50
+	debt = 0
 	thrift = 0
 	spend = 0
 	current_played_coin = 0
@@ -445,6 +448,7 @@ func flip():
 	if spend > 0:
 		spend -= 1
 		take_damage(1)
+		main.total_damage_dealt += 1
 		main.sound_manager.play_sound(DAMAGE_LIGHT)
 		particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 		create_floating_label(1,"DAMAGE","ENEMY")
@@ -487,6 +491,7 @@ func flip():
 		add_child(bite)
 		
 		take_damage(loan_damage)
+		main.total_damage_dealt += loan_damage
 		create_floating_label(loan_damage,"DAMAGE","ENEMY")
 		main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
 		main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
@@ -867,7 +872,7 @@ func start_enemy_turn():
 		return
 	if coin > 0:
 		await get_tree().create_timer(1.0).timeout
-		while current_played_coin != max_playable_coins:
+		while current_played_coin != max_playable_coins and !main.is_game_over:
 			if coin > 0:
 				flip()
 				enemy_coin_calculation()
@@ -876,7 +881,8 @@ func start_enemy_turn():
 				break
 			await get_tree().create_timer(flip_speed).timeout
 		await get_tree().create_timer(1.0).timeout
-		await end_enemy_turn()
+		if !main.is_game_over:
+			await end_enemy_turn()
 
 
 func end_enemy_turn():
@@ -916,6 +922,7 @@ func end_enemy_turn():
 				bite.global_position.y += randi_range(-10,10)
 				add_child(bite)
 				take_damage(loan_damage)
+				main.total_damage_dealt += loan_damage
 				create_floating_label(loan_damage,"DAMAGE","ENEMY")
 				main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
 				main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
@@ -942,6 +949,7 @@ func end_enemy_turn():
 					add_child(bite)
 					
 					take_damage(loan_damage)
+					main.total_damage_dealt += loan_damage
 					create_floating_label(loan_damage,"DAMAGE","ENEMY")
 					main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
 					main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
@@ -995,7 +1003,8 @@ func end_enemy_turn():
 	# ==========================================
 	# PHASE 2: VISUALS & ANIMATIONS (Play all the eye-candy!)
 	# ==========================================
-	
+	if main.is_game_over:
+		return
 	if current_played_coin > 0:
 		main.sound_manager.play_sound(COIN_ENDTURN)
 
@@ -1049,6 +1058,11 @@ func end_enemy_turn():
 				for i in (converted_income):
 					main.player.coin += 1
 					main.player.reserve(true,false,true)
+				main.particle_manager.spawn_particle(GAIN_EFFECT_PARTICLE,passive_income.global_position)
+				passive_income.visible = true
+				var passive_tween = create_tween()
+				passive_income.self_modulate = Color("#ffffff")
+				passive_tween.tween_property(passive_income,"self_modulate",Color("#ffffff00"),1.0)
 		main.player.take_damage(turn_damage)
 	
 	# -- Final Hit Impacts & Floating Labels (The runes have arrived!) --
@@ -1129,12 +1143,17 @@ func end_enemy_turn():
 	if turn_debt != 0:
 		if main.player.has_reimbursement:
 			turn_debt /= 2
+			main.particle_manager.spawn_particle(TAX_EVASION_PARTICLE,tax_evasion.global_position)
 			if greed and (type == Enemy.COLLECTOR):
 				create_floating_label("DEBT", "IMMUNE", "ENEMY")
 			else:
+				main.total_debt_applied += turn_debt
+				if turn_debt > main.highest_debt_applied:
+					main.highest_debt_applied = turn_debt
 				debt += turn_debt
 				create_floating_label(turn_debt, "DEBT", "ENEMY")
 			take_damage(turn_debt)
+			main.total_damage_dealt += turn_debt
 			main.sound_manager.play_sound(DAMAGE_MODERATE)
 			main.sound_manager.play_sound(DEBTED_ATTACK)
 			create_floating_label(turn_debt, "DAMAGE", "ENEMY")
@@ -1192,6 +1211,7 @@ func end_enemy_turn():
 		await dazzled_tween.finished
 		dazzled_effect.visible = false
 		dazzled_light.visible = false
+	
 
 
 

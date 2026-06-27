@@ -17,6 +17,9 @@ enum Enemy{
 	I,
 	SHOP_KEEPER
 }
+
+const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
+
 @onready var flip_blocker: TextureRect = $FlipBlocker
 @onready var player = $Player
 @onready var enemy = $Enemy
@@ -1041,6 +1044,7 @@ func _on_re_flip_mouse_exited() -> void:
 func _on_player_info_toggled(toggled_on: bool) -> void:
 	print("toggled: ", toggled_on)
 	if toggled_on:
+		sound_manager.play_sound(SCROLL_OPEN)
 		player_info_menu = PLAYER_INFORMATION_DISPLAY.instantiate()
 		add_child(player_info_menu)
 		player_info_menu.setup(player)
@@ -1116,6 +1120,7 @@ func create_tutorial(title, text, pos, y_offset):
 func _on_enemy_info_toggled(toggled_on: bool) -> void:
 	print("toggled: ", toggled_on)
 	if toggled_on:
+		sound_manager.play_sound(SCROLL_OPEN)
 		player.toggle_button(endTurn_button,true)
 		enemy_info_menu = ENEMY_INFORMATION_DISPLAY.instantiate()
 		add_child(enemy_info_menu)

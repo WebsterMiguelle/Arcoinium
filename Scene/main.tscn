@@ -57,11 +57,13 @@
 [ext_resource type="Texture2D" uid="uid://b63ntktw5tw4q" path="res://Assets/mapBackgroundRevamped.png" id="46_xgc63"]
 [ext_resource type="PackedScene" uid="uid://cysrv10cvv8al" path="res://Scene/Piggy.tscn" id="47_jmo7v"]
 [ext_resource type="Texture2D" uid="uid://ccnxjfwwlc64x" path="res://Assets/miniCoinCasterRevamped-Sheet.png" id="47_w8oc3"]
+[ext_resource type="SpriteFrames" uid="uid://dafl661xkwq8o" path="res://Assets/PassivesIcons.tres" id="48_3drsm"]
 [ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="49_5qrjd"]
 [ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="49_jmo7v"]
 [ext_resource type="Texture2D" uid="uid://dms5d0v8hxacy" path="res://Assets/EndScrollTextSeparator.png" id="50_f3bax"]
 [ext_resource type="Texture2D" uid="uid://6n3h5cem1yuu" path="res://Assets/mapSignRevamped.png" id="50_w8oc3"]
 [ext_resource type="Texture2D" uid="uid://bvg1hmi6pjwfb" path="res://Assets/Coins/sun_flip_upright.png" id="51_ekncj"]
+[ext_resource type="Texture2D" uid="uid://cpm417gdi8hph" path="res://Assets/shopMaster-Sheet.png" id="52_5l0y8"]
 [ext_resource type="PackedScene" uid="uid://ca5q424cckfd0" path="res://Scene/KeeperHealthBar.tscn" id="60_txj2b"]
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]
@@ -611,14 +613,21 @@ fill_from = Vector2(0.4974359, 0.4940171)
 fill_to = Vector2(0.7948718, 0.20683761)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nnpy2"]
-atlas = ExtResource("37_885bo")
+atlas = ExtResource("52_5l0y8")
 region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_14upm"]
+atlas = ExtResource("52_5l0y8")
+region = Rect2(64, 0, 64, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ba4vs"]
 animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_nnpy2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_14upm")
 }],
 "loop": true,
 "name": &"default",
@@ -858,6 +867,15 @@ gradient = SubResource("Gradient_7n7pe")
 fill_from = Vector2(0.4871795, 0.8905983)
 fill_to = Vector2(0.46324787, 0.11111111)
 
+[sub_resource type="Gradient" id="Gradient_qsoii"]
+offsets = PackedFloat32Array(0, 0.44849786, 0.99785405)
+colors = PackedColorArray(1, 1, 1, 0.8627451, 0.5568628, 0.5568628, 0.5568628, 0, 1, 1, 1, 0.8627451)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_yc5rd"]
+gradient = SubResource("Gradient_qsoii")
+fill_from = Vector2(0.48034188, 0.8051282)
+fill_to = Vector2(0.50769234, 0.13504274)
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5l0y8"]
 texture = ExtResource("49_5qrjd")
 
@@ -868,19 +886,26 @@ colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1)
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_e0ffi"]
 gradient = SubResource("Gradient_ryobp")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_4lqwv"]
-atlas = ExtResource("37_885bo")
+[sub_resource type="AtlasTexture" id="AtlasTexture_hswqw"]
+atlas = ExtResource("52_5l0y8")
 region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7r1k4"]
+atlas = ExtResource("52_5l0y8")
+region = Rect2(64, 0, 64, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gejqg"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_4lqwv")
+"texture": SubResource("AtlasTexture_hswqw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7r1k4")
 }],
 "loop": true,
 "name": &"default",
-"speed": 1.0
+"speed": 2.0
 }]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ba4vs"]
@@ -1107,6 +1132,20 @@ gradient = SubResource("Gradient_tke4u")
 fill_from = Vector2(0.7606838, 0.757265)
 fill_to = Vector2(0.4051282, 0.2888889)
 
+[sub_resource type="Gradient" id="Gradient_yc5rd"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nykhw"]
+gradient = SubResource("Gradient_yc5rd")
+fill_from = Vector2(0.50769234, 0)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="Gradient" id="Gradient_nykhw"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_j6oml"]
+gradient = SubResource("Gradient_nykhw")
+
 [node name="Main" type="TextureRect" unique_id=975709238]
 anchors_preset = 15
 anchor_right = 1.0
@@ -1176,7 +1215,6 @@ texture = ExtResource("9_w8oc3")
 
 [node name="Forest Area" type="TextureRect" parent="." unique_id=1423353357]
 process_mode = 3
-visible = false
 modulate = Color(0.9059041, 0.74073046, 0.9564902, 1)
 layout_mode = 0
 offset_left = -14.0
@@ -1591,6 +1629,7 @@ theme_override_font_sizes/font_size = 43
 text = "ALL IN"
 
 [node name="Turn UI" type="TextureRect" parent="Battle UI" unique_id=1325860084]
+visible = false
 self_modulate = Color(0.90375245, 0.79641557, 0.6302501, 1)
 z_index = 9
 offset_left = 228.0
@@ -1654,7 +1693,7 @@ grow_horizontal = 0
 grow_vertical = 0
 alignment = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="Battle UI" unique_id=1623025588]
+[node name="EnemyPassiveContainer" type="CenterContainer" parent="Battle UI" unique_id=1623025588]
 visible = false
 custom_minimum_size = Vector2(1000, 10)
 anchors_preset = 10
@@ -1664,13 +1703,13 @@ offset_bottom = 199.0
 grow_horizontal = 2
 mouse_filter = 2
 
-[node name="Background" type="TextureRect" parent="Battle UI/CenterContainer" unique_id=1365114857]
+[node name="Background" type="TextureRect" parent="Battle UI/EnemyPassiveContainer" unique_id=1365114857]
 custom_minimum_size = Vector2(1000, 10)
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("29_n7vvl")
 
-[node name="EnemyLabelNotification" type="Label" parent="Battle UI/CenterContainer/Background" unique_id=1694276821]
+[node name="EnemyLabelNotification" type="Label" parent="Battle UI/EnemyPassiveContainer/Background" unique_id=1694276821]
 z_index = 9
 custom_minimum_size = Vector2(600, 0)
 layout_mode = 0
@@ -1680,7 +1719,6 @@ offset_right = 971.0
 offset_bottom = 61.0
 theme_override_fonts/font = ExtResource("36_1bveb")
 theme_override_font_sizes/font_size = 34
-text = "EnemyLabel Notification"
 horizontal_alignment = 1
 
 [node name="LoanShark" type="AnimatedSprite2D" parent="Battle UI" unique_id=40170055]
@@ -1719,6 +1757,7 @@ scale = Vector2(2, 2)
 position = Vector2(1077, 567)
 scale = Vector2(2.015625, 2)
 sprite_frames = SubResource("SpriteFrames_ba4vs")
+autoplay = "default"
 
 [node name="KeeperFrame" type="TextureRect" parent="Shopkeeper" unique_id=2031310097]
 offset_left = 999.0
@@ -2027,6 +2066,15 @@ offset_right = 31.80655
 offset_bottom = 34.34147
 texture = SubResource("GradientTexture2D_xgc63")
 
+[node name="PassiveIncome" type="AnimatedSprite2D" parent="Player" unique_id=548672999]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+top_level = true
+position = Vector2(101, 538)
+scale = Vector2(6.015625, 6.015625)
+sprite_frames = ExtResource("48_3drsm")
+animation = &"Passive Income"
+
 [node name="CardManager" type="CanvasLayer" parent="." unique_id=806531365]
 visible = false
 script = ExtResource("5_3amdw")
@@ -2121,17 +2169,23 @@ layer = 5
 visible = false
 script = ExtResource("14_hspdg")
 
+[node name="CardShadow" type="TextureRect" parent="PauseMenu" unique_id=962275767]
+self_modulate = Color(0, 0, 0, 1)
+offset_right = 1155.0
+offset_bottom = 649.0
+texture = SubResource("GradientTexture2D_yc5rd")
+
 [node name="Panel" type="PanelContainer" parent="PauseMenu" unique_id=565094890]
-custom_minimum_size = Vector2(600, 500)
+custom_minimum_size = Vector2(400, 100)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -250.0
-offset_right = 300.0
-offset_bottom = 250.0
+offset_left = -243.495
+offset_top = -257.0
+offset_right = 249.50671
+offset_bottom = 275.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_5l0y8")
@@ -2139,7 +2193,7 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_5l0y8")
 [node name="MarginContainer" type="MarginContainer" parent="PauseMenu/Panel" unique_id=84400785]
 layout_mode = 2
 theme_override_constants/margin_left = 100
-theme_override_constants/margin_top = 25
+theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 100
 theme_override_constants/margin_bottom = 40
 
@@ -2151,7 +2205,7 @@ theme_override_constants/separation = 10
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
 theme_override_fonts/font = ExtResource("36_b0nqf")
-theme_override_font_sizes/font_size = 85
+theme_override_font_sizes/font_size = 70
 text = "PAUSED"
 horizontal_alignment = 1
 
@@ -2161,39 +2215,39 @@ layout_mode = 2
 texture = ExtResource("49_jmo7v")
 
 [node name="Resume" type="Button" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=496970523]
-custom_minimum_size = Vector2(200, 80)
+custom_minimum_size = Vector2(200, 10)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
 theme_override_fonts/font = ExtResource("36_1bveb")
-theme_override_font_sizes/font_size = 75
+theme_override_font_sizes/font_size = 64
 text = "Resume"
 flat = true
 
 [node name="EndRun" type="Button" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=1637342553]
-custom_minimum_size = Vector2(200, 80)
+custom_minimum_size = Vector2(200, 10)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
 theme_override_fonts/font = ExtResource("36_1bveb")
-theme_override_font_sizes/font_size = 75
+theme_override_font_sizes/font_size = 64
 text = "Surrender"
 flat = true
 
-[node name="Quit" type="Button" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=1056057779]
-custom_minimum_size = Vector2(200, 50)
+[node name="Setting" type="Button" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=734109908]
+custom_minimum_size = Vector2(200, 10)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
 theme_override_fonts/font = ExtResource("36_1bveb")
-theme_override_font_sizes/font_size = 75
-text = "Main Menu"
+theme_override_font_sizes/font_size = 64
+text = "Settings"
 flat = true
 
-[node name="Setting" type="Button" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=734109908]
-custom_minimum_size = Vector2(200, 80)
+[node name="Quit" type="Button" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=1056057779]
+custom_minimum_size = Vector2(200, 10)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
 theme_override_fonts/font = ExtResource("36_1bveb")
-theme_override_font_sizes/font_size = 75
-text = "Settings"
+theme_override_font_sizes/font_size = 64
+text = "Main Menu"
 flat = true
 
 [node name="Border" type="TextureRect" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=1519223597]
@@ -2288,6 +2342,7 @@ texture = SubResource("GradientTexture2D_e0ffi")
 position = Vector2(1043, 137)
 scale = Vector2(2.015625, 2)
 sprite_frames = SubResource("SpriteFrames_gejqg")
+autoplay = "default"
 
 [node name="ShopKeeper_Border" type="TextureRect" parent="ShopManager/Background/Shop Keeper_Portrait" unique_id=951122070]
 offset_left = -38.697678
@@ -2573,6 +2628,7 @@ texture = SubResource("GradientTexture2D_5rsq1")
 visible = false
 self_modulate = Color(0.9047755, 0.66126776, 3.85046e-07, 1)
 top_level = true
+z_index = 9
 layout_mode = 0
 offset_left = 859.0
 offset_top = 253.0
@@ -2693,8 +2749,19 @@ mouse_default_cursor_shape = 2
 toggle_mode = true
 action_mode = 0
 
+[node name="Pickpocket" type="Marker2D" parent="." unique_id=1418056820]
+position = Vector2(889, 257)
+
+[node name="SpareChange" type="Marker2D" parent="." unique_id=603318236]
+position = Vector2(631, 524)
+
+[node name="SpareChangeReflip" type="Marker2D" parent="." unique_id=1063114744]
+position = Vector2(327, 519)
+
+[node name="TaxEvasion" type="Marker2D" parent="." unique_id=2049065443]
+position = Vector2(535, 336)
+
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1025872508]
-visible = false
 
 [node name="Timer" type="Label" parent="CanvasLayer" unique_id=1354476235]
 custom_minimum_size = Vector2(120, 30)
@@ -2705,10 +2772,34 @@ offset_left = -60.0
 offset_right = 60.0
 offset_bottom = 30.0
 grow_horizontal = 2
+theme_override_colors/font_color = Color(0.93333334, 0.7058824, 0.41960785, 1)
+theme_override_fonts/font = ExtResource("30_tcekk")
 theme_override_font_sizes/font_size = 25
 text = "00:00"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="SceneLoadTransition" type="TextureRect" parent="." unique_id=859238468]
+visible = false
+top_level = true
+layout_mode = 0
+offset_left = -718.0
+offset_top = -8.0
+offset_right = 1171.0
+offset_bottom = 693.0
+texture = SubResource("GradientTexture2D_nykhw")
+
+[node name="BossDefeatTransition" type="TextureRect" parent="." unique_id=1142108753]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+top_level = true
+z_index = 12
+layout_mode = 0
+offset_left = -69.0
+offset_top = -8.0
+offset_right = 1171.0
+offset_bottom = 693.0
+texture = SubResource("GradientTexture2D_j6oml")
 
 [connection signal="toggled" from="Battle UI/Player Info" to="." method="_on_player_info_toggled"]
 [connection signal="pressed" from="Battle UI/Reserve Button" to="." method="_on_reserve_button_pressed"]
@@ -2722,8 +2813,8 @@ vertical_alignment = 1
 [connection signal="toggled" from="CardManager/Player Info Passive Screen" to="." method="_on_player_info_passive_screen_toggled"]
 [connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/Resume" to="PauseMenu" method="_on_resume_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/EndRun" to="PauseMenu" method="_on_end_run_pressed"]
-[connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/Quit" to="PauseMenu" method="_on_quit_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/Setting" to="PauseMenu" method="_on_setting_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/Quit" to="PauseMenu" method="_on_quit_pressed"]
 [connection signal="pressed" from="ShopManager/Back" to="ShopManager" method="_on_back_pressed"]
 [connection signal="toggled" from="ShopManager/Player Info Shop Screen" to="." method="_on_player_info_shop_screen_toggled"]
 [connection signal="toggled" from="Enemy Info" to="." method="_on_enemy_info_toggled"]

@@ -5,6 +5,23 @@ enum Turn {
 	ENEMY,
 	KEEPER
 }
+const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
+const GAME_OVER_WALL_CLOSE = preload("uid://dcogb5vig426m")
+const GAME_OVER_WALL = preload("uid://cen1jkl1h44jj")
+const SLOW = preload("uid://f5jmno7qyhek")
+@onready var boss_defeat_transition: TextureRect = $BossDefeatTransition
+const CRITICAL = preload("uid://nnwjjtfxt47l")
+const SPEND_DAMAGE_PARTICLE = preload("uid://dmgnoylltbfre")
+const SPEND_EXPLOSION_PARTICLE = preload("uid://bgfgq2kw3njao")
+const GAIN_EFFECT_PARTICLE = preload("uid://c5py6ekby1mnm")
+const THRIFT_DAMAGE_PARTICLE = preload("uid://bvrulyxw02bom")
+const INFLATION_PARTICLE = preload("uid://bq67mkmrnr14p")
+const COIN_BARRAGE_PARTICLE = preload("uid://btjsmqynj8nhe")
+const VOIDED = preload("uid://ctvrb7nmqgd06")
+
+const BOSS_DEFEATED = preload("uid://pbrojuc0bit1")
+@onready var enemy_passive_container: CenterContainer = $"Battle UI/EnemyPassiveContainer"
+
 @onready var forest_area: TextureRect = $"Forest Area"
 @onready var fields_area: TextureRect = $"Fields Area"
 @onready var shop_area: TextureRect = $"Shop Area"
@@ -22,6 +39,8 @@ enum Turn {
 @onready var loan_splash: Marker2D = $"Battle UI/LoanShark/Loan Splash"
 @onready var loan_enter: Marker2D = $"Battle UI/LoanShark/Loan Enter"
 
+var is_game_over = false
+var is_boss_defeated = false
 
 const DEBT_EFFECT_PARTICLE = preload("uid://c52tpyupg2ynl")
 const DEBT_DAMAGE_PARTICLE = preload("uid://1g21u656k60k")
@@ -43,6 +62,7 @@ enum Enemy{
 @onready var enemy = $Enemy
 @onready var shopkeeper: Node2D = $Shopkeeper
 
+@onready var camera_2d: Camera2D = $Camera2D
 @onready var main: TextureRect = $"."
 var greed_color = '#ffa889'
 var vignette_default = '#bdabb8'
@@ -281,6 +301,12 @@ func switch_vignetter_color(to,duration):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	total_damage_dealt = 0
+	highest_damage_dealt = 0
+	total_gain = 0
+	highest_gain = 0
+	is_game_over = false
 	forest_area.visible = true
 	dusk_particles.emitting = true
 	dawn_particles.emitting = false
@@ -319,7 +345,7 @@ func _ready():
 	battle_start()
 	
 func _input(event):
-	if event.is_action_pressed("ui_cancel"): # ESC key
+	if !is_boss_defeated and !is_game_over and event.is_action_pressed("ui_cancel"): # ESC key
 		toggle_pause()
 		
 func toggle_pause():
@@ -514,6 +540,11 @@ func show_turn_ui(text):
 	print("=============================UI DONE")
 	
 func _on_end_run_pressed():
+	card_manager.visible = false
+	shop_manager.visible = false
+	player_health_label.text = "0"
+	player.coin = 0
+	
 	print("Main Script: Received End Run")
 	get_tree().paused = false
 	pause_menu.visible = false
@@ -581,6 +612,10 @@ func start_enemy_turn():
 		coin_deck.reset_sigils()
 		sound_manager.play_sound(TURN_ENEMY)
 		if main.player.has_loan_shark and enemy.debt > 0:
+			if player.has_pay_down:
+				loan_shark.self_modulate = Color.BLACK
+			else:
+				loan_shark.self_modulate = Color.WHITE
 			sound_manager.play_sound(PASSIVE_JAR_O_SAVINGS)
 			particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,loan_enter.global_position)
 			particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,loan_enter.global_position)
@@ -589,7 +624,10 @@ func start_enemy_turn():
 			loan_shark.play("default")
 		await enemy.start_enemy_turn()
 		if enemy.coin > 0:
-			await get_tree().create_timer(0.6).timeout
+			await get_tree().create_timer(1.0).timeout
+			enemy.passive_income.visible = false
+			if is_game_over:
+				return
 			if player.coin > 0:
 				if !player.has_extra_turn:
 					if player.has_merchant_scroll and shopkeeper.has_scroll_turn:
@@ -689,7 +727,6 @@ func show_passive_notification(text: String, duration: float = 1.5) -> void:
 func show_enemy_passive(text: String, duration: float = 2.5) -> void:
 	if not is_instance_valid(enemy_passive_label):
 		return
-		
 	if enemy_notif_base_pos == Vector2.ZERO:
 		enemy_notif_base_pos = enemy_passive_bg.position
 	
@@ -727,10 +764,29 @@ func _on_flip_pressed():
 	player.flip()
 	
 func trigger_game_over(player_won: bool):
+	if is_game_over:
+		return
+	is_game_over = true
 	run_timer_active = false
 	timer_label.visible = false
 	sound_manager.play_sound(DEATH)
 	sound_manager.stop_music()
+	
+	player.toggle_button(flip_button,true)
+	player.toggle_button(re_flip_button,true)
+	player.toggle_button(endTurn_button,true)
+	player.toggle_button(reserve_button,true)
+	player_info.visible = false
+	enemy_info.visible = false
+	endTurn_button.visible = false
+	flip_button.disabled = true
+	re_flip_button.disabled = true
+	reserve_button.disabled = true
+	endTurn_button.disabled = false
+	endTurn_button.mouse_default_cursor_shape = 0
+	flip_button.mouse_default_cursor_shape = 0
+	reserve_button.mouse_default_cursor_shape = 0
+	re_flip_button.mouse_default_cursor_shape = 0
 	
 	if player_won:
 		enemy.max_playable_coins = 0
@@ -810,8 +866,13 @@ func trigger_game_over(player_won: bool):
 	game_over_instance.z_index = 100 
 	add_child(game_over_instance)
 	
+	await get_tree().create_timer(1.0).timeout
+	sound_manager.play_sound(GAME_OVER_WALL)
+	
 	game_over_instance.setup(stats, player_won, title_text, killer_text, player)
-
+	await get_tree().create_timer(1.4).timeout
+	sound_manager.play_sound(DAMAGE_MODERATE)
+	
 func check_defeat():
 	if player.coin <= 0:
 		if player.has_payback:
@@ -829,8 +890,11 @@ func check_defeat():
 		re_flip_button.disabled = true
 		reserve_button.disabled = true
 		if enemies_defeated == current_room or enemy.type == Enemy.TWILIGHT_SAGE:
-			await trigger_dramatic_slowdown()
 			enemies_defeated += 1
+			if enemy.type == Enemy.TWILIGHT_SAGE:
+				await boss_dramatic_slowdown()
+			else:
+				await trigger_dramatic_slowdown()
 			await handle_victory_flow()
 			return true
 	
@@ -878,11 +942,6 @@ func handle_victory_flow():
 	overall_total_gain += total_gain
 	if total_gain > overall_highest_gain:
 		overall_highest_gain = total_gain
-	
-	total_damage_dealt = 0
-	highest_damage_dealt = 0
-	total_gain = 0
-	highest_gain = 0
 	
 	player.coin += enemy.bounty
 	await progression_after_victory()
@@ -977,7 +1036,10 @@ func update_player_status():
 		player_lock.visible = true
 		player_lock_particles.emitting = true
 	else:
-		reserve_button.visible = true
+		if !main.player.has_inflation:
+			reserve_button.visible = true
+		else:
+			reserve_button.visible = false
 		player_lock.visible = false
 		player_lock_particles.emitting = false
 		player_reserve.text = "Reserve: " + str(player.current_reserve) + "/" + str(player.max_reserve)
@@ -1378,9 +1440,9 @@ func trigger_passive_effect(text: String):
 	show_passive_notification(text, 1.5)
 
 func _on_player_info_toggled(toggled_on: bool) -> void:
-
 	print("toggled: ", toggled_on)
 	if toggled_on:
+		sound_manager.play_sound(SCROLL_OPEN)
 		player_info_menu = PLAYER_INFORMATION_DISPLAY.instantiate()
 		add_child(player_info_menu)
 		player_info_menu.setup(player)
@@ -1401,6 +1463,7 @@ func _on_player_info_toggled(toggled_on: bool) -> void:
 func _on_enemy_info_toggled(toggled_on: bool) -> void:
 	print("toggled: ", toggled_on)
 	if toggled_on:
+		sound_manager.play_sound(SCROLL_OPEN)
 		enemy_info_menu = ENEMY_INFORMATION_DISPLAY.instantiate()
 		add_child(enemy_info_menu)
 		enemy_info_menu.setup(enemy)
@@ -1427,14 +1490,60 @@ func _on_reserve_button_pressed() -> void:
 		
 	
 func trigger_dramatic_slowdown() -> void:
+	sound_manager.play_sound(SLOW)
 	Engine.time_scale = 0.3 
 	await get_tree().create_timer(1.0, true, false, true).timeout 
 	Engine.time_scale = 1.0
+
+func boss_dramatic_slowdown() -> void:
+	is_boss_defeated = true
+	player.toggle_button(flip_button,true)
+	player.toggle_button(re_flip_button,true)
+	player.toggle_button(endTurn_button,true)
+	player.toggle_button(reserve_button,true)
+	player_info.visible = false
+	enemy_info.visible = false
+	endTurn_button.visible = false
+	flip_button.disabled = true
+	re_flip_button.disabled = true
+	reserve_button.disabled = true
+	endTurn_button.disabled = false
+	endTurn_button.mouse_default_cursor_shape = 8
+	flip_button.mouse_default_cursor_shape = 8
+	reserve_button.mouse_default_cursor_shape = 8
+	re_flip_button.mouse_default_cursor_shape = 8
+	camera_2d.add_trauma(4.0)
+	sound_manager.play_sound(SLOW)
+	sound_manager.play_sound(VOIDED)
+	Engine.time_scale = 0.1
+	await get_tree().create_timer(1.0, true, false, true).timeout 
+	Engine.time_scale = 1.0
+	sound_manager.stop_music()
+	sound_manager.play_sound(BOSS_DEFEATED)
+	boss_defeat_transition.self_modulate = Color("#ffffff00")
+	boss_defeat_transition.visible = true
+	for i in range(20):
+		sound_manager.play_sound(CRITICAL)
+		particle_manager.spawn_particle(SPEND_EXPLOSION_PARTICLE,enemy_portrait.global_position)
+		particle_manager.spawn_particle(GAIN_EFFECT_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,600)))
+		particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,600)))
+		particle_manager.spawn_particle(SPEND_DAMAGE_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,600)))
+		particle_manager.spawn_particle(INFLATION_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,600)))
+		particle_manager.spawn_particle(COIN_BARRAGE_PARTICLE,enemy_portrait.global_position)
+		await get_tree().create_timer(0.2).timeout
+		camera_2d.add_trauma(2.0)
+	Engine.time_scale = 0.3 
+	var tween = create_tween()
+	tween.tween_property(boss_defeat_transition,"self_modulate",Color.WHITE,2)
+	await get_tree().create_timer(3.0, true, false, true).timeout 
+	Engine.time_scale = 1.0
+
 
 
 func _on_player_info_passive_screen_toggled(toggled_on: bool) -> void:
 	print("toggled: ", toggled_on)
 	if toggled_on:
+		sound_manager.play_sound(SCROLL_OPEN)
 		player_info_menu = PLAYER_INFORMATION_DISPLAY.instantiate()
 		card_manager.add_child(player_info_menu)
 		player_info_menu.setup(player)
@@ -1455,6 +1564,7 @@ func _on_player_info_passive_screen_toggled(toggled_on: bool) -> void:
 
 func _on_player_info_shop_screen_toggled(toggled_on: bool) -> void:
 	if toggled_on:
+		sound_manager.play_sound(SCROLL_OPEN)
 		player_info_menu = PLAYER_INFORMATION_DISPLAY.instantiate()
 		shop_manager.add_child(player_info_menu)
 		player_info_menu.setup(player)
@@ -1475,6 +1585,7 @@ func _on_player_info_shop_screen_toggled(toggled_on: bool) -> void:
 
 func _on_keeper_info_toggled(toggled_on: bool) -> void:
 	if toggled_on:
+		sound_manager.play_sound(SCROLL_OPEN)
 		keeper_info_menu = KEEPER_INFORMATION_DISPLAY.instantiate()
 		add_child(keeper_info_menu)
 		keeper_info_menu.setup(shopkeeper,player)
@@ -1494,7 +1605,7 @@ func _on_keeper_info_toggled(toggled_on: bool) -> void:
 
 
 func _on_loan_shark_animation_finished() -> void:
-			particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,loan_splash.global_position)
-			particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,loan_splash.global_position)
-			particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,loan_splash.global_position)
-			particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,loan_splash.global_position)
+	particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,loan_splash.global_position)
+	particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,loan_splash.global_position)
+	particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,loan_splash.global_position)
+	particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,loan_splash.global_position)

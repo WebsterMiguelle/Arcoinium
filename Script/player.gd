@@ -26,6 +26,7 @@ enum Enemy{
 
 @onready var keeper_shadow: TextureRect = $"../Shopkeeper/Keeper Shadow"
 @onready var pair_count: Label = $"../Battle UI/Turn Calculation Box/Pair Count"
+@onready var scene_load_transition: TextureRect = $"../SceneLoadTransition"
 
 @onready var camera_2d: Camera2D = $"../Camera2D"
 const FLOATING_LABEL = preload("uid://dwf6g2wuj1oe3")
@@ -90,6 +91,7 @@ const THRIFTED_ATTACK = preload("uid://dtx4a0j6atomh")
 const SPEND_DAMAGE_PARTICLE = preload("uid://dmgnoylltbfre")
 const THRIFT_DAMAGE_PARTICLE = preload("uid://bvrulyxw02bom")
 const DEBT_DAMAGE_PARTICLE = preload("uid://1g21u656k60k")
+const SLOW = preload("uid://f5jmno7qyhek")
 
 const ALL_IN = preload("uid://lwuew0lbc6d7")
 const ALL_IN_STAMP = preload("uid://bo7ip21oxj6eq")
@@ -112,6 +114,15 @@ const SPEND_EFFECT_PARTICLE = preload("uid://m3n67qiuvr7i")
 const SPEND_EXPLOSION_PARTICLE = preload("uid://bgfgq2kw3njao")
 const VOID_REMOVED_PARTICLE = preload("uid://b360j7dt7jml1")
 const INFLATION_PARTICLE = preload("uid://bq67mkmrnr14p")
+const COIN_BARRAGE_PARTICLE = preload("uid://btjsmqynj8nhe")
+
+const SPARE_CHANGE_PARTICLE = preload("uid://bn1a4qhm1md")
+const SPARE_CHANGE_RE_FLIP_PARTICLE = preload("uid://1go5ifrar23k")
+const PICKPOCKET_PARTICLE = preload("uid://gtmo80f6bhex")
+
+@onready var pickpocket: Marker2D = $"../Pickpocket"
+@onready var spare_change: Marker2D = $"../SpareChange"
+@onready var spare_change_reflip: Marker2D = $"../SpareChangeReflip"
 
 #PLAYER STATS
 var greed = false
@@ -130,7 +141,7 @@ var max_playable_coins: = 16 #Max Flips Per Turn
 var current_played_coin: = 0: #Current Flip Count
 	set(value):
 		current_played_coin = clamp(value,0,max_playable_coins)
-var max_re_flip = 6 #Max Re-Flips Per Turn
+var max_re_flip = 3 #Max Re-Flips Per Turn
 var current_re_flip = 0 #Current Re-Flip Count
 var silver_flip_rate = 0.1: #Chance to Flip a Silver Coin
 	set(value): 
@@ -281,12 +292,7 @@ func gain_coin():
 	gain -= debt
 	debt -= temp
 	coin += gain
-	
-	if temp2 > 0:
-		main.total_debt_applied += temp2
-		if temp2 > main.highest_debt_applied:
-			main.highest_debt_applied = temp2
-			
+
 	if has_active_income and has_debt and debt == 0 and main.enemy.coin > 0:
 		has_debt = false
 		main.shopkeeper.has_keeper_turn = true
@@ -332,12 +338,12 @@ func reset_stats():
 	has_lunar_coin = false
 	has_merchant_scroll = false
 	has_impromptu_flip = false  #Note: This is FLIP SEQUENCE
-	has_advanced_planning = true #Note: This is SEAL OF APPROVAL
+	has_advanced_planning = false #Note: This is SEAL OF APPROVAL
 
 	#A-Rank
 	has_magic_trick = false
 	has_sleight_of_hand = false #Note: This is PICKPOCKET
-	has_piggy = true
+	has_piggy = false
 
 	#INNOVATOR PASSIVES
 
@@ -363,7 +369,7 @@ func reset_stats():
 
 	has_pay_down = false #Note: This is BANKRUPT
 	has_reimbursement = false #Note: This is TAX EVASION
-	has_loan_shark = true
+	has_loan_shark = false
 	has_lending_charge = false
 
 	has_cash_out = false
@@ -456,6 +462,7 @@ func refresh_start_of_battle_stats():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	scene_load_transition.visible = true
 	player_portrait.play("default")
 	all_in.text = ""
 
@@ -465,6 +472,9 @@ func _ready():
 	pulse_timer.autostart = true
 	pulse_timer.timeout.connect(trigger_board_pulse)
 	add_child(pulse_timer)
+	
+	var load_tween = create_tween()
+	load_tween.tween_property(scene_load_transition,"position:x",1000,2)
 
 func coin_calculation():
 	var is_left = true # true - Left Coin, false - Right Coin
@@ -683,9 +693,11 @@ func reserve(is_generated = false, pickpocketed = false, dazzled = false):
 			if is_generated:
 				main.enemy.take_damage(3)
 				create_floating_label(3,"DAMAGE","ENEMY")
+				main.total_damage_dealt += 3
 			else:
 				main.enemy.take_damage(1)
 				create_floating_label(1,"DAMAGE","ENEMY")
+				main.total_damage_dealt += 1
 
 	if !is_generated:
 		take_damage(1)
@@ -696,9 +708,10 @@ func reserve(is_generated = false, pickpocketed = false, dazzled = false):
 		
 		if main.enemy.coin > 0 and has_triple_nickel and upgraded_flip_count % 10 == 0 and upgraded_flip_count != 0:
 			trigger_temp_passive("triple_nickel","COIN BARRAGE")
-			main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
+			main.particle_manager.spawn_particle(COIN_BARRAGE_PARTICLE,main.enemy_portrait.global_position)
 			main.sound_manager.play_sound(DAMAGE_HEAVY)
 			main.enemy.take_damage(10)
+			main.total_damage_dealt += 10
 			create_floating_label(10,"DAMAGE","ENEMY")
 			upgraded_flip_count = 0
 	
@@ -707,13 +720,10 @@ func reserve(is_generated = false, pickpocketed = false, dazzled = false):
 		
 	if has_deposit:
 		trigger_temp_passive("deposit","DEPOSIT")
-		var gain_amount = 0
-		if c.status == CoinStatus.NONE:
-			gain_amount += 1
-		else:
-			gain_amount += 3
-		create_floating_label(gain_amount,"GAIN","PLAYER")
-		gain += gain_amount
+		if randi_range(1,10) == 1:
+			c.is_stamped = true
+		create_floating_label(1,"GAIN","PLAYER")
+		gain += 1
 		
 	main.add_child(c)
 
@@ -814,6 +824,7 @@ func flip():
 			main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 			main.sound_manager.play_sound(ALL_IN_STAMP)
 			main.enemy.take_damage(3)
+			main.total_damage_dealt += 3
 			create_floating_label(3,"DAMAGE","ENEMY")
 		
 		if main.enemy.coin > 0 and has_impromptu_flip:
@@ -821,6 +832,7 @@ func flip():
 			main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 			main.sound_manager.play_sound(GAIN_EFFECT)
 			main.enemy.take_damage(1)
+			main.total_damage_dealt += 1
 			create_floating_label(1,"DAMAGE","ENEMY")
 
 
@@ -831,6 +843,7 @@ func flip():
 			main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 			main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
 			main.enemy.take_damage(1)
+			main.total_damage_dealt += 1
 			create_floating_label(1,"DAMAGE","ENEMY")
 
 	take_damage(1)
@@ -852,9 +865,10 @@ func flip():
 	
 	if main.enemy.coin > 0 and has_triple_nickel and upgraded_flip_count % 10 == 0  and upgraded_flip_count != 0:
 		trigger_temp_passive("triple_nickel","COIN BARRAGE")
-		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
+		main.particle_manager.spawn_particle(COIN_BARRAGE_PARTICLE,main.enemy_portrait.global_position)
 		main.sound_manager.play_sound(DAMAGE_HEAVY)
 		main.enemy.take_damage(10)
+		main.total_damage_dealt += 10
 		create_floating_label(10,"DAMAGE","ENEMY")
 		upgraded_flip_count = 0
 		
@@ -957,6 +971,7 @@ func re_flip():
 		var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
 		current_reserve = reserved_coins.size()
 		if reserved_coins.size() != 0:
+			main.particle_manager.spawn_particle(SPARE_CHANGE_PARTICLE,spare_change.global_position)
 			trigger_temp_passive("spare_change","SPARE CHANGE")
 			main.sound_manager.play_sound(PASSIVE_SPARE_CHANGE)
 			if has_withdraw: 
@@ -964,6 +979,7 @@ func re_flip():
 		for c in reserved_coins:
 			coin += 1
 			if c.is_stamped:
+				main.particle_manager.spawn_particle(SPARE_CHANGE_RE_FLIP_PARTICLE,spare_change_reflip.global_position)
 				current_re_flip -= 1
 			c.queue_free()
 			current_reserve -= 1
@@ -971,19 +987,23 @@ func re_flip():
 				if c.status != CoinStatus.NONE:
 					create_floating_label(3,"DAMAGE","ENEMY")
 					main.enemy.take_damage(3)
+					main.total_damage_dealt += 3
 				else:
 					create_floating_label(1,"DAMAGE","ENEMY")
 					main.enemy.take_damage(1)
+					main.total_damage_dealt += 1
 				has_withdraw_damage = true
 		if has_withdraw_damage:
 			main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 			main.sound_manager.play_sound(DAMAGE_MODERATE)
 			
 	if main.enemy.coin > 0 and !lock and has_sleight_of_hand:
+			main.particle_manager.spawn_particle(PICKPOCKET_PARTICLE,pickpocket.global_position)
 			trigger_temp_passive("pickpocket","PICKPOCKET")
 			main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 			main.sound_manager.play_sound(DAMAGE_LIGHT)
 			main.enemy.take_damage(1)
+			main.total_damage_dealt += 1
 			create_floating_label(1,"DAMAGE","ENEMY")
 			reserve(true, true)
 			if main.enemy.coin > 0 and has_coin_snipe:
@@ -991,6 +1011,7 @@ func re_flip():
 				main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 				main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
 				main.enemy.take_damage(3)
+				main.total_damage_dealt += 3
 				create_floating_label(3,"DAMAGE","ENEMY")
 		
 	if current_re_flip == max_re_flip or current_played_coin == 0:
@@ -1097,9 +1118,11 @@ func start_turn():
 						if coin.status != CoinStatus.NONE:
 							create_floating_label(3,"DAMAGE","ENEMY")
 							main.enemy.take_damage(3)
+							main.total_damage_dealt += 3
 						else:
 							create_floating_label(1,"DAMAGE","ENEMY")
 							main.enemy.take_damage(1)
+							main.total_damage_dealt += 1
 						has_withdraw_damage = true
 				if has_value_increase:
 					if coin.base_value < 6:
@@ -1137,9 +1160,11 @@ func start_turn():
 							if coin.status != CoinStatus.NONE:
 								create_floating_label(3,"DAMAGE","ENEMY")
 								main.enemy.take_damage(3)
+								main.total_damage_dealt += 3
 							else:
 								create_floating_label(1,"DAMAGE","ENEMY")
 								main.enemy.take_damage(1)
+								main.total_damage_dealt += 1
 							has_withdraw_damage = true
 					var dividend_coin = COIN.instantiate()
 					dividend_coin.setup(latest_coin.state,pos)
@@ -1155,6 +1180,7 @@ func start_turn():
 						main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 						main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
 						main.enemy.take_damage(3)
+						main.total_damage_dealt += 3
 						create_floating_label(3,"DAMAGE","ENEMY")
 	
 				latest_coin.refresh_sprite()
@@ -1175,6 +1201,7 @@ func start_turn():
 	print(max_reserve)
 	if has_inflation:
 		toggle_button(main.reserve_button,true)
+		main.reserve_button.visible = false
 	if main.enemy.coin == 0:
 		main.check_defeat()
 	
@@ -1234,6 +1261,7 @@ func end_turn():
 				main.enemy.debt += turn_void
 				create_floating_label(turn_void, "DEBT", "ENEMY")
 			main.enemy.take_damage(turn_void)
+			main.total_damage_dealt += turn_void
 			main.sound_manager.play_sound(DAMAGE_MODERATE)
 			main.sound_manager.play_sound(DEBTED_ATTACK)
 			create_floating_label(turn_void, "DAMAGE", "ENEMY")
@@ -1321,12 +1349,19 @@ func end_turn():
 		latest_pair_left_coin.initial_status = CoinStatus.SHINED
 		latest_pair_left_coin.add_to_group("reserved coins")
 		main.add_child(latest_pair_left_coin)
+		if has_deposit:
+			trigger_temp_passive("deposit","DEPOSIT")
+			if randi_range(1,10) == 1:
+				latest_pair_left_coin.is_stamped = true
+			create_floating_label(1,"GAIN","PLAYER")
+			gain += 1
 		
 		if has_coin_snipe:
 			trigger_temp_passive("coin_snipe","COIN SNIPE")
 			main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 			main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
 			main.enemy.take_damage(3)
+			main.total_damage_dealt += 3
 			create_floating_label(3,"DAMAGE","ENEMY")
 
 		type = latest_pair_right_coin.type
@@ -1338,13 +1373,19 @@ func end_turn():
 		latest_pair_right_coin.add_to_group("reserved coins")
 		main.add_child(latest_pair_right_coin)
 		current_reserve += 2
-		
+		if has_deposit:
+			trigger_temp_passive("deposit","DEPOSIT")
+			if randi_range(1,10) == 1:
+				latest_pair_right_coin.is_stamped = true
+			create_floating_label(1,"GAIN","PLAYER")
+			gain += 1
 	
 		if has_coin_snipe:
 			trigger_temp_passive("coin_snipe","COIN SNIPE")
 			main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 			main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
 			main.enemy.take_damage(3)
+			main.total_damage_dealt += 3
 			create_floating_label(3,"DAMAGE","ENEMY")
 	
 	#DOUBLE CHECK FOR LEFT OVERS
@@ -1408,6 +1449,9 @@ func end_turn():
 			create_floating_label("DEBT","IMMUNE","ENEMY")
 			main.sound_manager.play_sound(PASSIVE_REFUND)
 		else:
+			main.total_debt_applied += turn_debt
+			if turn_debt > main.highest_debt_applied:
+				main.highest_debt_applied = turn_debt
 			main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 			shake_power += 0.5
 			main.sound_manager.play_sound(DEBT)
@@ -1485,6 +1529,7 @@ func activate_pre_battle_passives():
 				main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 				main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
 				main.enemy.take_damage(3)
+				main.total_damage_dealt += 3
 				create_floating_label(3,"DAMAGE","ENEMY")
 			
 			if (current_played_coin == max_playable_coins and current_reserve == max_reserve) or coin == 1:
@@ -1523,13 +1568,10 @@ func activate_player_turn_start_passives():
 				c.add_to_group("reserved coins")
 				if has_deposit:
 					trigger_temp_passive("deposit","DEPOSIT")
-					var gain_amount = 0
-					if c.status == CoinStatus.NONE:
-						gain_amount += 1
-					else:
-						gain_amount += 3
-					create_floating_label(gain_amount,"GAIN","PLAYER")
-					gain += gain_amount
+					if randi_range(1,10) == 1:
+						c.is_stamped = true
+					create_floating_label(1,"GAIN","PLAYER")
+					gain += 1
 					
 			else:
 				c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
@@ -1553,12 +1595,14 @@ func activate_player_turn_start_passives():
 				main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 				main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
 				main.enemy.take_damage(3)
+				main.total_damage_dealt += 3
 				create_floating_label(3,"DAMAGE","ENEMY")
 			if main.enemy.coin > 0 and has_triple_nickel and upgraded_flip_count % 10 == 0  and upgraded_flip_count != 0:
 				trigger_temp_passive("triple_nickel","COIN BARRAGE")
-				main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
+				main.particle_manager.spawn_particle(COIN_BARRAGE_PARTICLE,main.enemy_portrait.global_position)
 				main.sound_manager.play_sound(DAMAGE_HEAVY)
 				main.enemy.take_damage(10)
+				main.total_damage_dealt += 10
 				create_floating_label(10,"DAMAGE","ENEMY")
 				upgraded_flip_count = 0
 
@@ -1597,6 +1641,7 @@ func activate_player_turn_end_passives():
 				main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 				main.sound_manager.play_sound(DAMAGE_LIGHT)
 				main.enemy.take_damage(1)
+				main.total_damage_dealt += 1
 				create_floating_label(1,"DAMAGE","ENEMY")
 			await get_tree().create_timer(0.1).timeout
 	if has_dazzle:
@@ -1638,6 +1683,7 @@ func activate_player_turn_end_passives():
 		main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 		main.sound_manager.play_sound(DAMAGE_LIGHT)
 		main.enemy.take_damage(1)
+		main.total_damage_dealt += 1
 		create_floating_label(1,"DAMAGE","ENEMY")
 		coin_calculation()
 		await get_tree().create_timer(0.6).timeout
@@ -1663,12 +1709,14 @@ func activate_player_turn_end_passives():
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(DAMAGE_LIGHT)
 					main.enemy.take_damage(1)
+					main.total_damage_dealt += 1
 					create_floating_label(1,"DAMAGE","ENEMY")
 				if has_coin_snipe:
 					trigger_temp_passive("coin_snipe","COIN SNIPE")
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
 					main.enemy.take_damage(3)
+					main.total_damage_dealt += 3
 					create_floating_label(3,"DAMAGE","ENEMY")
 				coin_calculation()
 				await get_tree().create_timer(0.1).timeout
@@ -1681,12 +1729,14 @@ func activate_player_turn_end_passives():
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(DAMAGE_LIGHT)
 					main.enemy.take_damage(1)
+					main.total_damage_dealt += 1
 					create_floating_label(1,"DAMAGE","ENEMY")
 				if has_coin_snipe:
 					trigger_temp_passive("coin_snipe","COIN SNIPE")
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(PASSIVE_COIN_SNIPE)
 					main.enemy.take_damage(3)
+					main.total_damage_dealt += 3
 					create_floating_label(3,"DAMAGE","ENEMY")
 				coin_calculation()
 				await get_tree().create_timer(0.1).timeout
@@ -1719,6 +1769,7 @@ func activate_player_turn_end_passives():
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(DAMAGE_LIGHT)
 					main.enemy.take_damage(1)
+					main.total_damage_dealt += 1
 					create_floating_label(1,"DAMAGE","ENEMY")
 				coin_calculation()
 				await get_tree().create_timer(0.1).timeout
@@ -1727,7 +1778,7 @@ func activate_player_turn_end_passives():
 			return
 	
 	if has_simple_interest and moon_moon_count > 0: 
-		trigger_temp_passive("simple_interest","SIMPLE INTEREST")
+		trigger_temp_passive("simple_interest","FULL MOON")
 		for coin in coins:
 			#PRIORITY 1: UNSHINED MOON COINS
 			if coin.state == 1 and moon_moon_count > 0 and coin.status != CoinStatus.SHINED:
@@ -1740,6 +1791,7 @@ func activate_player_turn_end_passives():
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(DAMAGE_LIGHT)
 					main.enemy.take_damage(1)
+					main.total_damage_dealt += 1
 					create_floating_label(1,"DAMAGE","ENEMY")
 				await get_tree().create_timer(0.1).timeout
 			if moon_moon_count == 0: break
@@ -1758,6 +1810,7 @@ func activate_player_turn_end_passives():
 						main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 						main.sound_manager.play_sound(DAMAGE_LIGHT)
 						main.enemy.take_damage(1)
+						main.total_damage_dealt += 1
 						create_floating_label(1,"DAMAGE","ENEMY")
 					await get_tree().create_timer(0.1).timeout
 				if moon_moon_count == 0: break
@@ -1781,6 +1834,7 @@ func activate_player_turn_end_passives():
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(DAMAGE_LIGHT)
 					main.enemy.take_damage(1)
+					main.total_damage_dealt += 1
 					create_floating_label(1,"DAMAGE","ENEMY")
 				await get_tree().create_timer(0.1).timeout
 			if sun_sun_count == 0: break
@@ -1799,6 +1853,7 @@ func activate_player_turn_end_passives():
 						main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 						main.sound_manager.play_sound(DAMAGE_LIGHT)
 						main.enemy.take_damage(1)
+						main.total_damage_dealt += 1
 						create_floating_label(1,"DAMAGE","ENEMY")
 					await get_tree().create_timer(0.1).timeout
 				if sun_sun_count == 0: break
@@ -1817,6 +1872,7 @@ func activate_player_turn_end_passives():
 						main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 						main.sound_manager.play_sound(DAMAGE_LIGHT)
 						main.enemy.take_damage(1)
+						main.total_damage_dealt += 1
 						create_floating_label(1,"DAMAGE","ENEMY")
 					await get_tree().create_timer(0.1).timeout
 				if sun_sun_count == 0: break

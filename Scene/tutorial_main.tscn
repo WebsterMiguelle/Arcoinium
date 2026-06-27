@@ -36,7 +36,7 @@
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="30_nu8ud"]
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="30_q77mq"]
 [ext_resource type="Texture2D" uid="uid://bmkxblxwtg47d" path="res://Assets/Rug.png" id="31_uku07"]
-[ext_resource type="Script" uid="uid://ka64sstswrwl" path="res://Script/game_over_ui.gd" id="32_rtf0e"]
+[ext_resource type="Script" uid="uid://ka64sstswrwl" path="res://Scene/game_over_ui.gd" id="32_rtf0e"]
 [ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="33_qg8me"]
 [ext_resource type="Script" uid="uid://cbrncrbtg7emf" path="res://Script/pause_menu.gd" id="36_ismbn"]
 [ext_resource type="Texture2D" uid="uid://cpm417gdi8hph" path="res://Assets/shopMaster-Sheet.png" id="36_t47jc"]
@@ -1626,6 +1626,7 @@ toggle_mode = true
 action_mode = 0
 
 [node name="FlipBlocker" type="TextureRect" parent="." unique_id=2119013801]
+self_modulate = Color(1, 1, 1, 0)
 top_level = true
 layout_mode = 0
 offset_left = 143.0

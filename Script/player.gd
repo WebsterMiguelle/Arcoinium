@@ -1832,7 +1832,7 @@ func extra_turn():
 	toggle_button(main.reserve_button,true)
 	toggle_button(main.endTurn_button,false)
 	
-func toggle_button(btn: Button, make_disabled: bool) -> void:
+func toggle_button(btn: BaseButton, make_disabled: bool) -> void:
 	btn.disabled = make_disabled
 	
 	if make_disabled:

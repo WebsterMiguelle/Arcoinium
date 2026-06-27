@@ -46,7 +46,7 @@ var dawn_stance = '#ffcda0'
 var dusk_stance = '#8dacf7'
 @onready var dusk_particles: GPUParticles2D = $"ParticleManager/Dusk Particles"
 @onready var dawn_particles: GPUParticles2D = $"ParticleManager/Dawn Particles"
-@onready var reserve_button: Button = $"Battle UI/Reserve Button"
+@onready var reserve_button: TextureButton = $"Battle UI/Reserve Button"
 @onready var player_reserve: Label = $"Battle UI/Reserve Button/Player Reserve"
 @onready var player_reserve_rug: TextureRect = $"Player/Player Reserve Rug"
 @onready var vignette: CanvasModulate = $Vignette
@@ -937,7 +937,7 @@ func update_player_status():
 		reserve_button.visible = true
 		player_lock.visible = false
 		player_lock_particles.emitting = false
-		player_reserve.text = "Reserve: " + str(player.current_reserve) + "/" + str(player.max_reserve)
+		player_reserve.text = "Reserve:\n" + str(player.current_reserve) + "/" + str(player.max_reserve)
 	
 func update_enemy_coin():
 	enemy_health_label.text = str(enemy.coin)

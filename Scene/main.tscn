@@ -2718,8 +2718,6 @@ vertical_alignment = 1
 [connection signal="mouse_exited" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_exited"]
 [connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]
 [connection signal="animation_finished" from="Battle UI/LoanShark" to="." method="_on_loan_shark_animation_finished"]
-[connection signal="pressed" from="Game Over UI/ColorRect/Main Menu" to="Game Over UI" method="_on_main_menu_pressed"]
-[connection signal="pressed" from="Game Over UI/ColorRect/Restart" to="." method="_on_restart_pressed"]
 [connection signal="toggled" from="CardManager/Player Info Passive Screen" to="." method="_on_player_info_passive_screen_toggled"]
 [connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/Resume" to="PauseMenu" method="_on_resume_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/EndRun" to="PauseMenu" method="_on_end_run_pressed"]

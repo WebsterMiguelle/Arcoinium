@@ -759,8 +759,8 @@ func trigger_game_over(player_won: bool):
 	"highest_debt_applied": highest_debt_applied,
 	"run_time": run_timer
 }
-	game_over_ui.show_stats(stats)
-	game_over_ui.visible = true
+	#game_over_ui.show_stats(stats)
+	#game_over_ui.visible = true
 	
 	var collected_passives = passive_order 
 	var title_text = ""

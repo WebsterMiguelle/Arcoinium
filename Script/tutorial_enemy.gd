@@ -266,7 +266,7 @@ func enemy_coin_calculation():
 					if advance_mode and coin.status == CoinStatus.SHINED:
 						total_damage += 2
 					if advance_mode:
-						total_debt += 1
+						total_debt += 3
 				else:
 					moon_count +=1
 					

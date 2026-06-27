@@ -85,7 +85,7 @@ const LINES = {
 	"adv_coin_status_transition": [
 		"Good eye. Now, coins can carry\ntheir own effects too." ],
 	"adv_coin_status_intro": [
-		"Check your Portrait\n-each coin tells its own story." ],
+		"Hover each Coin\n-each coin tells its own story." ],
 	"adv_all_done": [
 		"That's the advanced mode.\nThe rest you learn in the field." ],
 	"adv_enemy_turn": [

@@ -26,8 +26,6 @@ var dusk_stance = '#8dacf7'
 @onready var player_reserve_rug: TextureRect = $"Player/Player Reserve Rug"
 @onready var vignette: CanvasModulate = $"../Vignette"
 @onready var vignetter: PointLight2D = $"../Vignetter"
-@onready var turn_spell_light: PointLight2D = $"Battle UI/Turn Calculation Box/Turn Spell Light"
-
 
 var second_enemy
 var third_enemy
@@ -81,8 +79,18 @@ const TWILIGHT_ZONE___BATTLE_THEME_3 = preload("uid://bivy2e314q2fa")
 @onready var re_flip_button: Button = $"Battle UI/Re-Flip"
 @onready var reflip_sprite: AnimatedSprite2D = $"Battle UI/Re-Flip/Reflip_Sprite"
 @onready var reflip_label: Label = $"Battle UI/Re-Flip/Reflip_Label"
-@onready var turn_calculation: Label = $"Battle UI/Turn Calculation Box/Turn Calculation"
 @onready var turn_calculation_box: TextureRect = $"Battle UI/Turn Calculation Box"
+@onready var turn_calculation: Label = $"Battle UI/Turn Calculation Box/Turn Calculation"
+@onready var turn_spell_light: PointLight2D = $"Battle UI/Turn Calculation Box/Turn Spell Light"
+
+@onready var turn_spend_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Spend Particle"
+@onready var turn_gain_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Gain Particle"
+@onready var turn_damage_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Damage Particle"
+@onready var turn_debt_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Debt Particle"
+@onready var turn_tally_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Tally Particle"
+@onready var turn_thrift_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Thrift Particle"
+
+
 
 #USER INTERFACE
 const TUTORIAL = preload("uid://cq10yywodq6bn")
@@ -156,8 +164,9 @@ var player_info_menu: Node = null
 var enemy_notif_tween: Tween = null
 var enemy_notif_base_pos: Vector2
 
-@onready var turn_ui: ColorRect = $"Battle UI/Turn UI"
-@onready var turn_ui_label: Label = $"Battle UI/Turn UI/Turn UI Label"
+@onready var turn_ui: TextureRect = $"Turn UI"
+@onready var turn_portrait: AnimatedSprite2D = $"Turn UI/PortraitBG/Turn Portrait"
+@onready var turn_ui_label: Label = $"Turn UI/Turn UI Label"
 
 @onready var passive_manager = $PassiveManager
 @onready var passive_label = $"Battle UI/PassiveContainer"
@@ -329,6 +338,7 @@ func switch_vignetter_color(to,duration):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	advance_mode = SceneTransition.tutorial_advance_mode
+	print(advance_mode)
 	await get_tree().create_timer(0.4).timeout
 	await _play_fake_coin_intro()
 	turn_calculation_box.visible = false
@@ -458,14 +468,21 @@ func show_turn_ui(text):
 	turn_ui_label.text = text
 	turn_ui.modulate = Color("ffffff00")
 	turn_ui.global_position = get_viewport_rect().size / 2
-	turn_ui.global_position.x -= 600
+	turn_ui.global_position.x -= 350
+	turn_ui.global_position.y += 30
 	
 	var target_position = turn_ui.global_position.y - 40
 	
+	if current_turn == Turn.ENEMY:
+		turn_portrait.play("SHOPKEEPER")
+	else:
+		turn_portrait.play("COIN_CASTER")
+
 	var tween = create_tween()
 	tween.parallel().tween_property(turn_ui,"modulate",Color("ffffff"),0.2)
 	tween.parallel().tween_property(turn_ui, "position:y",target_position,0.2)
 	await get_tree().create_timer(1.0).timeout
+	print("=============================UI DONE")
 	turn_ui_label.text = text
 	tween = create_tween()
 	tween.parallel().tween_property(turn_ui,"modulate",Color("ffffff00"),0.2)
@@ -473,6 +490,7 @@ func show_turn_ui(text):
 	if current_turn == Turn.PLAYER:
 		endTurn_button.disabled = false
 	await get_tree().create_timer(1.0).timeout
+	print("=============================UI DONE")
 	
 func _on_end_run_pressed():
 	print("Main Script: Received End Run")
@@ -486,7 +504,6 @@ func start_player_turn():
 	if player.coin <= 0:
 		await check_defeat()
 		return
-		
 	show_turn_ui("PLAYER TURN")
 	current_turn = Turn.PLAYER
 	sound_manager.play_sound(TURN_PLAYER)
@@ -505,7 +522,10 @@ func start_player_turn():
 			await get_tree().create_timer(0.8).timeout  
 			_say("adv_debt_intro")
 			_show_tutorial("Status Effects: Debt","See how your Gain was reduced?\nThat's Debt at work — it cancels out\nyour Coin Gain at the start of your turn.\nThe higher your Debt, the less you gain!",player_debt.global_position,-120,[flip_button, endTurn_button])
-			await current_tutorial.closed
+			await _wait_for_spell_inspection()
+			while player_info_menu != null and is_instance_valid(player_info_menu):
+				await get_tree().process_frame
+			_close_current_tutorial()
 			_adv_start_shine_tutorial()
 			return
 		return
@@ -526,11 +546,11 @@ func start_enemy_turn():
 	if enemy.coin <= 0:
 		await check_defeat()
 		return
-		
+	
+	current_turn = Turn.ENEMY
 	show_turn_ui("ENEMY'S TURN")
 	_say("sk_player_losing")
 	coin_deck.reset_sigils()
-	current_turn = Turn.ENEMY
 	sound_manager.play_sound(TURN_ENEMY)
 	await enemy.start_enemy_turn()
 	await get_tree().process_frame
@@ -713,6 +733,7 @@ func handle_victory_flow():
 	sound_manager.play_sound(VICTORY)
 	turn_calculation_box.exit()
 	_say("sk_victory")
+	current_turn = Turn.PLAYER
 	await show_turn_ui("VICTORY")
 	var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
 	for c in reserved_coins:

@@ -67,12 +67,12 @@
 
 [sub_resource type="AudioStream" id="AudioStream_ot48q"]
 
-[sub_resource type="Gradient" id="Gradient_ot48q"]
+[sub_resource type="Gradient" id="Gradient_3drsm"]
 offsets = PackedFloat32Array(0.2811159, 0.6630901, 1)
 colors = PackedColorArray(1, 0.7473072, 0.4506637, 0.4509804, 0.96390635, 0.6826068, 1.1551381e-06, 0.2627451, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_2uk8d"]
-gradient = SubResource("Gradient_ot48q")
+gradient = SubResource("Gradient_3drsm")
 fill = 1
 fill_from = Vector2(0.48376068, 0.50427353)
 fill_to = Vector2(0.8735043, 0.24102564)
@@ -136,14 +136,14 @@ animations = [{
 offsets = PackedFloat32Array(0.36235955, 0.5702247)
 colors = PackedColorArray(1, 0.9913152, 0.9847979, 1, 0.71453226, 0.08470813, 4.813075e-07, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_5l0y8"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xj0l1"]
 gradient = SubResource("Gradient_f3bax")
 
 [sub_resource type="Curve" id="Curve_txj2b"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_mlc74"]
+[sub_resource type="CurveTexture" id="CurveTexture_jodah"]
 curve = SubResource("Curve_txj2b")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3drsm"]
@@ -158,17 +158,17 @@ initial_velocity_min = 87.869995
 initial_velocity_max = 116.35
 gravity = Vector3(0, 0, 0)
 scale_max = 10.0
-scale_curve = SubResource("CurveTexture_mlc74")
+scale_curve = SubResource("CurveTexture_jodah")
 scale_over_velocity_min = 107.84
 scale_over_velocity_max = 196.06999
 color = Color(0.9609011, 0.22721359, 3.85046e-07, 1)
-color_ramp = SubResource("GradientTexture1D_5l0y8")
+color_ramp = SubResource("GradientTexture1D_xj0l1")
 
 [sub_resource type="Gradient" id="Gradient_txj2b"]
 offsets = PackedFloat32Array(0, 0.3286517)
 colors = PackedColorArray(1, 0.9913152, 0.9847979, 1, 0.99999994, 0.82013106, 0.4443707, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_ekncj"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_tke4u"]
 gradient = SubResource("Gradient_txj2b")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jmo7v"]
@@ -184,17 +184,17 @@ initial_velocity_max = 47.2
 gravity = Vector3(0, 0, 0)
 scale_min = 5.0
 scale_max = 20.0
-scale_curve = SubResource("CurveTexture_mlc74")
+scale_curve = SubResource("CurveTexture_jodah")
 scale_over_velocity_min = 107.84
 scale_over_velocity_max = 196.06999
 color = Color(0.9999998, 0.57773465, 0.15203348, 1)
-color_ramp = SubResource("GradientTexture1D_ekncj")
+color_ramp = SubResource("GradientTexture1D_tke4u")
 
 [sub_resource type="Gradient" id="Gradient_hjai8"]
 offsets = PackedFloat32Array(0, 0.502809)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_txj2b"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ryobp"]
 gradient = SubResource("Gradient_hjai8")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ekncj"]
@@ -210,17 +210,17 @@ initial_velocity_max = 73.799995
 gravity = Vector3(0, 0, 0)
 scale_min = 5.0
 scale_max = 15.0
-scale_curve = SubResource("CurveTexture_mlc74")
+scale_curve = SubResource("CurveTexture_jodah")
 scale_over_velocity_min = 107.84
 scale_over_velocity_max = 196.06999
 color = Color(1, 0.8989062, 0.6749122, 1)
-color_ramp = SubResource("GradientTexture1D_txj2b")
+color_ramp = SubResource("GradientTexture1D_ryobp")
 
 [sub_resource type="Gradient" id="Gradient_ekncj"]
 offsets = PackedFloat32Array(0, 0.76123595)
 colors = PackedColorArray(0.6221689, 0.0035491616, 0.9346336, 1, 0.36156392, 1.2995303e-06, 0.22613236, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_jmo7v"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_e0ffi"]
 gradient = SubResource("Gradient_ekncj")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_f3bax"]
@@ -235,17 +235,17 @@ initial_velocity_max = 31.25
 gravity = Vector3(0, 0, 0)
 scale_min = 5.0
 scale_max = 10.0
-scale_curve = SubResource("CurveTexture_mlc74")
+scale_curve = SubResource("CurveTexture_jodah")
 scale_over_velocity_min = 107.84
 scale_over_velocity_max = 196.06999
 color = Color(0.92849284, 0.471942, 1, 1)
-color_ramp = SubResource("GradientTexture1D_jmo7v")
+color_ramp = SubResource("GradientTexture1D_e0ffi")
 
 [sub_resource type="Gradient" id="Gradient_jmo7v"]
 offsets = PackedFloat32Array(0, 0.76123595)
 colors = PackedColorArray(0.21714604, 0.46206403, 0.6978507, 1, 0.06823159, 4.813075e-07, 0.74061835, 0.40392157)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_f3bax"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7n7pe"]
 gradient = SubResource("Gradient_jmo7v")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5l0y8"]
@@ -260,16 +260,16 @@ initial_velocity_max = 31.25
 gravity = Vector3(0, 0, 0)
 scale_min = 5.0
 scale_max = 15.0
-scale_curve = SubResource("CurveTexture_mlc74")
+scale_curve = SubResource("CurveTexture_jodah")
 scale_over_velocity_min = 107.84
 scale_over_velocity_max = 196.06999
-color_ramp = SubResource("GradientTexture1D_f3bax")
+color_ramp = SubResource("GradientTexture1D_7n7pe")
 
 [sub_resource type="Gradient" id="Gradient_xj0l1"]
 offsets = PackedFloat32Array(0, 0.76123595)
 colors = PackedColorArray(0.5936804, 0.38009787, 0, 1, 1, 1, 1, 0.40392157)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_jodah"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fnsx1"]
 gradient = SubResource("Gradient_xj0l1")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tke4u"]
@@ -284,17 +284,17 @@ initial_velocity_max = 31.25
 gravity = Vector3(0, 0, 0)
 scale_min = 0.0
 scale_max = 0.79999995
-scale_curve = SubResource("CurveTexture_mlc74")
+scale_curve = SubResource("CurveTexture_jodah")
 scale_over_velocity_min = 107.84
 scale_over_velocity_max = 196.06999
 color = Color(0.9577182, 0.9577182, 0.9577181, 1)
-color_ramp = SubResource("GradientTexture1D_jodah")
+color_ramp = SubResource("GradientTexture1D_fnsx1")
 
-[sub_resource type="Gradient" id="Gradient_3drsm"]
+[sub_resource type="Gradient" id="Gradient_yceo7"]
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_xj0l1"]
-gradient = SubResource("Gradient_3drsm")
+gradient = SubResource("Gradient_yceo7")
 fill = 1
 fill_from = Vector2(0.4871795, 0.4940171)
 fill_to = Vector2(0.8905983, 0.45641026)
@@ -1608,7 +1608,7 @@ texture = ExtResource("49_5qrjd")
 position = Vector2(81.999985, 81.999985)
 scale = Vector2(2.2500005, 2.2500005)
 sprite_frames = SubResource("SpriteFrames_7n7pe")
-animation = &"SHOPKEEPER"
+animation = &"COIN_CASTER"
 
 [node name="Turn UI Label" type="Label" parent="Battle UI/Turn UI" unique_id=421358590]
 layout_mode = 0
@@ -2747,6 +2747,7 @@ toggle_mode = true
 action_mode = 0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1025872508]
+visible = false
 
 [node name="Timer" type="Label" parent="CanvasLayer" unique_id=1354476235]
 custom_minimum_size = Vector2(120, 30)
@@ -2758,7 +2759,7 @@ offset_right = 60.0
 offset_bottom = 30.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 25
-text = "00:00:00"
+text = "00:00"
 horizontal_alignment = 1
 vertical_alignment = 1
 

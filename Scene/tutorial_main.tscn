@@ -952,6 +952,7 @@ offset_top = 548.0
 offset_right = 238.0
 offset_bottom = 564.0
 scale = Vector2(4, 4)
+mouse_default_cursor_shape = 2
 
 [node name="Player Info" type="Button" parent="Battle UI" unique_id=261525369]
 visible = false
@@ -959,6 +960,7 @@ offset_left = 15.0
 offset_top = 508.0
 offset_right = 139.0
 offset_bottom = 633.0
+mouse_default_cursor_shape = 2
 text = "Press for Info"
 
 [node name="Reserve Button" type="Button" parent="Battle UI" unique_id=1926938624]
@@ -966,6 +968,7 @@ offset_left = 605.0
 offset_top = 551.0
 offset_right = 705.0
 offset_bottom = 622.0
+mouse_default_cursor_shape = 2
 
 [node name="Player Reserve" type="Label" parent="Battle UI/Reserve Button" unique_id=15672962]
 custom_minimum_size = Vector2(150, 40)
@@ -1065,6 +1068,7 @@ offset_top = 389.99997
 offset_right = 340.984
 offset_bottom = 488.896
 scale = Vector2(0.8, 0.8)
+mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 20
 text = "
 "
@@ -1134,6 +1138,7 @@ offset_left = 453.0
 offset_top = 201.0
 offset_right = 697.0
 offset_bottom = 445.0
+mouse_default_cursor_shape = 2
 
 [node name="PassiveContainer" type="VBoxContainer" parent="Battle UI" unique_id=709571412]
 custom_minimum_size = Vector2(200, 160)
@@ -1427,6 +1432,7 @@ offset_left = -1.0
 offset_top = 502.0
 offset_right = 149.0
 offset_bottom = 652.0
+mouse_default_cursor_shape = 2
 toggle_mode = true
 action_mode = 0
 
@@ -1514,6 +1520,7 @@ offset_right = 269.5
 offset_bottom = 180.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_default_cursor_shape = 2
 text = "Main Menu"
 
 [node name="Restart" type="Button" parent="Game Over UI/ColorRect" unique_id=1995089938]
@@ -1530,6 +1537,7 @@ offset_right = 267.5
 offset_bottom = 105.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_default_cursor_shape = 2
 text = "Restart"
 
 [node name="PauseMenu" type="CanvasLayer" parent="." unique_id=722870696]

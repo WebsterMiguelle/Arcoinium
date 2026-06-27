@@ -289,6 +289,10 @@ func _unlock_all() -> void:
 	re_flip_button.disabled = false
 	reserve_button.disabled = false
 	endTurn_button.disabled = false
+	endTurn_button.mouse_default_cursor_shape = 2
+	flip_button.mouse_default_cursor_shape = 2
+	reserve_button.mouse_default_cursor_shape = 2
+	re_flip_button.mouse_default_cursor_shape = 2
 	
 func _lock_all() -> void:
 	player.toggle_button(flip_button,true)
@@ -302,7 +306,11 @@ func _lock_all() -> void:
 	re_flip_button.disabled = true
 	reserve_button.disabled = true
 	endTurn_button.disabled = false
-
+	endTurn_button.mouse_default_cursor_shape = 8
+	flip_button.mouse_default_cursor_shape = 8
+	reserve_button.mouse_default_cursor_shape = 8
+	re_flip_button.mouse_default_cursor_shape = 8
+	
 func _adv_lock_except_flip() -> void:
 	flip_button.disabled = false
 	flip_button.visible  = true
@@ -451,6 +459,11 @@ func battle_start():
 	player.player_turn_count = 0
 	current_turn = Turn.PLAYER
 	if advance_mode: player.has_advanced_planning = true
+	
+	endTurn_button.mouse_default_cursor_shape = 8
+	flip_button.mouse_default_cursor_shape = 2
+	reserve_button.mouse_default_cursor_shape = 8
+	re_flip_button.mouse_default_cursor_shape = 8
 	start_player_turn()
 
 func _process(delta: float) -> void:
@@ -550,17 +563,29 @@ func start_player_turn():
 		return
 	
 	if !has_encountered_flip:
+		endTurn_button.mouse_default_cursor_shape = 8
+		reserve_button.mouse_default_cursor_shape = 8
+		re_flip_button.mouse_default_cursor_shape = 8
 		_say("sk_first_flip")
 		_show_tutorial("Coin Flipping","Press your Coin Bar to Flip 4 Coins.",player_health_bar.global_position,-100,[flip_button] )
 		return
 			
 	if !has_encountered_reflip:
+		endTurn_button.mouse_default_cursor_shape = 8
+		reserve_button.mouse_default_cursor_shape = 8
+		re_flip_button.mouse_default_cursor_shape = 2
+		flip_button.mouse_default_cursor_shape = 8
 		_say("sk_first_reflip")
 		_show_tutorial("Re-Flip", "If there are coins on the Arcane Circle,\npress Re-Flip to flip all coins again.",re_flip_button.global_position,-100,[re_flip_button])
 		player.toggle_button(re_flip_button,false)
+		player.toggle_button(endTurn_button,false)
 		return
 	
 	if !has_encountered_enemy_info:
+		endTurn_button.mouse_default_cursor_shape = 8
+		reserve_button.mouse_default_cursor_shape = 8
+		re_flip_button.mouse_default_cursor_shape = 8
+		flip_button.mouse_default_cursor_shape = 8
 		player_info.visible = false
 		has_encountered_enemy_info = true
 		_say("sk_enemy_info")
@@ -582,11 +607,14 @@ func start_player_turn():
 		player.toggle_button(reserve_button,false)
 		player_info.visible = true
 		endTurn_button.visible = true
+		endTurn_button.mouse_default_cursor_shape = 2
+		reserve_button.mouse_default_cursor_shape = 2
+		re_flip_button.mouse_default_cursor_shape = 2
+		flip_button.mouse_default_cursor_shape = 2
 		return
 	
-	player_info.visible = true
-	enemy_info.visible = true
-		
+	_unlock_all()
+	
 			
 func start_enemy_turn():
 	
@@ -631,9 +659,9 @@ func _on_endturn_pressed():
 	enemy_info.visible = false
 	if enemy.coin <= 0 or player.coin <= 0:
 		return
-		
+	
 	if advance_mode:
-		if !adv_tutorial_started:
+		if !adv_tutorial_started or !adv_coin_status_done:
 			player_info.visible = true
 			enemy_info.visible = true
 			return
@@ -645,6 +673,10 @@ func _on_endturn_pressed():
 		_dismiss_dialogue()
 		flip_button.visible  = true
 		flip_button.disabled = true
+		endTurn_button.mouse_default_cursor_shape = 8
+		reserve_button.mouse_default_cursor_shape = 8
+		re_flip_button.mouse_default_cursor_shape = 8
+		flip_button.mouse_default_cursor_shape = 8
 		await player.end_turn()
 		turn_calculation_box.exit()
 		var defeat = await check_defeat()
@@ -660,11 +692,15 @@ func _on_endturn_pressed():
 	_dismiss_dialogue()
 	flip_button.visible  = true
 	flip_button.disabled = true
-
+	endTurn_button.mouse_default_cursor_shape = 8
+	reserve_button.mouse_default_cursor_shape = 8
+	re_flip_button.mouse_default_cursor_shape = 8
+	flip_button.mouse_default_cursor_shape = 8
 	await player.end_turn()
 	turn_calculation_box.exit()
 		
 	if !has_encountered_reserve:
+		reserve_button.mouse_default_cursor_shape = 2
 		tutorial_reserve_count = 0
 		reserve_button.visible  = true
 		_say("sk_reserve")
@@ -711,9 +747,11 @@ func _on_flip_pressed():
 	
 	if advance_mode:
 		if !adv_coin_status_done and total_flips >= 4:
+			flip_button.mouse_default_cursor_shape = 8
 			player.toggle_button(flip_button,true)
 			flip_button.disabled = true
 			adv_coin_status_done = true
+			endTurn_button.mouse_default_cursor_shape = 2
 			player.toggle_button(endTurn_button,false)
 			endTurn_button.visible = true
 			_say("adv_coin_status_intro")
@@ -722,6 +760,7 @@ func _on_flip_pressed():
 	if !has_encountered_flip:
 		tutorial_flip_count += 1
 		if tutorial_flip_count >= 4:
+			flip_button.mouse_default_cursor_shape = 8
 			player.toggle_button(flip_button,true)
 			has_encountered_flip = true
 			_close_current_tutorial()
@@ -736,6 +775,8 @@ func _on_flip_pressed():
 		var reserved = get_tree().get_nodes_in_group("reserved coins")
 		player.toggle_button(endTurn_button,true)
 		if reserved.size() > 0 and tutorial_overflow_count >= 17:
+			endTurn_button.mouse_default_cursor_shape = 2
+			flip_button.mouse_default_cursor_shape = 2
 			has_encountered_overflow = true
 			_close_current_tutorial()
 			_say("sk_endturn")
@@ -838,17 +879,21 @@ func _on_re_flip_pressed():
 	
 		
 	if !has_encountered_reflip:
-		has_encountered_reflip = true
+		endTurn_button.mouse_default_cursor_shape = 2
+		flip_button.mouse_default_cursor_shape = 8
+		re_flip_button.mouse_default_cursor_shape = 8
 		_close_current_tutorial()
+		_say("sk_endturn")
+		_show_tutorial("End Turn","When you are done flipping,\npress the center of Arcane Circle to cast your\nCoin Spell!",Vector2(endTurn_button.global_position.x - 150, endTurn_button.global_position.y),-100,[endTurn_button])
+		has_encountered_reflip = true
 		flip_button.visible     = true    
 		flip_button.disabled    = true    
 		re_flip_button.visible  = true   
 		re_flip_button.disabled = true 
 		player.toggle_button(re_flip_button,true)
-		_say("sk_endturn")
-		_show_tutorial("End Turn","When you are done flipping,\npress the center of Arcane Circle to cast your\nCoin Spell!",Vector2(endTurn_button.global_position.x - 150, endTurn_button.global_position.y),-100,[endTurn_button])
-		endTurn_button.visible  = true
-		endTurn_button.disabled = false
+	player.toggle_button(endTurn_button,true)
+	endTurn_button.disabled = false 
+	endTurn_button.visible = true
 
 func reserve_left_over_coin():
 	var is_left = true # true - Left Coin, false - Right Coin
@@ -1014,6 +1059,7 @@ func _on_player_info_toggled(toggled_on: bool) -> void:
 			player.toggle_button(flip_button,false)
 			flip_button.disabled = false
 			flip_blocker.visible = false
+			flip_button.mouse_default_cursor_shape = 2
 		if advance_mode and player.player_turn_count != 1 and !adv_debt_done:
 			adv_debt_done = true
 			player.toggle_button(flip_button,false)
@@ -1021,6 +1067,7 @@ func _on_player_info_toggled(toggled_on: bool) -> void:
 			_unlock_all()
 			flip_button.disabled = false
 			flip_blocker.visible = false
+			flip_button.mouse_default_cursor_shape = 2
 			
 
 		
@@ -1040,6 +1087,9 @@ func _on_reserve_button_pressed() -> void:
 	if !has_encountered_reserve:
 		tutorial_reserve_count += 1
 		if tutorial_reserve_count >= 2:
+			reserve_button.mouse_default_cursor_shape = 8
+			flip_button.mouse_default_cursor_shape = 2
+			re_flip_button.mouse_default_cursor_shape = 2
 			has_encountered_reserve = true
 			_close_current_tutorial()
 			player.toggle_button(flip_button,false)

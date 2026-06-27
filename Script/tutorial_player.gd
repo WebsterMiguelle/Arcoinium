@@ -282,6 +282,8 @@ func reset_stats():
 	max_reserve = 4
 	current_reserve = 0
 	coin = 50
+	if main.advance_mode:
+		coin += 30
 	max_playable_coins = 16 #Max Flips Per Turn
 	current_played_coin = 0 #Current Flip Count
 	max_re_flip = 3 #Max Re-Flips Per Turn
@@ -947,8 +949,10 @@ func start_turn():
 		gain_coin()
 
 	#Reset Player Stats
-	if has_pocket_money and player_turn_count == 1:
-		pass
+	if !main.advance_mode and player_turn_count <= 2:
+		current_played_coin = 0
+		current_reserve = 0
+		upgraded_flip_count = 0
 	else:
 		current_played_coin = 0
 		current_reserve = 0
@@ -1087,7 +1091,8 @@ func start_turn():
 		toggle_button(main.reserve_button,true)
 	if main.enemy.coin == 0:
 		main.check_defeat()
-	
+	if !main.advance_mode and player_turn_count == 2:
+		toggle_button(main.flip_button,true)
 
 func end_turn():
 
@@ -1511,7 +1516,6 @@ func activate_player_turn_end_passives():
 		if main.enemy.coin == 0:
 			return
 	if has_advanced_planning:
-		trigger_temp_passive("advanced_planning","SEAL OF APPROVAL")
 		coins = get_tree().get_nodes_in_group("coins")
 		var index = 0
 		for coin in coins:

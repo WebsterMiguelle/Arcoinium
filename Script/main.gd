@@ -563,7 +563,7 @@ func start_keeper_turn():
 		else:
 			shopkeeper.status.text = "NO DEBT YET."
 	else:
-		shopkeeper.status.text = "CUSTOMER ARE YOU ALRIGHT?"
+		shopkeeper.status.text = "CASTER ARE YOU ALRIGHT?"
 	if enemy.coin > 0:
 		await get_tree().create_timer(0.6).timeout
 		if shopkeeper.has_scroll_turn:

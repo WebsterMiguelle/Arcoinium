@@ -67,12 +67,12 @@ offset_bottom = 652.0
 texture = ExtResource("3_at7dl")
 
 [node name="Dialogue Area" type="Marker2D" parent="." unique_id=399608582]
-position = Vector2(445, 70)
+position = Vector2(100, 0)
 
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=782194638]
 position = Vector2(599, 318)
 scale = Vector2(17.921875, 10.046875)
-color = Color(1, 0.9019608, 0.5647059, 0.61960787)
+color = Color(1, 0.9098039, 0.42745098, 0.9411765)
 energy = 1.1
 texture = SubResource("GradientTexture2D_vits8")
 texture_scale = 0.46
@@ -81,7 +81,7 @@ texture_scale = 0.46
 color = Color(0.7360586, 0.6517471, 0.7562498, 1)
 
 [node name="Vignette2" type="TextureRect" parent="." unique_id=1757435299]
-self_modulate = Color(0, 0, 0, 0.11372549)
+self_modulate = Color(0, 0, 0, 0.5137255)
 layout_mode = 0
 offset_right = 1155.0
 offset_bottom = 649.0
@@ -135,10 +135,10 @@ text = "ADVANCE MODE"
 [node name="Back Button" type="Button" parent="." unique_id=1412783332]
 custom_minimum_size = Vector2(150, 45)
 layout_mode = 0
-offset_left = 27.0
-offset_top = 297.0
-offset_right = 177.0
-offset_bottom = 342.0
+offset_left = 30.0
+offset_top = 477.0
+offset_right = 180.0
+offset_bottom = 522.0
 theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = SubResource("StyleBoxFlat_2gtc7")
 action_mode = 0
@@ -147,10 +147,10 @@ text = "BACK"
 [node name="Archive Button" type="Button" parent="." unique_id=1385593860]
 custom_minimum_size = Vector2(150, 45)
 layout_mode = 0
-offset_left = 933.0
-offset_top = 300.0
-offset_right = 1140.0
-offset_bottom = 355.0
+offset_left = 946.0
+offset_top = 473.0
+offset_right = 1153.0
+offset_bottom = 528.0
 theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = SubResource("StyleBoxFlat_2gtc7")
 action_mode = 0

@@ -924,7 +924,8 @@ func end_enemy_turn():
 			await get_tree().create_timer(0.1).timeout
 	if has_dazzle:
 		await get_tree().create_timer(0.6).timeout
-
+	if coin == 0:
+		return
 	
 	if has_radiant:
 		coins = get_tree().get_nodes_in_group("enemy_coins")
@@ -952,7 +953,8 @@ func end_enemy_turn():
 				enemy_coin_calculation()
 				await get_tree().create_timer(0.1).timeout
 		await get_tree().create_timer(0.6).timeout
-		
+	if coin == 0:
+		return
 	
 	# ==========================================
 	# PHASE 1: MATH & LOGIC (Instantly calculate everything)
@@ -1055,7 +1057,7 @@ func end_enemy_turn():
 		if main.player.has_merchant_scroll: 
 			main.shopkeeper.has_scroll_turn = true
 			main.shopkeeper.coin = main.shopkeeper.max_playable_coins
-			main.shopkeeper.status.text = "CUSTOMER HURT. READY TO FLIP."
+			main.shopkeeper.status.text = "CASTER HURT. READY TO FLIP."
 			var keeper_tween = create_tween()
 			keeper_tween.tween_property(keeper_shadow,"self_modulate", Color("85007396"),0.2)
 			
@@ -1178,7 +1180,7 @@ func end_enemy_turn():
 	if main.player.starstruck and (main.player.has_merchant_scroll or main.player.has_active_income):
 		await get_tree().create_timer(1.0)
 		main.sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
-		main.shopkeeper.status.text = "CUSTOMER. FOCUS."
+		main.shopkeeper.status.text = "COIN CASTER. FOCUS."
 		var keeper_tween = create_tween()
 		keeper_tween.tween_property(keeper_shadow,"self_modulate", Color("85007396"),0.2)
 		await get_tree().create_timer(1.0)

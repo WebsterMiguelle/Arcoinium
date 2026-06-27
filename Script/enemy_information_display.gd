@@ -125,6 +125,12 @@ var ENEMY_DATA = {
 		"tip": "Pay attention to the background color! Play MOON during Dawn, and SUN during Dusk.",
 		"greed": "Switches between Dawn and Dusk. Applies DROWSE during Dawn, and VOIDED during Dusk.",
 		"greed tip": "Time your combo accordingly. Some turns will have a Locked Reserve, some have ineffective Re-Flips."
+	},
+	9:{ # SHOPKEEPER
+		"name": "Shopkeeper",
+		"story": "As pleasant a companion as she is a business woman, but everything else about her is unknown.",
+		"ability": "Flips coins to cast basic spells.",
+		"tip": "Learn on balancing DAMAGE and GAIN. Avoid losing all coins. Defeat her to win.",
 	}
 }
 func _ready() -> void:
@@ -200,6 +206,7 @@ func setup(enemy: Node) -> void:
 		s.set_status(Status.GAIN,enemy_node.gain)
 		s.add_to_group("enemy_status")
 		status_container.add_child(s)
+		print("I AM GAINING")
 	if enemy_node.debt > 0:
 		var s = STATUS_EFFECT.instantiate()
 		s.set_status(Status.DEBT,enemy_node.debt)

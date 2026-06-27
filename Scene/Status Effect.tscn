@@ -22,7 +22,6 @@ theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("1_1yguh")
 theme_override_font_sizes/font_size = 32
-text = "GAIN (1)"
 
 [node name="Description" type="Label" parent="VBoxContainer" unique_id=1986840341]
 custom_minimum_size = Vector2(312.345, 0)
@@ -32,5 +31,4 @@ theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 7
 theme_override_fonts/font = ExtResource("2_4cy08")
 theme_override_font_sizes/font_size = 24
-text = "Gain 1 Coin at the start of next turn."
 autowrap_mode = 3

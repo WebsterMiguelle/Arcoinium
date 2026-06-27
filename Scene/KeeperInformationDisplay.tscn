@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c8vfntelui3b7"]
 
-[ext_resource type="Script" path="res://Scene/keeper_information_display.gd" id="1_ym2cr"]
+[ext_resource type="Script" uid="uid://c43ouycp17snl" path="res://Scene/keeper_information_display.gd" id="1_ym2cr"]
 [ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="2_n2xgf"]
 [ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="3_grs8a"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="4_07nxu"]
@@ -17,7 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://c5kws41vksxsb" path="res://Assets/twilightSageDawn.png" id="15_ggvnr"]
 [ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="15_n2xgf"]
 [ext_resource type="Texture2D" uid="uid://odbplao5e2m8" path="res://Assets/twilightSageDusk.png" id="16_0adtr"]
-[ext_resource type="Texture2D" uid="uid://bf3hv0qyt1kio" path="res://Assets/8-bitrunes.png" id="17_n3my8"]
+[ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="18_bt5e5"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5krdm"]
 texture = ExtResource("2_n2xgf")
@@ -305,7 +305,7 @@ layout_mode = 2
 [node name="Border" type="TextureRect" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=1147635464]
 self_modulate = Color(0.8627451, 0.28627452, 1, 0.54901963)
 layout_mode = 2
-texture = ExtResource("17_n3my8")
+texture = ExtResource("18_bt5e5")
 
 [node name="Trust" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=2064010057]
 layout_mode = 2
@@ -331,7 +331,7 @@ vertical_alignment = 1
 [node name="Border2" type="TextureRect" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=1937100677]
 self_modulate = Color(0.8611931, 0.2852019, 0.99999994, 0.54901963)
 layout_mode = 2
-texture = ExtResource("17_n3my8")
+texture = ExtResource("18_bt5e5")
 
 [node name="StatusEffectsPanel" type="PanelContainer" parent="." unique_id=710897952]
 layout_mode = 2

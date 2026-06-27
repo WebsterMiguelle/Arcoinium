@@ -251,7 +251,11 @@ func populate_passives(player: Node) -> void:
 		if player.get(variable_name) == true:
 			active_passive_keys.append(variable_name)
 			
-
+	if active_passive_keys.size() > 8:
+		passives_container.add_theme_constant_override("v_separation", 5)
+	else:
+		passives_container.add_theme_constant_override("v_separation", 10)
+		
 	for key in active_passive_keys:
 		var icon_instance = PASSIVE_BAR_ICON.instantiate()
 		passives_container.add_child(icon_instance)

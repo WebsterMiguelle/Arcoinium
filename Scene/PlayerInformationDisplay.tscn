@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="2_6esm0"]
 [ext_resource type="Texture2D" uid="uid://b26gbj0tgcnn" path="res://Assets/16bitcoins.png" id="3_1nu5n"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="3_6esm0"]
-[ext_resource type="Texture2D" uid="uid://bf3hv0qyt1kio" path="res://Assets/8-bitrunes.png" id="5_5krdm"]
 [ext_resource type="Texture2D" uid="uid://cjjj3ulqgawva" path="res://Assets/apprenticeMage.png" id="5_si13v"]
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="6_jpy41"]
 [ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="6_mcgir"]
@@ -20,6 +19,8 @@
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="14_n2etl"]
 [ext_resource type="Texture2D" uid="uid://c5kws41vksxsb" path="res://Assets/twilightSageDawn.png" id="15_t8gpd"]
 [ext_resource type="Texture2D" uid="uid://odbplao5e2m8" path="res://Assets/twilightSageDusk.png" id="16_i67fd"]
+[ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="17_mcgir"]
+[ext_resource type="Texture2D" uid="uid://dms5d0v8hxacy" path="res://Assets/EndScrollTextSeparator.png" id="21_ovi3i"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5krdm"]
 texture = ExtResource("2_6esm0")
@@ -285,11 +286,11 @@ Max Reserve:
 vertical_alignment = 1
 
 [node name="Lore" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=517329297]
-custom_minimum_size = Vector2(120, 100.985)
+custom_minimum_size = Vector2(120, 82.08)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.00062300445, 0.28259096, 0.47401345, 1)
 theme_override_colors/font_outline_color = Color(0.7313375, 0.8610191, 0.8245892, 1)
-theme_override_constants/line_spacing = 2
+theme_override_constants/line_spacing = 1
 theme_override_constants/shadow_offset_y = 6
 theme_override_constants/outline_size = 7
 theme_override_fonts/font = ExtResource("3_6esm0")
@@ -303,9 +304,8 @@ clip_text = true
 layout_mode = 2
 
 [node name="Border" type="TextureRect" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=1147635464]
-self_modulate = Color(0.2738436, 0.620271, 0.9422636, 0.54901963)
 layout_mode = 2
-texture = ExtResource("5_5krdm")
+texture = ExtResource("17_mcgir")
 
 [node name="Spells" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=2064010057]
 layout_mode = 2
@@ -416,9 +416,8 @@ text = "= 1 Dmg
 vertical_alignment = 1
 
 [node name="Border2" type="TextureRect" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=1937100677]
-self_modulate = Color(0.2738436, 0.620271, 0.9422636, 0.54901963)
 layout_mode = 2
-texture = ExtResource("5_5krdm")
+texture = ExtResource("21_ovi3i")
 
 [node name="StatusEffectsPanel" type="PanelContainer" parent="." unique_id=710897952]
 layout_mode = 2
@@ -479,7 +478,7 @@ vertical_alignment = 1
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/h_separation = 20
-theme_override_constants/v_separation = 25
+theme_override_constants/v_separation = 10
 columns = 4
 
 [node name="Passive_name" type="Label" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=1237834155]

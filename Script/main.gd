@@ -763,10 +763,6 @@ func trigger_game_over(player_won: bool):
 				killer_text = "Twilight Sage Wins"
 
 	is_surrender = false
-	# ==========================================
-	# 3. HANDOFF & SPAWN OVERLAY
-	# ==========================================
-	is_surrender = false
 	
 	vignetter.range_z_max = 99
 	turn_spell_light.range_z_max = 99

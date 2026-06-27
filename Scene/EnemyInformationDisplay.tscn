@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://cjjj3ulqgawva" path="res://Assets/apprenticeMage.png" id="8_hqtl8"]
 [ext_resource type="Texture2D" uid="uid://bikjuk8fgo6p2" path="res://Assets/moonCaster-Sheet.png" id="9_4c3qr"]
 [ext_resource type="Texture2D" uid="uid://di37676qo0yu4" path="res://Assets/sunCaster-Recovered-Sheet.png" id="10_gf2hv"]
+[ext_resource type="Script" uid="uid://bdpljan2t1woi" path="res://Scene/Shopkeeper.gd" id="38_ekncj"]
 [ext_resource type="Texture2D" uid="uid://csb6cbe5uwx3c" path="res://Assets/thrifter.png" id="11_aoc38"]
 [ext_resource type="Texture2D" uid="uid://dprlqvclal2j" path="res://Assets/trader.png" id="12_w7yfx"]
 [ext_resource type="Texture2D" uid="uid://bgomk7rj834wr" path="res://Assets/twilightSage.png" id="13_ce71m"]

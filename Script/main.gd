@@ -56,8 +56,8 @@ var dusk_stance = '#8dacf7'
 @onready var reserve_button: Button = $"Battle UI/Reserve Button"
 @onready var player_reserve: Label = $"Battle UI/Reserve Button/Player Reserve"
 @onready var player_reserve_rug: TextureRect = $"Player/Player Reserve Rug"
-@onready var vignette: CanvasModulate = $"../Vignette"
-@onready var vignetter: PointLight2D = $"../Vignetter"
+@onready var vignette: CanvasModulate = $Vignette
+@onready var vignetter: PointLight2D = $Vignetter
 @onready var mist_particles: GPUParticles2D = $"ParticleManager/Mist Particles"
 
 var second_enemy
@@ -158,10 +158,11 @@ $"Progression Map/Boss"
 var slow_color = "#43a563"
 const PLAYER_INFORMATION_DISPLAY = preload("res://Scene/PlayerInformationDisplay.tscn")
 var player_info_menu: Node = null
-const ENEMY_INFORMATION_DISPLAY = preload("res://Scene/EnemyInformationDisplay.tscn")
+const ENEMY_INFORMATION_DISPLAY = preload("uid://1lqiy1lfcalo")
 var enemy_info_menu: Node = null
 const KEEPER_INFORMATION_DISPLAY = preload("uid://c8vfntelui3b7")
 var keeper_info_menu: Node = null
+const POST_GAME_SCREEN = preload("uid://c7uk7pxxcix85")
 
 @onready var player_lock_particles: GPUParticles2D = $"Player/Player Lock Particles"
 @onready var player_gain_particles: GPUParticles2D = $"Player/Player Gain Particles"
@@ -213,8 +214,6 @@ var overflow_notif: Control = null
 
 	
 const PASSIVE_SCENE = preload("res://Scene/passsive_notification.tscn")
-
-@onready var game_over_ui: CanvasLayer = $"Game Over UI"
 
 @onready var pause_menu = $PauseMenu
 
@@ -448,7 +447,6 @@ func battle_start():
 	current_turn = Turn.PLAYER
 	start_player_turn()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	update_player_coin()
 	update_enemy_coin()
@@ -520,6 +518,7 @@ func _on_end_run_pressed():
 	get_tree().paused = false
 	pause_menu.visible = false
 	is_surrender = true
+	await get_tree().process_frame
 	trigger_game_over(false)
 
 	
@@ -732,23 +731,18 @@ func trigger_game_over(player_won: bool):
 	timer_label.visible = false
 	sound_manager.play_sound(DEATH)
 	sound_manager.stop_music()
+	
 	if player_won:
 		enemy.max_playable_coins = 0
 		if current_enemy_index != 8:
 			reward_manager.show_rewards()
 	
-	game_over_ui.visible = true
-	
 	flip_button.disabled = true
 	re_flip_button.disabled = true
 	endTurn_button.disabled = true
 	
-	
 	set_process(false)
-	
-	var result_label = game_over_ui.get_node("ColorRect/Gameover")
-	var enemy_label = game_over_ui.get_node("ColorRect/EnemyLabel")
-	
+
 	var stats = {
 	"remaining_coins": player.coin,
 	"overall_total_damage": overall_total_damage,
@@ -768,104 +762,64 @@ func trigger_game_over(player_won: bool):
 	game_over_ui.show_stats(stats)
 	game_over_ui.visible = true
 	
-	
-	
+	var collected_passives = passive_order 
+	var title_text = ""
+	var killer_text = ""
 	match current_enemy_type:
 		Enemy.MAGE:
-			if is_surrender:
-				result_label.text = "RUN ABANDONED"
-				enemy_label.text = "You gave up the fight..."
-			else:
-				result_label.text = "CONSUMED BY MAGIC"
-				enemy_label.text = "Mage Wins"
-
+			title_text = "RUN ABANDONED" if is_surrender else "CONSUMED BY MAGIC"
+			killer_text = "You gave up the fight..." if is_surrender else "Mage Wins"
 		Enemy.DWARF:
-			if is_surrender:
-				result_label.text = "RUN ABANDONED"
-				enemy_label.text = "You gave up the fight..."
-			else:
-				result_label.text = "CRUSHED BY THE FORGE"
-				enemy_label.text = "Dwarf Wins"
-
+			title_text = "RUN ABANDONED" if is_surrender else "CRUSHED BY THE FORGE"
+			killer_text = "You gave up the fight..." if is_surrender else "Dwarf Wins"
 		Enemy.COLLECTOR:
-			if is_surrender:
-				result_label.text = "RUN ABANDONED"
-				enemy_label.text = "You gave up the fight..."
-			else:
-				result_label.text = "ADDED TO THE COLLECTION"
-				enemy_label.text = "Collector Wins"
-
+			title_text = "RUN ABANDONED" if is_surrender else "ADDED TO THE COLLECTION"
+			killer_text = "You gave up the fight..." if is_surrender else "Collector Wins"
 		Enemy.TRADER:
-			if is_surrender:
-				result_label.text = "RUN ABANDONED"
-				enemy_label.text = "You gave up the fight..."
-			else:
-				result_label.text = "A BAD DEAL"
-				enemy_label.text = "Trader Wins"
-
+			title_text = "RUN ABANDONED" if is_surrender else "A BAD DEAL"
+			killer_text = "You gave up the fight..." if is_surrender else "Trader Wins"
 		Enemy.THRIFTER:
-			if is_surrender:
-				result_label.text = "RUN ABANDONED"
-				enemy_label.text = "You gave up the fight..."
-			else:
-				result_label.text = "SPENT TO NOTHING"
-				enemy_label.text = "Thrifter Wins"
-
+			title_text = "RUN ABANDONED" if is_surrender else "SPENT TO NOTHING"
+			killer_text = "You gave up the fight..." if is_surrender else "Thrifter Wins"
 		Enemy.ARISTOCRAT:
-			if is_surrender:
-				result_label.text = "RUN ABANDONED"
-				enemy_label.text = "You gave up the fight..."
-			else:
-				result_label.text = "BENEATH THEIR CLASS"
-				enemy_label.text = "Aristocrat Wins"
-
+			title_text = "RUN ABANDONED" if is_surrender else "BENEATH THEIR CLASS"
+			killer_text = "You gave up the fight..." if is_surrender else "Aristocrat Wins"
 		Enemy.SUN_CASTER:
-			if is_surrender:
-				result_label.text = "RUN ABANDONED"
-				enemy_label.text = "You gave up the fight..."
-			else:
-				result_label.text = "SCORCHED BY DAWN"
-				enemy_label.text = "Sun Caster Wins"
-
+			title_text = "RUN ABANDONED" if is_surrender else "SCORCHED BY DAWN"
+			killer_text = "You gave up the fight..." if is_surrender else "Sun Caster Wins"
 		Enemy.MOON_CASTER:
-			if is_surrender:
-				result_label.text = "RUN ABANDONED"
-				enemy_label.text = "You gave up the fight..."
-			else:
-				result_label.text =  "CONSUMED BY DUSK"
-				enemy_label.text = "Moon Caster Wins"
-
+			title_text = "RUN ABANDONED" if is_surrender else "CONSUMED BY DUSK"
+			killer_text = "You gave up the fight..." if is_surrender else "Moon Caster Wins"
 		Enemy.TWILIGHT_SAGE:
 			if is_surrender:
-				result_label.text = "RUN ABANDONED"
-				enemy_label.text = "You gave up the fight..."
+				title_text = "RUN ABANDONED"
+				killer_text = "You gave up the fight..."
 			elif player_won:
-				result_label.text = "PLAYER WON"
-				enemy_label.text = "Twilight Sage has been slain"
+				title_text = "YOU WIN"
+				killer_text = "Twilight Sage has been slain"
 			else:
-				result_label.text =  "LOST IN TWILIGHT"
-				enemy_label.text = "Twilight Sage Wins"
+				title_text = "LOST IN TWILIGHT"
+				killer_text = "Twilight Sage Wins"
 
-	enemy_label.modulate.a = 0.0
-	
-	await get_tree().create_timer(2.0).timeout
-	var tween = create_tween()
-	tween.tween_property(enemy_label, "modulate:a", 1.0, 1.0)
 	is_surrender = false
 	
+	vignetter.range_z_max = 99
+	turn_spell_light.range_z_max = 99
 	
+	var game_over_instance = POST_GAME_SCREEN.instantiate()
+	game_over_instance.z_index = 100 
+	add_child(game_over_instance)
 	
+	game_over_instance.setup(stats, player_won, title_text, killer_text, player)
 
 func check_defeat():
 	if player.coin <= 0:
 		if player.has_payback:
 			if player.payback_used:
-				trigger_dramatic_slowdown()
-				game_over_ui.visible = true
+				await trigger_dramatic_slowdown()
 				trigger_game_over(false)
 		else:
-			trigger_dramatic_slowdown()
-			game_over_ui.visible = true
+			await trigger_dramatic_slowdown()
 			trigger_game_over(false)
 		return true
 		
@@ -875,7 +829,7 @@ func check_defeat():
 		re_flip_button.disabled = true
 		reserve_button.disabled = true
 		if enemies_defeated == current_room or enemy.type == Enemy.TWILIGHT_SAGE:
-			trigger_dramatic_slowdown()
+			await trigger_dramatic_slowdown()
 			enemies_defeated += 1
 			await handle_victory_flow()
 			return true

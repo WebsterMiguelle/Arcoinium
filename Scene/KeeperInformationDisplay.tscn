@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c8vfntelui3b7"]
 
-[ext_resource type="Script" uid="uid://c43ouycp17snl" path="res://Scene/keeper_information_display.gd" id="1_ym2cr"]
+[ext_resource type="Script" path="res://Scene/keeper_information_display.gd" id="1_ym2cr"]
 [ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="2_n2xgf"]
 [ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="3_grs8a"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="4_07nxu"]
@@ -392,7 +392,7 @@ vertical_alignment = 1
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/h_separation = 20
-theme_override_constants/v_separation = 25
+theme_override_constants/v_separation = 10
 columns = 4
 
 [node name="Passive_name" type="Label" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=1237834155]

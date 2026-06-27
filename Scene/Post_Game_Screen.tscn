@@ -9,12 +9,8 @@
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="7_bnefy"]
 [ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="7_qjnbp"]
 [ext_resource type="FontFile" uid="uid://cmvd7gycedmwg" path="res://Assets/Fonts/GothicByte.ttf" id="8_bnefy"]
-[ext_resource type="PackedScene" uid="uid://dldde8yrawlpn" path="res://Scene/Passive_Bar_Icon.tscn" id="9_bjpar"]
 [ext_resource type="Texture2D" uid="uid://dms5d0v8hxacy" path="res://Assets/EndScrollTextSeparator.png" id="10_4dvkt"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="12_4dvkt"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qjnbp"]
-texture = ExtResource("5_jy4eg")
 
 [sub_resource type="Gradient" id="Gradient_75buv"]
 offsets = PackedFloat32Array(0, 0.22742476)
@@ -29,6 +25,9 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 metadata/_snap_enabled = true
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qjnbp"]
+texture = ExtResource("5_jy4eg")
+
 [node name="PostGameScreen" type="Control" unique_id=1373690295]
 layout_mode = 3
 anchors_preset = 15
@@ -38,15 +37,29 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_5tsft")
 
+[node name="Vignette" type="Node" parent="." unique_id=1512864058]
+
+[node name="Vignetter" type="PointLight2D" parent="Vignette" unique_id=1852200988]
+position = Vector2(291, 81)
+scale = Vector2(17.921875, 10.046875)
+color = Color(1, 0.9019608, 0.5647059, 0.61960787)
+energy = 1.1
+texture = SubResource("GradientTexture2D_bnefy")
+texture_scale = 0.46
+metadata/_edit_lock_ = true
+
+[node name="Vignette" type="CanvasModulate" parent="Vignette" unique_id=1169181578]
+position = Vector2(573, 356)
+color = Color(0.7360586, 0.6517471, 0.7562498, 1)
+metadata/_edit_lock_ = true
+
 [node name="RightSideBricks" type="Control" parent="." unique_id=1088233663]
 layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -415.0
-offset_right = -415.0
-grow_horizontal = 0
+offset_left = 555.0
+grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Tile" type="TextureRect" parent="RightSideBricks" unique_id=1021120493]
@@ -55,62 +68,69 @@ anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -182.99997
-offset_right = -63.39997
-offset_bottom = -518.4
+offset_left = -598.0
+offset_top = 0.9999994
+offset_right = -478.39996
+offset_bottom = -517.4
 grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(5, 5)
 texture = ExtResource("2_jy4eg")
 stretch_mode = 1
+metadata/_edit_lock_ = true
 
 [node name="OpenTile" type="TextureRect" parent="RightSideBricks" unique_id=2140324965]
-visible = false
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -320.00003
-offset_right = -288.00003
-offset_bottom = -518.39996
+offset_left = -757.9999
+offset_top = 1.0000004
+offset_right = -725.9999
+offset_bottom = -517.39996
 grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(5, 5)
 texture = ExtResource("3_2qvm5")
 stretch_mode = 1
+metadata/_edit_lock_ = true
 
 [node name="LeftSideBricks" type="Control" parent="." unique_id=1165224931]
-anchors_preset = 0
-offset_left = 400.0
-offset_right = 725.0
-offset_bottom = 644.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -576.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Tile" type="TextureRect" parent="LeftSideBricks" unique_id=285390513]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_left = -400.0
-offset_right = -285.0
-offset_bottom = -514.4
+offset_left = 1.0
+offset_right = 116.0
+offset_bottom = -518.4
 grow_vertical = 2
 scale = Vector2(5, 5)
 texture = ExtResource("2_jy4eg")
 stretch_mode = 1
+metadata/_edit_lock_ = true
 
 [node name="OpenTile" type="TextureRect" parent="LeftSideBricks" unique_id=2077510360]
-visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_bottom = 0.062111802
-offset_left = 160.0
-offset_right = 192.0
+anchor_bottom = 0.061728396
+offset_left = 576.0
+offset_right = 608.0
 offset_bottom = 89.59999
 grow_vertical = 2
 scale = Vector2(5, 5)
 texture = ExtResource("4_nn5qr")
 stretch_mode = 1
 metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
 
 [node name="DarkOverlay" type="ColorRect" parent="." unique_id=1792636301]
 modulate = Color(1, 1, 1, 0.627451)
@@ -135,8 +155,6 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 42.0
-offset_bottom = -51.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
@@ -160,12 +178,14 @@ custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 
 [node name="EndResult" type="Label" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=1499300970]
+custom_minimum_size = Vector2(290, 75)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
 theme_override_fonts/font = ExtResource("6_id72q")
 theme_override_font_sizes/font_size = 70
 text = "YOU WIN"
 horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="Mini_message" type="Label" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=448727867]
 layout_mode = 2
@@ -193,54 +213,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/h_separation = 38
 columns = 4
-
-[node name="PassiveIcon" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1693144057 instance=ExtResource("9_bjpar")]
-layout_mode = 2
-
-[node name="PassiveIcon13" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=776098950 instance=ExtResource("9_bjpar")]
-layout_mode = 2
-
-[node name="PassiveIcon14" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1240878891 instance=ExtResource("9_bjpar")]
-layout_mode = 2
-
-[node name="PassiveIcon15" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1828163532 instance=ExtResource("9_bjpar")]
-layout_mode = 2
-
-[node name="PassiveIcon16" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=378565047 instance=ExtResource("9_bjpar")]
-layout_mode = 2
-
-[node name="PassiveIcon2" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=791940373 instance=ExtResource("9_bjpar")]
-layout_mode = 2
-
-[node name="PassiveIcon3" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1905446685 instance=ExtResource("9_bjpar")]
-layout_mode = 2
-
-[node name="PassiveIcon4" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=677956357 instance=ExtResource("9_bjpar")]
-layout_mode = 2
-
-[node name="PassiveIcon5" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1073656637 instance=ExtResource("9_bjpar")]
-layout_mode = 2
-
-[node name="PassiveIcon6" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1033445925 instance=ExtResource("9_bjpar")]
-layout_mode = 2
-
-[node name="PassiveIcon7" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1603542556 instance=ExtResource("9_bjpar")]
-layout_mode = 2
-
-[node name="PassiveIcon8" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=487638123 instance=ExtResource("9_bjpar")]
-layout_mode = 2
-
-[node name="PassiveIcon9" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1837883304 instance=ExtResource("9_bjpar")]
-layout_mode = 2
-
-[node name="PassiveIcon10" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1607528259 instance=ExtResource("9_bjpar")]
-layout_mode = 2
-
-[node name="PassiveIcon11" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=1633647465 instance=ExtResource("9_bjpar")]
-layout_mode = 2
-
-[node name="PassiveIcon12" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/PassivesGrid" unique_id=947728286 instance=ExtResource("9_bjpar")]
-layout_mode = 2
 
 [node name="MarginContainer3" type="MarginContainer" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=2051817045]
 layout_mode = 2
@@ -414,18 +386,5 @@ theme_override_font_sizes/font_size = 60
 text = "SS+"
 horizontal_alignment = 1
 
-[node name="Vignette" type="Node" parent="." unique_id=1512864058]
-
-[node name="Vignetter" type="PointLight2D" parent="Vignette" unique_id=1852200988]
-position = Vector2(291, 81)
-scale = Vector2(17.921875, 10.046875)
-color = Color(1, 0.9019608, 0.5647059, 0.61960787)
-energy = 1.1
-texture = SubResource("GradientTexture2D_bnefy")
-texture_scale = 0.46
-metadata/_edit_lock_ = true
-
-[node name="Vignette" type="CanvasModulate" parent="Vignette" unique_id=1169181578]
-position = Vector2(573, 356)
-color = Color(0.7360586, 0.6517471, 0.7562498, 1)
-metadata/_edit_lock_ = true
+[connection signal="pressed" from="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/MainMenu" to="." method="_on_main_menu_pressed"]
+[connection signal="pressed" from="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/TryAgain" to="." method="_on_try_again_pressed"]

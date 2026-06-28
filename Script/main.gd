@@ -49,6 +49,7 @@ var dusk_stance = '#8dacf7'
 @onready var reserve_button: TextureButton = $"Battle UI/Reserve Button"
 @onready var player_reserve: Label = $"Battle UI/Reserve Button/Player Reserve"
 @onready var player_reserve_rug: TextureRect = $"Player/Player Reserve Rug"
+@onready var reserve_outside_texture: TextureRect = $"Player/Player Reserve Rug/OutsideTexture"
 @onready var vignette: CanvasModulate = $Vignette
 @onready var vignetter: PointLight2D = $Vignetter
 @onready var mist_particles: GPUParticles2D = $"ParticleManager/Mist Particles"
@@ -269,6 +270,8 @@ func _ready():
 	forest_area.visible = true
 	dusk_particles.emitting = true
 	dawn_particles.emitting = false
+	
+	spin_reserve_rug(5.0)
 	
 	await get_tree().create_timer(0.4).timeout
 	await _play_fake_coin_intro()
@@ -1448,3 +1451,11 @@ func _on_keeper_info_toggled(toggled_on: bool) -> void:
 			keeper_info_menu.close()
 			player_info_menu = null
 			keeper_info.button_pressed = false
+			
+
+func spin_reserve_rug(duration_per_spin: float) -> void:
+	var tween = create_tween().set_loops()
+	
+	tween.tween_property(reserve_outside_texture, "rotation_degrees", 360.0, duration_per_spin)\
+		.as_relative()\
+		.set_trans(Tween.TRANS_LINEAR)

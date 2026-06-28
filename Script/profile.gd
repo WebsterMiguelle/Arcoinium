@@ -1,4 +1,4 @@
-extends ColorRect
+extends TextureRect
 
 @onready var player_frame = $"Frame/Player"
 @onready var Player_Inforamtion = $"Frame/Player/Information"
@@ -56,7 +56,9 @@ func _ready() -> void:
 		"Ability: Coin Mastery"
 	)
 	Player_Storyline.text = (
-		" This is the part where the story begins"
+		"	Everything changed from the moment a deal was struck with The Council and The Corruption. And with tyranny and greed running rampant, disrupting the once peaceful balance of the world, you can’t just let it continue. The life you once knew, gone with just a snap of someone’s hands.
+	No, you will not stand for something so frivolous. And although you are powerless now, your courage will lead your heart where it needs to go. 
+"
 	)
 	ShopKeeper_Inforamtion.text = (
 		"Name: Shop Keeper\n" +
@@ -66,7 +68,9 @@ func _ready() -> void:
 		"Ability: ? "
 	)
 	ShopKeeper_Storyline.text = (
-		" This is the part where the story begins"
+		"	A mysterious, yet comforting, figure that offers a helping hand when you need them. The Shopkeeper knows which road to take, and knows the stakes like the back of her hand. She’s almost too insightful, and you’re tempted to pry. But it isn’t worth risking the help you need.
+	Perhaps, when all of this is through, maybe then. For now, feeling her presence behind your back is enough assurance to get things done.
+"
 	)
 	mage_Inforamtion.text = (
 		"Name: Mage \n" +
@@ -76,7 +80,9 @@ func _ready() -> void:
 		"Ability: ? "
 	)
 	mage_Storyline.text = (
-		" This is the part where the story begins"
+		"	Apprentice mages are mages in training, taken in by a more powerful mage as their own. Be it out of pity or the goodness of the mages’ heart, no one ever knows. They say there is a chance for an apprentice mage to take over their masters’ repertoire. But being taken in is already a telling sign that it’s all they will ever be. It is not surprising if an apprentice mage suddenly disappears, stricken with the grief of not being something more.
+	They’re not much of a threat, but they will try to take down whoever threatens their masters’ seats in power.
+"
 	)
 	dwarf_Inforamtion.text = (
 		"Name: Dwarf \n" +
@@ -86,7 +92,9 @@ func _ready() -> void:
 		"Ability: ? "
 	)
 	dwarf_Storyline.text = (
-		" This is the part where the story begins"
+		"	Coin dwarves are generally pleasant, unless provoked. They spend most of their days searching for coins that have been tossed out in hopes to add it to their stash.
+	However, when they get desperate, they may target whoever they think exudes an abundance of coins. Some say they are what becomes of the missing apprentice mages after losing their minds – destined to search for a value that isn’t there anymore.
+"
 	)
 	collector_Inforamtion.text = (
 		"Name: Collector \n" +
@@ -96,7 +104,9 @@ func _ready() -> void:
 		"Ability: Bargain Sense"
 	)
 	collector_Storyline.text = (
-		" This is the part where the story begins"
+		"	As an extension of The Council’s reign upon the lands, Tax Collectors help with upholding their control. Balance, however they might twist it, keeps the flow of coins and therefore keeps those in power in their place.
+	Due to their connection with The Council, questionable forms of tax collections are so often overlooked – leading to a wider gap in lifestyle and in power. Best not to set them off.
+"
 	)
 	trader_Inforamtion.text = (
 		"Name: Trader \n" +
@@ -106,7 +116,9 @@ func _ready() -> void:
 		"Ability: ? "
 	)
 	trader_Storyline.text = (
-		" This is the part where the story begins"
+		"	Traders are known for their strikingly absurd deals and are often seen coming in and out of towns. Although with the current state of affairs, their deals don’t cause too much disruption. For some, traders are their bridge to get access to things they can’t get otherwise.
+	It still goes without saying to tread and choose carefully who you’re dealing with. Not all of their deals are from the kindness of their hearts.
+"
 	)
 	thrifter_Inforamtion.text = (
 		"Name: Thrifter \n" +
@@ -116,7 +128,9 @@ func _ready() -> void:
 		"Ability: ? "
 	)
 	thrifter_Storyline.text = (
-		" This is the part where the story begins"
+		"	Known to come out of their homes when they really, really need to. Is it to save themselves knowing the current state of the world, or is it just the way that they are? No one will ever know. Either way, they are doing themselves a great favor. 
+	Consciousness and limitation becomes a solid tactic to survive, and while this might be an inherent trait for them, they are sure to go far. Just not relative from their house, that is.
+"
 	)
 	aristocrat_Inforamtion.text = (
 		"Name: Aristocrat \n" +
@@ -126,7 +140,9 @@ func _ready() -> void:
 		"Ability: ? "
 	)
 	aristocrat_Storyline.text = (
-		" This is the part where the story begins"
+		"	Aristocrats hold no significant powers except for being rich. The Council holds them close and that gives them reassurance. Whether they know they’re being used as a ploy is between them and their over-inflated ego.
+	Their attitude and way of life leaves much to be desired, however there is certainly something to be felt in seeing them squirm as The Council continuously lowers the hook for the fishes.
+"
 	)
 	sun_caster_Inforamtion.text = (
 		"Name: Sun Caster \n" +
@@ -136,7 +152,9 @@ func _ready() -> void:
 		"Ability: ? "
 	)
 	sun_caster_Storyline.text = (
-		" This is the part where the story begins"
+		"	A powerful mage favored by the corruption of the sun. Power is a double-edged sword, and greed only deepens the cut. They think power is what they want, but once the corruption casts its eyes on you, you will no longer be who you once were.
+	Such a tragic fate for Sun Caster – a vessel where corruption feeds upon their greed, slowly but surely taking their autonomy away, too.
+"
 	)
 	moon_caster_Inforamtion.text = (
 		"Name: Moon Caster \n" +
@@ -146,7 +164,9 @@ func _ready() -> void:
 		"Ability: ? "
 	)
 	moon_caster_Storyline.text = (
-		" This is the part where the story begins"
+		"	Much like their counterparts, Moon Caster often picks fights with Sun Caster. Even though they carry the corruption within them, some of their quirks still manage to show.
+Perhaps it is why the corruption took notice of the now Moon Caster – second best, and always in the shadow. Greed not only applies to money after all. However, greed does not care if this is a futile attempt to satiate one’s worth. It only really cares that it is being fed.
+"
 	)
 	twilight_sage_Inforamtion.text = (
 		"Name: Twilight Sage \n" +
@@ -156,7 +176,10 @@ func _ready() -> void:
 		"Ability: ? "
 	)
 	twilight_sage_Storyline.text = (
-		" This is the part where the story begins"
+		"	Having gotten the attention of both the sun and the moon’s corruption, the most powerful mage in the Twilight Zone succumbs to greed. The town watched as their most beloved mage turned into a tyrant, nothing more than a host for an ill-rooted cause.
+But such is the thing about greed. It burrows its roots into one’s head, until one day it begs for water – anything at all to quench its thirst, even if it is throwing away everything you knew. When you look into the Twilight Sage’s eyes, would you be able to find that trace of regret?
+
+"
 	)
 	
 

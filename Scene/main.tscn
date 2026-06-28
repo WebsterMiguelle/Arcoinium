@@ -1694,7 +1694,7 @@ grow_vertical = 0
 alignment = 2
 
 [node name="EnemyPassiveContainer" type="CenterContainer" parent="Battle UI" unique_id=1623025588]
-visible = false
+z_index = 9
 custom_minimum_size = Vector2(1000, 10)
 anchors_preset = 10
 anchor_right = 1.0
@@ -1704,12 +1704,14 @@ grow_horizontal = 2
 mouse_filter = 2
 
 [node name="Background" type="TextureRect" parent="Battle UI/EnemyPassiveContainer" unique_id=1365114857]
+modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(1000, 10)
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("29_n7vvl")
 
 [node name="EnemyLabelNotification" type="Label" parent="Battle UI/EnemyPassiveContainer/Background" unique_id=1694276821]
+modulate = Color(1, 1, 1, 0)
 z_index = 9
 custom_minimum_size = Vector2(600, 0)
 layout_mode = 0

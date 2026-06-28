@@ -234,91 +234,106 @@ const RUN_GRADES = [
 		"min": 0,
 		"max": 0,
 		"rank": "F",
-		"title": "Bankrupt"
+		"title": "Bankrupt",
+		"color": "#5A5A5A" # Dark Gray
 	},
 	{
 		"min": 1,
 		"max": 14,
 		"rank": "D-",
-		"title": "Coin Gatherer"
+		"title": "Coin Gatherer",
+		"color": "#7A4F2C" # Bronze Brown
 	},
 	{
 		"min": 15,
 		"max": 29,
 		"rank": "D+",
-		"title": "Wealth Seeker"
+		"title": "Wealth Seeker",
+		"color": "#996633" # Copper
 	},
 	{
 		"min": 30,
 		"max": 44,
 		"rank": "C-",
-		"title": "Wandering Trader"
+		"title": "Wandering Trader",
+		"color": "#3F9E4D" # Green
 	},
 	{
 		"min": 45,
 		"max": 59,
 		"rank": "C+",
-		"title": "Coin Caster"
+		"title": "Coin Caster",
+		"color": "#52C76B" # Bright Green
 	},
 	{
 		"min": 60,
 		"max": 74,
 		"rank": "B-",
-		"title": "Prosperity Keeper"
+		"title": "Prosperity Keeper",
+		"color": "#3A86FF" # Blue
 	},
 	{
 		"min": 75,
 		"max": 89,
 		"rank": "B+",
-		"title": "Arcane Merchant"
+		"title": "Arcane Merchant",
+		"color": "#5FA8FF" # Bright Blue
 	},
 	{
 		"min": 90,
 		"max": 104,
 		"rank": "A-",
-		"title": "Treasury Warden"
+		"title": "Treasury Warden",
+		"color": "#8E5BFF" # Violet
 	},
 	{
 		"min": 105,
 		"max": 119,
 		"rank": "A+",
-		"title": "Fortune Architect"
+		"title": "Fortune Architect",
+		"color": "#B06CFF" # Bright Violet
 	},
 	{
 		"min": 120,
 		"max": 134,
 		"rank": "S-",
-		"title": "Vault Sovereign"
+		"title": "Vault Sovereign",
+		"color": "#FFB000" # Gold
 	},
 	{
 		"min": 135,
 		"max": 149,
 		"rank": "S+",
-		"title": "Grand Financier"
+		"title": "Grand Financier",
+		"color": "#FFD54A" # Bright Gold
 	},
 	{
 		"min": 150,
 		"max": 164,
 		"rank": "SS-",
-		"title": "Greed Sage"
+		"title": "Greed Sage",
+		"color": "#FF8A00" # Orange Gold
 	},
 	{
 		"min": 165,
 		"max": 179,
 		"rank": "SS+",
-		"title": "Arcanist of Fortune"
+		"title": "Arcanist of Fortune",
+		"color": "#FF5E5E" # Crimson
 	},
 	{
 		"min": 180,
 		"max": 194,
 		"rank": "SSS-",
-		"title": "Twilight Magnate"
+		"title": "Twilight Magnate",
+		"color": "#FF4FD8" # Magenta
 	},
 	{
 		"min": 195,
 		"max": INF,
 		"rank": "SSS+",
-		"title": "Master of Arcoinium"
+		"title": "Master of Arcoinium",
+		"color": "#FFFFFF" # Pure White
 	}
 ]
 
@@ -548,6 +563,9 @@ func setup(stats: Dictionary, player_won: bool, title_text: String, killer_text:
 	
 	grade.text = str(final_rank)
 	title.text = str(final_title)
+	grade.add_theme_color_override("font_color",final_grade.color)
+	title.add_theme_color_override("font_color",final_grade.color)
+	
 	
 func get_run_grade(final_coins: int) -> Dictionary:
 	for grade in RUN_GRADES:

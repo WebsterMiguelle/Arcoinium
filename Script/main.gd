@@ -212,8 +212,8 @@ const POST_GAME_SCREEN = preload("uid://c7uk7pxxcix85")
 @onready var enemy_debt: Label = $"Enemy/Enemy Debt"
 @onready var enemy_thrift: Label = $"Enemy/Enemy Thrift"
 
-@onready var enemy_passive_label = $"Battle UI/CenterContainer/Background/EnemyLabelNotification"
-@onready var enemy_passive_bg = $"Battle UI/CenterContainer/Background"
+@onready var enemy_passive_label: Label = $"Battle UI/EnemyPassiveContainer/Background/EnemyLabelNotification"
+@onready var enemy_passive_bg: TextureRect = $"Battle UI/EnemyPassiveContainer/Background"
 var enemy_notif_tween: Tween = null
 var enemy_notif_base_pos: Vector2
 
@@ -1515,10 +1515,10 @@ func boss_dramatic_slowdown() -> void:
 	camera_2d.add_trauma(4.0)
 	sound_manager.play_sound(SLOW)
 	sound_manager.play_sound(VOIDED)
+	sound_manager.stop_music()
 	Engine.time_scale = 0.1
 	await get_tree().create_timer(1.0, true, false, true).timeout 
 	Engine.time_scale = 1.0
-	sound_manager.stop_music()
 	sound_manager.play_sound(BOSS_DEFEATED)
 	boss_defeat_transition.self_modulate = Color("#ffffff00")
 	boss_defeat_transition.visible = true

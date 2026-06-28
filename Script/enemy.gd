@@ -1144,6 +1144,7 @@ func end_enemy_turn():
 		if main.player.has_reimbursement:
 			turn_debt /= 2
 			main.particle_manager.spawn_particle(TAX_EVASION_PARTICLE,tax_evasion.global_position)
+			main.player.trigger_temp_passive("reimbursement","TAX EVASION")
 			if greed and (type == Enemy.COLLECTOR):
 				create_floating_label("DEBT", "IMMUNE", "ENEMY")
 			else:

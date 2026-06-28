@@ -49,11 +49,11 @@ func _ready() -> void:
 	_show_frame(player_frame)
 	
 	Player_Inforamtion.text = (
-		"Name: Coin Caster\n" +
-		"Coin: \n" +
-		"Age: \n" +
-		"Species: Human\n" +
-		"Ability: Coin Mastery"
+		"Ability: Coin Mastery\n" +
+		"Likes: Coins\n" +
+		"Dislikes: Greed, The Council\n" +
+		"Strengths: Perseverance, and Willpower\n" +
+		"Weaknesses: "
 	)
 	Player_Storyline.text = (
 		"	Everything changed from the moment a deal was struck with The Council and The Corruption. And with tyranny and greed running rampant, disrupting the once peaceful balance of the world, you can’t just let it continue. The life you once knew, gone with just a snap of someone’s hands.

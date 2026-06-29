@@ -1,5 +1,5 @@
 extends ColorRect
-@onready var Card_Container = $"ScrollContainer/GridContainer"
+@onready var Card_Container = $ScrollContainer/GridContainer
 @onready var Card_View = $"CardView"
 
 @onready var view_name: Label = $"CardView/CardName"

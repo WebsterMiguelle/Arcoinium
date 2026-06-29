@@ -2,9 +2,12 @@
 
 [ext_resource type="Script" uid="uid://dgaqt8yame5va" path="res://Script/shop_keepers_room.gd" id="1_rvcs7"]
 [ext_resource type="Texture2D" uid="uid://df3wtq16ab5xe" path="res://Assets/tutorialScreenBackground.png" id="2_sqeug"]
-[ext_resource type="Texture2D" uid="uid://dgf4sjexlhcro" path="res://Assets/tutorialScreenShopkeeper.png" id="3_at7dl"]
+[ext_resource type="Texture2D" uid="uid://34cb8tl8113c" path="res://Assets/tutorialScreenShopkeeperNoHands.png" id="3_c41qw"]
 [ext_resource type="Texture2D" uid="uid://bj5nyxg8bmc1k" path="res://Assets/backgroundBanner.png" id="4_c41qw"]
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="5_y1smu"]
+[ext_resource type="Texture2D" uid="uid://dhl4j3m1ok2d2" path="res://Assets/ShopkeeperHand1.png" id="6_at7dl"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="7_vits8"]
+[ext_resource type="Texture2D" uid="uid://bqa81o3psvkcl" path="res://Assets/ShopkeeperHand2.png" id="7_y1smu"]
 
 [sub_resource type="Gradient" id="Gradient_75buv"]
 offsets = PackedFloat32Array(0, 0.22742476)
@@ -30,12 +33,6 @@ fill_to = Vector2(0.46324787, 0.11111111)
 
 [sub_resource type="Theme" id="Theme_c41qw"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y1smu"]
-bg_color = Color(0.44841415, 0.18128064, 0.028855877, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vits8"]
-bg_color = Color(0.44705883, 0.18039216, 0.02745098, 1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2gtc7"]
 bg_color = Color(0.44705883, 0.18039216, 0.02745098, 1)
 
@@ -55,7 +52,7 @@ layout_mode = 0
 offset_left = -76.0
 offset_top = 3.0
 offset_right = 1214.0
-offset_bottom = 648.0
+offset_bottom = 649.0
 texture = ExtResource("2_sqeug")
 
 [node name="Shokeeper" type="TextureRect" parent="." unique_id=2030030711]
@@ -63,8 +60,8 @@ layout_mode = 0
 offset_left = 21.0
 offset_top = 114.0
 offset_right = 1097.0
-offset_bottom = 652.0
-texture = ExtResource("3_at7dl")
+offset_bottom = 649.0
+texture = ExtResource("3_c41qw")
 
 [node name="Dialogue Area" type="Marker2D" parent="." unique_id=399608582]
 position = Vector2(445, 70)
@@ -109,28 +106,43 @@ theme_override_font_sizes/font_size = 47
 text = "KEEPER'S REST"
 horizontal_alignment = 1
 
-[node name="Basic Mode" type="Button" parent="." unique_id=1113266185]
-custom_minimum_size = Vector2(250, 50)
+[node name="Basic Mode" type="TextureButton" parent="." unique_id=220134687]
 layout_mode = 0
-offset_left = 349.0
-offset_top = 476.0
-offset_right = 599.0
-offset_bottom = 526.0
+offset_left = 319.0
+offset_top = 458.0
+offset_right = 527.0
+offset_bottom = 650.0
 theme = SubResource("Theme_c41qw")
-theme_override_font_sizes/font_size = 35
-theme_override_styles/normal = SubResource("StyleBoxFlat_y1smu")
-text = "BASIC MODE"
+texture_normal = ExtResource("6_at7dl")
+stretch_mode = 0
 
-[node name="Advance Mode" type="Button" parent="." unique_id=1439571434]
-custom_minimum_size = Vector2(250, 50)
+[node name="BasicModeLabel" type="Label" parent="Basic Mode" unique_id=163380612]
 layout_mode = 0
-offset_left = 635.0
-offset_top = 478.0
-offset_right = 885.0
-offset_bottom = 528.0
-theme_override_font_sizes/font_size = 35
-theme_override_styles/normal = SubResource("StyleBoxFlat_vits8")
-text = "ADVANCE MODE"
+offset_left = 57.0
+offset_top = -41.0
+offset_right = 238.0
+theme_override_fonts/font = ExtResource("7_vits8")
+theme_override_font_sizes/font_size = 50
+text = "Basic Mode"
+
+[node name="Advance Mode" type="TextureButton" parent="." unique_id=1936101693]
+layout_mode = 0
+offset_left = 619.0
+offset_top = 465.0
+offset_right = 819.0
+offset_bottom = 649.0
+texture_normal = ExtResource("7_y1smu")
+stretch_mode = 0
+
+[node name="AdvanceModeLabel" type="Label" parent="Advance Mode" unique_id=2120145839]
+layout_mode = 0
+offset_left = -27.0
+offset_top = -40.0
+offset_right = 217.0
+offset_bottom = 1.0
+theme_override_fonts/font = ExtResource("7_vits8")
+theme_override_font_sizes/font_size = 50
+text = "Advanced Mode"
 
 [node name="Back Button" type="Button" parent="." unique_id=1412783332]
 custom_minimum_size = Vector2(150, 45)
@@ -157,8 +169,10 @@ action_mode = 0
 text = "ARCHIVE"
 
 [connection signal="mouse_entered" from="Basic Mode" to="." method="_on_basic_mode_mouse_entered"]
+[connection signal="mouse_exited" from="Basic Mode" to="." method="_on_basic_mode_mouse_exited"]
 [connection signal="pressed" from="Basic Mode" to="." method="_on_basic_mode_pressed"]
 [connection signal="mouse_entered" from="Advance Mode" to="." method="_on_advance_mode_mouse_entered"]
+[connection signal="mouse_exited" from="Advance Mode" to="." method="_on_advance_mode_mouse_exited"]
 [connection signal="pressed" from="Advance Mode" to="." method="_on_advance_mode_pressed"]
 [connection signal="mouse_entered" from="Back Button" to="." method="_on_back_button_mouse_entered"]
 [connection signal="pressed" from="Back Button" to="." method="_on_back_button_pressed"]

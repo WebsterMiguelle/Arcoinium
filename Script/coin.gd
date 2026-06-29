@@ -1,5 +1,12 @@
 extends Node2D
 @onready var shined: AnimatedSprite2D = $SHINED
+@onready var voided: AnimatedSprite2D = $VOIDED
+@onready var dazzled: AnimatedSprite2D = $DAZZLED
+@onready var stamped: TextureRect = $STAMPED
+@onready var shine_stack_label: Label = $"Shine Stack Label"
+@onready var pop_up: VFlowContainer = $"PanelContainer/MarginContainer/Pop-Up"
+const COIN_STATUS_EFFECT = preload("uid://b7frpsmw0r6p")
+
 enum CoinType{
 	COPPER,
 	SILVER,
@@ -8,10 +15,15 @@ enum CoinType{
 
 enum CoinStatus{
 	NONE,
-	SHINED
+	SHINED,
+	VOIDED,
+	DAZZLED
 }
 
 #COIN VARIABLES
+var is_stamped = false
+var shine_stack = 1
+var initial_status = CoinStatus.NONE #If VOIDED, remember what status it was beforehand.
 var type
 var base_value:int
 var state:int # If 0, then Head, Else, then Tail
@@ -30,6 +42,7 @@ func setup(s,pos):
 	type = CoinType.COPPER
 	base_value = 2
 	status = CoinStatus.NONE
+	shine_stack = 1
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -70,39 +83,86 @@ func copy_coin(coin):
 	type = coin.type
 	state = coin.state
 	status = coin.status
+	initial_status = coin.initial_status
+	is_stamped = coin.is_stamped
+	shine_stack = coin.shine_stack
 
+func add_status(stat):
+	if stat != CoinStatus.VOIDED:
+		initial_status = stat
+		status = stat
+	else:
+		status = stat
+	
 func refresh_sprite():
+	if not is_inside_tree():
+		return
+		
 	var appear_tween = create_tween()
 	
 	appear_tween.tween_property(animated_sprite_2d, "position:y", 0, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	appear_tween.parallel().tween_property(animated_sprite_2d, "modulate:a", 1.0, 0.2)
 	
+	stamped.visible = false
+	shine_stack_label.visible = false
+	
+	if status == CoinStatus.VOIDED:
+		voided.visible = true
+	else:
+		voided.visible = false
+		status = initial_status
+		
 	if status == CoinStatus.SHINED:
 		shined.visible = true
 	else:
 		shined.visible = false
+		
+	if status == CoinStatus.DAZZLED:
+		dazzled.visible = true
+	else:
+		dazzled.visible = false
+
 	match type:
 		CoinType.COPPER:
 			base_value = 2
 			animated_sprite_2d.play("copper_to_head" if state == 0 else "copper_to_tail")
-			shined.play("copper_to_head" if state == 0 else "copper_to_tail")
+			voided.play("copper_to_head" if state == 0 else "copper_to_tail")
+			voided.play("copper_to_head" if state == 0 else "copper_to_tail")
+			dazzled.play("copper_to_head" if state == 0 else "copper_to_tail")
 			await animated_sprite_2d.animation_finished
 			animated_sprite_2d.play("copper_head" if state == 0 else "copper_tail")
 			shined.play("copper_head" if state == 0 else "copper_tail")
+			voided.play("copper_head" if state == 0 else "copper_tail")
+			dazzled.play("copper_head" if state == 0 else "copper_tail")
 		CoinType.SILVER:
 			base_value = 4
 			animated_sprite_2d.play("silver_to_head" if state == 0 else "silver_to_tail")
 			shined.play("silver_to_head" if state == 0 else "silver_to_tail")
+			voided.play("copper_to_head" if state == 0 else "copper_to_tail")
+			dazzled.play("silver_to_head" if state == 0 else "silver_to_tail")
 			await animated_sprite_2d.animation_finished
+			
 			animated_sprite_2d.play("silver_head" if state == 0 else "silver_tail")
 			shined.play("silver_head" if state == 0 else "silver_tail")
+			voided.play("copper_head" if state == 0 else "copper_tail")
+			dazzled.play("silver_head" if state == 0 else "silver_tail")
+			
 		CoinType.GOLD:
 			base_value = 6
 			animated_sprite_2d.play("gold_to_head" if state == 0 else "gold_to_tail")
 			shined.play("gold_to_head" if state == 0 else "gold_to_tail")
+			voided.play("copper_to_head" if state == 0 else "copper_to_tail")
+			dazzled.play("gold_to_head" if state == 0 else "gold_to_tail")
 			await animated_sprite_2d.animation_finished
 			animated_sprite_2d.play("gold_head" if state == 0 else "gold_tail")
 			shined.play("gold_head" if state == 0 else "gold_tail")
+			voided.play("copper_head" if state == 0 else "copper_tail")
+			dazzled.play("gold_head" if state == 0 else "gold_tail")
+	if is_stamped:
+		stamped.visible = true
+	if status == CoinStatus.SHINED and shine_stack > 1:
+		shine_stack_label.visible = true
+		shine_stack_label.text = "x" + str(shine_stack)
 
 # Inside your Coin.gd script
 var glow_tween: Tween
@@ -121,3 +181,29 @@ func pulse_glow() -> void:
 	# Chain it to shrink back to normal slowly
 	glow_tween.chain().tween_property(self, "scale", Vector2(1.0, 1.0), 0.6).set_trans(Tween.TRANS_SINE)
 	glow_tween.chain().tween_property(self, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.6).set_trans(Tween.TRANS_SINE)
+
+
+func _on_control_mouse_entered() -> void:
+	print("Mouse In")
+	if status != CoinStatus.NONE:
+		var s = COIN_STATUS_EFFECT.instantiate()
+		if status == CoinStatus.SHINED:
+			s.set_status(status,shine_stack)
+		else:
+			s.set_status(status,1)
+		s.add_to_group("coin_status")
+		pop_up.add_child(s)
+
+	if is_stamped:
+		var s = COIN_STATUS_EFFECT.instantiate()
+		s.set_status(4,1)
+		s.add_to_group("coin_status")
+		pop_up.add_child(s)
+
+func _on_control_mouse_exited() -> void:
+	print("Mouse Out")
+	var coin_status = get_tree().get_nodes_in_group("coin_status")
+	if coin_status.size() == 0:
+		return
+	for c in coin_status:
+		c.queue_free()

@@ -1,0 +1,223 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://byl24vhte2iq4"]
+
+[ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="1_sgecp"]
+[ext_resource type="Texture2D" uid="uid://r5gatuytbe0t" path="res://Assets/taxCollector.png" id="2_jb2vt"]
+[ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="3_8bq6c"]
+[ext_resource type="Texture2D" uid="uid://dfw0gb82xbava" path="res://Assets/portraitBackground.png" id="4_evk70"]
+[ext_resource type="Texture2D" uid="uid://cjjj3ulqgawva" path="res://Assets/apprenticeMage.png" id="5_nloqv"]
+[ext_resource type="Texture2D" uid="uid://bikjuk8fgo6p2" path="res://Assets/moonCaster-Sheet.png" id="6_4y4ku"]
+[ext_resource type="Texture2D" uid="uid://di37676qo0yu4" path="res://Assets/sunCaster-Recovered-Sheet.png" id="7_cq0gh"]
+[ext_resource type="Texture2D" uid="uid://csb6cbe5uwx3c" path="res://Assets/thrifter.png" id="8_dd7de"]
+[ext_resource type="Texture2D" uid="uid://dprlqvclal2j" path="res://Assets/trader.png" id="9_hdj53"]
+[ext_resource type="Texture2D" uid="uid://c5kws41vksxsb" path="res://Assets/twilightSageDawn.png" id="10_r20sk"]
+[ext_resource type="Texture2D" uid="uid://odbplao5e2m8" path="res://Assets/twilightSageDusk.png" id="11_36u0d"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f043x"]
+atlas = ExtResource("1_sgecp")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gejqg"]
+atlas = ExtResource("1_sgecp")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oywcm"]
+atlas = ExtResource("2_jb2vt")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xgc63"]
+atlas = ExtResource("2_jb2vt")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w8oc3"]
+atlas = ExtResource("3_8bq6c")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tbp1y"]
+atlas = ExtResource("3_8bq6c")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xw8bv"]
+atlas = ExtResource("4_evk70")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h5i8s"]
+atlas = ExtResource("5_nloqv")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7sh50"]
+atlas = ExtResource("5_nloqv")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yoaul"]
+atlas = ExtResource("6_4y4ku")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mepbf"]
+atlas = ExtResource("6_4y4ku")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dvq1j"]
+atlas = ExtResource("7_cq0gh")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_50v0s"]
+atlas = ExtResource("7_cq0gh")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ekncj"]
+atlas = ExtResource("8_dd7de")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jmo7v"]
+atlas = ExtResource("8_dd7de")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hjai8"]
+atlas = ExtResource("9_hdj53")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_txj2b"]
+atlas = ExtResource("9_hdj53")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8bkap"]
+atlas = ExtResource("10_r20sk")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b0nqf"]
+atlas = ExtResource("10_r20sk")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ot48q"]
+atlas = ExtResource("11_36u0d")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2uk8d"]
+atlas = ExtResource("11_36u0d")
+region = Rect2(64, 0, 64, 64)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f043x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gejqg")
+}],
+"loop": true,
+"name": &"ARISTOCRAT",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oywcm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xgc63")
+}],
+"loop": true,
+"name": &"COLLECTOR",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w8oc3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tbp1y")
+}],
+"loop": true,
+"name": &"DWARF",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xw8bv")
+}],
+"loop": true,
+"name": &"Default",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h5i8s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7sh50")
+}],
+"loop": true,
+"name": &"MAGE",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yoaul")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mepbf")
+}],
+"loop": true,
+"name": &"MOON_CASTER",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dvq1j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_50v0s")
+}],
+"loop": true,
+"name": &"SUN_CASTER",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ekncj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jmo7v")
+}],
+"loop": true,
+"name": &"THRIFTER",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hjai8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_txj2b")
+}],
+"loop": true,
+"name": &"TRADER",
+"speed": 2.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"TWILIGHT_SAGE",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8bkap")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b0nqf")
+}],
+"loop": true,
+"name": &"TWILIGHT_SAGE_DAWN",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ot48q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2uk8d")
+}],
+"loop": true,
+"name": &"TWILIGHT_SAGE_DUSK",
+"speed": 2.0
+}]

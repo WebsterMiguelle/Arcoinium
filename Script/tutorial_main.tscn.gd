@@ -26,6 +26,8 @@ var dusk_stance = '#8dacf7'
 @onready var player_reserve_rug: TextureRect = $"Player/Player Reserve Rug"
 @onready var vignette: CanvasModulate = $"../Vignette"
 @onready var vignetter: PointLight2D = $"../Vignetter"
+@onready var turn_spell_light: PointLight2D = $"Battle UI/Turn Calculation Box/Turn Spell Light"
+
 
 var second_enemy
 var third_enemy
@@ -97,6 +99,15 @@ var has_encountered_reserve = false
 var has_encountered_overflow = false
 var has_encountered_coin_health = false
 
+var adv_tutorial_started  = false   
+var adv_debt_done  = false   
+var adv_coin_tiers_done  = false   
+var adv_coin_status_done  = false   
+var adv_flip_count  = 0       
+var adv_tier_flip_count = 0  
+var adv_coin_status_radiant_seen = false
+
+
 const DIALOGUE_BOX = preload("uid://dv278qg6j2epd")
 var dialogue: Node2D = null
 @onready var dialogue_area: Marker2D = $"Dialogue Area" 
@@ -153,8 +164,6 @@ var enemy_notif_base_pos: Vector2
 
 var overflow_notif: Control = null
 
-	
-
 @onready var game_over_ui: CanvasLayer = $"Game Over UI"
 
 @onready var pause_menu = $PauseMenu
@@ -193,8 +202,11 @@ var overall_highest_damage: int = 0
 var overall_total_gain: int = 0
 var overall_highest_gain: int = 0
 
+var advance_mode: bool = false
+
 var is_surrender = false
 var current_enemy_type
+
 
 var current_enemy_index
 var current_room
@@ -234,9 +246,9 @@ func _show_tutorial(title: String, text: String, pos: Vector2, y_offset: float,
 	reserve_button.disabled = true
  
 	
-	re_flip_button.visible  = has_encountered_flip    
-	endTurn_button.visible  = has_encountered_reflip  
-	reserve_button.visible  = has_encountered_endturn 
+	re_flip_button.visible = has_encountered_flip    
+	endTurn_button.visible = has_encountered_reflip  
+	reserve_button.visible = has_encountered_endturn 
 	
 	for btn in enabled_buttons:
 		btn.disabled = false
@@ -244,7 +256,68 @@ func _show_tutorial(title: String, text: String, pos: Vector2, y_offset: float,
  
 	current_tutorial = create_tutorial(title, text, pos, y_offset)
 
+func _adv_unlock_all() -> void:
+	flip_button.disabled = false
+	flip_button.visible = true
+	re_flip_button.disabled = false
+	re_flip_button.visible = true
+	endTurn_button.disabled = false
+	endTurn_button.visible = true
+	reserve_button.disabled = false
+	reserve_button.visible = true
 
+func _adv_lock_except_flip() -> void:
+	flip_button.disabled = false
+	flip_button.visible  = true
+	re_flip_button.disabled = true
+	re_flip_button.visible  = true
+	endTurn_button.disabled = true
+	endTurn_button.visible  = true
+	reserve_button.disabled = true
+	reserve_button.visible  = true
+	
+func _tutorial_force_shine_coin() -> void:
+	if not advance_mode:
+		return
+	var coin = player.latest_coin
+	if coin == null:
+		var coins = get_tree().get_nodes_in_group("coins")
+		if coins.size() > 0:
+			coin = coins.back()
+	if coin != null:
+		coin.add_status(coin.CoinStatus.SHINED)
+		coin.refresh_sprite()
+		coin.pulse_glow()
+
+
+	
+func _adv_start_shine_tutorial() -> void:
+	_tutorial_force_shine_coin()
+	await get_tree().create_timer(0.8).timeout
+	_say("adv_coin_status_intro")
+	_show_tutorial("Coin Status Effects","See those glowing coins?\nThat's SHINED — a Coin Status Effect.\nShined Heads coins boost Damage.\nShined Tails boost Gain.\nInspect your coins to learn more!",coin_deck.global_position, -120,[flip_button, re_flip_button, endTurn_button, reserve_button])
+	await _wait_for_spell_inspection()
+	while player_info_menu != null and is_instance_valid(player_info_menu):
+		await get_tree().process_frame
+	_close_current_tutorial()
+	adv_coin_status_radiant_seen = true
+	
+	await get_tree().create_timer(0.5).timeout
+	_adv_start_coin_tiers_tutorial()
+	
+	
+func _adv_start_coin_tiers_tutorial() -> void:
+	adv_tier_flip_count = 0
+	_say("adv_coin_tiers_intro")
+	_show_tutorial("Coin Tiers","Coins come in three tiers:\nCopper, Silver, and Gold.\nSilver and Gold coins flip with\nhigher Heads odds — keep flipping!",player_health_bar.global_position,-120,[flip_button, re_flip_button, endTurn_button])
+	
+	await current_tutorial.closed
+	
+	adv_coin_tiers_done = true
+	_say("adv_all_done")
+	_adv_unlock_all()
+	start_player_turn()
+	
 func switch_vignette_color(to,duration):
 	var tween = create_tween()
 	tween.tween_property(vignette,"color",Color.from_string(to,Color.WHITE),duration)
@@ -255,7 +328,7 @@ func switch_vignetter_color(to,duration):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-
+	advance_mode = SceneTransition.tutorial_advance_mode
 	await get_tree().create_timer(0.4).timeout
 	await _play_fake_coin_intro()
 	turn_calculation_box.visible = false
@@ -267,7 +340,15 @@ func _ready():
 	turn_ui.visible = false
 	player.reset_stats()
 	
+	
 	main.self_modulate = Color.WHITE
+	
+	if advance_mode:
+		has_encountered_flip = true
+		has_encountered_reflip = true
+		has_encountered_endturn = true
+		has_encountered_reserve = true
+		has_encountered_overflow = true
 	
 	if not pause_menu.end_run_pressed.is_connected(_on_end_run_pressed):
 		pause_menu.end_run_pressed.connect(_on_end_run_pressed)
@@ -276,6 +357,9 @@ func _ready():
 	if not re_flip_button.pressed.is_connected(_on_re_flip_pressed):
 		re_flip_button.pressed.connect(_on_re_flip_pressed)      
 	battle_start()
+	
+func on_enemy_radiant_fired() -> void:
+	pass
 	
 func _input(event):
 	if event.is_action_pressed("ui_cancel"): # ESC key
@@ -408,6 +492,24 @@ func start_player_turn():
 	sound_manager.play_sound(TURN_PLAYER)
 	await player.start_turn()
 	
+	if advance_mode:
+		if !adv_tutorial_started:
+			adv_tutorial_started = true
+			_say("adv_welcome")
+			_adv_lock_except_flip()
+			endTurn_button.visible  = true
+			endTurn_button.disabled = false
+			return
+		if !adv_debt_done and player.debt > 0:
+			adv_debt_done = true   
+			await get_tree().create_timer(0.8).timeout  
+			_say("adv_debt_intro")
+			_show_tutorial("Status Effects: Debt","See how your Gain was reduced?\nThat's Debt at work — it cancels out\nyour Coin Gain at the start of your turn.\nThe higher your Debt, the less you gain!",player_debt.global_position,-120,[flip_button, endTurn_button])
+			await current_tutorial.closed
+			_adv_start_shine_tutorial()
+			return
+		return
+	
 	if !has_encountered_flip:
 		_say("sk_first_flip")
 		_show_tutorial("Coin Flipping","Press your Coin Bar to Flip a Coin.",player_health_bar.global_position,-100,[flip_button] )
@@ -441,7 +543,6 @@ func start_enemy_turn():
 		_close_current_tutorial()
 		await get_tree().create_timer(1.0).timeout
 		start_player_turn()
-
 		
 func _show_coin_spells_tutorial() -> void:
 	_show_tutorial("Coin Spells","Some coins have Spells that activate when\nflipped Heads or Tails. Click your Portrait\nto view your Coin Spells.",player_portrait.global_position,-120)
@@ -453,6 +554,19 @@ func _show_coin_spells_tutorial() -> void:
 
 func _on_endturn_pressed():
 	if enemy.coin <= 0 or player.coin <= 0:
+		return
+		
+	if advance_mode:
+		_close_current_tutorial()
+		_dismiss_dialogue()
+		flip_button.visible  = true
+		flip_button.disabled = true
+		await player.end_turn()
+		turn_calculation_box.exit()
+		var defeat = await check_defeat()
+		if not defeat:
+			await get_tree().create_timer(1.0).timeout
+			start_enemy_turn()
 		return
 		
 	if !has_encountered_endturn:
@@ -504,6 +618,9 @@ func _on_flip_pressed():
 	await get_tree().process_frame
 	await check_defeat()
 	
+	if advance_mode:
+		return
+		
 	if !has_encountered_flip:
 		tutorial_flip_count += 1
 		if tutorial_flip_count >= 4:
@@ -623,6 +740,9 @@ func _on_re_flip_pressed():
 	total_reflips += 1
 	player.re_flip()
 	
+	if advance_mode:
+		return
+		
 	if !has_encountered_reflip:
 		has_encountered_reflip = true
 		_close_current_tutorial()
@@ -664,7 +784,7 @@ func reserve_left_over_coin():
 		player.current_reserve = coins.size()
 
 func update_player_coin():
-	player_health_label.text = "Coins: " + str(player.coin)
+	player_health_label.text =  str(player.coin)
 	
 func update_player_reflip_and_reserve():
 	if player.slow:
@@ -803,6 +923,8 @@ func _on_reserve_button_pressed() -> void:
 	player.reserve()
 	reserve_button.disabled = player.current_reserve >= player.max_reserve
 	
+	if advance_mode:
+		return
 	
 	if !has_encountered_reserve:
 		tutorial_reserve_count += 1

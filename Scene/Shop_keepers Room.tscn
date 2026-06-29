@@ -1,25 +1,32 @@
 [gd_scene format=3 uid="uid://cph07oexpeoak"]
 
-[ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="1_4akbf"]
 [ext_resource type="Script" uid="uid://dgaqt8yame5va" path="res://Script/shop_keepers_room.gd" id="1_rvcs7"]
-[ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="2_rvcs7"]
-[ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="3_sqeug"]
+[ext_resource type="Texture2D" uid="uid://df3wtq16ab5xe" path="res://Assets/tutorialScreenBackground.png" id="2_sqeug"]
+[ext_resource type="Texture2D" uid="uid://dgf4sjexlhcro" path="res://Assets/tutorialScreenShopkeeper.png" id="3_at7dl"]
+[ext_resource type="Texture2D" uid="uid://bj5nyxg8bmc1k" path="res://Assets/backgroundBanner.png" id="4_c41qw"]
+[ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="5_y1smu"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_at7dl"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("1_4akbf")
-}],
-"loop": true,
-"name": &"SHOP_KEEPER",
-"speed": 5.0
-}, {
-"frames": [],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
+[sub_resource type="Gradient" id="Gradient_75buv"]
+offsets = PackedFloat32Array(0, 0.22742476)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vits8"]
+gradient = SubResource("Gradient_75buv")
+width = 512
+height = 512
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_jodah"]
+offsets = PackedFloat32Array(0, 0.29828325, 0.80042917, 0.99785405)
+colors = PackedColorArray(1, 1, 1, 0.8627451, 0.5568628, 0.5568628, 0.5568628, 0, 0.7121502, 0.7121502, 0.7121502, 0.3023295, 1, 1, 1, 0.8627451)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_c41qw"]
+gradient = SubResource("Gradient_jodah")
+fill_from = Vector2(0.4871795, 0.8905983)
+fill_to = Vector2(0.46324787, 0.11111111)
 
 [sub_resource type="Theme" id="Theme_c41qw"]
 
@@ -42,35 +49,73 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 script = ExtResource("1_rvcs7")
 
-[node name="Shop_Keeper Portrait" type="Control" parent="." unique_id=1981396183]
-anchors_preset = 0
-offset_left = 108.0
-offset_top = 202.0
-offset_right = 408.0
-offset_bottom = 502.0
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Shop_Keeper Portrait" unique_id=1111535791]
-position = Vector2(150, 149)
-scale = Vector2(5, 5)
-sprite_frames = SubResource("SpriteFrames_at7dl")
-animation = &"SHOP_KEEPER"
-
-[node name="ColorRect" type="TextureRect" parent="." unique_id=722472630]
-custom_minimum_size = Vector2(320, 320)
+[node name="Background" type="TextureRect" parent="." unique_id=67202017]
+self_modulate = Color(0.6513716, 0.4930063, 0.52717704, 1)
 layout_mode = 0
-offset_left = 90.0
-offset_top = 190.0
-offset_right = 410.0
-offset_bottom = 510.0
-texture = ExtResource("2_rvcs7")
+offset_left = -76.0
+offset_top = 3.0
+offset_right = 1214.0
+offset_bottom = 648.0
+texture = ExtResource("2_sqeug")
+
+[node name="Shokeeper" type="TextureRect" parent="." unique_id=2030030711]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 114.0
+offset_right = 1097.0
+offset_bottom = 652.0
+texture = ExtResource("3_at7dl")
+
+[node name="Dialogue Area" type="Marker2D" parent="." unique_id=399608582]
+position = Vector2(445, 70)
+
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=782194638]
+position = Vector2(599, 318)
+scale = Vector2(17.921875, 10.046875)
+color = Color(1, 0.9019608, 0.5647059, 0.61960787)
+energy = 1.1
+texture = SubResource("GradientTexture2D_vits8")
+texture_scale = 0.46
+
+[node name="Vignette" type="CanvasModulate" parent="." unique_id=1361170228]
+color = Color(0.7360586, 0.6517471, 0.7562498, 1)
+
+[node name="Vignette2" type="TextureRect" parent="." unique_id=1757435299]
+self_modulate = Color(0, 0, 0, 0.11372549)
+layout_mode = 0
+offset_right = 1155.0
+offset_bottom = 649.0
+texture = SubResource("GradientTexture2D_c41qw")
+
+[node name="ShopBanner" type="TextureRect" parent="." unique_id=3951344]
+self_modulate = Color(0.6680352, 0.2588077, 0.14010984, 1)
+layout_mode = 0
+offset_left = 300.0
+offset_top = -2.0
+offset_right = 853.66974
+offset_bottom = 140.0
+texture = ExtResource("4_c41qw")
+
+[node name="Shop" type="Label" parent="ShopBanner" unique_id=1551211582]
+layout_mode = 0
+offset_left = 104.66973
+offset_top = 42.999996
+offset_right = 454.66974
+offset_bottom = 97.999985
+rotation = 0.06981317
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("5_y1smu")
+theme_override_font_sizes/font_size = 47
+text = "KEEPER'S REST"
+horizontal_alignment = 1
 
 [node name="Basic Mode" type="Button" parent="." unique_id=1113266185]
 custom_minimum_size = Vector2(250, 50)
 layout_mode = 0
-offset_left = 503.0
-offset_top = 440.0
-offset_right = 753.0
-offset_bottom = 490.0
+offset_left = 349.0
+offset_top = 476.0
+offset_right = 599.0
+offset_bottom = 526.0
 theme = SubResource("Theme_c41qw")
 theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = SubResource("StyleBoxFlat_y1smu")
@@ -79,39 +124,37 @@ text = "BASIC MODE"
 [node name="Advance Mode" type="Button" parent="." unique_id=1439571434]
 custom_minimum_size = Vector2(250, 50)
 layout_mode = 0
-offset_left = 811.0
-offset_top = 437.0
-offset_right = 1061.0
-offset_bottom = 487.0
+offset_left = 635.0
+offset_top = 478.0
+offset_right = 885.0
+offset_bottom = 528.0
 theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = SubResource("StyleBoxFlat_vits8")
 text = "ADVANCE MODE"
 
-[node name="Tutorial Label" type="Label" parent="." unique_id=318180390]
-custom_minimum_size = Vector2(600, 0)
-layout_mode = 0
-offset_left = 235.0
-offset_top = 74.0
-offset_right = 955.0
-offset_bottom = 174.0
-theme_override_fonts/font = ExtResource("3_sqeug")
-theme_override_font_sizes/font_size = 80
-text = "TUTORIAL MODE"
-
 [node name="Back Button" type="Button" parent="." unique_id=1412783332]
 custom_minimum_size = Vector2(150, 45)
 layout_mode = 0
-offset_left = 180.0
-offset_top = 551.0
-offset_right = 330.0
-offset_bottom = 596.0
+offset_left = 27.0
+offset_top = 297.0
+offset_right = 177.0
+offset_bottom = 342.0
 theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = SubResource("StyleBoxFlat_2gtc7")
 action_mode = 0
 text = "BACK"
 
-[node name="Dialogue Area" type="Marker2D" parent="." unique_id=399608582]
-position = Vector2(445, 70)
+[node name="Archive Button" type="Button" parent="." unique_id=1385593860]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 0
+offset_left = 933.0
+offset_top = 300.0
+offset_right = 1140.0
+offset_bottom = 355.0
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = SubResource("StyleBoxFlat_2gtc7")
+action_mode = 0
+text = "ARCHIVE"
 
 [connection signal="mouse_entered" from="Basic Mode" to="." method="_on_basic_mode_mouse_entered"]
 [connection signal="pressed" from="Basic Mode" to="." method="_on_basic_mode_pressed"]
@@ -119,3 +162,4 @@ position = Vector2(445, 70)
 [connection signal="pressed" from="Advance Mode" to="." method="_on_advance_mode_pressed"]
 [connection signal="mouse_entered" from="Back Button" to="." method="_on_back_button_mouse_entered"]
 [connection signal="pressed" from="Back Button" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Archive Button" to="." method="_on_archive_button_pressed"]

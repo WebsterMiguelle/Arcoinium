@@ -430,6 +430,23 @@ grow_vertical = 2
 texture = ExtResource("1_q7g03")
 script = ExtResource("2_ogghd")
 
+[node name="Shop Area" type="TextureRect" parent="." unique_id=320215991]
+layout_mode = 0
+offset_left = -38.78247
+offset_top = -22.0
+offset_right = 1184.6898
+offset_bottom = 668.0
+texture = ExtResource("19_66vrp")
+
+[node name="Rug" type="TextureRect" parent="Shop Area" unique_id=1832194032]
+self_modulate = Color(0.74926186, 0.7464951, 0.9420062, 1)
+layout_mode = 0
+offset_left = -604.2175
+offset_top = 98.0
+offset_right = 1840.7825
+offset_bottom = 579.73254
+texture = ExtResource("31_uku07")
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=659444321]
 position = Vector2(576, 324)
 script = ExtResource("3_8v45d")
@@ -470,22 +487,24 @@ offset_bottom = 633.0
 text = "Press for Info"
 
 [node name="Reserve Button" type="Button" parent="Battle UI" unique_id=1926938624]
-offset_left = 864.0
-offset_top = 504.0
-offset_right = 1027.0
-offset_bottom = 543.0
+offset_left = 605.0
+offset_top = 551.0
+offset_right = 705.0
+offset_bottom = 622.0
 
 [node name="Player Reserve" type="Label" parent="Battle UI/Reserve Button" unique_id=15672962]
 custom_minimum_size = Vector2(150, 40)
 layout_mode = 0
-offset_left = -11.000005
-offset_right = 148.06268
-offset_bottom = 40.0
+offset_left = -37.000027
+offset_top = 9.0
+offset_right = 112.99997
+offset_bottom = 65.0
 scale = Vector2(1.2137691, 1)
 theme_override_colors/font_color = Color(0.99999994, 0.84508157, 0.98982567, 1)
 theme_override_fonts/font = ExtResource("8_i3w70")
 theme_override_font_sizes/font_size = 25
-text = "RESERVE (0/4)"
+text = "RESERVE 
+(0/4)"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -493,14 +512,15 @@ vertical_alignment = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 158.0
-offset_top = 290.0
-offset_right = 281.0
-offset_bottom = 322.0
+offset_left = 532.0
+offset_top = 244.0
+offset_right = 600.0
+offset_bottom = 284.0
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.8500227, 0.484913, 1)
-theme_override_font_sizes/font_size = 22
-text = "Coins:"
+theme_override_fonts/font = ExtResource("33_qg8me")
+theme_override_font_sizes/font_size = 40
+text = "100"
 
 [node name="Player Spend Particles" type="GPUParticles2D" parent="Battle UI" unique_id=1888397502]
 position = Vector2(161, 579)
@@ -1049,7 +1069,7 @@ text = "Restart"
 
 [node name="PauseMenu" type="CanvasLayer" parent="." unique_id=722870696]
 process_mode = 3
-layer = 5
+layer = 10000
 visible = false
 script = ExtResource("36_ismbn")
 
@@ -1068,31 +1088,40 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Resume" type="Button" parent="PauseMenu/Panel" unique_id=496970523]
-custom_minimum_size = Vector2(200, 100)
+custom_minimum_size = Vector2(200, 80)
 layout_mode = 0
 offset_left = 200.0
 offset_top = 37.0
 offset_right = 400.0
-offset_bottom = 137.0
+offset_bottom = 117.0
 text = "Resume"
 
 [node name="EndRun" type="Button" parent="PauseMenu/Panel" unique_id=1637342553]
-custom_minimum_size = Vector2(200, 100)
+custom_minimum_size = Vector2(200, 80)
 layout_mode = 0
 offset_left = 204.0
 offset_top = 166.0
 offset_right = 404.0
-offset_bottom = 266.0
+offset_bottom = 246.0
 text = "Endrun"
 
 [node name="Quit" type="Button" parent="PauseMenu/Panel" unique_id=1056057779]
-custom_minimum_size = Vector2(200, 100)
+custom_minimum_size = Vector2(200, 80)
 layout_mode = 0
-offset_left = 200.0
-offset_top = 305.0
-offset_right = 400.0
-offset_bottom = 405.0
+offset_left = 204.0
+offset_top = 371.0
+offset_right = 404.0
+offset_bottom = 451.0
 text = "Main Menu"
+
+[node name="Setting" type="Button" parent="PauseMenu/Panel" unique_id=397550484]
+custom_minimum_size = Vector2(200, 80)
+layout_mode = 0
+offset_left = 204.0
+offset_top = 275.0
+offset_right = 404.0
+offset_bottom = 355.0
+text = "Setting"
 
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
 position = Vector2(577, 318)
@@ -1147,3 +1176,4 @@ gizmo_extents = 0.0
 [connection signal="pressed" from="PauseMenu/Panel/Resume" to="PauseMenu" method="_on_resume_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/EndRun" to="PauseMenu" method="_on_end_run_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/Quit" to="PauseMenu" method="_on_quit_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/Setting" to="PauseMenu" method="_on_setting_pressed"]

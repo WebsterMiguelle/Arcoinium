@@ -206,6 +206,7 @@ offset_right = -0.29600525
 offset_bottom = 0.18399048
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_default_cursor_shape = 2
 text = "CARD"
 script = ExtResource("1_08wl6")
 metadata/_edit_use_anchors_ = true
@@ -251,7 +252,7 @@ autowrap_mode = 3
 position = Vector2(100, 84)
 scale = Vector2(4, 4)
 sprite_frames = ExtResource("4_wnubr")
-animation = &"All In"
+animation = &"Keeper\'s Scroll"
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

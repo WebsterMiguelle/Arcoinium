@@ -4,7 +4,7 @@ const ATTACK_RUNES_PARTICLES = preload("uid://c5o0wyqkpyhg2")
 const THRIFT_ATTACK_PARTICLE = preload("res://Scene/Particles/Thrift_Attack_Particles.tscn")
 const SPEND_ATTACK_PARTICLE = preload("res://Scene/Particles/Spend_Attack_Particles.tscn")
 
-
+var particles_enabled: bool = true
 
 # S-Curve Attack Settings
 const S_CURVE_SPREAD_RATIO = 10
@@ -15,12 +15,14 @@ func _ready() -> void:
 	pass
 
 func spawn_particle(p,pos):
+	if !particles_enabled: return 
 	if is_instance_valid(p):
 		var particle = p.instantiate()
 		particle.global_position = pos
 		add_child(particle)
 
 func spawn_emitting_particle(p,pos):
+	if !particles_enabled: return 
 	if is_instance_valid(p):
 		var particle = p.instantiate()
 		particle.global_position = pos
@@ -37,6 +39,7 @@ func despawn_emitting_particles():
 			p.queue_free()
 
 func play_standard_attack(start_node: Node, target_node: Node, damage: int) -> void:
+	if !particles_enabled: return 
 	var start_pos = start_node.global_position
 	var end_pos = target_node.global_position 
 	
@@ -62,6 +65,7 @@ func play_standard_attack(start_node: Node, target_node: Node, damage: int) -> v
 	
 func spawn_single_trail(start_pos: Vector2, end_pos: Vector2, control_point: Vector2, runes_count: int) -> void:
 	for i in range(runes_count):
+		print("i")
 		var projectile = ATTACK_RUNES_PARTICLES.instantiate()
 		projectile.play("default")
 		add_child(projectile)
@@ -86,6 +90,7 @@ func spawn_single_trail(start_pos: Vector2, end_pos: Vector2, control_point: Vec
 
 
 func play_debt_attack(start_node: Node, target_node: Node, damage: int) -> void:
+	if !particles_enabled: return 
 	var start_pos = start_node.global_position
 	var end_pos = target_node.global_position 
 	
@@ -147,6 +152,7 @@ func play_debt_attack(start_node: Node, target_node: Node, damage: int) -> void:
 		await get_tree().create_timer(0.05).timeout
 
 func play_thrift_attack(start_node: Node, target_node: Node, amount: int) -> void:
+	if !particles_enabled: return 
 	var start_pos = start_node.global_position
 	var end_pos = target_node.global_position 
 	
@@ -179,6 +185,7 @@ func play_thrift_attack(start_node: Node, target_node: Node, amount: int) -> voi
 		await get_tree().create_timer(0.10).timeout
 
 func play_spend_attack(start_node: Node, target_node: Node, amount: int) -> void:
+	if !particles_enabled: return 
 	var start_pos = start_node.global_position
 	var end_pos = target_node.global_position 
 	

@@ -2,13 +2,15 @@ extends TextureRect
 
 var target_x
 var is_already_calculating
+@onready var turn_spell_light: PointLight2D = $"Turn Spell Light"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	self.visible = false
+	self.visible = true
 	target_x = global_position.x
 
 func entrance(is_calcu):
+	turn_spell_light.visible = true
 	visible = true
 	if !is_already_calculating:
 		global_position.x = target_x - 10
@@ -20,6 +22,7 @@ func entrance(is_calcu):
 		is_already_calculating = is_calcu
 
 func exit():
+	turn_spell_light.visible = false
 	is_already_calculating = false
 	var tween = create_tween()
 	tween.parallel().tween_property(self,"position:x",target_x-10,0.2)

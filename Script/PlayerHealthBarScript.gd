@@ -6,6 +6,15 @@ extends Button
 var lifted_slot: Control = null
 var lift_amount: float = -8.0 
 var active_tween: Tween
+@onready var bar_background: Sprite2D = $Sprite2D
+@onready var bar_foreground: Sprite2D = $Sprite2D2
+
+#VOIDED COINBAR
+var debt_color = "#8301f9"
+@onready var void_tendrils: Sprite2D = $"Void Tendrils"
+@onready var void_light: PointLight2D = $"Void Light"
+@onready var void_particles: GPUParticles2D = $"Void Particles"
+
 
 var is_button_disabled: bool = false:
 	set(value):
@@ -29,6 +38,21 @@ func _ready() -> void:
 	if player_node:
 		player_node.hp_changed.connect(_update_visuals)
 		_update_visuals(player_node.coin)
+
+func change_to_void():
+	
+	bar_background.self_modulate = Color(debt_color)
+	bar_foreground.self_modulate = Color(debt_color)
+	void_tendrils.visible = true 
+	void_light.visible = true
+	void_particles.visible = true
+	var slots = coin_bar.get_children()
+	for i in range(slots.size()):
+		var sprite = slots[i].get_child(0) as AnimatedSprite2D
+		if player_node.has_pay_down:
+			sprite.self_modulate = Color.BLACK
+		else:
+			sprite.self_modulate = Color.WHITE
 
 func _pressed() -> void:
 	if disabled: return # Safety check

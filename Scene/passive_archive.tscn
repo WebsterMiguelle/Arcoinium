@@ -525,7 +525,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.5686275, 0.4, 0.4509804, 1)
+color = Color(0.25882354, 0.15294118, 0.1882353, 1)
 script = ExtResource("1_xj8pw")
 
 [node name="Title" type="Label" parent="." unique_id=1047878985]
@@ -603,9 +603,9 @@ text = "Back"
 [node name="B-RANK" type="Button" parent="." unique_id=2063861164]
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 0
-offset_left = 29.0
+offset_left = 30.0
 offset_top = 139.0
-offset_right = 179.0
+offset_right = 180.0
 offset_bottom = 189.0
 theme_override_fonts/font = ExtResource("2_mej11")
 theme_override_font_sizes/font_size = 40
@@ -614,9 +614,9 @@ text = "B - RANK"
 [node name="A-RANK" type="Button" parent="." unique_id=951600385]
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 0
-offset_left = 24.0
+offset_left = 30.0
 offset_top = 217.0
-offset_right = 174.0
+offset_right = 180.0
 offset_bottom = 267.0
 theme_override_fonts/font = ExtResource("2_mej11")
 theme_override_font_sizes/font_size = 40
@@ -625,9 +625,9 @@ text = "A - RANK"
 [node name="S-RANK" type="Button" parent="." unique_id=1590904088]
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 0
-offset_left = 21.0
+offset_left = 30.0
 offset_top = 292.0
-offset_right = 171.0
+offset_right = 180.0
 offset_bottom = 342.0
 theme_override_fonts/font = ExtResource("2_mej11")
 theme_override_font_sizes/font_size = 40

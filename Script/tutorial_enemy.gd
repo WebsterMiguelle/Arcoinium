@@ -162,11 +162,11 @@ func _ready():
 	pass
 
 func switch_vignette_color(to,duration):
-	var tween = create_tween()
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.tween_property(vignette,"color",Color.from_string(to,Color.WHITE),duration)
 
 func switch_vignetter_color(to,duration):
-	var tween = create_tween()
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.tween_property(vignetter,"color",Color.from_string(to,Color.WHITE),duration)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -348,7 +348,7 @@ func start_enemy_turn():
 	if main.player.coin == 0:
 		return
 	if coin > 0:
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0, true).timeout
 		while current_played_coin != max_playable_coins:
 			if coin > 0:
 				flip()
@@ -356,8 +356,8 @@ func start_enemy_turn():
 			else:
 				main.sound_manager.play_sound(DEATH)
 				break
-			await get_tree().create_timer(flip_speed).timeout
-		await get_tree().create_timer(1.0).timeout
+			await get_tree().create_timer(flip_speed, true).timeout
+		await get_tree().create_timer(1.0, true).timeout
 		await end_enemy_turn()
 
 
@@ -429,7 +429,7 @@ func end_enemy_turn():
 	# -- The Pause --
 	# Wait for the attack runes to travel across the screen
 	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0 or turn_lock or turn_slow:
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0, true).timeout
 
 	if turn_damage > 0:
 		main.player.take_damage(turn_damage)
@@ -472,14 +472,14 @@ func end_enemy_turn():
 	if turn_slow: 
 		main.sound_manager.play_sound(SLOW)
 		create_floating_label("", "SLOW", "PLAYER")
-		var slow_motion = create_tween()
+		var slow_motion = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 		slow_motion.tween_property(Engine, "time_scale", 0.1, 0)
 		slow_motion.tween_property(Engine, "time_scale", 1, 0.5)
 	
 	camera_2d.add_trauma(shake_power)
 	if turn_damage >= 30:
 		main.sound_manager.play_sound(CRITICAL)
-		var slow_motion = create_tween()
+		var slow_motion = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 		slow_motion.tween_property(Engine, "time_scale", 0.1, 0)
 		slow_motion.tween_property(Engine, "time_scale", 1, 0.5)
 	# 2. Apply Status Effects to Player

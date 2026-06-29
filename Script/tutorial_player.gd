@@ -650,7 +650,7 @@ func reserve(is_generated = false, pickpocketed = false, dazzled = false):
 		if tally_counter > 0:
 			tally_counter -= 1
 			if tally_counter == 0:
-				await get_tree().create_timer(0.1).timeout
+				await get_tree().create_timer(0.1, true).timeout
 				main.tally_end_turn()
 				tally = false
 				return
@@ -801,7 +801,7 @@ func flip():
 		if tally_counter > 0:
 			tally_counter -= 1
 			if tally_counter == 0:
-				await get_tree().create_timer(0.1).timeout
+				await get_tree().create_timer(0.1, true).timeout
 				main.tally_end_turn()
 				tally = false
 				return
@@ -825,7 +825,7 @@ func re_flip():
 	
 	if reflip_tween:
 		reflip_tween.kill()
-	reflip_tween = create_tween()
+	reflip_tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	var swelled_scale: Vector2 = base_reflip_scale * 1.2 
 	
 	reflip_tween.tween_property(main.reflip_sprite, "scale", swelled_scale, 0.1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
@@ -915,7 +915,7 @@ func re_flip():
 
 
 
-	await get_tree().create_timer(0.1).timeout
+	await get_tree().create_timer(0.1, true).timeout
 	coin_calculation()
 	
 	
@@ -1231,7 +1231,7 @@ func end_turn():
 	# -- The Pause --
 	# Wait 1 second for the particles to fly across the screen BEFORE showing the impacts
 	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0:
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0, true).timeout
 
 	var shake_power = 0
 	# -- 2. Final Hit Impacts & Floating Labels (The runes have arrived!) --
@@ -1275,7 +1275,7 @@ func end_turn():
 	camera_2d.add_trauma(shake_power)
 	if turn_damage >= 30:
 		main.sound_manager.play_sound(CRITICAL)
-		var slow_motion = create_tween()
+		var slow_motion = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 		slow_motion.tween_property(Engine, "time_scale", 0.1, 0)
 		slow_motion.tween_property(Engine, "time_scale", 1, 0.5)
 	# 2. Apply Stats to Enemy
@@ -1336,7 +1336,7 @@ func activate_pre_battle_passives():
 			coin_calculation()
 			pocket_money_coins -= 1
 			upgraded_flip_count += 1
-			await get_tree().create_timer(0.1).timeout
+			await get_tree().create_timer(0.1, true).timeout
 		main.endTurn_button.disabled = false
 		toggle_button(main.re_flip_button,false)
 
@@ -1408,7 +1408,7 @@ func activate_player_turn_start_passives():
 
 			coin_calculation()
 			payback_coins -= 1
-			await get_tree().create_timer(0.1).timeout
+			await get_tree().create_timer(0.1, true).timeout
 			
 		main.endTurn_button.disabled = false
 		toggle_button(main.re_flip_button,false)
@@ -1439,9 +1439,9 @@ func activate_player_turn_end_passives():
 				main.sound_manager.play_sound(DAMAGE_LIGHT)
 				main.enemy.take_damage(1)
 				create_floating_label(1,"DAMAGE","ENEMY")
-			await get_tree().create_timer(0.1).timeout
+			await get_tree().create_timer(0.1, true).timeout
 	if has_dazzle:
-		await get_tree().create_timer(0.6).timeout
+		await get_tree().create_timer(0.6, true).timeout
 	if main.enemy.coin == 0:
 		return
 		
@@ -1461,7 +1461,7 @@ func activate_player_turn_end_passives():
 		main.enemy.take_damage(1)
 		create_floating_label(1,"DAMAGE","ENEMY")
 		coin_calculation()
-		await get_tree().create_timer(0.6).timeout
+		await get_tree().create_timer(0.6, true).timeout
 		if main.enemy.coin == 0:
 			return
 	if has_magic_trick and current_played_coin >= 8:
@@ -1492,7 +1492,7 @@ func activate_player_turn_end_passives():
 					main.enemy.take_damage(3)
 					create_floating_label(3,"DAMAGE","ENEMY")
 				coin_calculation()
-				await get_tree().create_timer(0.1).timeout
+				await get_tree().create_timer(0.1, true).timeout
 			if index == 4 or index == 6 or index == 8:
 				coin.copy_coin(second_coin)
 				coin.refresh_sprite()
@@ -1510,9 +1510,9 @@ func activate_player_turn_end_passives():
 					main.enemy.take_damage(3)
 					create_floating_label(3,"DAMAGE","ENEMY")
 				coin_calculation()
-				await get_tree().create_timer(0.1).timeout
+				await get_tree().create_timer(0.1, true).timeout
 		coin_calculation()
-		await get_tree().create_timer(0.6).timeout
+		await get_tree().create_timer(0.6, true).timeout
 		if main.enemy.coin == 0:
 			return
 	if has_advanced_planning:
@@ -1541,8 +1541,8 @@ func activate_player_turn_end_passives():
 					main.enemy.take_damage(1)
 					create_floating_label(1,"DAMAGE","ENEMY")
 				coin_calculation()
-				await get_tree().create_timer(0.1).timeout
-		await get_tree().create_timer(0.6).timeout
+				await get_tree().create_timer(0.1, true).timeout
+		await get_tree().create_timer(0.6, true).timeout
 		if main.enemy.coin == 0:
 			return
 	
@@ -1561,7 +1561,7 @@ func activate_player_turn_end_passives():
 					main.sound_manager.play_sound(DAMAGE_LIGHT)
 					main.enemy.take_damage(1)
 					create_floating_label(1,"DAMAGE","ENEMY")
-				await get_tree().create_timer(0.1).timeout
+				await get_tree().create_timer(0.1, true).timeout
 			if moon_moon_count == 0: break
 		
 		if moon_moon_count > 0:
@@ -1579,10 +1579,10 @@ func activate_player_turn_end_passives():
 						main.sound_manager.play_sound(DAMAGE_LIGHT)
 						main.enemy.take_damage(1)
 						create_floating_label(1,"DAMAGE","ENEMY")
-					await get_tree().create_timer(0.1).timeout
+					await get_tree().create_timer(0.1, true).timeout
 				if moon_moon_count == 0: break
 		coin_calculation()
-		await get_tree().create_timer(0.6).timeout
+		await get_tree().create_timer(0.6, true).timeout
 		if main.enemy.coin == 0:
 			return
 
@@ -1602,7 +1602,7 @@ func activate_player_turn_end_passives():
 					main.sound_manager.play_sound(DAMAGE_LIGHT)
 					main.enemy.take_damage(1)
 					create_floating_label(1,"DAMAGE","ENEMY")
-				await get_tree().create_timer(0.1).timeout
+				await get_tree().create_timer(0.1, true).timeout
 			if sun_sun_count == 0: break
 				
 		#PRIORITY 2: UNSHINED GOLD COINS
@@ -1620,7 +1620,7 @@ func activate_player_turn_end_passives():
 						main.sound_manager.play_sound(DAMAGE_LIGHT)
 						main.enemy.take_damage(1)
 						create_floating_label(1,"DAMAGE","ENEMY")
-					await get_tree().create_timer(0.1).timeout
+					await get_tree().create_timer(0.1, true).timeout
 				if sun_sun_count == 0: break
 		
 		#PRIORITY 3: SHINED GOLD COINS
@@ -1638,10 +1638,10 @@ func activate_player_turn_end_passives():
 						main.sound_manager.play_sound(DAMAGE_LIGHT)
 						main.enemy.take_damage(1)
 						create_floating_label(1,"DAMAGE","ENEMY")
-					await get_tree().create_timer(0.1).timeout
+					await get_tree().create_timer(0.1, true).timeout
 				if sun_sun_count == 0: break
 		coin_calculation()
-		await get_tree().create_timer(0.6).timeout
+		await get_tree().create_timer(0.6, true).timeout
 		if main.enemy.coin == 0:
 			return
 	
@@ -1671,7 +1671,7 @@ func trigger_temp_passive(id: String, text: String):
 	
 	main.trigger_passive(id, text)
 	
-	await get_tree().create_timer(1.5).timeout
+	await get_tree().create_timer(1.5, true).timeout
 	active_temp_ids.erase(id)
 
 func trigger_board_pulse() -> void:
@@ -1688,4 +1688,4 @@ func trigger_board_pulse() -> void:
 				
 		# --- THE MAGIC STAGGER ---
 		# Wait 0.3 seconds before telling the next pair to pulse!
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0, true).timeout

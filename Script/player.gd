@@ -873,6 +873,7 @@ func flip():
 		upgraded_flip_count = 0
 		
 	main.add_child(c)
+	print("Coin parent: ", c.get_parent().name, " process_mode: ", c.get_parent().process_mode)
 	if c.reserved == false:
 		latest_coin = c
 		main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,latest_coin.global_position)

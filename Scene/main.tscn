@@ -1414,7 +1414,7 @@ amount = 6
 texture = ExtResource("49_5qrjd")
 process_material = SubResource("ParticleProcessMaterial_tke4u")
 
-[node name="Turn Spell Light" type="PointLight2D" parent="Battle UI/Turn Calculation Box" unique_id=459779385]
+[node name="Turn Spell Light" type="PointLight2D" parent="Battle UI/Turn Calculation Box" unique_id=459779385 groups=["point_light"]]
 light_mask = 0
 z_index = -5
 position = Vector2(121, 139)
@@ -2618,7 +2618,7 @@ offset_right = 1150.0
 offset_bottom = 652.0
 texture = SubResource("GradientTexture2D_5qrjd")
 
-[node name="Dazzled Light" type="PointLight2D" parent="Dazzled Effect" unique_id=1167497638]
+[node name="Dazzled Light" type="PointLight2D" parent="Dazzled Effect" unique_id=1167497638 groups=["point_light"]]
 position = Vector2(826.5, 68.5)
 scale = Vector2(17.671875, 2.2031252)
 color = Color(0.91764706, 0.7372549, 1, 0)

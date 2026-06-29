@@ -36,11 +36,13 @@
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="30_nu8ud"]
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="30_q77mq"]
 [ext_resource type="Texture2D" uid="uid://bmkxblxwtg47d" path="res://Assets/Rug.png" id="31_uku07"]
-[ext_resource type="Script" uid="uid://ka64sstswrwl" path="res://Scene/game_over_ui.gd" id="32_rtf0e"]
+[ext_resource type="Script" uid="uid://ka64sstswrwl" path="res://Script/game_over_ui.gd" id="32_rtf0e"]
 [ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="33_qg8me"]
 [ext_resource type="Script" uid="uid://cbrncrbtg7emf" path="res://Script/pause_menu.gd" id="36_ismbn"]
 [ext_resource type="Texture2D" uid="uid://cpm417gdi8hph" path="res://Assets/shopMaster-Sheet.png" id="36_t47jc"]
 [ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="39_2uys4"]
+[ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="42_elt7x"]
+[ext_resource type="Texture2D" uid="uid://dms5d0v8hxacy" path="res://Assets/EndScrollTextSeparator.png" id="43_0rhr1"]
 [ext_resource type="Script" uid="uid://cjx7ln7nt56ad" path="res://Scene/particle_manager.gd" id="48_xef3h"]
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]
@@ -727,6 +729,18 @@ scale_over_velocity_max = 196.06999
 color = Color(0.9999996, 0.9053559, 0.81244224, 1)
 color_ramp = SubResource("GradientTexture1D_mlc74")
 
+[sub_resource type="Gradient" id="Gradient_qsoii"]
+offsets = PackedFloat32Array(0, 0.44849786, 0.99785405)
+colors = PackedColorArray(1, 1, 1, 0.8627451, 0.5568628, 0.5568628, 0.5568628, 0, 1, 1, 1, 0.8627451)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xgpyk"]
+gradient = SubResource("Gradient_qsoii")
+fill_from = Vector2(0.48034188, 0.8051282)
+fill_to = Vector2(0.50769234, 0.13504274)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dqw5i"]
+texture = ExtResource("18_rahvx")
+
 [sub_resource type="Gradient" id="Gradient_75buv"]
 offsets = PackedFloat32Array(0, 0.22742476)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
@@ -920,7 +934,7 @@ amount = 6
 texture = ExtResource("18_rahvx")
 process_material = SubResource("ParticleProcessMaterial_k5au8")
 
-[node name="Turn Spell Light" type="PointLight2D" parent="Battle UI/Turn Calculation Box" unique_id=1572100592]
+[node name="Turn Spell Light" type="PointLight2D" parent="Battle UI/Turn Calculation Box" unique_id=1572100592 groups=["point_light"]]
 light_mask = 0
 z_index = -5
 position = Vector2(121, 139)
@@ -1540,63 +1554,99 @@ grow_vertical = 2
 mouse_default_cursor_shape = 2
 text = "Restart"
 
-[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=722870696]
+[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=1567975339]
 process_mode = 3
-layer = 10000
+layer = 5
 visible = false
 script = ExtResource("36_ismbn")
 
-[node name="Panel" type="Panel" parent="PauseMenu" unique_id=1158800794]
-custom_minimum_size = Vector2(600, 500)
+[node name="CardShadow" type="TextureRect" parent="PauseMenu" unique_id=520178575]
+self_modulate = Color(0, 0, 0, 1)
+offset_right = 1155.0
+offset_bottom = 649.0
+texture = SubResource("GradientTexture2D_xgpyk")
+
+[node name="Panel" type="PanelContainer" parent="PauseMenu" unique_id=1944652415]
+custom_minimum_size = Vector2(400, 100)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -250.0
-offset_right = 300.0
-offset_bottom = 250.0
+offset_left = -243.495
+offset_top = -257.0
+offset_right = 249.50671
+offset_bottom = 275.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_dqw5i")
 
-[node name="Resume" type="Button" parent="PauseMenu/Panel" unique_id=496970523]
-custom_minimum_size = Vector2(200, 80)
-layout_mode = 0
-offset_left = 200.0
-offset_top = 37.0
-offset_right = 400.0
-offset_bottom = 117.0
+[node name="MarginContainer" type="MarginContainer" parent="PauseMenu/Panel" unique_id=1484067368]
+layout_mode = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/Panel/MarginContainer" unique_id=694928207]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=1702609174]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("33_qg8me")
+theme_override_font_sizes/font_size = 70
+text = "PAUSED"
+horizontal_alignment = 1
+
+[node name="Border2" type="TextureRect" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=1203724073]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+texture = ExtResource("42_elt7x")
+
+[node name="Resume" type="Button" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=1356438686]
+custom_minimum_size = Vector2(200, 10)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("8_i3w70")
+theme_override_font_sizes/font_size = 64
 text = "Resume"
+flat = true
 
-[node name="EndRun" type="Button" parent="PauseMenu/Panel" unique_id=1637342553]
-custom_minimum_size = Vector2(200, 80)
-layout_mode = 0
-offset_left = 204.0
-offset_top = 166.0
-offset_right = 404.0
-offset_bottom = 246.0
-text = "Endrun"
+[node name="EndRun" type="Button" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=237514737]
+custom_minimum_size = Vector2(200, 10)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("8_i3w70")
+theme_override_font_sizes/font_size = 64
+text = "Surrender"
+flat = true
 
-[node name="Quit" type="Button" parent="PauseMenu/Panel" unique_id=1056057779]
-custom_minimum_size = Vector2(200, 80)
-layout_mode = 0
-offset_left = 204.0
-offset_top = 371.0
-offset_right = 404.0
-offset_bottom = 451.0
+[node name="Setting" type="Button" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=1569225998]
+custom_minimum_size = Vector2(200, 10)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("8_i3w70")
+theme_override_font_sizes/font_size = 64
+text = "Settings"
+flat = true
+
+[node name="Quit" type="Button" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=2013026593]
+custom_minimum_size = Vector2(200, 10)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("8_i3w70")
+theme_override_font_sizes/font_size = 64
 text = "Main Menu"
+flat = true
 
-[node name="Setting" type="Button" parent="PauseMenu/Panel" unique_id=397550484]
-custom_minimum_size = Vector2(200, 80)
-layout_mode = 0
-offset_left = 204.0
-offset_top = 275.0
-offset_right = 404.0
-offset_bottom = 355.0
-text = "Setting"
+[node name="Border" type="TextureRect" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=1162571992]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+texture = ExtResource("43_0rhr1")
 
-[node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384 groups=["point_light"]]
 position = Vector2(577, 318)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.9019608, 0.5647059, 0.61960787)
@@ -1607,7 +1657,7 @@ texture_scale = 0.46
 [node name="Vignette" type="CanvasModulate" parent="." unique_id=1590582319]
 color = Color(0.7411765, 0.67058825, 0.72156864, 1)
 
-[node name="ParticleManager" type="Node2D" parent="." unique_id=2081468604]
+[node name="ParticleManager" type="Node2D" parent="." unique_id=2081468604 groups=["particle_manager"]]
 script = ExtResource("48_xef3h")
 
 [node name="Battle Particles" type="GPUParticles2D" parent="ParticleManager" unique_id=1039306359]
@@ -1653,8 +1703,8 @@ texture = ExtResource("31_uku07")
 [connection signal="toggled" from="Player/Player Info" to="." method="_on_player_info_toggled"]
 [connection signal="pressed" from="Game Over UI/ColorRect/Main Menu" to="Game Over UI" method="_on_main_menu_pressed"]
 [connection signal="pressed" from="Game Over UI/ColorRect/Restart" to="." method="_on_restart_pressed"]
-[connection signal="pressed" from="PauseMenu/Panel/Resume" to="PauseMenu" method="_on_resume_pressed"]
-[connection signal="pressed" from="PauseMenu/Panel/EndRun" to="PauseMenu" method="_on_end_run_pressed"]
-[connection signal="pressed" from="PauseMenu/Panel/Quit" to="PauseMenu" method="_on_quit_pressed"]
-[connection signal="pressed" from="PauseMenu/Panel/Setting" to="PauseMenu" method="_on_setting_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/Resume" to="PauseMenu" method="_on_resume_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/EndRun" to="PauseMenu" method="_on_end_run_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/Setting" to="PauseMenu" method="_on_setting_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/Quit" to="PauseMenu" method="_on_quit_pressed"]
 [connection signal="toggled" from="Enemy Info" to="." method="_on_enemy_info_toggled"]

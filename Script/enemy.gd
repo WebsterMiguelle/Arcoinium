@@ -853,7 +853,7 @@ func start_enemy_turn():
 	
 	if settle > 0 and debt == 0:
 		particle_manager.trigger_attack(main.coin_deck, main.player_portrait, turn_damage, "")
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0,true).timeout
 		main.player.take_damage(settle)
 		main.sound_manager.play_sound(DAMAGE_HEAVY)
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.player_portrait.global_position)
@@ -871,7 +871,7 @@ func start_enemy_turn():
 	if main.player.coin == 0:
 		return
 	if coin > 0:
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0,true).timeout
 		while current_played_coin != max_playable_coins and !main.is_game_over:
 			if coin > 0:
 				flip()
@@ -879,8 +879,8 @@ func start_enemy_turn():
 			else:
 				main.sound_manager.play_sound(DEATH)
 				break
-			await get_tree().create_timer(flip_speed).timeout
-		await get_tree().create_timer(1.0).timeout
+			await get_tree().create_timer(flip_speed,true).timeout
+		await get_tree().create_timer(1.0, true).timeout
 		if !main.is_game_over:
 			await end_enemy_turn()
 
@@ -928,9 +928,9 @@ func end_enemy_turn():
 				main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 				main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 				main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
-			await get_tree().create_timer(0.1).timeout
+			await get_tree().create_timer(0.1,true).timeout
 	if has_dazzle:
-		await get_tree().create_timer(0.6).timeout
+		await get_tree().create_timer(0.6, true).timeout
 	if coin == 0:
 		return
 	
@@ -959,8 +959,8 @@ func end_enemy_turn():
 				c.initial_status = c.status
 				c.refresh_sprite()
 				enemy_coin_calculation()
-				await get_tree().create_timer(0.1).timeout
-		await get_tree().create_timer(0.6).timeout
+				await get_tree().create_timer(0.1, true).timeout
+		await get_tree().create_timer(0.6, true).timeout
 	if coin == 0:
 		return
 	
@@ -1045,7 +1045,7 @@ func end_enemy_turn():
 	# -- The Pause --
 	# Wait for the attack runes to travel across the screen
 	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0 or turn_lock or turn_slow or turn_tally > 0 or turn_starstruck:
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0, true).timeout
 
 	# 1. Player Passive Income Check
 	var converted_income = 0
@@ -1198,12 +1198,12 @@ func end_enemy_turn():
 		create_floating_label(debt, "DAMAGE", "ENEMY")
 		
 	if main.player.starstruck and (main.player.has_merchant_scroll or main.player.has_active_income):
-		await get_tree().create_timer(1.0)
+		await get_tree().create_timer(1.0, true).timeout
 		main.sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
 		main.shopkeeper.status.text = "COIN CASTER. FOCUS."
 		var keeper_tween = create_tween()
 		keeper_tween.tween_property(keeper_shadow,"self_modulate", Color("85007396"),0.2)
-		await get_tree().create_timer(1.0)
+		await get_tree().create_timer(1.0, true).timeout
 		main.player.starstruck = false
 		var dazzled_tween = create_tween()
 		dazzled_tween.parallel().tween_property(dazzled_effect,"self_modulate", Color("#0059a800"),0.6)

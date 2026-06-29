@@ -338,18 +338,20 @@ func _tutorial_force_shine_coin() -> void:
 		coin.pulse_glow()
 
 func switch_vignette_color(to,duration):
-	var tween = create_tween()
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.tween_property(vignette,"color",Color.from_string(to,Color.WHITE),duration)
 
 func switch_vignetter_color(to,duration):
-	var tween = create_tween()
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.tween_property(vignetter,"color",Color.from_string(to,Color.WHITE),duration)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	print("Light in group: ", get_tree().get_first_node_in_group("point_light"))
+	print("Particles in group: ", get_tree().get_first_node_in_group("particle_manager"))
 	advance_mode = SceneTransition.tutorial_advance_mode
 	print(advance_mode)
-	await get_tree().create_timer(0.4).timeout
+	await get_tree().create_timer(0.4, true).timeout
 	await _play_fake_coin_intro()
 	turn_calculation_box.visible = false
 	turn_ui.visible = false
@@ -381,15 +383,25 @@ func _ready():
 func on_enemy_radiant_fired() -> void:
 	pass
 	
-func _input(event):
-	if event.is_action_pressed("ui_cancel"): # ESC key
-		toggle_pause()
-		
-func toggle_pause():
-	get_tree().paused = !get_tree().paused
-	pause_menu.visible = get_tree().paused
+func _unhandled_input(event: InputEvent) -> void:
+	if !event.is_action_pressed("ui_cancel"): # ESC key
+		return
+	#if current_turn != Turn.PLAYER:
+	#	return
+	toggle_pause()
+	get_viewport().set_input_as_handled()
 	
-	battle_particles.emitting = !get_tree().paused
+func toggle_pause():
+	if PauseManager.is_paused:
+		PauseManager.resume()
+		pause_menu.visible = true
+		sound_manager.pause_sfx()
+		turn_spell_light.visible = false
+	else:
+		PauseManager.pause()
+		pause_menu.visible = false
+		sound_manager.resume_sfx()
+		turn_spell_light.visible = turn_calculation_box.visible
 	
 func battle_start():
 	flip_blocker.visible = false
@@ -493,18 +505,18 @@ func show_turn_ui(text):
 	else:
 		turn_portrait.play("COIN_CASTER")
 
-	var tween = create_tween()
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.parallel().tween_property(turn_ui,"modulate",Color("ffffff"),0.2)
 	tween.parallel().tween_property(turn_ui, "position:y",target_position,0.2)
-	await get_tree().create_timer(1.0).timeout
+	await get_tree().create_timer(1.0, true).timeout
 	print("=============================UI DONE")
 	turn_ui_label.text = text
-	tween = create_tween()
+	tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.parallel().tween_property(turn_ui,"modulate",Color("ffffff00"),0.2)
 	tween.parallel().tween_property(turn_ui, "position:y",target_position - 30,0.2)
 	if current_turn == Turn.PLAYER:
 		endTurn_button.disabled = false
-	await get_tree().create_timer(1.0).timeout
+	await get_tree().create_timer(1.0, true).timeout
 	print("=============================UI DONE")
 	
 func _on_end_run_pressed():
@@ -538,7 +550,7 @@ func start_player_turn():
 			endTurn_button.visible = false
 			flip_button.disabled = true
 			_say("adv_welcome") 
-			await get_tree().create_timer(3.0).timeout 
+			await get_tree().create_timer(3.0, true).timeout 
 			_show_tutorial("Caster Passives","Throughout a run, you may encounter Passives after each battle.\nCombine different passives to become stronger!",player_debt.global_position,-120,[flip_button, endTurn_button])
 			await _wait_for_spell_inspection()
 			while player_info_menu != null and is_instance_valid(player_info_menu):
@@ -550,7 +562,7 @@ func start_player_turn():
 		if !adv_debt_done and player.debt > 0:
 			_lock_all()
 			player_info.visible = true
-			await get_tree().create_timer(0.8).timeout  
+			await get_tree().create_timer(0.8, true).timeout  
 			flip_button.disabled = true
 			_say("adv_debt_intro")
 			_show_tutorial("Entity Status","Some spells can inflict an Entity Status.\nYou currently have DEBT.\nRead Status Effects on your portrait.",player_debt.global_position,-120,[flip_button, endTurn_button])
@@ -644,7 +656,7 @@ func start_enemy_turn():
 	var defeat = await check_defeat()
 	if not defeat:
 		_close_current_tutorial()
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0, true).timeout
 		start_player_turn()
 		
 func _show_coin_spells_tutorial() -> void:
@@ -684,7 +696,7 @@ func _on_endturn_pressed():
 		turn_calculation_box.exit()
 		var defeat = await check_defeat()
 		if not defeat:
-			await get_tree().create_timer(1.0).timeout
+			await get_tree().create_timer(1.0, true).timeout
 			start_enemy_turn()
 		return
 		
@@ -725,7 +737,7 @@ func _on_endturn_pressed():
 	
 	var defeat = await check_defeat()
 	if not defeat:
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0, true).timeout
 		start_enemy_turn()
 			
 
@@ -805,10 +817,11 @@ func trigger_game_over(player_won: bool):
 		return
 	game_over_triggered = true
 	
+	PauseManager.pause()
 	_close_current_tutorial()
 	sound_manager.stop_music()
 	set_process(false)
-	
+	pause_menu.visible = false
 	flip_button.disabled = true
 	re_flip_button.disabled = true
 	endTurn_button.disabled = true
@@ -818,7 +831,7 @@ func trigger_game_over(player_won: bool):
 	else:
 		sound_manager.play_sound(DEATH)
 
-	await get_tree().create_timer(2.0).timeout
+	await get_tree().create_timer(2.0, true).timeout
 	SceneTransition.load_scene("res://Scene/Shop_keepers Room.tscn")
 	
 
@@ -839,6 +852,7 @@ func check_defeat():
 	return false
 
 func handle_victory_flow():
+	PauseManager.pause()
 	endTurn_button.disabled = true
 	player.lock = false
 	player.slow = false
@@ -917,7 +931,7 @@ func reserve_left_over_coin():
 	if left_coin != null and right_coin == null:
 		left_coin.reserved = true
 		var target_pos = coin_deck.get_reserve_slot()
-		var tween = create_tween()
+		var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 		left_coin.refresh_sprite()
 		sound_manager.play_sound(COIN_FLIP)
 		tween.tween_property(left_coin,"position:x",target_pos[0],0.2)
@@ -996,7 +1010,7 @@ func update_enemy_stacks():
 
 func _on_restart_pressed():
 	game_over_triggered = false
-	await get_tree().create_timer(0.2).timeout
+	await get_tree().create_timer(0.2, true).timeout
 	get_tree().reload_current_scene()
 	
 func _on_refresh_pressed() -> void:
@@ -1026,7 +1040,7 @@ func _play_fake_coin_intro():
 	
 	var target_pos = player_health_bar.global_position 
 	
-	var tween = create_tween()
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.tween_property(fake_coin, "global_position", target_pos, 1.0).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 	tween.parallel().tween_property(fake_coin, "scale", Vector2(0.6, 0.6), 0.4)
 	

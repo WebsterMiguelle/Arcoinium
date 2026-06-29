@@ -23,11 +23,17 @@ buses/default_bus_layout="uid://dapxyh33exxxc"
 
 SceneTransition="*uid://dtv64xe1i5jfr"
 PlayerSingleton="*uid://okw61psq4rl4"
+PauseManager="*uid://lj55ln6c6yqi"
 
 [display]
 
 window/size/mode=2
 window/stretch/mode="viewport"
+
+[global_group]
+
+point_light=""
+particle_manager=""
 
 [gui]
 

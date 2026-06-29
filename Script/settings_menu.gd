@@ -84,7 +84,6 @@ func _on_particles_button_up() -> void:
 		partman.particles_enabled = !partman.particles_enabled
 		print("Particles: ", partman.particles_enabled)
 
-
 func _on_light_effect_button_up() -> void:
 	var light = get_tree().get_first_node_in_group("point_light")
 	if light:

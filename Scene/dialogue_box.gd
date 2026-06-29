@@ -9,7 +9,7 @@ signal dialogue_finished
 
 const LINES = {
 	"welcome": [
-		"Welcome Coin Caster. I the Shop Keeper \nwill Guide You!!.",
+		"Welcome Coin Caster. Welcome to Keeper's Rest.",
 		"Knowledge gain advantage.",
 		"Chose which you want to Learn."
 		 ],
@@ -42,25 +42,25 @@ const LINES = {
 	"sk_first_flip": [
 		"Ah, your first flip!",
 		"Each coin holds a fate.",
-		"Flip wisely..." ],
+		"Flip 4 Coins..." ],
 	"sk_flip_progress": [
 		"Keep flipping, Caster.",
 		"The Arcane Circle hungers for more coins." ],
 	"sk_coin_spell": [
 		"Each coin carries its own magic.",
-		"Inspect your portrait — know your power." ],
+		"Inspect your portrait, know your power." ],
 	"sk_first_reflip": [
 		"Fate not in your favor?",
-		"Re-Flip — bend the odds to your will.",
-		"But it won't last forever..." ],
+		"Re-Flip, bend the odds to your will.",
+		"You may only Re-Flip a certain times per turn..." ],
 	"sk_endturn": [
 		"Bold! You end your turn.",
 		"Now your coins clash against mine.",
 		"Pray they hold." ],
 	"sk_reserve": [
-		"Ah, the Reserve\n— a cunning move.",
-		"Saved coins return as bonus\nat battle's end.",
-		"A true Caster plans ahead." ],
+		"Ah, the Reserve.\n A cunning move.",
+		"Reserved coins returns directly to the Circle\nnext turn.",
+		"A true Caster plans their coins ahead." ],
 	"sk_overflow": [
 		"You Overflow your Cirle." ],
 	"sk_player_winning": [
@@ -68,7 +68,10 @@ const LINES = {
 		"Do not grow arrogant, Caster." ],
 	"sk_player_losing": [
 		"Struggling, are we?",
-		"Remember — coins won't\nsave a careless hand." ],
+		"Remember, coins won't\nsave a careless hand." ],
+	"sk_player_mustdefeat": [
+		"Prove your worth. Defeat me.",
+		"With coins, cleanse\nthe greed of this world." ],
 	"sk_victory": [
 		"...You have bested me.",
 		"The lesson is complete, Coin Caster.",
@@ -77,7 +80,7 @@ const LINES = {
 		"Hmph. You still have much to learn.",
 		"Return when you are ready, Caster." ],
 	"adv_welcome": [
-		"Back so soon? Let's talk about the\ndeeper stuff." ],
+		"Back so soon? Before starting, I gave you a gift.\nCheck your portrait." ],
 	"adv_debt_intro": [
 		"Watch your numbers\nevery flip could cost you." ],
 	"adv_coin_tiers_transition": [
@@ -85,37 +88,31 @@ const LINES = {
 	"adv_coin_status_transition": [
 		"Good eye. Now, coins can carry\ntheir own effects too." ],
 	"adv_coin_status_intro": [
-		"Check your Portrait\n-each coin tells its own story." ],
+		"Hover those STAMPED Coins.\nYou may end the turn after checking." ],
 	"adv_all_done": [
 		"That's the advanced mode.\nThe rest you learn in the field." ],
 	"adv_enemy_turn": [
-		"My turn. Watch what Debt does to your Gain." ]
+		"My turn. Watch what Debt does to your Gain." ],
+	"sk_enemy_info": [
+		"If you seek to study your opponent, click their portrait." ],
+	"adv_player_passive": [
+		"Collect Passive Scrolls throughout your journey. "],
+	"adv_flip_4": [
+		"Try flipping 4 Coins..."],
+	"adv_gain_debt": [
+		"DEBT can be removed by GAIN."]
 }
-const LINE_DURATION = 3.0
-const CHARS_PER_SECOND = 10.0
+const LINE_DURATION = 2.0
+const CHARS_PER_SECOND = 30.0
 
 var _queue: Array = []
 var _playing = false
 
 func set_tail(side: TailSide) -> void:
 	var panel: PanelContainer = $"Dialogue Panel"
-	var style: StyleBoxFlat = panel.get_theme_stylebox("panel").duplicate()
 
 	var r = 32
 	
-	match side:
-		TailSide.LEFT:
-			style.corner_radius_top_left = 0
-			style.corner_radius_top_right = r
-			style.corner_radius_bottom_left = r 
-			style.corner_radius_bottom_right = r
-		TailSide.RIGHT:
-			style.corner_radius_top_left = r
-			style.corner_radius_top_right = 0
-			style.corner_radius_bottom_left = r
-			style.corner_radius_bottom_right = r
-			
-	panel.add_theme_stylebox_override("panel", style)
 	
 	
 func play(key: String) -> void:
@@ -127,12 +124,14 @@ func play(key: String) -> void:
 	_next()
 	
 func _next() -> void:
+	var label: Label = $"Dialogue Panel/MarginContainer/VFlowContainer/Dialogue Info"
 	if _queue.is_empty():
 		_playing = false
 		#close()
 		dialogue_finished.emit()
 		return
 		
+	label.text = ""
 	if modulate.a < 0.9:
 		modulate.a = 0
 		var tween = create_tween()
@@ -146,7 +145,7 @@ func _next() -> void:
 	_next()
 	
 func _set_text(txt: String) -> void:
-	var label: Label = $"Dialogue Panel/MarginContainer/Dialogue Info"
+	var label: Label = $"Dialogue Panel/MarginContainer/VFlowContainer/Dialogue Info"
 	label.text = ""
 	label.visible_characters = 0
 	

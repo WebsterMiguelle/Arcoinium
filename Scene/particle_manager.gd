@@ -12,7 +12,7 @@ const S_CURVE_BASE_TIME = 0.8
 const S_CURVE_ADD_TIME = 0.005
 
 func _ready() -> void:
-	pass
+	process_mode = Node.PROCESS_MODE_PAUSABLE
 
 func spawn_particle(p,pos):
 	if !particles_enabled: return 
@@ -71,7 +71,7 @@ func spawn_single_trail(start_pos: Vector2, end_pos: Vector2, control_point: Vec
 		add_child(projectile)
 		projectile.global_position = start_pos
 		
-		var tween = create_tween()
+		var tween = make_tween()
 		var travel_time = randf_range(0.4, 0.8)
 		
 		tween.tween_method(
@@ -126,7 +126,7 @@ func play_debt_attack(start_node: Node, target_node: Node, damage: int) -> void:
 		var c1 = pathB_c1 if is_mirrored else pathA_c1
 		var c2 = pathB_c2 if is_mirrored else pathA_c2
 		
-		var tween = create_tween()
+		var tween = make_tween()
 		
 		tween.tween_method(
 			func(t: float): 
@@ -142,7 +142,7 @@ func play_debt_attack(start_node: Node, target_node: Node, damage: int) -> void:
 			0.0, 1.0, total_travel_time / 2.0
 		).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT_IN)
 
-		var visual_tween = create_tween().set_parallel(true)
+		var visual_tween = make_tween().set_parallel(true)
 		var random_spin = randf_range(-PI, PI) * 4
 		visual_tween.tween_property(projectile, "rotation", random_spin, total_travel_time)
 		visual_tween.tween_property(projectile, "self_modulate:a", 0.0, total_travel_time).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
@@ -171,13 +171,13 @@ func play_thrift_attack(start_node: Node, target_node: Node, amount: int) -> voi
 		projectile.global_position = start_pos
 
 		projectile.rotation = (end_pos - start_pos).angle() + deg_to_rad(90)
-		var tween = create_tween()
+		var tween = make_tween()
 		
 		var travel_time = randf_range(0.3,0.5) 
 		
 		tween.tween_property(projectile, "global_position", end_pos, travel_time).set_trans(Tween.TRANS_LINEAR)
 	
-		var visual_tween = create_tween()
+		var visual_tween = make_tween()
 		visual_tween.tween_property(projectile, "self_modulate:a", 0.0, travel_time).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
 		
 		tween.tween_callback(projectile.queue_free)
@@ -214,7 +214,7 @@ func play_spend_attack(start_node: Node, target_node: Node, amount: int) -> void
 		
 		var control_point = mid_point + (perpendicular * current_spread)
 		
-		var tween = create_tween()
+		var tween = make_tween()
 		var travel_time = 0.8
 		
 		# The Bezier Curve Movement
@@ -226,7 +226,7 @@ func play_spend_attack(start_node: Node, target_node: Node, amount: int) -> void
 		).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 					
 		# The Spin and Fade Visuals
-		var visual_tween = create_tween().set_parallel(true)
+		var visual_tween = make_tween().set_parallel(true)
 		# A fast spin! (Multiplied by a random direction)
 		var random_spin = (PI * 6) * (1 if randf() > 0.5 else -1) 
 		visual_tween.tween_property(projectile, "rotation", random_spin, travel_time)
@@ -243,6 +243,12 @@ func trigger_attack(start_node: Node, target_node: Node, amount: int, damage_typ
 	elif damage_type == "THRIFT":
 		play_thrift_attack(start_node, target_node, amount)
 	elif damage_type == "SPEND":
+		@warning_ignore("integer_division")
 		play_spend_attack(start_node, target_node, amount / 2)
 	elif amount > 0:
 		play_standard_attack(start_node, target_node, amount)
+		
+func make_tween() -> Tween:
+	var t = create_tween()
+	t.set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
+	return t

@@ -57,7 +57,7 @@ func change_to_void():
 func _pressed() -> void:
 	if disabled: return # Safety check
 	
-	print("PRESSED")
+	
 	if lifted_slot:
 		var slot = lifted_slot
 		lifted_slot = null 

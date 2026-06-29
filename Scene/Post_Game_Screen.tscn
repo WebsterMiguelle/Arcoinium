@@ -11,6 +11,8 @@
 [ext_resource type="FontFile" uid="uid://cmvd7gycedmwg" path="res://Assets/Fonts/GothicByte.ttf" id="8_bnefy"]
 [ext_resource type="Texture2D" uid="uid://dms5d0v8hxacy" path="res://Assets/EndScrollTextSeparator.png" id="10_4dvkt"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="12_4dvkt"]
+[ext_resource type="Texture2D" uid="uid://cna4umj0n4yt" path="res://Assets/Blocking coin deck1.png" id="12_bdxfd"]
+[ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="13_bdxfd"]
 
 [sub_resource type="Gradient" id="Gradient_75buv"]
 offsets = PackedFloat32Array(0, 0.22742476)
@@ -28,7 +30,12 @@ metadata/_snap_enabled = true
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qjnbp"]
 texture = ExtResource("5_jy4eg")
 
+[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_bdxfd"]
+
+[sub_resource type="AudioStream" id="AudioStream_itj15"]
+
 [node name="PostGameScreen" type="Control" unique_id=1373690295]
+z_index = 12
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -187,6 +194,16 @@ text = "YOU WIN"
 horizontal_alignment = 1
 autowrap_mode = 2
 
+[node name="RunTime" type="Label" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=1504923703]
+custom_minimum_size = Vector2(281.49, 26.61)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("7_bnefy")
+theme_override_font_sizes/font_size = 36
+text = "Run Time: 15:02"
+horizontal_alignment = 1
+autowrap_mode = 2
+
 [node name="Mini_message" type="Label" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=448727867]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
@@ -326,6 +343,20 @@ theme_override_fonts/font = ExtResource("12_4dvkt")
 theme_override_font_sizes/font_size = 35
 text = "Total GAIN:"
 
+[node name="HighestDEBT" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=2110450892]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Highest DEBT:"
+
+[node name="TotalDEBT" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=1319611079]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Total DEBT:"
+
 [node name="EnemiesDefeated" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=362417951]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
@@ -385,6 +416,54 @@ theme_override_fonts/font = ExtResource("8_bnefy")
 theme_override_font_sizes/font_size = 60
 text = "SS+"
 horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=789596329]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("7_bnefy")
+theme_override_font_sizes/font_size = 41
+text = "Prosperity Keeper"
+horizontal_alignment = 1
+
+[node name="Greed_Stamp" type="TextureRect" parent="." unique_id=2015352417]
+visible = false
+self_modulate = Color(0.6260074, 0.13028237, 0, 1)
+layout_mode = 0
+offset_left = 475.0
+offset_top = 58.0
+offset_right = 586.1661
+offset_bottom = 168.0
+texture = ExtResource("12_bdxfd")
+
+[node name="Label" type="Label" parent="Greed_Stamp" unique_id=1100373508]
+layout_mode = 0
+offset_left = -6.0
+offset_top = 35.0
+offset_right = 105.963936
+offset_bottom = 108.63394
+rotation = -0.28797933
+theme_override_colors/font_color = Color(0.8302656, 0.57210815, 0, 1)
+theme_override_colors/font_outline_color = Color(0.57192814, 0.26664397, 1.92523e-07, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("7_bnefy")
+theme_override_font_sizes/font_size = 34
+text = "GREED
+MODE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SoundManager" type="Node2D" parent="." unique_id=535855243]
+script = ExtResource("13_bdxfd")
+
+[node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=523042287]
+process_mode = 3
+stream = SubResource("AudioStreamPolyphonic_bdxfd")
+bus = &"SFX"
+
+[node name="BGMPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1856126836]
+process_mode = 3
+stream = SubResource("AudioStream_itj15")
+bus = &"BGM"
 
 [connection signal="pressed" from="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/MainMenu" to="." method="_on_main_menu_pressed"]
 [connection signal="pressed" from="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/TryAgain" to="." method="_on_try_again_pressed"]

@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://bn1a4qhm1md"]
+
+[ext_resource type="Script" uid="uid://b81y1v87st1oc" path="res://Scene/coin_add_particles.gd" id="1_12j8c"]
+
+[sub_resource type="Curve" id="Curve_hijrn"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.9909639, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_xcmvv"]
+curve = SubResource("Curve_hijrn")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hijrn"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(0.005, 14.545, 56.055)
+emission_shape = 1
+emission_sphere_radius = 20.36
+angle_min = -20.69999
+angle_max = 281.7
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_max = 40.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_max = 23.89
+scale_curve = SubResource("CurveTexture_xcmvv")
+color = Color(0.7176471, 0, 0.30980393, 1)
+
+[node name="SpareChangeParticle" type="Node2D" unique_id=257060510]
+
+[node name="SpareChangeParticles" type="GPUParticles2D" parent="." unique_id=881501940]
+position = Vector2(25, 0)
+rotation = 1.2269665
+emitting = false
+amount = 128
+lifetime = 0.64
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_hijrn")
+script = ExtResource("1_12j8c")

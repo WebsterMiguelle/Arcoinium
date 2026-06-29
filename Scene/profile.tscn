@@ -1,10 +1,11 @@
 [gd_scene format=3 uid="uid://dx0fgogfduiq3"]
 
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="1_0pgc4"]
+[ext_resource type="Texture2D" uid="uid://df3wtq16ab5xe" path="res://Assets/tutorialScreenBackground.png" id="1_6q76i"]
 [ext_resource type="Script" uid="uid://bqvc4dk3e6bkl" path="res://Script/profile.gd" id="1_ljn20"]
 [ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="2_bvju4"]
 [ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="2_huopf"]
-[ext_resource type="Texture2D" uid="uid://bmkxblxwtg47d" path="res://Assets/Rug.png" id="2_oqtqq"]
+[ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="2_u43rf"]
 [ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="3_aul7u"]
 [ext_resource type="Texture2D" uid="uid://r5gatuytbe0t" path="res://Assets/taxCollector.png" id="3_oqtqq"]
 [ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="4_6j1ob"]
@@ -14,6 +15,11 @@
 [ext_resource type="Texture2D" uid="uid://csb6cbe5uwx3c" path="res://Assets/thrifter.png" id="10_m7jr5"]
 [ext_resource type="Texture2D" uid="uid://dprlqvclal2j" path="res://Assets/trader.png" id="11_vws13"]
 [ext_resource type="Texture2D" uid="uid://bgomk7rj834wr" path="res://Assets/twilightSage.png" id="12_gakhq"]
+[ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="15_u43rf"]
+[ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="15_v84rt"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="16_u43rf"]
+[ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="16_vws13"]
+[ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="17_gakhq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ljn20"]
 bg_color = Color(0.44453502, 0.20286801, 0.07938949, 1)
@@ -230,13 +236,27 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Profile" type="ColorRect" unique_id=88145106]
+[sub_resource type="Gradient" id="Gradient_75buv"]
+offsets = PackedFloat32Array(0, 0.22742476)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6q76i"]
+gradient = SubResource("Gradient_75buv")
+width = 512
+height = 512
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
+[node name="Profile" type="TextureRect" unique_id=1161497957]
+self_modulate = Color(0.3172787, 0.31727865, 0.31727865, 1)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.1288298, 0.12882978, 0.12882978, 1)
+texture = ExtResource("1_6q76i")
 script = ExtResource("1_ljn20")
 
 [node name="Back" type="Button" parent="." unique_id=466042425]
@@ -265,7 +285,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "Player"
+text = "Coin Caster"
 
 [node name="ShopKeeper" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=1070741687]
 custom_minimum_size = Vector2(200, 50)
@@ -328,32 +348,34 @@ theme_override_font_sizes/font_size = 30
 text = "Twilight Sage"
 
 [node name="Frame" type="TextureRect" parent="." unique_id=776675147]
+self_modulate = Color(0.74205923, 0.4928102, 0.36891922, 1)
 custom_minimum_size = Vector2(800, 550)
 layout_mode = 0
 offset_left = 300.0
 offset_top = 45.0
 offset_right = 1100.0
 offset_bottom = 595.0
-texture = ExtResource("2_oqtqq")
+texture = ExtResource("2_u43rf")
 
 [node name="Player" type="Control" parent="Frame" unique_id=1548490419]
 custom_minimum_size = Vector2(800, 550)
 anchors_preset = 0
+
+[node name="Frame" type="TextureRect" parent="Frame/Player" unique_id=327442127]
+self_modulate = Color(0.30640167, 0.12886369, 0, 1)
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 36.0
+offset_top = 40.0
+offset_right = 326.0
+offset_bottom = 330.0
+texture = ExtResource("2_u43rf")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Player" unique_id=1517844460]
 position = Vector2(180, 183)
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_2pn6l")
 animation = &"Player"
-
-[node name="TextureRect" type="TextureRect" parent="Frame/Player" unique_id=327442127]
-custom_minimum_size = Vector2(250, 250)
-layout_mode = 0
-offset_left = 54.0
-offset_top = 58.0
-offset_right = 304.0
-offset_bottom = 308.0
-texture = ExtResource("2_bvju4")
 
 [node name="Statisctics" type="Label" parent="Frame/Player" unique_id=1149441870]
 custom_minimum_size = Vector2(250, 50)
@@ -362,20 +384,38 @@ offset_left = 415.0
 offset_top = 35.0
 offset_right = 665.0
 offset_bottom = 85.0
-theme_override_font_sizes/font_size = 30
-text = "Information"
+theme_override_colors/font_color = Color(0.06469653, 0.06469653, 0.06469653, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("15_u43rf")
+theme_override_font_sizes/font_size = 50
+text = "Coin Caster"
 horizontal_alignment = 1
 vertical_alignment = 1
-uppercase = true
+
+[node name="Border2" type="TextureRect" parent="Frame/Player" unique_id=1948947148]
+layout_mode = 0
+offset_left = 339.0
+offset_top = 72.0
+offset_right = 738.0
+offset_bottom = 112.0
+texture = ExtResource("16_vws13")
 
 [node name="Information" type="Label" parent="Frame/Player" unique_id=1786900390]
-custom_minimum_size = Vector2(350, 200)
+custom_minimum_size = Vector2(350, 150)
 layout_mode = 0
 offset_left = 362.0
-offset_top = 93.0
+offset_top = 115.0
 offset_right = 712.0
-offset_bottom = 293.0
-text = "Info
+offset_bottom = 316.0
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("17_gakhq")
+theme_override_font_sizes/font_size = 25
+text = "Ability:
+Likes:
+Dislikes:
+Strengths:
+Weaknesses:
 "
 
 [node name="StoryLine" type="RichTextLabel" parent="Frame/Player" unique_id=1125489225]
@@ -385,7 +425,21 @@ offset_left = 70.0
 offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
-text = "		The Story Begins as follows withing the ending."
+theme_override_constants/outline_size = 8
+theme_override_fonts/normal_font = ExtResource("15_v84rt")
+theme_override_fonts/mono_font = ExtResource("16_u43rf")
+theme_override_font_sizes/normal_font_size = 18
+text = "	Everything changed from the moment a deal was struck with The Council and The Corruption. And with tyranny and greed running rampant, disrupting the once peaceful balance of the world, you can’t just let it continue. The life you once knew, gone with just a snap of someone’s hands.
+	No, you will not stand for something so frivolous. And although you are powerless now, your courage will lead your heart where it needs to go. 
+"
+
+[node name="Border" type="TextureRect" parent="Frame/Player" unique_id=1171535495]
+layout_mode = 0
+offset_left = 344.0
+offset_top = 283.0
+offset_right = 743.0
+offset_bottom = 323.0
+texture = ExtResource("16_vws13")
 
 [node name="ShopKeeper" type="Control" parent="Frame" unique_id=594723873]
 visible = false
@@ -437,6 +491,8 @@ offset_left = 70.0
 offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Mage" type="Control" parent="Frame" unique_id=1128176087]
@@ -489,6 +545,8 @@ offset_left = 70.0
 offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Dwarf" type="Control" parent="Frame" unique_id=992429273]
@@ -541,6 +599,8 @@ offset_left = 70.0
 offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Collector" type="Control" parent="Frame" unique_id=182696094]
@@ -593,6 +653,8 @@ offset_left = 70.0
 offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Trader" type="Control" parent="Frame" unique_id=1650933208]
@@ -645,6 +707,8 @@ offset_left = 70.0
 offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Thrifter" type="Control" parent="Frame" unique_id=1862465756]
@@ -697,6 +761,8 @@ offset_left = 70.0
 offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Aristocrat" type="Control" parent="Frame" unique_id=1654492707]
@@ -749,6 +815,8 @@ offset_left = 70.0
 offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Sun_Caster" type="Control" parent="Frame" unique_id=117936494]
@@ -801,6 +869,8 @@ offset_left = 70.0
 offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Moon_Caster" type="Control" parent="Frame" unique_id=172928146]
@@ -853,6 +923,8 @@ offset_left = 70.0
 offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Twilight_Sage" type="Control" parent="Frame" unique_id=1661756386]
@@ -905,7 +977,22 @@ offset_left = 70.0
 offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
+
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=1706942404]
+visible = false
+position = Vector2(577, 318)
+scale = Vector2(17.921875, 10.046875)
+color = Color(1, 0.9019608, 0.5647059, 0.61960787)
+energy = 1.05
+texture = SubResource("GradientTexture2D_6q76i")
+texture_scale = 0.46
+
+[node name="Vignette" type="CanvasModulate" parent="." unique_id=54488391]
+visible = false
+color = Color(0.7411765, 0.67058825, 0.72156864, 1)
 
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="ScrollContainer/HBoxContainer/Player" to="." method="_on_player_pressed"]

@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://xbuhunh3hna4"]
+
+[ext_resource type="Script" uid="uid://dmr0pghyjawy" path="res://Scene/loan_shark_bite.gd" id="1_b6typ"]
+[ext_resource type="Texture2D" uid="uid://celatt7ifxwyg" path="res://Assets/shark bite lower.png" id="2_wvxf5"]
+[ext_resource type="Texture2D" uid="uid://dtc5hrhnkrnkb" path="res://Assets/shark bite upper.png" id="3_l06nc"]
+
+[node name="LoanSharkBite" type="Node2D" unique_id=1815785545]
+self_modulate = Color(1, 1, 1, 0)
+script = ExtResource("1_b6typ")
+
+[node name="Lower Bite" type="TextureRect" parent="." unique_id=381875230]
+self_modulate = Color(1, 1, 1, 0)
+offset_top = 20.0
+offset_right = 64.0
+offset_bottom = 60.0
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("2_wvxf5")
+metadata/_edit_use_anchors_ = true
+
+[node name="Upper Bite" type="TextureRect" parent="." unique_id=1068507449]
+self_modulate = Color(1, 1, 1, 0)
+offset_top = -20.0
+offset_right = 64.0
+offset_bottom = 20.0
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("3_l06nc")
+metadata/_edit_use_anchors_ = true

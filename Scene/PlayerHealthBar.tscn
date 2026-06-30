@@ -364,10 +364,12 @@ process_material = SubResource("ParticleProcessMaterial_6ml2w")
 
 [node name="Void Light" type="PointLight2D" parent="." unique_id=1066045393]
 visible = false
+z_index = -5
 position = Vector2(41.11112, 4.0000024)
 scale = Vector2(1.8055557, 0.84722215)
 color = Color(0.81421643, 0.0005371392, 0.817145, 1)
 energy = 0.5
+range_z_max = 5
 texture = SubResource("GradientTexture2D_penru")
 
 [node name="Void Tendrils" type="Sprite2D" parent="." unique_id=1643760939]

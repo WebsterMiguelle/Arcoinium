@@ -8,6 +8,10 @@ enum CoinStatus{
 	DAZZLED
 }
 
+const LOAN_SHARK_BITE = preload("uid://xbuhunh3hna4")
+@onready var passive_income: AnimatedSprite2D = $"../Player/PassiveIncome"
+@onready var tax_evasion: Marker2D = $"../TaxEvasion"
+const TAX_EVASION_PARTICLE = preload("uid://da2fh3ch8p4y5")
 
 @onready var keeper_shadow: TextureRect = $"../Shopkeeper/Keeper Shadow"
 const SHOPKEEPER_VOICE = preload("uid://c86gce7j7tjey")
@@ -444,6 +448,7 @@ func flip():
 	if spend > 0:
 		spend -= 1
 		take_damage(1)
+		main.total_damage_dealt += 1
 		main.sound_manager.play_sound(DAMAGE_LIGHT)
 		particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 		create_floating_label(1,"DAMAGE","ENEMY")
@@ -479,7 +484,14 @@ func flip():
 	main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,c.global_position)
 	var loan_damage:int = ceil(debt * 0.02)
 	if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
+		var bite = LOAN_SHARK_BITE.instantiate()
+		bite.global_position = main.enemy_portrait.global_position
+		bite.global_position.x += randi_range(-40,40)
+		bite.global_position.y += randi_range(-10,80)
+		add_child(bite)
+		
 		take_damage(loan_damage)
+		main.total_damage_dealt += loan_damage
 		create_floating_label(loan_damage,"DAMAGE","ENEMY")
 		main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
 		main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
@@ -841,7 +853,7 @@ func start_enemy_turn():
 	
 	if settle > 0 and debt == 0:
 		particle_manager.trigger_attack(main.coin_deck, main.player_portrait, turn_damage, "")
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0,true).timeout
 		main.player.take_damage(settle)
 		main.sound_manager.play_sound(DAMAGE_HEAVY)
 		main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.player_portrait.global_position)
@@ -859,17 +871,18 @@ func start_enemy_turn():
 	if main.player.coin == 0:
 		return
 	if coin > 0:
-		await get_tree().create_timer(1.0).timeout
-		while current_played_coin != max_playable_coins:
+		await get_tree().create_timer(1.0,true).timeout
+		while current_played_coin != max_playable_coins and !main.is_game_over:
 			if coin > 0:
 				flip()
 				enemy_coin_calculation()
 			else:
 				main.sound_manager.play_sound(DEATH)
 				break
-			await get_tree().create_timer(flip_speed).timeout
-		await get_tree().create_timer(1.0).timeout
-		await end_enemy_turn()
+			await get_tree().create_timer(flip_speed,true).timeout
+		await get_tree().create_timer(1.0, true).timeout
+		if !main.is_game_over:
+			await end_enemy_turn()
 
 
 func end_enemy_turn():
@@ -903,16 +916,23 @@ func end_enemy_turn():
 			enemy_coin_calculation()
 			var loan_damage:int = ceil(debt * 0.02)
 			if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
+				var bite = LOAN_SHARK_BITE.instantiate()
+				bite.global_position = main.enemy_portrait.global_position
+				bite.global_position.x += randi_range(-10,10)
+				bite.global_position.y += randi_range(-10,10)
+				add_child(bite)
 				take_damage(loan_damage)
+				main.total_damage_dealt += loan_damage
 				create_floating_label(loan_damage,"DAMAGE","ENEMY")
 				main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
 				main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 				main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 				main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
-			await get_tree().create_timer(0.1).timeout
+			await get_tree().create_timer(0.1,true).timeout
 	if has_dazzle:
-		await get_tree().create_timer(0.6).timeout
-
+		await get_tree().create_timer(0.6, true).timeout
+	if coin == 0:
+		return
 	
 	if has_radiant:
 		coins = get_tree().get_nodes_in_group("enemy_coins")
@@ -922,7 +942,14 @@ func end_enemy_turn():
 				main.sound_manager.play_sound(COIN_FLIP)
 				var loan_damage:int = ceil(debt * 0.02)
 				if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
+					var bite = LOAN_SHARK_BITE.instantiate()
+					bite.global_position = main.enemy_portrait.global_position
+					bite.global_position.x += randi_range(-10,10)
+					bite.global_position.y += randi_range(-10,10)
+					add_child(bite)
+					
 					take_damage(loan_damage)
+					main.total_damage_dealt += loan_damage
 					create_floating_label(loan_damage,"DAMAGE","ENEMY")
 					main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
 					main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
@@ -932,9 +959,10 @@ func end_enemy_turn():
 				c.initial_status = c.status
 				c.refresh_sprite()
 				enemy_coin_calculation()
-				await get_tree().create_timer(0.1).timeout
-		await get_tree().create_timer(0.6).timeout
-		
+				await get_tree().create_timer(0.1, true).timeout
+		await get_tree().create_timer(0.6, true).timeout
+	if coin == 0:
+		return
 	
 	# ==========================================
 	# PHASE 1: MATH & LOGIC (Instantly calculate everything)
@@ -975,7 +1003,8 @@ func end_enemy_turn():
 	# ==========================================
 	# PHASE 2: VISUALS & ANIMATIONS (Play all the eye-candy!)
 	# ==========================================
-	
+	if main.is_game_over:
+		return
 	if current_played_coin > 0:
 		main.sound_manager.play_sound(COIN_ENDTURN)
 
@@ -1016,7 +1045,7 @@ func end_enemy_turn():
 	# -- The Pause --
 	# Wait for the attack runes to travel across the screen
 	if turn_damage > 0 or turn_debt > 0 or turn_thrift > 0 or turn_spend > 0 or turn_lock or turn_slow or turn_tally > 0 or turn_starstruck:
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0, true).timeout
 
 	# 1. Player Passive Income Check
 	var converted_income = 0
@@ -1029,6 +1058,11 @@ func end_enemy_turn():
 				for i in (converted_income):
 					main.player.coin += 1
 					main.player.reserve(true,false,true)
+				main.particle_manager.spawn_particle(GAIN_EFFECT_PARTICLE,passive_income.global_position)
+				passive_income.visible = true
+				var passive_tween = create_tween()
+				passive_income.self_modulate = Color("#ffffff")
+				passive_tween.tween_property(passive_income,"self_modulate",Color("#ffffff00"),1.0)
 		main.player.take_damage(turn_damage)
 	
 	# -- Final Hit Impacts & Floating Labels (The runes have arrived!) --
@@ -1037,7 +1071,7 @@ func end_enemy_turn():
 		if main.player.has_merchant_scroll: 
 			main.shopkeeper.has_scroll_turn = true
 			main.shopkeeper.coin = main.shopkeeper.max_playable_coins
-			main.shopkeeper.status.text = "CUSTOMER HURT. READY TO FLIP."
+			main.shopkeeper.status.text = "CASTER HURT. READY TO FLIP."
 			var keeper_tween = create_tween()
 			keeper_tween.tween_property(keeper_shadow,"self_modulate", Color("85007396"),0.2)
 			
@@ -1109,12 +1143,18 @@ func end_enemy_turn():
 	if turn_debt != 0:
 		if main.player.has_reimbursement:
 			turn_debt /= 2
+			main.particle_manager.spawn_particle(TAX_EVASION_PARTICLE,tax_evasion.global_position)
+			main.player.trigger_temp_passive("reimbursement","TAX EVASION")
 			if greed and (type == Enemy.COLLECTOR):
 				create_floating_label("DEBT", "IMMUNE", "ENEMY")
 			else:
+				main.total_debt_applied += turn_debt
+				if turn_debt > main.highest_debt_applied:
+					main.highest_debt_applied = turn_debt
 				debt += turn_debt
 				create_floating_label(turn_debt, "DEBT", "ENEMY")
 			take_damage(turn_debt)
+			main.total_damage_dealt += turn_debt
 			main.sound_manager.play_sound(DAMAGE_MODERATE)
 			main.sound_manager.play_sound(DEBTED_ATTACK)
 			create_floating_label(turn_debt, "DAMAGE", "ENEMY")
@@ -1158,12 +1198,12 @@ func end_enemy_turn():
 		create_floating_label(debt, "DAMAGE", "ENEMY")
 		
 	if main.player.starstruck and (main.player.has_merchant_scroll or main.player.has_active_income):
-		await get_tree().create_timer(1.0)
+		await get_tree().create_timer(1.0, true).timeout
 		main.sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
-		main.shopkeeper.status.text = "CUSTOMER. FOCUS."
+		main.shopkeeper.status.text = "COIN CASTER. FOCUS."
 		var keeper_tween = create_tween()
 		keeper_tween.tween_property(keeper_shadow,"self_modulate", Color("85007396"),0.2)
-		await get_tree().create_timer(1.0)
+		await get_tree().create_timer(1.0, true).timeout
 		main.player.starstruck = false
 		var dazzled_tween = create_tween()
 		dazzled_tween.parallel().tween_property(dazzled_effect,"self_modulate", Color("#0059a800"),0.6)
@@ -1172,6 +1212,7 @@ func end_enemy_turn():
 		await dazzled_tween.finished
 		dazzled_effect.visible = false
 		dazzled_light.visible = false
+	
 
 
 

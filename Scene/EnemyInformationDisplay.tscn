@@ -6,18 +6,18 @@
 [ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="4_3u16l"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="4_d80n4"]
 [ext_resource type="Texture2D" uid="uid://r5gatuytbe0t" path="res://Assets/taxCollector.png" id="5_wsnhc"]
-[ext_resource type="Texture2D" uid="uid://bf3hv0qyt1kio" path="res://Assets/8-bitrunes.png" id="6_6atwr"]
 [ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="6_ce71m"]
 [ext_resource type="Texture2D" uid="uid://dfw0gb82xbava" path="res://Assets/portraitBackground.png" id="7_48a0o"]
 [ext_resource type="Texture2D" uid="uid://cjjj3ulqgawva" path="res://Assets/apprenticeMage.png" id="8_hqtl8"]
 [ext_resource type="Texture2D" uid="uid://bikjuk8fgo6p2" path="res://Assets/moonCaster-Sheet.png" id="9_4c3qr"]
 [ext_resource type="Texture2D" uid="uid://di37676qo0yu4" path="res://Assets/sunCaster-Recovered-Sheet.png" id="10_gf2hv"]
-[ext_resource type="Script" uid="uid://bdpljan2t1woi" path="res://Scene/Shopkeeper.gd" id="38_ekncj"]
 [ext_resource type="Texture2D" uid="uid://csb6cbe5uwx3c" path="res://Assets/thrifter.png" id="11_aoc38"]
 [ext_resource type="Texture2D" uid="uid://dprlqvclal2j" path="res://Assets/trader.png" id="12_w7yfx"]
 [ext_resource type="Texture2D" uid="uid://bgomk7rj834wr" path="res://Assets/twilightSage.png" id="13_ce71m"]
 [ext_resource type="Texture2D" uid="uid://c5kws41vksxsb" path="res://Assets/twilightSageDawn.png" id="13_ydu7v"]
+[ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="14_48a0o"]
 [ext_resource type="Texture2D" uid="uid://odbplao5e2m8" path="res://Assets/twilightSageDusk.png" id="14_vo5uk"]
+[ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="17_ce71m"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5krdm"]
 texture = ExtResource("2_cobfp")
@@ -56,6 +56,10 @@ region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_48a0o"]
 atlas = ExtResource("13_ce71m")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hqtl8"]
+atlas = ExtResource("14_48a0o")
 region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xw8bv"]
@@ -150,6 +154,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"8",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hqtl8")
+}],
+"loop": true,
+"name": &"9",
 "speed": 5.0
 }, {
 "frames": [{
@@ -253,7 +265,7 @@ vertical_alignment = 1
 position = Vector2(58.74578, 57.16304)
 scale = Vector2(1.5518564, 1.5518577)
 sprite_frames = SubResource("SpriteFrames_wsnhc")
-animation = &"0"
+animation = &"9"
 
 [node name="EnemyStats" type="Label" parent="ProfilePanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1862259072]
 layout_mode = 2
@@ -273,7 +285,7 @@ vertical_alignment = 1
 [node name="Border" type="TextureRect" parent="ProfilePanel/MarginContainer/VBoxContainer" unique_id=822315800]
 self_modulate = Color(0.84313726, 0.5137255, 0, 0.54901963)
 layout_mode = 2
-texture = ExtResource("6_6atwr")
+texture = ExtResource("17_ce71m")
 
 [node name="Story" type="Label" parent="ProfilePanel/MarginContainer/VBoxContainer" unique_id=2064010057]
 layout_mode = 2
@@ -307,7 +319,7 @@ clip_text = true
 [node name="Border2" type="TextureRect" parent="ProfilePanel/MarginContainer/VBoxContainer" unique_id=277860571]
 self_modulate = Color(0.84313726, 0.5137255, 0, 0.54901963)
 layout_mode = 2
-texture = ExtResource("6_6atwr")
+texture = ExtResource("17_ce71m")
 
 [node name="StatusEffectsPanel" type="PanelContainer" parent="." unique_id=710897952]
 layout_mode = 2

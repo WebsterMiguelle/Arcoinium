@@ -6,9 +6,21 @@ enum Turn {
 }
 
 enum Enemy{
+	A,
+	B,
+	C,
+	D,
+	E,
+	F,
+	G,
+	H,
+	I,
 	SHOP_KEEPER
 }
 
+const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
+
+@onready var flip_blocker: TextureRect = $FlipBlocker
 @onready var player = $Player
 @onready var enemy = $Enemy
 @onready var main: TextureRect = $"."
@@ -19,16 +31,14 @@ var moon_caster_color = '#1a54fb'
 var dawn_stance = '#ffcda0'
 var dusk_stance = '#8dacf7'
 @onready var battle_particles: GPUParticles2D = $"ParticleManager/Battle Particles"
-@onready var dusk_particles: GPUParticles2D = $"ParticleManager/Dusk Particles"
-@onready var dawn_particles: GPUParticles2D = $"ParticleManager/Dawn Particles"
 @onready var reserve_button: Button = $"Battle UI/Reserve Button"
 @onready var player_reserve: Label = $"Battle UI/Reserve Button/Player Reserve"
 @onready var player_reserve_rug: TextureRect = $"Player/Player Reserve Rug"
 @onready var vignette: CanvasModulate = $"../Vignette"
 @onready var vignetter: PointLight2D = $"../Vignetter"
-@onready var turn_spell_light: PointLight2D = $"Battle UI/Turn Calculation Box/Turn Spell Light"
-
-
+const ENEMY_INFORMATION_DISPLAY = preload("uid://1lqiy1lfcalo")
+@onready var enemy_info: Button = $"Enemy Info"
+var enemy_info_menu = null
 var second_enemy
 var third_enemy
 
@@ -81,8 +91,18 @@ const TWILIGHT_ZONE___BATTLE_THEME_3 = preload("uid://bivy2e314q2fa")
 @onready var re_flip_button: Button = $"Battle UI/Re-Flip"
 @onready var reflip_sprite: AnimatedSprite2D = $"Battle UI/Re-Flip/Reflip_Sprite"
 @onready var reflip_label: Label = $"Battle UI/Re-Flip/Reflip_Label"
-@onready var turn_calculation: Label = $"Battle UI/Turn Calculation Box/Turn Calculation"
 @onready var turn_calculation_box: TextureRect = $"Battle UI/Turn Calculation Box"
+@onready var turn_calculation: Label = $"Battle UI/Turn Calculation Box/Turn Calculation"
+@onready var turn_spell_light: PointLight2D = $"Battle UI/Turn Calculation Box/Turn Spell Light"
+
+@onready var turn_spend_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Spend Particle"
+@onready var turn_gain_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Gain Particle"
+@onready var turn_damage_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Damage Particle"
+@onready var turn_debt_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Debt Particle"
+@onready var turn_tally_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Tally Particle"
+@onready var turn_thrift_particle: GPUParticles2D = $"Battle UI/Turn Calculation Box/Turn Thrift Particle"
+
+
 
 #USER INTERFACE
 const TUTORIAL = preload("uid://cq10yywodq6bn")
@@ -92,6 +112,7 @@ var has_encountered_spells = false
 var tutorial_flip_count = 0 
 var tutorial_overflow_count = 0
 var tutorial_reserve_count: int = 0
+var has_encountered_enemy_info = false
 
 var has_encountered_reflip = false
 var has_encountered_endturn = false
@@ -101,11 +122,10 @@ var has_encountered_coin_health = false
 
 var adv_tutorial_started  = false   
 var adv_debt_done  = false   
-var adv_coin_tiers_done  = false   
 var adv_coin_status_done  = false   
+var adv_passive_done = false
 var adv_flip_count  = 0       
 var adv_tier_flip_count = 0  
-var adv_coin_status_radiant_seen = false
 
 
 const DIALOGUE_BOX = preload("uid://dv278qg6j2epd")
@@ -113,6 +133,7 @@ var dialogue: Node2D = null
 @onready var dialogue_area: Marker2D = $"Dialogue Area" 
 
 signal player_info_opened
+signal enemy_info_opened
 var has_encountered_damage_gain = false
 var has_encountered_debt = false
 var has_encountered_spend = false
@@ -129,6 +150,8 @@ var has_encountered_thrift = false
 var slow_color = "#43a563"
 const PLAYER_INFORMATION_DISPLAY = preload("uid://c61s4yrsvak0l")
 var player_info_menu: Node = null
+@onready var player_info: Button = $"Player/Player Info"
+
 
 
 @onready var player_lock_particles: GPUParticles2D = $"Player/Player Lock Particles"
@@ -156,8 +179,9 @@ var player_info_menu: Node = null
 var enemy_notif_tween: Tween = null
 var enemy_notif_base_pos: Vector2
 
-@onready var turn_ui: ColorRect = $"Battle UI/Turn UI"
-@onready var turn_ui_label: Label = $"Battle UI/Turn UI/Turn UI Label"
+@onready var turn_ui: TextureRect = $"Turn UI"
+@onready var turn_portrait: AnimatedSprite2D = $"Turn UI/PortraitBG/Turn Portrait"
+@onready var turn_ui_label: Label = $"Turn UI/Turn UI Label"
 
 @onready var passive_manager = $PassiveManager
 @onready var passive_label = $"Battle UI/PassiveContainer"
@@ -256,16 +280,40 @@ func _show_tutorial(title: String, text: String, pos: Vector2, y_offset: float,
  
 	current_tutorial = create_tutorial(title, text, pos, y_offset)
 
-func _adv_unlock_all() -> void:
-	flip_button.disabled = false
-	flip_button.visible = true
-	re_flip_button.disabled = false
-	re_flip_button.visible = true
-	endTurn_button.disabled = false
+func _unlock_all() -> void:
+	player.toggle_button(flip_button,false)
+	player.toggle_button(re_flip_button,false)
+	player.toggle_button(endTurn_button,false)
+	player.toggle_button(reserve_button,false)
+	player_info.visible = true
+	enemy_info.visible = true
 	endTurn_button.visible = true
+	flip_button.disabled = false
+	re_flip_button.disabled = false
 	reserve_button.disabled = false
-	reserve_button.visible = true
-
+	endTurn_button.disabled = false
+	endTurn_button.mouse_default_cursor_shape = 2
+	flip_button.mouse_default_cursor_shape = 2
+	reserve_button.mouse_default_cursor_shape = 2
+	re_flip_button.mouse_default_cursor_shape = 2
+	
+func _lock_all() -> void:
+	player.toggle_button(flip_button,true)
+	player.toggle_button(re_flip_button,true)
+	player.toggle_button(endTurn_button,true)
+	player.toggle_button(reserve_button,true)
+	player_info.visible = false
+	enemy_info.visible = false
+	endTurn_button.visible = false
+	flip_button.disabled = true
+	re_flip_button.disabled = true
+	reserve_button.disabled = true
+	endTurn_button.disabled = false
+	endTurn_button.mouse_default_cursor_shape = 8
+	flip_button.mouse_default_cursor_shape = 8
+	reserve_button.mouse_default_cursor_shape = 8
+	re_flip_button.mouse_default_cursor_shape = 8
+	
 func _adv_lock_except_flip() -> void:
 	flip_button.disabled = false
 	flip_button.visible  = true
@@ -289,47 +337,21 @@ func _tutorial_force_shine_coin() -> void:
 		coin.refresh_sprite()
 		coin.pulse_glow()
 
-
-	
-func _adv_start_shine_tutorial() -> void:
-	_tutorial_force_shine_coin()
-	await get_tree().create_timer(0.8).timeout
-	_say("adv_coin_status_intro")
-	_show_tutorial("Coin Status Effects","See those glowing coins?\nThat's SHINED — a Coin Status Effect.\nShined Heads coins boost Damage.\nShined Tails boost Gain.\nInspect your coins to learn more!",coin_deck.global_position, -120,[flip_button, re_flip_button, endTurn_button, reserve_button])
-	await _wait_for_spell_inspection()
-	while player_info_menu != null and is_instance_valid(player_info_menu):
-		await get_tree().process_frame
-	_close_current_tutorial()
-	adv_coin_status_radiant_seen = true
-	
-	await get_tree().create_timer(0.5).timeout
-	_adv_start_coin_tiers_tutorial()
-	
-	
-func _adv_start_coin_tiers_tutorial() -> void:
-	adv_tier_flip_count = 0
-	_say("adv_coin_tiers_intro")
-	_show_tutorial("Coin Tiers","Coins come in three tiers:\nCopper, Silver, and Gold.\nSilver and Gold coins flip with\nhigher Heads odds — keep flipping!",player_health_bar.global_position,-120,[flip_button, re_flip_button, endTurn_button])
-	
-	await current_tutorial.closed
-	
-	adv_coin_tiers_done = true
-	_say("adv_all_done")
-	_adv_unlock_all()
-	start_player_turn()
-	
 func switch_vignette_color(to,duration):
-	var tween = create_tween()
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.tween_property(vignette,"color",Color.from_string(to,Color.WHITE),duration)
 
 func switch_vignetter_color(to,duration):
-	var tween = create_tween()
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.tween_property(vignetter,"color",Color.from_string(to,Color.WHITE),duration)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	print("Light in group: ", get_tree().get_first_node_in_group("point_light"))
+	print("Particles in group: ", get_tree().get_first_node_in_group("particle_manager"))
 	advance_mode = SceneTransition.tutorial_advance_mode
-	await get_tree().create_timer(0.4).timeout
+	print(advance_mode)
+	await get_tree().create_timer(0.4, true).timeout
 	await _play_fake_coin_intro()
 	turn_calculation_box.visible = false
 	turn_ui.visible = false
@@ -361,19 +383,30 @@ func _ready():
 func on_enemy_radiant_fired() -> void:
 	pass
 	
-func _input(event):
-	if event.is_action_pressed("ui_cancel"): # ESC key
-		toggle_pause()
-		
-func toggle_pause():
-	get_tree().paused = !get_tree().paused
-	pause_menu.visible = get_tree().paused
+func _unhandled_input(event: InputEvent) -> void:
+	if !event.is_action_pressed("ui_cancel"): # ESC key
+		return
+	#if current_turn != Turn.PLAYER:
+	#	return
+	toggle_pause()
+	get_viewport().set_input_as_handled()
 	
-	battle_particles.emitting = !get_tree().paused
-	dusk_particles.emitting = !get_tree().paused
-	dawn_particles.emitting = !get_tree().paused
+func toggle_pause():
+	if PauseManager.is_paused:
+		PauseManager.resume()
+		pause_menu.visible = true
+		sound_manager.pause_sfx()
+		turn_spell_light.visible = false
+	else:
+		PauseManager.pause()
+		pause_menu.visible = false
+		sound_manager.resume_sfx()
+		turn_spell_light.visible = turn_calculation_box.visible
 	
 func battle_start():
+	flip_blocker.visible = false
+	enemy_info.visible = false
+	player_info.visible = false
 	game_over_triggered = false
 	re_flip_button.visible = has_encountered_flip
 	endTurn_button.visible = has_encountered_reflip
@@ -382,8 +415,6 @@ func battle_start():
 	switch_vignetter_color(vignetter_default,0.1)
 	switch_vignette_color(vignette_default,0.1)
 	battle_particles.emitting = true
-	dawn_particles.emitting = false
-	dusk_particles.emitting = false
 	
 	turn_ui.visible = false
 	var coins = get_tree().get_nodes_in_group("enemy coins")
@@ -442,6 +473,12 @@ func battle_start():
 	#Battle Start Passives
 	player.player_turn_count = 0
 	current_turn = Turn.PLAYER
+	if advance_mode: player.has_advanced_planning = true
+	
+	endTurn_button.mouse_default_cursor_shape = 8
+	flip_button.mouse_default_cursor_shape = 2
+	reserve_button.mouse_default_cursor_shape = 8
+	re_flip_button.mouse_default_cursor_shape = 8
 	start_player_turn()
 
 func _process(delta: float) -> void:
@@ -458,21 +495,29 @@ func show_turn_ui(text):
 	turn_ui_label.text = text
 	turn_ui.modulate = Color("ffffff00")
 	turn_ui.global_position = get_viewport_rect().size / 2
-	turn_ui.global_position.x -= 600
+	turn_ui.global_position.x -= 350
+	turn_ui.global_position.y += 30
 	
 	var target_position = turn_ui.global_position.y - 40
 	
-	var tween = create_tween()
+	if current_turn == Turn.ENEMY:
+		turn_portrait.play("SHOPKEEPER")
+	else:
+		turn_portrait.play("COIN_CASTER")
+
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.parallel().tween_property(turn_ui,"modulate",Color("ffffff"),0.2)
 	tween.parallel().tween_property(turn_ui, "position:y",target_position,0.2)
-	await get_tree().create_timer(1.0).timeout
+	await get_tree().create_timer(1.0, true).timeout
+	print("=============================UI DONE")
 	turn_ui_label.text = text
-	tween = create_tween()
+	tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.parallel().tween_property(turn_ui,"modulate",Color("ffffff00"),0.2)
 	tween.parallel().tween_property(turn_ui, "position:y",target_position - 30,0.2)
 	if current_turn == Turn.PLAYER:
 		endTurn_button.disabled = false
-	await get_tree().create_timer(1.0).timeout
+	await get_tree().create_timer(1.0, true).timeout
+	print("=============================UI DONE")
 	
 func _on_end_run_pressed():
 	print("Main Script: Received End Run")
@@ -486,51 +531,121 @@ func start_player_turn():
 	if player.coin <= 0:
 		await check_defeat()
 		return
-		
-	show_turn_ui("PLAYER TURN")
-	current_turn = Turn.PLAYER
+	if player.player_turn_count != 1:
+		current_turn = Turn.PLAYER
+		show_turn_ui("PLAYER TURN")
+	elif advance_mode:
+		current_turn = Turn.PLAYER
+		show_turn_ui("PLAYER TURN")
 	sound_manager.play_sound(TURN_PLAYER)
 	await player.start_turn()
 	
 	if advance_mode:
+		enemy_info.visible = true
+		player_info.visible = true
+		flip_blocker.visible = true
 		if !adv_tutorial_started:
-			adv_tutorial_started = true
-			_say("adv_welcome")
-			_adv_lock_except_flip()
-			endTurn_button.visible  = true
-			endTurn_button.disabled = false
+			_lock_all()
+			player_info.visible = true
+			endTurn_button.visible = false
+			flip_button.disabled = true
+			_say("adv_welcome") 
+			await get_tree().create_timer(3.0, true).timeout 
+			_show_tutorial("Caster Passives","Throughout a run, you may encounter Passives after each battle.\nCombine different passives to become stronger!",player_debt.global_position,-120,[flip_button, endTurn_button])
+			await _wait_for_spell_inspection()
+			while player_info_menu != null and is_instance_valid(player_info_menu):
+				await get_tree().process_frame
+			await current_tutorial == null
+			_show_tutorial("Coin Status","A Coin can have its own Status Effect.\nFlip 4 Coins, and Hover on statused coins \nto learn more.",player_debt.global_position,-120,[flip_button, endTurn_button])
 			return
+
 		if !adv_debt_done and player.debt > 0:
-			adv_debt_done = true   
-			await get_tree().create_timer(0.8).timeout  
+			_lock_all()
+			player_info.visible = true
+			await get_tree().create_timer(0.8, true).timeout  
+			flip_button.disabled = true
 			_say("adv_debt_intro")
-			_show_tutorial("Status Effects: Debt","See how your Gain was reduced?\nThat's Debt at work — it cancels out\nyour Coin Gain at the start of your turn.\nThe higher your Debt, the less you gain!",player_debt.global_position,-120,[flip_button, endTurn_button])
-			await current_tutorial.closed
-			_adv_start_shine_tutorial()
+			_show_tutorial("Entity Status","Some spells can inflict an Entity Status.\nYou currently have DEBT.\nRead Status Effects on your portrait.",player_debt.global_position,-120,[flip_button, endTurn_button])
+			await _wait_for_spell_inspection()
+			while player_info_menu != null and is_instance_valid(player_info_menu):
+				await get_tree().process_frame
+			await current_tutorial == null
+			_close_current_tutorial()
+			_say("adv_gain_debt")
 			return
+		_unlock_all()
+		flip_blocker.visible = false
 		return
 	
 	if !has_encountered_flip:
+		endTurn_button.mouse_default_cursor_shape = 8
+		reserve_button.mouse_default_cursor_shape = 8
+		re_flip_button.mouse_default_cursor_shape = 8
 		_say("sk_first_flip")
-		_show_tutorial("Coin Flipping","Press your Coin Bar to Flip a Coin.",player_health_bar.global_position,-100,[flip_button] )
+		_show_tutorial("Coin Flipping","Press your Coin Bar to Flip 4 Coins.",player_health_bar.global_position,-100,[flip_button] )
 		return
 			
 	if !has_encountered_reflip:
+		endTurn_button.mouse_default_cursor_shape = 8
+		reserve_button.mouse_default_cursor_shape = 8
+		re_flip_button.mouse_default_cursor_shape = 2
+		flip_button.mouse_default_cursor_shape = 8
 		_say("sk_first_reflip")
 		_show_tutorial("Re-Flip", "If there are coins on the Arcane Circle,\npress Re-Flip to flip all coins again.",re_flip_button.global_position,-100,[re_flip_button])
+		player.toggle_button(re_flip_button,false)
+		player.toggle_button(endTurn_button,false)
 		return
-		
+	
+	if !has_encountered_enemy_info:
+		endTurn_button.mouse_default_cursor_shape = 8
+		reserve_button.mouse_default_cursor_shape = 8
+		re_flip_button.mouse_default_cursor_shape = 8
+		flip_button.mouse_default_cursor_shape = 8
+		player_info.visible = false
+		has_encountered_enemy_info = true
+		_say("sk_enemy_info")
+		_show_tutorial("Enemy Profile", "Study the enemy's information by\npressing their portrait.",re_flip_button.global_position,-100,[re_flip_button])
+		player.toggle_button(re_flip_button,true)
+		player.toggle_button(flip_button,true)
+		player.toggle_button(endTurn_button,true)
+		player.toggle_button(reserve_button,true)
+		endTurn_button.visible = false
+		enemy_info.visible = true
+		await _wait_for_enemy_inspection()
+		while enemy_info_menu != null and is_instance_valid(enemy_info_menu):
+			await get_tree().process_frame
+		_close_current_tutorial()
+		_say("sk_player_mustdefeat")
+		player.toggle_button(re_flip_button,false)
+		player.toggle_button(flip_button,false)
+		player.toggle_button(endTurn_button,false)
+		player.toggle_button(reserve_button,false)
+		player_info.visible = true
+		endTurn_button.visible = true
+		endTurn_button.mouse_default_cursor_shape = 2
+		reserve_button.mouse_default_cursor_shape = 2
+		re_flip_button.mouse_default_cursor_shape = 2
+		flip_button.mouse_default_cursor_shape = 2
+		return
+	
+	_unlock_all()
+	
 			
 func start_enemy_turn():
 	
 	if enemy.coin <= 0:
 		await check_defeat()
 		return
-		
-	show_turn_ui("ENEMY'S TURN")
-	_say("sk_player_losing")
-	coin_deck.reset_sigils()
+	
 	current_turn = Turn.ENEMY
+	show_turn_ui("ENEMY'S TURN")
+	if randi_range(1,3) == 1:
+		_say("sk_player_losing")
+	elif randi_range(1,2) == 1:
+		_say("sk_player_winning")
+	else:
+		_say("sk_player_mustdefeat")
+	coin_deck.reset_sigils()
 	sound_manager.play_sound(TURN_ENEMY)
 	await enemy.start_enemy_turn()
 	await get_tree().process_frame
@@ -541,31 +656,47 @@ func start_enemy_turn():
 	var defeat = await check_defeat()
 	if not defeat:
 		_close_current_tutorial()
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0, true).timeout
 		start_player_turn()
 		
 func _show_coin_spells_tutorial() -> void:
-	_show_tutorial("Coin Spells","Some coins have Spells that activate when\nflipped Heads or Tails. Click your Portrait\nto view your Coin Spells.",player_portrait.global_position,-120)
+	player_info.visible = true
+	_show_tutorial("Coin Spells","Some coins have Spells that activate when\nflipped SUN or MOON. Click your Portrait\nto view your Coin Spells.",player_portrait.global_position,-120)
 	await _wait_for_spell_inspection()
 	while player_info_menu != null and is_instance_valid(player_info_menu):
 		await get_tree().process_frame
 	_close_current_tutorial()
 	start_player_turn()
 
+	
 func _on_endturn_pressed():
+	player_info.visible = false
+	enemy_info.visible = false
 	if enemy.coin <= 0 or player.coin <= 0:
 		return
-		
+	
 	if advance_mode:
+		if !adv_tutorial_started or !adv_coin_status_done:
+			player_info.visible = true
+			enemy_info.visible = true
+			return
+		if player.player_turn_count == 2 and !adv_debt_done:
+			player_info.visible = true
+			enemy_info.visible = true
+			return
 		_close_current_tutorial()
 		_dismiss_dialogue()
 		flip_button.visible  = true
 		flip_button.disabled = true
+		endTurn_button.mouse_default_cursor_shape = 8
+		reserve_button.mouse_default_cursor_shape = 8
+		re_flip_button.mouse_default_cursor_shape = 8
+		flip_button.mouse_default_cursor_shape = 8
 		await player.end_turn()
 		turn_calculation_box.exit()
 		var defeat = await check_defeat()
 		if not defeat:
-			await get_tree().create_timer(1.0).timeout
+			await get_tree().create_timer(1.0, true).timeout
 			start_enemy_turn()
 		return
 		
@@ -576,15 +707,21 @@ func _on_endturn_pressed():
 	_dismiss_dialogue()
 	flip_button.visible  = true
 	flip_button.disabled = true
-
+	endTurn_button.mouse_default_cursor_shape = 8
+	reserve_button.mouse_default_cursor_shape = 8
+	re_flip_button.mouse_default_cursor_shape = 8
+	flip_button.mouse_default_cursor_shape = 8
 	await player.end_turn()
 	turn_calculation_box.exit()
 		
 	if !has_encountered_reserve:
+		reserve_button.mouse_default_cursor_shape = 2
 		tutorial_reserve_count = 0
 		reserve_button.visible  = true
 		_say("sk_reserve")
-		_show_tutorial("Reserve","Press the Reserve Button to save one coin\nfor later. Reserved coins return at the\nend of battle as bonus coins!",Vector2(reserve_button.global_position.x - 200, reserve_button.global_position.y),-250,[reserve_button,flip_button])
+		_show_tutorial("Reserve","Press the Reserve Button to save coins\nfor later. Reserved coins will be placed on the \nArcane Circle next turn!",Vector2(reserve_button.global_position.x - 200, reserve_button.global_position.y),-250,[reserve_button,flip_button])
+		player.toggle_button(flip_button,true)
+		player.toggle_button(reserve_button,false)
 		await current_tutorial.closed
 		return
 		
@@ -600,7 +737,7 @@ func _on_endturn_pressed():
 	
 	var defeat = await check_defeat()
 	if not defeat:
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0, true).timeout
 		start_enemy_turn()
 			
 
@@ -608,22 +745,38 @@ func _wait_for_spell_inspection() -> void:
 	await player_info_opened
 	_close_current_tutorial()
 
-
+func _wait_for_enemy_inspection() -> void:
+	await enemy_info_opened
+	_close_current_tutorial()
+	
 func _on_flip_pressed():
 	if current_turn != Turn.PLAYER or game_over_triggered:
 		return
-		
+	if flip_button.disabled: 
+		return
+	
 	total_flips += 1
 	player.flip()
 	await get_tree().process_frame
 	await check_defeat()
 	
 	if advance_mode:
+		if !adv_coin_status_done and total_flips >= 4:
+			flip_button.mouse_default_cursor_shape = 8
+			player.toggle_button(flip_button,true)
+			flip_button.disabled = true
+			adv_coin_status_done = true
+			endTurn_button.mouse_default_cursor_shape = 2
+			player.toggle_button(endTurn_button,false)
+			endTurn_button.visible = true
+			_say("adv_coin_status_intro")
 		return
 		
 	if !has_encountered_flip:
 		tutorial_flip_count += 1
 		if tutorial_flip_count >= 4:
+			flip_button.mouse_default_cursor_shape = 8
+			player.toggle_button(flip_button,true)
 			has_encountered_flip = true
 			_close_current_tutorial()
 			re_flip_button.visible  = true
@@ -635,20 +788,20 @@ func _on_flip_pressed():
 	if has_encountered_reserve and not has_encountered_overflow:
 		tutorial_overflow_count += 1
 		var reserved = get_tree().get_nodes_in_group("reserved coins")
-		
+		player.toggle_button(endTurn_button,true)
 		if reserved.size() > 0 and tutorial_overflow_count >= 17:
+			endTurn_button.mouse_default_cursor_shape = 2
+			flip_button.mouse_default_cursor_shape = 2
 			has_encountered_overflow = true
 			_close_current_tutorial()
-			_say("sk_overflow")
+			_say("sk_endturn")
+			player.toggle_button(endTurn_button,false)
 			
 		flip_button.visible     = true
 		flip_button.disabled    = false
 		re_flip_button.visible  = true
 		re_flip_button.disabled = false
-		endTurn_button.visible  = true
-		endTurn_button.disabled = false
-		reserve_button.visible  = true
-		reserve_button.disabled = false
+		
 	return
 	await check_defeat()
 	
@@ -664,10 +817,11 @@ func trigger_game_over(player_won: bool):
 		return
 	game_over_triggered = true
 	
+	PauseManager.pause()
 	_close_current_tutorial()
 	sound_manager.stop_music()
 	set_process(false)
-	
+	pause_menu.visible = false
 	flip_button.disabled = true
 	re_flip_button.disabled = true
 	endTurn_button.disabled = true
@@ -677,7 +831,7 @@ func trigger_game_over(player_won: bool):
 	else:
 		sound_manager.play_sound(DEATH)
 
-	await get_tree().create_timer(2.0).timeout
+	await get_tree().create_timer(2.0, true).timeout
 	SceneTransition.load_scene("res://Scene/Shop_keepers Room.tscn")
 	
 
@@ -698,6 +852,7 @@ func check_defeat():
 	return false
 
 func handle_victory_flow():
+	PauseManager.pause()
 	endTurn_button.disabled = true
 	player.lock = false
 	player.slow = false
@@ -707,12 +862,11 @@ func handle_victory_flow():
 	switch_vignetter_color(vignetter_default,1.0)
 	switch_vignette_color(vignette_default,1.0)
 	battle_particles.emitting = true
-	dusk_particles.emitting = false
-	dawn_particles.emitting = false
 	player.gain_coin()
 	sound_manager.play_sound(VICTORY)
 	turn_calculation_box.exit()
 	_say("sk_victory")
+	current_turn = Turn.PLAYER
 	await show_turn_ui("VICTORY")
 	var reserved_coins = get_tree().get_nodes_in_group("reserved coins")
 	for c in reserved_coins:
@@ -740,20 +894,23 @@ func _on_re_flip_pressed():
 	total_reflips += 1
 	player.re_flip()
 	
-	if advance_mode:
-		return
 		
 	if !has_encountered_reflip:
-		has_encountered_reflip = true
+		endTurn_button.mouse_default_cursor_shape = 2
+		flip_button.mouse_default_cursor_shape = 8
+		re_flip_button.mouse_default_cursor_shape = 8
 		_close_current_tutorial()
+		_say("sk_endturn")
+		_show_tutorial("End Turn","When you are done flipping,\npress the center of Arcane Circle to cast your\nCoin Spell!",Vector2(endTurn_button.global_position.x - 150, endTurn_button.global_position.y),-100,[endTurn_button])
+		has_encountered_reflip = true
 		flip_button.visible     = true    
 		flip_button.disabled    = true    
 		re_flip_button.visible  = true   
 		re_flip_button.disabled = true 
-		_say("sk_endturn")
-		_show_tutorial("End Turn","When you are done flipping,\npress End Turn to send your coins\ninto battle!",Vector2(endTurn_button.global_position.x - 150, endTurn_button.global_position.y),-100,[endTurn_button])
-		endTurn_button.visible  = true
-		endTurn_button.disabled = false
+		player.toggle_button(re_flip_button,true)
+	player.toggle_button(endTurn_button,true)
+	endTurn_button.disabled = false 
+	endTurn_button.visible = true
 
 func reserve_left_over_coin():
 	var is_left = true # true - Left Coin, false - Right Coin
@@ -774,7 +931,7 @@ func reserve_left_over_coin():
 	if left_coin != null and right_coin == null:
 		left_coin.reserved = true
 		var target_pos = coin_deck.get_reserve_slot()
-		var tween = create_tween()
+		var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 		left_coin.refresh_sprite()
 		sound_manager.play_sound(COIN_FLIP)
 		tween.tween_property(left_coin,"position:x",target_pos[0],0.2)
@@ -805,7 +962,7 @@ func update_player_reflip_and_reserve():
 		player_reserve.text = "Reserve: " + str(player.current_reserve) + "/" + str(player.max_reserve)
 	
 func update_enemy_coin():
-	enemy_health_label.text = "Coins: " + str(enemy.coin)
+	enemy_health_label.text = str(enemy.coin)
 	
 func update_player_stacks():
 	player_debt_particles.emitting = false
@@ -853,7 +1010,7 @@ func update_enemy_stacks():
 
 func _on_restart_pressed():
 	game_over_triggered = false
-	await get_tree().create_timer(0.2).timeout
+	await get_tree().create_timer(0.2, true).timeout
 	get_tree().reload_current_scene()
 	
 func _on_refresh_pressed() -> void:
@@ -883,7 +1040,7 @@ func _play_fake_coin_intro():
 	
 	var target_pos = player_health_bar.global_position 
 	
-	var tween = create_tween()
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.tween_property(fake_coin, "global_position", target_pos, 1.0).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 	tween.parallel().tween_property(fake_coin, "scale", Vector2(0.6, 0.6), 0.4)
 	
@@ -901,10 +1058,11 @@ func _on_re_flip_mouse_exited() -> void:
 func _on_player_info_toggled(toggled_on: bool) -> void:
 	print("toggled: ", toggled_on)
 	if toggled_on:
+		sound_manager.play_sound(SCROLL_OPEN)
 		player_info_menu = PLAYER_INFORMATION_DISPLAY.instantiate()
 		add_child(player_info_menu)
 		player_info_menu.setup(player)
-		
+		player.toggle_button(endTurn_button,true)
 		await get_tree().process_frame
 		var screen_size = get_viewport_rect().size
 		var menu_size = player_info_menu.size
@@ -913,11 +1071,29 @@ func _on_player_info_toggled(toggled_on: bool) -> void:
 		player_info_menu.z_index = 100
 		player_info_menu.open()
 		emit_signal("player_info_opened")
+		if advance_mode and !adv_tutorial_started:
+			adv_tutorial_started = true
+			_close_current_tutorial()
+			player.toggle_button(flip_button,false)
+			flip_button.disabled = false
+			flip_blocker.visible = false
+			flip_button.mouse_default_cursor_shape = 2
+		if advance_mode and player.player_turn_count != 1 and !adv_debt_done:
+			adv_debt_done = true
+			player.toggle_button(flip_button,false)
+			_close_current_tutorial()
+			_unlock_all()
+			flip_button.disabled = false
+			flip_blocker.visible = false
+			flip_button.mouse_default_cursor_shape = 2
+			
+
+		
 	else:
 		if player_info_menu != null and is_instance_valid(player_info_menu):
 			player_info_menu.close()
 			player_info_menu = null
-
+			player.toggle_button(endTurn_button,false)
 
 func _on_reserve_button_pressed() -> void:
 	player.reserve()
@@ -929,14 +1105,20 @@ func _on_reserve_button_pressed() -> void:
 	if !has_encountered_reserve:
 		tutorial_reserve_count += 1
 		if tutorial_reserve_count >= 2:
+			reserve_button.mouse_default_cursor_shape = 8
+			flip_button.mouse_default_cursor_shape = 2
+			re_flip_button.mouse_default_cursor_shape = 2
 			has_encountered_reserve = true
 			_close_current_tutorial()
+			player.toggle_button(flip_button,false)
+			coin_deck.reset_sigils()
 			
 			
 			if not has_encountered_overflow:
 				tutorial_overflow_count = 0
 				flip_button.visible  = true    
 				flip_button.disabled = false  
+				player.toggle_button(reserve_button,true)
 				_say("sk_overflow")
 				_show_tutorial("Overflow Reserve","If you flip more coins than your Arcane\nCircle can hold, the extra coin is\nautomatically Reserved for you!",Vector2(reserve_button.global_position.x - 200, reserve_button.global_position.y),-250,[flip_button])
 				#return
@@ -947,3 +1129,28 @@ func create_tutorial(title, text, pos, y_offset):
 	tutorial.setup(title,text,pos,y_offset)
 	add_child(tutorial)
 	return tutorial
+
+
+func _on_enemy_info_toggled(toggled_on: bool) -> void:
+	print("toggled: ", toggled_on)
+	if toggled_on:
+		sound_manager.play_sound(SCROLL_OPEN)
+		player.toggle_button(endTurn_button,true)
+		enemy_info_menu = ENEMY_INFORMATION_DISPLAY.instantiate()
+		add_child(enemy_info_menu)
+		enemy_info_menu.setup(enemy)
+		
+		await get_tree().process_frame
+		var screen_size = get_viewport_rect().size
+		var menu_size = enemy_info_menu.size
+		enemy_info_menu.global_position = Vector2((screen_size.x - menu_size.x) / 2,
+			(screen_size.y - menu_size.y) / 2)
+		enemy_info_menu.z_index = 100
+		enemy_info_menu.open()
+		emit_signal("enemy_info_opened")
+	else:
+		if enemy_info_menu != null and is_instance_valid(enemy_info_menu):
+			enemy_info_menu.close()
+			enemy_info_menu = null
+			enemy_info.button_pressed = false
+			player.toggle_button(endTurn_button,false)

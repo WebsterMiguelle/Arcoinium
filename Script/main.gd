@@ -5,6 +5,23 @@ enum Turn {
 	ENEMY,
 	KEEPER
 }
+const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
+const GAME_OVER_WALL_CLOSE = preload("uid://dcogb5vig426m")
+const GAME_OVER_WALL = preload("uid://cen1jkl1h44jj")
+const SLOW = preload("uid://f5jmno7qyhek")
+@onready var boss_defeat_transition: TextureRect = $BossDefeatTransition
+const CRITICAL = preload("uid://nnwjjtfxt47l")
+const SPEND_DAMAGE_PARTICLE = preload("uid://dmgnoylltbfre")
+const SPEND_EXPLOSION_PARTICLE = preload("uid://bgfgq2kw3njao")
+const GAIN_EFFECT_PARTICLE = preload("uid://c5py6ekby1mnm")
+const THRIFT_DAMAGE_PARTICLE = preload("uid://bvrulyxw02bom")
+const INFLATION_PARTICLE = preload("uid://bq67mkmrnr14p")
+const COIN_BARRAGE_PARTICLE = preload("uid://btjsmqynj8nhe")
+const VOIDED = preload("uid://ctvrb7nmqgd06")
+
+const BOSS_DEFEATED = preload("uid://pbrojuc0bit1")
+@onready var enemy_passive_container: CenterContainer = $"Battle UI/EnemyPassiveContainer"
+
 @onready var forest_area: TextureRect = $"Forest Area"
 @onready var fields_area: TextureRect = $"Fields Area"
 @onready var shop_area: TextureRect = $"Shop Area"
@@ -18,6 +35,15 @@ enum Turn {
 @onready var keeper_info: Button = $"Keeper Info"
 
 
+@onready var loan_shark: AnimatedSprite2D = $"Battle UI/LoanShark"
+@onready var loan_splash: Marker2D = $"Battle UI/LoanShark/Loan Splash"
+@onready var loan_enter: Marker2D = $"Battle UI/LoanShark/Loan Enter"
+
+var is_game_over = false
+var is_boss_defeated = false
+
+const DEBT_EFFECT_PARTICLE = preload("uid://c52tpyupg2ynl")
+const DEBT_DAMAGE_PARTICLE = preload("uid://1g21u656k60k")
 enum Enemy{
 	MAGE,
 	DWARF,
@@ -36,6 +62,7 @@ enum Enemy{
 @onready var enemy = $Enemy
 @onready var shopkeeper: Node2D = $Shopkeeper
 
+@onready var camera_2d: Camera2D = $Camera2D
 @onready var main: TextureRect = $"."
 var greed_color = '#ffa889'
 var vignette_default = '#bdabb8'
@@ -185,8 +212,8 @@ const POST_GAME_SCREEN = preload("uid://c7uk7pxxcix85")
 @onready var enemy_debt: Label = $"Enemy/Enemy Debt"
 @onready var enemy_thrift: Label = $"Enemy/Enemy Thrift"
 
-@onready var enemy_passive_label = $"Battle UI/CenterContainer/Background/EnemyLabelNotification"
-@onready var enemy_passive_bg = $"Battle UI/CenterContainer/Background"
+@onready var enemy_passive_label: Label = $"Battle UI/EnemyPassiveContainer/Background/EnemyLabelNotification"
+@onready var enemy_passive_bg: TextureRect = $"Battle UI/EnemyPassiveContainer/Background"
 var enemy_notif_tween: Tween = null
 var enemy_notif_base_pos: Vector2
 
@@ -217,6 +244,9 @@ const PASSIVE_SCENE = preload("res://Scene/passsive_notification.tscn")
 #COIN
 const COIN = preload("uid://ddet242jm5v23")
 
+#Timer
+@onready var timer_label = $CanvasLayer/Timer
+
 #CALCULATIONS
 var damage = 0
 var gain = 0
@@ -225,6 +255,7 @@ var reserved_coin = null
 var current_turn = Turn.PLAYER
 var total_damage_dealt = 0
 var highest_damage_dealt = 0
+
 
 #GameStatistics
 var total_damage = 0
@@ -238,6 +269,10 @@ var total_flips = 0
 var total_reflips = 0
 var total_passives = 0
 var overall_reserved_coins = 0
+var run_timer: float = 0.0
+var run_timer_active: bool = false
+var total_debt_applied: int = 0
+var highest_debt_applied: int = 0
 
 var overall_total_damage: int = 0
 var overall_highest_damage: int = 0
@@ -257,20 +292,26 @@ func _on_item_purchased(card_id,price):
 		shop_manager.coin_label.text = "Coins: " + str(player.coin)
 
 func switch_vignette_color(to,duration):
-	var tween = create_tween()
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.tween_property(vignette,"color",Color.from_string(to,Color.WHITE),duration)
 
 func switch_vignetter_color(to,duration):
-	var tween = create_tween()
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.tween_property(vignetter,"color",Color.from_string(to,Color.WHITE),duration)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	total_damage_dealt = 0
+	highest_damage_dealt = 0
+	total_gain = 0
+	highest_gain = 0
+	is_game_over = false
 	forest_area.visible = true
 	dusk_particles.emitting = true
 	dawn_particles.emitting = false
 	
-	await get_tree().create_timer(0.4).timeout
+	await get_tree().create_timer(0.4, true).timeout
 	await _play_fake_coin_intro()
 	turn_calculation_box.visible = false
 	turn_ui.visible = false
@@ -303,18 +344,35 @@ func _ready():
 		re_flip_button.pressed.connect(_on_re_flip_pressed)      
 	battle_start()
 	
-func _input(event):
-	if event.is_action_pressed("ui_cancel"): # ESC key
-		toggle_pause()
+func _unhandled_input(event: InputEvent) -> void:
+	if is_boss_defeated and is_game_over:
+		return
+	if !event.is_action_pressed("ui_cancel"): # ESC key
+		return
+	#if current_turn != Turn.PLAYER:
+	#	return
+	toggle_pause()
+	get_viewport().set_input_as_handled()
 		
 func toggle_pause():
-	get_tree().paused = !get_tree().paused
-	pause_menu.visible = get_tree().paused
+	if PauseManager.is_paused:
+		PauseManager.resume()
+		pause_menu.visible = true
+		sound_manager.pause_sfx()
+		turn_spell_light.visible = false
+	else:
+		PauseManager.pause()
+		pause_menu.visible = false
+		sound_manager.resume_sfx()
+		turn_spell_light.visible = turn_calculation_box.visible
 
-	dusk_particles.emitting = !get_tree().paused
-	dawn_particles.emitting = !get_tree().paused
+	print("After toggle - is_paused: ", PauseManager.is_paused, " tree paused: ", get_tree().paused)
 	
 func battle_start():
+	if not run_timer_active:
+		run_timer = 0.0
+		run_timer_active = true
+		
 	re_flip_button.visible = true
 	player_reserve.visible = true
 	flip_button.disabled = true
@@ -434,6 +492,12 @@ func _process(delta: float) -> void:
 	update_player_stacks()
 	update_enemy_stacks()
 	update_player_status()
+	
+	if run_timer_active:
+		run_timer += delta
+		var minutes = int(run_timer) / 60
+		var seconds = int(run_timer) % 60
+		timer_label.text = "%02d:%02d" % [minutes, seconds]
 
 func show_turn_ui(text):
 	sound_manager.play_sound(TURN_REVEAL)
@@ -472,25 +536,30 @@ func show_turn_ui(text):
 	else:
 		turn_portrait.play("COIN_CASTER")
 
-	var tween = create_tween()
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.parallel().tween_property(turn_ui,"modulate",Color("ffffff"),0.2)
 	tween.parallel().tween_property(turn_ui, "position:y",target_position,0.2)
-	await get_tree().create_timer(1.0).timeout
+	await get_tree().create_timer(1.0, true).timeout
 	print("=============================UI DONE")
 	turn_ui_label.text = text
-	tween = create_tween()
+	tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.parallel().tween_property(turn_ui,"modulate",Color("ffffff00"),0.2)
 	tween.parallel().tween_property(turn_ui, "position:y",target_position - 30,0.2)
 	if current_turn == Turn.PLAYER:
 		if player.has_pocket_money:
-			await get_tree().create_timer(1.0).timeout
+			await get_tree().create_timer(1.0, true).timeout
 		endTurn_button.disabled = false
-	await get_tree().create_timer(1.0).timeout
+	await get_tree().create_timer(1.0, true).timeout
 	print("=============================UI DONE")
 	
 func _on_end_run_pressed():
+	card_manager.visible = false
+	shop_manager.visible = false
+	player_health_label.text = "0"
+	player.coin = 0
+	
 	print("Main Script: Received End Run")
-	get_tree().paused = false
+	PauseManager.pause()
 	pause_menu.visible = false
 	is_surrender = true
 	await get_tree().process_frame
@@ -538,9 +607,9 @@ func start_keeper_turn():
 		else:
 			shopkeeper.status.text = "NO DEBT YET."
 	else:
-		shopkeeper.status.text = "CUSTOMER ARE YOU ALRIGHT?"
+		shopkeeper.status.text = "CASTER ARE YOU ALRIGHT?"
 	if enemy.coin > 0:
-		await get_tree().create_timer(0.6).timeout
+		await get_tree().create_timer(0.6, true).timeout
 		if shopkeeper.has_scroll_turn:
 			shopkeeper.has_scroll_turn = false
 			start_player_turn()
@@ -555,9 +624,23 @@ func start_enemy_turn():
 		show_turn_ui("ENEMY TURN")
 		coin_deck.reset_sigils()
 		sound_manager.play_sound(TURN_ENEMY)
+		if main.player.has_loan_shark and enemy.debt > 0:
+			if player.has_pay_down:
+				loan_shark.self_modulate = Color.BLACK
+			else:
+				loan_shark.self_modulate = Color.WHITE
+			sound_manager.play_sound(PASSIVE_JAR_O_SAVINGS)
+			particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,loan_enter.global_position)
+			particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,loan_enter.global_position)
+			particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,loan_enter.global_position)
+			particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,loan_enter.global_position)
+			loan_shark.play("default")
 		await enemy.start_enemy_turn()
 		if enemy.coin > 0:
-			await get_tree().create_timer(0.6).timeout
+			await get_tree().create_timer(1.0, true).timeout
+			enemy.passive_income.visible = false
+			if is_game_over:
+				return
 			if player.coin > 0:
 				if !player.has_extra_turn:
 					if player.has_merchant_scroll and shopkeeper.has_scroll_turn:
@@ -593,7 +676,7 @@ func _on_endturn_pressed():
 		turn_calculation_box.exit()
 		var defeat = await check_defeat()
 		if defeat == null:
-			await get_tree().create_timer(1.0).timeout
+			await get_tree().create_timer(1.0, true).timeout
 			if !player.has_extra_turn:
 				if current_turn == Turn.ENEMY:
 					if shopkeeper.has_scroll_turn:
@@ -621,7 +704,7 @@ func tally_end_turn():
 		turn_calculation_box.exit()
 		var defeat = await check_defeat()
 		if defeat == null:
-			await get_tree().create_timer(1.0).timeout
+			await get_tree().create_timer(1.0, true).timeout
 			if !player.has_extra_turn:
 				start_enemy_turn()
 			else:
@@ -643,7 +726,7 @@ func show_passive_notification(text: String, duration: float = 1.5) -> void:
 	notif.scale = Vector2(0.9, 0.9)
 	notif.z_index = 100
 	
-	var tween_in = create_tween()
+	var tween_in = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween_in.parallel().tween_property(notif, "position:x", 0, 0.3)
 	tween_in.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.3)
 	
@@ -652,12 +735,11 @@ func show_passive_notification(text: String, duration: float = 1.5) -> void:
 		if child != notif:
 			child.position.y += 30
 			
-		await get_tree().create_timer(duration).timeout
+		await get_tree().create_timer(duration, true).timeout
 	
 func show_enemy_passive(text: String, duration: float = 2.5) -> void:
 	if not is_instance_valid(enemy_passive_label):
 		return
-		
 	if enemy_notif_base_pos == Vector2.ZERO:
 		enemy_notif_base_pos = enemy_passive_bg.position
 	
@@ -673,7 +755,7 @@ func show_enemy_passive(text: String, duration: float = 2.5) -> void:
 	enemy_passive_label.scale = Vector2(0.9, 0.9)
 
 	
-	enemy_notif_tween = create_tween()
+	enemy_notif_tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	enemy_notif_tween.parallel().tween_property(enemy_passive_label, "modulate:a", 1.0, 0.2)
 	enemy_notif_tween.parallel().tween_property(enemy_passive_bg, "modulate:a", 1.0, 0.2)
 	enemy_notif_tween.parallel().tween_property(enemy_passive_label, "position:y", enemy_notif_base_pos.y + 15, 0.2)
@@ -695,8 +777,31 @@ func _on_flip_pressed():
 	player.flip()
 	
 func trigger_game_over(player_won: bool):
+	if is_game_over:
+		return
+	is_game_over = true
+	PauseManager.pause()
+	run_timer_active = false
+	timer_label.visible = false
+	pause_menu.visible = false
 	sound_manager.play_sound(DEATH)
 	sound_manager.stop_music()
+	
+	player.toggle_button(flip_button,true)
+	player.toggle_button(re_flip_button,true)
+	player.toggle_button(endTurn_button,true)
+	player.toggle_button(reserve_button,true)
+	player_info.visible = false
+	enemy_info.visible = false
+	endTurn_button.visible = false
+	flip_button.disabled = true
+	re_flip_button.disabled = true
+	reserve_button.disabled = true
+	endTurn_button.disabled = false
+	endTurn_button.mouse_default_cursor_shape = 0
+	flip_button.mouse_default_cursor_shape = 0
+	reserve_button.mouse_default_cursor_shape = 0
+	re_flip_button.mouse_default_cursor_shape = 0
 	
 	if player_won:
 		enemy.max_playable_coins = 0
@@ -710,18 +815,23 @@ func trigger_game_over(player_won: bool):
 	set_process(false)
 
 	var stats = {
-		"remaining_coins": player.coin,
-		"overall_total_damage": overall_total_damage,
-		"highest_damage_dealt": highest_damage_dealt,
-		"overall_total_gain": overall_total_gain,
-		"highest_gain": highest_gain,
-		"enemies_defeated": enemies_defeated,
-		"heads": total_heads,
-		"tails": total_tails,
-		"flips": total_flips,
-		"reflips": total_reflips,
-		"total_reserved_coins": overall_reserved_coins
-	}
+	"remaining_coins": player.coin,
+	"overall_total_damage": overall_total_damage,
+	"highest_damage_dealt": highest_damage_dealt,
+	"overall_total_gain": overall_total_gain,
+	"highest_gain": highest_gain,
+	"enemies_defeated": enemies_defeated,
+	"heads": total_heads,
+	"tails": total_tails,
+	"flips": total_flips,
+	"reflips": total_reflips,
+	"total_reserved_coins": overall_reserved_coins,
+	"total_debt_applied": total_debt_applied,     
+	"highest_debt_applied": highest_debt_applied,
+	"run_time": run_timer
+}
+	#game_over_ui.show_stats(stats)
+	#game_over_ui.visible = true
 	
 	var collected_passives = passive_order 
 	var title_text = ""
@@ -771,8 +881,13 @@ func trigger_game_over(player_won: bool):
 	game_over_instance.z_index = 100 
 	add_child(game_over_instance)
 	
+	await get_tree().create_timer(1.0, true).timeout
+	sound_manager.play_sound(GAME_OVER_WALL)
+	
 	game_over_instance.setup(stats, player_won, title_text, killer_text, player)
-
+	await get_tree().create_timer(1.4, true).timeout
+	sound_manager.play_sound(DAMAGE_MODERATE)
+	
 func check_defeat():
 	if player.coin <= 0:
 		if player.has_payback:
@@ -790,14 +905,18 @@ func check_defeat():
 		re_flip_button.disabled = true
 		reserve_button.disabled = true
 		if enemies_defeated == current_room or enemy.type == Enemy.TWILIGHT_SAGE:
-			await trigger_dramatic_slowdown()
 			enemies_defeated += 1
+			if enemy.type == Enemy.TWILIGHT_SAGE:
+				await boss_dramatic_slowdown()
+			else:
+				await trigger_dramatic_slowdown()
 			await handle_victory_flow()
 			return true
 	
 	return null
 
 func handle_victory_flow():
+	PauseManager.pause()
 	mist_particles.emitting = false
 	endTurn_button.disabled = true
 	player.lock = false
@@ -842,8 +961,7 @@ func handle_victory_flow():
 	
 	player.coin += enemy.bounty
 	await progression_after_victory()
-	#wait reward_manager.show_card_selection_async()
-	#wait show_map()
+	
 	
 func progression_after_victory():
 	player.refresh_start_of_battle_stats()
@@ -901,7 +1019,7 @@ func reserve_left_over_coin():
 	if left_coin != null and right_coin == null:
 		left_coin.reserved = true
 		var target_pos = coin_deck.get_reserve_slot()
-		var tween = create_tween()
+		var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 		sound_manager.play_sound(COIN_FLIP)
 		var c = COIN.instantiate()
 		c.setup(0,main.coin_deck.get_reserve_slot())
@@ -934,7 +1052,10 @@ func update_player_status():
 		player_lock.visible = true
 		player_lock_particles.emitting = true
 	else:
-		reserve_button.visible = true
+		if !main.player.has_inflation:
+			reserve_button.visible = true
+		else:
+			reserve_button.visible = false
 		player_lock.visible = false
 		player_lock_particles.emitting = false
 		player_reserve.text = "Reserve:\n" + str(player.current_reserve) + "/" + str(player.max_reserve)
@@ -992,7 +1113,7 @@ func update_enemy_stacks():
 		enemy_spend_particles.emitting = true
 
 func _on_restart_pressed():
-	await get_tree().create_timer(0.2).timeout
+	await get_tree().create_timer(0.2, true).timeout
 	get_tree().reload_current_scene()
 	
 
@@ -1044,7 +1165,7 @@ func _play_fake_coin_intro():
 	
 	var target_pos = player_health_bar.global_position 
 	
-	var tween = create_tween()
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.tween_property(fake_coin, "global_position", target_pos, 1.0).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 	tween.parallel().tween_property(fake_coin, "scale", Vector2(0.6, 0.6), 0.4)
 	
@@ -1060,20 +1181,20 @@ func _on_re_flip_mouse_exited() -> void:
 	reflip_sprite.pause()
 
 func _play_progression_cutscene(from_index: int, to_index: int) -> void:
-	get_tree().paused = true
+	PauseManager.pause()
 	var screen_height = get_viewport_rect().size.y 
 	
 	progression_map.offset.y = -screen_height 
 	progression_map.visible = true
 	
-	var slide_in = progression_map.create_tween()
+	var slide_in = progression_map.create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	slide_in.tween_property(progression_map, "offset:y", 0.0, 0.5).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 	
 	slide_in.tween_interval(0.3)
 
 	await slide_in.finished
 	
-	var walk_tween = progression_map.create_tween()
+	var walk_tween = progression_map.create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	
 	var distance = player_sprite.global_position.distance_to(map_markers[to_index].global_position)
 	var walk_duration = distance / 80.0 
@@ -1081,13 +1202,12 @@ func _play_progression_cutscene(from_index: int, to_index: int) -> void:
 	walk_tween.tween_property(player_sprite, "global_position", map_markers[to_index].global_position, walk_duration).set_trans(Tween.TRANS_LINEAR)
 	await walk_tween.finished
 
-	var dramatic_pause = progression_map.create_tween()
+	var dramatic_pause = progression_map.create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	dramatic_pause.tween_interval(1.0)
 	await dramatic_pause.finished
 	sound_manager.stop_music()
 	sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
-	get_tree().paused = false
-	var bg_fade = create_tween()
+	var bg_fade = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	if to_index == 2:
 		fields_area.visible = true
 		bg_fade.tween_property(forest_area,"modulate", Color("#0059a800"),0.6)
@@ -1107,7 +1227,7 @@ func _play_progression_cutscene(from_index: int, to_index: int) -> void:
 		await bg_fade.finished
 		shop_area.visible = false
 	
-	var slide_out = progression_map.create_tween()
+	var slide_out = progression_map.create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	slide_out.tween_property(progression_map, "offset:y", -screen_height, 0.8).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN)
 	await slide_out.finished
 
@@ -1139,17 +1259,17 @@ func _show_temporary_passive(id: String, text: String, duration: float = 1.5):
 	notif.position = Vector2(container_width + 200, 40)
 	
 	# Slide in and fade in
-	var tween = create_tween()
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.parallel().tween_property(notif, "position:x", 0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tween.parallel().tween_property(notif, "modulate:a", 1.0, 0.2)
 	tween.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.2)
 	await tween.finished
 	
 	# Wait duration
-	await get_tree().create_timer(duration).timeout
+	await get_tree().create_timer(duration, true).timeout
 	
 	# Fade out
-	var tween_out = create_tween()
+	var tween_out = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween_out.tween_property(notif, "modulate:a", 0.0, 0.2)
 	tween_out.tween_callback(func():
 		if is_instance_valid(notif):
@@ -1163,7 +1283,7 @@ func _restack_passives():
 	var spacing = 40
 	var index = 0
 	
-	var tween = create_tween()
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	
 	# Persistent passives
 	var hidden_count = 0
@@ -1312,7 +1432,7 @@ func _add_persistent_passive(id: String, text: String,):
 	# Slide in
 	var container_width = passive_label.get_rect().size.x
 	notif.position = Vector2(container_width + 200, 0)
-	var tween = create_tween()
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.parallel().tween_property(notif, "position:x", 0, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tween.parallel().tween_property(notif, "modulate:a", 1.0, 0.2)
 	tween.parallel().tween_property(notif, "scale", Vector2(1, 1), 0.2)
@@ -1335,9 +1455,9 @@ func trigger_passive_effect(text: String):
 	show_passive_notification(text, 1.5)
 
 func _on_player_info_toggled(toggled_on: bool) -> void:
-
 	print("toggled: ", toggled_on)
 	if toggled_on:
+		sound_manager.play_sound(SCROLL_OPEN)
 		player_info_menu = PLAYER_INFORMATION_DISPLAY.instantiate()
 		add_child(player_info_menu)
 		player_info_menu.setup(player)
@@ -1358,6 +1478,7 @@ func _on_player_info_toggled(toggled_on: bool) -> void:
 func _on_enemy_info_toggled(toggled_on: bool) -> void:
 	print("toggled: ", toggled_on)
 	if toggled_on:
+		sound_manager.play_sound(SCROLL_OPEN)
 		enemy_info_menu = ENEMY_INFORMATION_DISPLAY.instantiate()
 		add_child(enemy_info_menu)
 		enemy_info_menu.setup(enemy)
@@ -1384,14 +1505,60 @@ func _on_reserve_button_pressed() -> void:
 		
 	
 func trigger_dramatic_slowdown() -> void:
+	sound_manager.play_sound(SLOW)
 	Engine.time_scale = 0.3 
 	await get_tree().create_timer(1.0, true, false, true).timeout 
 	Engine.time_scale = 1.0
+
+func boss_dramatic_slowdown() -> void:
+	is_boss_defeated = true
+	player.toggle_button(flip_button,true)
+	player.toggle_button(re_flip_button,true)
+	player.toggle_button(endTurn_button,true)
+	player.toggle_button(reserve_button,true)
+	player_info.visible = false
+	enemy_info.visible = false
+	endTurn_button.visible = false
+	flip_button.disabled = true
+	re_flip_button.disabled = true
+	reserve_button.disabled = true
+	endTurn_button.disabled = false
+	endTurn_button.mouse_default_cursor_shape = 8
+	flip_button.mouse_default_cursor_shape = 8
+	reserve_button.mouse_default_cursor_shape = 8
+	re_flip_button.mouse_default_cursor_shape = 8
+	camera_2d.add_trauma(4.0)
+	sound_manager.play_sound(SLOW)
+	sound_manager.play_sound(VOIDED)
+	sound_manager.stop_music()
+	Engine.time_scale = 0.1
+	await get_tree().create_timer(1.0, true, false, true).timeout 
+	Engine.time_scale = 1.0
+	sound_manager.play_sound(BOSS_DEFEATED)
+	boss_defeat_transition.self_modulate = Color("#ffffff00")
+	boss_defeat_transition.visible = true
+	for i in range(20):
+		sound_manager.play_sound(CRITICAL)
+		particle_manager.spawn_particle(SPEND_EXPLOSION_PARTICLE,enemy_portrait.global_position)
+		particle_manager.spawn_particle(GAIN_EFFECT_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,600)))
+		particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,600)))
+		particle_manager.spawn_particle(SPEND_DAMAGE_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,600)))
+		particle_manager.spawn_particle(INFLATION_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,600)))
+		particle_manager.spawn_particle(COIN_BARRAGE_PARTICLE,enemy_portrait.global_position)
+		await get_tree().create_timer(0.2, true).timeout
+		camera_2d.add_trauma(2.0)
+	Engine.time_scale = 0.3 
+	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
+	tween.tween_property(boss_defeat_transition,"self_modulate",Color.WHITE,2)
+	await get_tree().create_timer(3.0, true, false, true).timeout 
+	Engine.time_scale = 1.0
+
 
 
 func _on_player_info_passive_screen_toggled(toggled_on: bool) -> void:
 	print("toggled: ", toggled_on)
 	if toggled_on:
+		sound_manager.play_sound(SCROLL_OPEN)
 		player_info_menu = PLAYER_INFORMATION_DISPLAY.instantiate()
 		card_manager.add_child(player_info_menu)
 		player_info_menu.setup(player)
@@ -1412,6 +1579,7 @@ func _on_player_info_passive_screen_toggled(toggled_on: bool) -> void:
 
 func _on_player_info_shop_screen_toggled(toggled_on: bool) -> void:
 	if toggled_on:
+		sound_manager.play_sound(SCROLL_OPEN)
 		player_info_menu = PLAYER_INFORMATION_DISPLAY.instantiate()
 		shop_manager.add_child(player_info_menu)
 		player_info_menu.setup(player)
@@ -1432,6 +1600,7 @@ func _on_player_info_shop_screen_toggled(toggled_on: bool) -> void:
 
 func _on_keeper_info_toggled(toggled_on: bool) -> void:
 	if toggled_on:
+		sound_manager.play_sound(SCROLL_OPEN)
 		keeper_info_menu = KEEPER_INFORMATION_DISPLAY.instantiate()
 		add_child(keeper_info_menu)
 		keeper_info_menu.setup(shopkeeper,player)
@@ -1448,3 +1617,10 @@ func _on_keeper_info_toggled(toggled_on: bool) -> void:
 			keeper_info_menu.close()
 			player_info_menu = null
 			keeper_info.button_pressed = false
+
+
+func _on_loan_shark_animation_finished() -> void:
+	particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,loan_splash.global_position)
+	particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,loan_splash.global_position)
+	particle_manager.spawn_particle(DEBT_EFFECT_PARTICLE,loan_splash.global_position)
+	particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,loan_splash.global_position)

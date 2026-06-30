@@ -357,7 +357,7 @@ func setup(m,enemy):
 				gold_flip_rate = 1
 				bounty = 150
 				type = Enemy.ARISTOCRAT
-				debt = 200
+				debt = 180
 				trigger_enemy_passive("GREED: When The Aristocrat settled all her DEBT, Deal 500 Damage.", 4.0)
 		Enemy.SUN_CASTER:
 			if !greed:

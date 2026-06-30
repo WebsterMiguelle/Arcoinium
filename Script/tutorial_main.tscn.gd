@@ -596,9 +596,9 @@ func start_player_turn():
 		re_flip_button.mouse_default_cursor_shape = 8
 		flip_button.mouse_default_cursor_shape = 8
 		player.toggle_button(flip_button,true)
-		await get_tree().create_timer(2.0).timeout 
+		#await get_tree().create_timer(2.0).timeout 
 		_say("sk_first_flip")
-		await get_tree().create_timer(7.0).timeout
+		#await get_tree().create_timer(7.0).timeout
 		flip_button.mouse_default_cursor_shape = 2
 		player.toggle_button(flip_button,false)
 		_show_tutorial("Coin Flipping","Press your Coin Bar to Flip 4 Coins.",player_health_bar.global_position,-100,[flip_button] )
@@ -610,7 +610,7 @@ func start_player_turn():
 		re_flip_button.mouse_default_cursor_shape = 8
 		flip_button.mouse_default_cursor_shape = 8
 		_say("sk_first_reflip")
-		await get_tree().create_timer(3.0).timeout
+		#await get_tree().create_timer(3.0).timeout
 		re_flip_button.mouse_default_cursor_shape = 2
 		re_flip_button.disabled = false
 		_show_tutorial("Re-Flip", "If there are coins on the Arcane Circle,\npress Re-Flip to flip all coins again.",re_flip_button.global_position,-100,[re_flip_button])
@@ -795,7 +795,7 @@ func _on_flip_pressed():
 			endTurn_button.visible  = false
 			player.toggle_button(re_flip_button,true)
 			_say("sk_coin_spell")
-			await get_tree().create_timer(5.0).timeout
+			#await get_tree().create_timer(5.0).timeout
 			await _show_coin_spells_tutorial()
 		return
 	if has_encountered_reserve and not has_encountered_overflow:

@@ -26,7 +26,6 @@ enum Enemy{
 
 @onready var keeper_shadow: TextureRect = $"../Shopkeeper/Keeper Shadow"
 @onready var pair_count: Label = $"../Battle UI/Turn Calculation Box/Pair Count"
-@onready var scene_load_transition: TextureRect = $"../SceneLoadTransition"
 
 @onready var camera_2d: Camera2D = $"../Camera2D"
 const FLOATING_LABEL = preload("uid://dwf6g2wuj1oe3")
@@ -462,7 +461,6 @@ func refresh_start_of_battle_stats():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	scene_load_transition.visible = true
 	player_portrait.play("default")
 	all_in.text = ""
 
@@ -472,9 +470,7 @@ func _ready():
 	pulse_timer.autostart = true
 	pulse_timer.timeout.connect(trigger_board_pulse)
 	add_child(pulse_timer)
-	
-	var load_tween = create_tween()
-	load_tween.tween_property(scene_load_transition,"position:x",1000,2)
+
 
 func coin_calculation():
 	var is_left = true # true - Left Coin, false - Right Coin
@@ -725,7 +721,7 @@ func reserve(is_generated = false, pickpocketed = false, dazzled = false):
 		trigger_temp_passive("deposit","DEPOSIT")
 		if randi_range(1,5) == 1:
 			c.is_stamped = true
-		create_floating_label(1,"GAIN","PLAYER")
+		create_floating_label(2,"GAIN","PLAYER")
 		gain += 2
 		
 	main.add_child(c)
@@ -796,7 +792,7 @@ func flip():
 			trigger_temp_passive("deposit","DEPOSIT")
 			if randi_range(1,5) == 1:
 				c.is_stamped = true
-			create_floating_label(1,"GAIN","PLAYER")
+			create_floating_label(2,"GAIN","PLAYER")
 			gain += 2
 	else:
 		c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
@@ -1366,7 +1362,7 @@ func end_turn():
 			trigger_temp_passive("deposit","DEPOSIT")
 			if randi_range(1,5) == 1:
 				latest_pair_left_coin.is_stamped = true
-			create_floating_label(1,"GAIN","PLAYER")
+			create_floating_label(2,"GAIN","PLAYER")
 			gain += 2
 		
 		if has_coin_snipe:
@@ -1390,7 +1386,7 @@ func end_turn():
 			trigger_temp_passive("deposit","DEPOSIT")
 			if randi_range(1,5) == 1:
 				latest_pair_right_coin.is_stamped = true
-			create_floating_label(1,"GAIN","PLAYER")
+			create_floating_label(2,"GAIN","PLAYER")
 			gain += 2
 	
 		if has_coin_snipe:
@@ -1526,6 +1522,12 @@ func activate_pre_battle_passives():
 				current_reserve += 1
 				c.add_to_group("reserved coins")
 				current_played_coin -= 1
+				if has_deposit:
+					trigger_temp_passive("deposit","DEPOSIT")
+					if randi_range(1,5) == 1:
+						c.is_stamped = true
+					create_floating_label(2,"GAIN","PLAYER")
+					gain += 2
 			else:
 				c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
 				if current_played_coin <= 2 and has_advanced_planning:
@@ -1560,7 +1562,7 @@ func activate_player_turn_start_passives():
 	#PAYBACK
 	if has_payback and payback_used and payback_coins != 0:
 		trigger_temp_passive("payback","PAYBACK")
-		payback_coins = 8
+		payback_coins = 6
 		main.sound_manager.play_sound(THRIFT)
 		main.endTurn_button.disabled = true
 		toggle_button(main.re_flip_button,true)
@@ -1581,9 +1583,9 @@ func activate_player_turn_start_passives():
 				c.add_to_group("reserved coins")
 				if has_deposit:
 					trigger_temp_passive("deposit","DEPOSIT")
-					if randi_range(1,2) == 1:
+					if randi_range(1,5) == 1:
 						c.is_stamped = true
-					create_floating_label(1,"GAIN","PLAYER")
+					create_floating_label(2,"GAIN","PLAYER")
 					gain += 2
 					
 			else:
@@ -1593,6 +1595,7 @@ func activate_player_turn_start_passives():
 			if current_played_coin <= 2 and has_advanced_planning:
 				c.is_stamped = true
 			#Guaranteed Silver Flips
+			c.upgrade_to_gold()
 			c.add_status(CoinStatus.SHINED)
 			main.add_child(c);
 			

@@ -17,7 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://bgska0mwhsa2s" path="res://Assets/CoinBarForeGround.png" id="6_oywcm"]
 [ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="7_0sxm5"]
 [ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="7_3pt4j"]
-[ext_resource type="Texture2D" uid="uid://eeepgts0tvpj" path="res://Assets/Passive_Icons.png" id="7_5rsq1"]
+[ext_resource type="Texture2D" uid="uid://c7ppyupuuc7tu" path="res://Assets/Passive_Icons.png" id="7_5rsq1"]
 [ext_resource type="Material" uid="uid://cxjkyhc8r5fge" path="res://Assets/Particles/debt.tres" id="7_cr44a"]
 [ext_resource type="Script" uid="uid://byrcn8pelxayw" path="res://Script/coin_deck.gd" id="7_ow1sv"]
 [ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="9_jbas8"]
@@ -1241,14 +1241,6 @@ gradient = SubResource("Gradient_tke4u")
 fill_from = Vector2(0.7606838, 0.757265)
 fill_to = Vector2(0.4051282, 0.2888889)
 
-[sub_resource type="Gradient" id="Gradient_yc5rd"]
-colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_nykhw"]
-gradient = SubResource("Gradient_yc5rd")
-fill_from = Vector2(0.50769234, 0)
-fill_to = Vector2(0, 0)
-
 [sub_resource type="Gradient" id="Gradient_nykhw"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
 
@@ -1266,8 +1258,8 @@ grow_vertical = 2
 texture = ExtResource("1_mxd2g")
 script = ExtResource("1_h2yge")
 
-[node name="Shop Area" type="TextureRect" parent="." unique_id=1380846769]
-visible = false
+[node name="Shop Area" type="TextureRect" parent="." unique_id=892579619]
+self_modulate = Color(0.9135926, 0.46693486, 0.3253121, 1)
 layout_mode = 0
 offset_left = -38.78247
 offset_top = -22.0
@@ -1275,8 +1267,8 @@ offset_right = 1184.6898
 offset_bottom = 668.0
 texture = ExtResource("12_pqe63")
 
-[node name="Rug" type="TextureRect" parent="Shop Area" unique_id=1274339919]
-self_modulate = Color(0.74926186, 0.7464951, 0.9420062, 1)
+[node name="Rug" type="TextureRect" parent="Shop Area" unique_id=644125513]
+self_modulate = Color(0.9512226, 0.5415794, 0, 1)
 layout_mode = 0
 offset_left = -604.2175
 offset_top = 98.0
@@ -2298,7 +2290,6 @@ action_mode = 0
 
 [node name="ShopManager" type="CanvasLayer" parent="." unique_id=248022412]
 layer = 5
-visible = false
 script = ExtResource("6_1xcnr")
 
 [node name="Background" type="ColorRect" parent="ShopManager" unique_id=2038950803]
@@ -2311,7 +2302,7 @@ grow_vertical = 2
 color = Color(0.012920001, 0.012920001, 0.012920001, 1)
 
 [node name="Carpet" type="TextureRect" parent="ShopManager/Background" unique_id=1608078728]
-self_modulate = Color(0.6762465, 0.58899766, 0.6903054, 1)
+self_modulate = Color(0.6603903, 0.2423729, 5.7756904e-07, 1)
 layout_mode = 0
 offset_left = 76.0
 offset_top = 69.0
@@ -2320,7 +2311,7 @@ offset_bottom = 575.0
 texture = ExtResource("38_f043x")
 
 [node name="CarpetShadow" type="TextureRect" parent="ShopManager/Background" unique_id=732128589]
-self_modulate = Color(0.5956193, 0.34846383, 0.6177142, 0.5254902)
+self_modulate = Color(0.95803946, 0.27036726, 0, 0.5254902)
 layout_mode = 0
 offset_left = 80.0
 offset_top = 67.0
@@ -2349,7 +2340,7 @@ rotation = 4.712389
 texture = ExtResource("6_oywcm")
 
 [node name="ShopBanner" type="TextureRect" parent="ShopManager/Background" unique_id=1089289664]
-self_modulate = Color(0.3768461, 0.26143464, 0.40784156, 1)
+self_modulate = Color(0.5481791, 0.207326, 0, 1)
 layout_mode = 0
 offset_left = 314.0
 offset_top = 6.0
@@ -2397,7 +2388,7 @@ layout_mode = 0
 offset_left = 957.0
 offset_top = 222.0
 offset_right = 1141.0
-offset_bottom = 504.0
+offset_bottom = 505.0
 theme_override_fonts/font = ExtResource("7_3pt4j")
 theme_override_font_sizes/font_size = 18
 text = "For each turn, apply 8 DEBT, 4 SPEND, and 2 THRIFT. If Enemy DEBT is greater than their Current Coins at the end of their turn, perish instantly."
@@ -2414,14 +2405,34 @@ text = "EXIT"
 icon_alignment = 1
 
 [node name="Refresh" type="Button" parent="ShopManager" unique_id=446895296]
+self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(101, 49)
-offset_left = 987.0
-offset_top = 489.0
-offset_right = 1088.0
-offset_bottom = 538.0
+offset_left = 989.0
+offset_top = 419.0
+offset_right = 1090.0
+offset_bottom = 516.0
 theme_override_font_sizes/font_size = 25
 text = "Refresh"
 icon_alignment = 1
+
+[node name="Refresh_Sprite" type="AnimatedSprite2D" parent="ShopManager/Refresh" unique_id=991850806]
+position = Vector2(54.999985, 49.999996)
+scale = Vector2(2.96875, 2.96875)
+sprite_frames = SubResource("SpriteFrames_mlc74")
+frame_progress = 0.8581795
+
+[node name="Refresh_Price" type="Label" parent="ShopManager/Refresh" unique_id=236180913]
+layout_mode = 0
+offset_left = 12.999992
+offset_top = 15.0
+offset_right = 103.99999
+offset_bottom = 91.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 45
+text = "$10"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Keeper Shadow" type="TextureRect" parent="ShopManager" unique_id=2077444615]
 self_modulate = Color(0, 0, 0, 0.5568628)
@@ -2883,16 +2894,6 @@ text = "00:00"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SceneLoadTransition" type="TextureRect" parent="." unique_id=859238468]
-visible = false
-top_level = true
-layout_mode = 0
-offset_left = -718.0
-offset_top = -8.0
-offset_right = 1171.0
-offset_bottom = 693.0
-texture = SubResource("GradientTexture2D_nykhw")
-
 [node name="BossDefeatTransition" type="TextureRect" parent="." unique_id=1142108753]
 visible = false
 self_modulate = Color(1, 1, 1, 0)
@@ -2933,6 +2934,7 @@ toggle_mode = true
 action_mode = 0
 
 [node name="Keeper Info" type="Button" parent="." unique_id=1920635139]
+visible = false
 modulate = Color(1, 1, 1, 0)
 top_level = true
 layout_mode = 0
@@ -2955,14 +2957,14 @@ action_mode = 0
 [connection signal="animation_finished" from="Battle UI/LoanShark" to="." method="_on_loan_shark_animation_finished"]
 [connection signal="toggled" from="CardManager/Player Info Passive Screen" to="." method="_on_player_info_passive_screen_toggled"]
 [connection signal="pressed" from="ShopManager/Back" to="ShopManager" method="_on_back_pressed"]
+[connection signal="mouse_entered" from="ShopManager/Refresh" to="ShopManager" method="_on_refresh_mouse_entered"]
+[connection signal="mouse_exited" from="ShopManager/Refresh" to="ShopManager" method="_on_refresh_mouse_exited"]
+[connection signal="pressed" from="ShopManager/Refresh" to="ShopManager" method="_on_refresh_pressed"]
 [connection signal="toggled" from="ShopManager/Player Info Shop Screen" to="." method="_on_player_info_shop_screen_toggled"]
 [connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/Resume" to="PauseMenu" method="_on_resume_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/EndRun" to="PauseMenu" method="_on_end_run_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/Setting" to="PauseMenu" method="_on_setting_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/Quit" to="PauseMenu" method="_on_quit_pressed"]
-[connection signal="pressed" from="ShopManager/Back" to="ShopManager" method="_on_back_pressed"]
-[connection signal="pressed" from="ShopManager/Refresh" to="ShopManager" method="_on_refresh_pressed"]
-[connection signal="toggled" from="ShopManager/Player Info Shop Screen" to="." method="_on_player_info_shop_screen_toggled"]
 [connection signal="toggled" from="Enemy Info" to="." method="_on_enemy_info_toggled"]
 [connection signal="toggled" from="Player Info" to="." method="_on_player_info_toggled"]
 [connection signal="toggled" from="Keeper Info" to="." method="_on_keeper_info_toggled"]

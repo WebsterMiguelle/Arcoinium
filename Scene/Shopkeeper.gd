@@ -942,7 +942,19 @@ func end_turn():
 		slow_motion.tween_property(Engine, "time_scale", 1, 0.5)
 	# 2. Apply Stats to Enemy
 	main.enemy.take_damage(turn_damage)
-	main.enemy.debt += turn_debt
+	if turn_debt > 0:
+		if main.enemy.unchargable:
+			create_floating_label("DEBT","IMMUNE","ENEMY")
+			main.sound_manager.play_sound(PASSIVE_REFUND)
+		else:
+			main.total_debt_applied += turn_debt
+			if turn_debt > main.highest_debt_applied:
+				main.highest_debt_applied = turn_debt
+			main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
+			shake_power += 0.5
+			main.sound_manager.play_sound(DEBT)
+			create_floating_label(turn_debt,"DEBT","ENEMY")
+			
 	main.enemy.thrift += turn_thrift
 	main.enemy.spend += turn_spend
 	

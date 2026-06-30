@@ -10,7 +10,10 @@ const Shop_card = preload("res://Scene/shop_card.tscn")
 @onready var carpet: TextureRect = $Background/Carpet
 @onready var shop_keeper: AnimatedSprite2D = $"Background/Shop Keeper_Portrait"
 const SHOP_BELL = preload("uid://1kl4yi6uvnhn")
-
+@onready var refresh_sprite: AnimatedSprite2D = $Refresh/Refresh_Sprite
+@onready var refresh_price: Label = $Refresh/Refresh_Price
+@onready var refresh_button: Button = $Refresh
+var refresh_base_value = 5
 const SCROLL_HOVERED = preload("uid://dpcddmlbji61k")
 const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
 
@@ -51,7 +54,7 @@ var all_cards = [
 	{"id": 15, "name": "Passive Income", "rank": "A", "desc": "Generate RESERVED DAZZLED Coins equal to 10% of Enemy Damage taken."},
 	{"id": 16, "name": "Magic Trick", "rank": "A", "desc": "If you played 8+ Coins, the 1st Coin Pair generates copies of itself into the 2nd, 3rd, and 4th Pair at the end of the turn."},
 	{"id": 17, "name": "Tax Evasion", "rank": "A", "desc": "When DEBT is applied to you, halve it, return the removed DEBT to the Enemy, and deal DAMAGE equal to the returned DEBT."},
-	{"id": 18, "name": "Payback", "rank": "A", "desc": "After taking Heavy Damage, generate 8 SHINED COPPER SUN COINs."},
+	{"id": 18, "name": "Payback", "rank": "A", "desc": "After taking Heavy Damage, generate 6 SHINED GOLD SUN COINs."},
 	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "Loan Shark accompanies you. For each Enemy Coin Flip, Loan Shark detonates 2% of their DEBT as DAMAGE. Each Enemy Coin Flip has a chance equal to their current DEBT (up to 100%) to become DAZZLED."},
 	{"id": 20, "name": "Spare Change", "rank": "A", "desc": "Re-Flipping retrieves all RESERVED Coins. Retrieving a STAMPED Coin restores 1 Re-Flip."},
 	{"id": 21, "name": "Coin Barrage", "rank": "A", "desc": "+20% Silver Flip Rate. Every time you Flip 10 SILVER/GOLD Coins in a turn, deal 10 Damage."},
@@ -68,7 +71,7 @@ var all_cards = [
 
 @warning_ignore("shadowed_variable")
 func show_shop_async(player):
-	refresh_count = 0
+	refresh_count = 1
 	purchased_ids = []
 	current_cards = []
 	carpet.modulate.a = 0
@@ -85,6 +88,9 @@ func show_shop_async(player):
 	bg.visible = true
 	visible = true
 	back_button.disabled = false 
+	if main.player.greed:
+		refresh_base_value = 10
+	refresh_price.text = "$" + str(refresh_base_value * refresh_count)
 	
 	# Clear the label when the shop opens!
 	if descriptions:
@@ -140,12 +146,6 @@ func create_card_node(data: Dictionary) -> Node:
 		"S": base_price = 30
 		"A": base_price = 20
 		"B": base_price = 10
-	base_price += refresh_count * 5
-	
-	if main.player.greed:
-		base_price += refresh_count * 10
-	else:
-		base_price += refresh_count * 5
 	
 	card.price = base_price
 	if main.player.greed:
@@ -419,7 +419,11 @@ func is_card_owned(card_id: int) -> bool:
 
 
 func _on_refresh_pressed() -> void:
+	main.player.coin -= refresh_base_value*refresh_count
 	refresh_count += 1
+	if main.player.coin <= refresh_base_value*refresh_count:
+		main.player.toggle_button(refresh_button,true)
+	refresh_price.text = "$" + str(refresh_base_value * refresh_count)
 	var shown_ids = current_cards.map(func(c): return c["id"])
 	var pool = all_cards.duplicate()
 	pool = pool.filter(func(card):
@@ -454,3 +458,12 @@ func _on_refresh_pressed() -> void:
 			card_nodes[i] = new_card
 			
 			animate_card_appear(new_card)
+
+
+func _on_refresh_mouse_entered() -> void:
+	if !refresh_button.disabled:
+		refresh_sprite.play("default")
+
+
+func _on_refresh_mouse_exited() -> void:
+	refresh_sprite.pause()

@@ -41,6 +41,9 @@
 [ext_resource type="Script" uid="uid://cbrncrbtg7emf" path="res://Script/pause_menu.gd" id="36_ismbn"]
 [ext_resource type="Texture2D" uid="uid://cpm417gdi8hph" path="res://Assets/shopMaster-Sheet.png" id="36_t47jc"]
 [ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="39_2uys4"]
+[ext_resource type="Texture2D" uid="uid://c2kfvnraituiu" path="res://Assets/reserve_area_middle.png" id="41_0rhr1"]
+[ext_resource type="Texture2D" uid="uid://sabqjf666id4" path="res://Assets/reserve_area_outside.png" id="42_xgpyk"]
+[ext_resource type="Texture2D" uid="uid://b16kddlletwt1" path="res://Assets/ReserveButton.png" id="43_va4xf"]
 [ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="42_elt7x"]
 [ext_resource type="Texture2D" uid="uid://dms5d0v8hxacy" path="res://Assets/EndScrollTextSeparator.png" id="43_0rhr1"]
 [ext_resource type="Script" uid="uid://cjx7ln7nt56ad" path="res://Scene/particle_manager.gd" id="48_xef3h"]
@@ -365,30 +368,6 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="Gradient" id="Gradient_885bo"]
-offsets = PackedFloat32Array(0, 0.57214767)
-colors = PackedColorArray(2.4065375e-07, 0.34464124, 0.12498734, 0.69411767, 0.903585, 0.76905644, 1.1551381e-06, 0.5921569)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_f043x"]
-gradient = SubResource("Gradient_885bo")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gejqg"]
-particle_flag_disable_z = true
-emission_shape_scale = Vector3(26.73, 44.435, 1)
-emission_shape = 1
-emission_sphere_radius = 1.0
-direction = Vector3(0, 1, 0)
-spread = 113.841
-initial_velocity_max = 40.0
-gravity = Vector3(0, 20, 0)
-scale_min = 0.0
-scale_max = 35.28
-scale_curve = SubResource("CurveTexture_c1l5s")
-scale_over_velocity_min = 107.84
-scale_over_velocity_max = 196.06999
-color = Color(0.25085992, 0.86204916, 0, 1)
-color_ramp = SubResource("GradientTexture1D_f043x")
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_fnsx1"]
 atlas = ExtResource("19_b734d")
 region = Rect2(0, 0, 64, 64)
@@ -684,32 +663,6 @@ animations = [{
 "speed": 2.0
 }]
 
-[sub_resource type="Gradient" id="Gradient_mlc74"]
-offsets = PackedFloat32Array(0.010080645, 0.030864198, 0.69753087)
-colors = PackedColorArray(0.1839853, 0.1969496, 0.18004388, 1, 1, 1, 1, 1, 1, 1, 1, 0.53333336)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_885bo"]
-gradient = SubResource("Gradient_mlc74")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4lqwv"]
-particle_flag_disable_z = true
-emission_shape_offset = Vector3(3.155, -1.935, 0)
-emission_shape_scale = Vector3(6.81, 1.45, 1)
-emission_shape = 1
-emission_sphere_radius = 10.32
-direction = Vector3(0, 1, 0)
-spread = 0.0
-initial_velocity_min = 11.509999
-initial_velocity_max = 54.42
-gravity = Vector3(0, 20, 0)
-scale_min = 0.0
-scale_max = 15.9
-scale_curve = SubResource("CurveTexture_cr44a")
-scale_over_velocity_min = 107.84
-scale_over_velocity_max = 196.06999
-color = Color(0.23022687, 0.22255456, 0.21473798, 1)
-color_ramp = SubResource("GradientTexture1D_885bo")
-
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cr44a"]
 particle_flag_disable_z = true
 emission_shape_scale = Vector3(10.815, 11.115, 1)
@@ -728,6 +681,112 @@ scale_over_velocity_min = 107.84
 scale_over_velocity_max = 196.06999
 color = Color(0.9999996, 0.9053559, 0.81244224, 1)
 color_ramp = SubResource("GradientTexture1D_mlc74")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_14upm"]
+atlas = ExtResource("14_va4xf")
+region = Rect2(16, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rstpb"]
+atlas = ExtResource("14_va4xf")
+region = Rect2(24, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qjhim"]
+atlas = ExtResource("14_va4xf")
+region = Rect2(32, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hy0p5"]
+atlas = ExtResource("14_va4xf")
+region = Rect2(40, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_auua8"]
+atlas = ExtResource("14_va4xf")
+region = Rect2(48, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_warkp"]
+atlas = ExtResource("14_va4xf")
+region = Rect2(56, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ot2t7"]
+atlas = ExtResource("14_va4xf")
+region = Rect2(0, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ffek6"]
+atlas = ExtResource("14_va4xf")
+region = Rect2(8, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0jwfx"]
+atlas = ExtResource("14_va4xf")
+region = Rect2(16, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vpba5"]
+atlas = ExtResource("14_va4xf")
+region = Rect2(24, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dav7s"]
+atlas = ExtResource("14_va4xf")
+region = Rect2(32, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_but7c"]
+atlas = ExtResource("14_va4xf")
+region = Rect2(40, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dq2lh"]
+atlas = ExtResource("14_va4xf")
+region = Rect2(48, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_opku3"]
+atlas = ExtResource("14_va4xf")
+region = Rect2(56, 8, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dqw5i"]
+animations = [{
+"frames": [{
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_14upm")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_rstpb")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_qjhim")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_hy0p5")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_auua8")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_warkp")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_ot2t7")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_ffek6")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_0jwfx")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_vpba5")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_dav7s")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_but7c")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_dq2lh")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_opku3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="Gradient" id="Gradient_qsoii"]
 offsets = PackedFloat32Array(0, 0.44849786, 0.99785405)
@@ -977,29 +1036,6 @@ offset_bottom = 633.0
 mouse_default_cursor_shape = 2
 text = "Press for Info"
 
-[node name="Reserve Button" type="Button" parent="Battle UI" unique_id=1926938624]
-offset_left = 605.0
-offset_top = 551.0
-offset_right = 705.0
-offset_bottom = 622.0
-mouse_default_cursor_shape = 2
-
-[node name="Player Reserve" type="Label" parent="Battle UI/Reserve Button" unique_id=15672962]
-custom_minimum_size = Vector2(150, 40)
-layout_mode = 0
-offset_left = -37.000027
-offset_top = 9.0
-offset_right = 112.99997
-offset_bottom = 65.0
-scale = Vector2(1.2137691, 1)
-theme_override_colors/font_color = Color(0.99999994, 0.84508157, 0.98982567, 1)
-theme_override_fonts/font = ExtResource("8_i3w70")
-theme_override_font_sizes/font_size = 25
-text = "RESERVE 
-(0/4)"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="HealthLabel" type="Label" parent="Battle UI" unique_id=580605117]
 anchors_preset = 4
 anchor_top = 0.5
@@ -1094,13 +1130,6 @@ sprite_frames = SubResource("SpriteFrames_mlc74")
 frame = 3
 frame_progress = 0.8581795
 
-[node name="Player Slow Particles" type="GPUParticles2D" parent="Battle UI/Re-Flip" unique_id=1919652378]
-position = Vector2(86.25, 66.25003)
-scale = Vector2(0.99999994, 0.99999994)
-amount = 64
-lifetime = 2.3499999999999996
-process_material = SubResource("ParticleProcessMaterial_gejqg")
-
 [node name="Reflip_Label" type="Label" parent="Battle UI/Re-Flip" unique_id=1593752798]
 layout_mode = 0
 offset_left = 57.499992
@@ -1110,22 +1139,6 @@ offset_bottom = 102.25
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("9_q67rw")
 theme_override_font_sizes/font_size = 75
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Player Slow" type="Label" parent="Battle UI/Re-Flip" unique_id=794918294]
-top_level = true
-layout_mode = 0
-offset_left = 221.0
-offset_top = 490.0
-offset_right = 367.0
-offset_bottom = 516.0
-theme_override_colors/font_color = Color(0.35574263, 0.85473233, 0.51888376, 1)
-theme_override_colors/font_outline_color = Color(0.31, 0, 0.24283333, 1)
-theme_override_constants/outline_size = 4
-theme_override_fonts/font = ExtResource("9_q67rw")
-theme_override_font_sizes/font_size = 25
-text = "SLOWED"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -1198,6 +1211,7 @@ text = "EnemyLabel Notification"
 horizontal_alignment = 1
 
 [node name="Turn UI" type="TextureRect" parent="." unique_id=1050758880]
+visible = false
 self_modulate = Color(0.90375245, 0.79641557, 0.6302501, 1)
 z_index = 9
 layout_mode = 0
@@ -1388,36 +1402,6 @@ text = "30"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Player Reserve Rug" type="TextureRect" parent="Player" unique_id=1081132533]
-self_modulate = Color(0.627451, 0.43137255, 0.47843137, 0.6156863)
-offset_left = 1028.0
-offset_top = 301.0
-offset_right = 1222.36
-offset_bottom = 463.91998
-rotation = 1.5707964
-texture = ExtResource("31_uku07")
-
-[node name="Player Lock Particles" type="GPUParticles2D" parent="Player" unique_id=1470998698]
-position = Vector2(941, 388)
-amount = 64
-lifetime = 5.0
-process_material = SubResource("ParticleProcessMaterial_4lqwv")
-
-[node name="Player Lock" type="Label" parent="Player" unique_id=1723631615]
-top_level = true
-offset_left = 882.0
-offset_top = 370.0
-offset_right = 1015.0
-offset_bottom = 407.0
-theme_override_colors/font_color = Color(0.554305, 0.59517217, 0.61141235, 1)
-theme_override_colors/font_outline_color = Color(0.31, 0, 0.24283333, 1)
-theme_override_constants/outline_size = 4
-theme_override_fonts/font = ExtResource("9_q67rw")
-theme_override_font_sizes/font_size = 36
-text = "LOCKED"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="Player Gain Particles" type="GPUParticles2D" parent="Player" unique_id=147503279]
 position = Vector2(31, 621)
 amount = 24
@@ -1449,6 +1433,60 @@ offset_bottom = 652.0
 mouse_default_cursor_shape = 2
 toggle_mode = true
 action_mode = 0
+
+[node name="Reserve Button" type="TextureButton" parent="Player" unique_id=1490629969]
+modulate = Color(1, 0.84566724, 0.71277934, 1)
+z_index = 1000
+offset_left = 618.0
+offset_top = 555.0
+offset_right = 733.0
+offset_bottom = 617.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("43_va4xf")
+stretch_mode = 0
+
+[node name="Player Reserve" type="Label" parent="Player/Reserve Button" unique_id=533758759]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 0
+offset_left = -31.000004
+offset_top = 12.0
+offset_right = 119.0
+offset_bottom = 57.0
+scale = Vector2(1.2137691, 1)
+theme_override_colors/font_color = Color(0.9999997, 0.9306338, 0.82846355, 1)
+theme_override_fonts/font = ExtResource("8_i3w70")
+theme_override_font_sizes/font_size = 25
+text = "RESERVE
+(0/4)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player Reserve Rug" type="TextureRect" parent="Player" unique_id=414480597]
+modulate = Color(0.9999997, 0.80451834, 0.4314901, 1)
+offset_left = 1013.0
+offset_top = 328.0
+offset_right = 1191.0
+offset_bottom = 506.0
+rotation = 1.5707964
+texture = ExtResource("41_0rhr1")
+
+[node name="OutsideTexture" type="TextureRect" parent="Player/Player Reserve Rug" unique_id=20724571]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(89, 89)
+texture = ExtResource("42_xgpyk")
+
+[node name="RunesInReserveRug" type="AnimatedSprite2D" parent="Player/Player Reserve Rug" unique_id=532323338]
+position = Vector2(89, 88.999985)
+rotation = -1.5707964
+scale = Vector2(2.5, 2.5)
+sprite_frames = SubResource("SpriteFrames_dqw5i")
+autoplay = "default"
 
 [node name="Game Over UI" type="CanvasLayer" parent="." unique_id=994626979]
 visible = false
@@ -1684,16 +1722,16 @@ toggle_mode = true
 action_mode = 0
 
 [node name="FlipBlocker" type="TextureRect" parent="." unique_id=2119013801]
+visible = false
 self_modulate = Color(1, 1, 1, 0)
 top_level = true
 layout_mode = 0
 offset_left = 143.0
 offset_top = 529.0
-offset_right = 597.0
+offset_right = 519.0
 offset_bottom = 697.0
 texture = ExtResource("31_uku07")
 
-[connection signal="pressed" from="Battle UI/Reserve Button" to="." method="_on_reserve_button_pressed"]
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_exited"]
 [connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]
@@ -1701,6 +1739,7 @@ texture = ExtResource("31_uku07")
 [connection signal="mouse_exited" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_exited"]
 [connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]
 [connection signal="toggled" from="Player/Player Info" to="." method="_on_player_info_toggled"]
+[connection signal="pressed" from="Player/Reserve Button" to="." method="_on_reserve_button_pressed"]
 [connection signal="pressed" from="Game Over UI/ColorRect/Main Menu" to="Game Over UI" method="_on_main_menu_pressed"]
 [connection signal="pressed" from="Game Over UI/ColorRect/Restart" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/Resume" to="PauseMenu" method="_on_resume_pressed"]

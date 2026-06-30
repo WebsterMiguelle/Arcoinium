@@ -276,6 +276,7 @@ func enemy_coin_calculation():
 		Enemy.SHOP_KEEPER:
 			for coin in coins:
 				if coin.state == 0: 
+					sun_count +=1
 					total_damage += coin.base_value
 					if advance_mode and coin.status == CoinStatus.SHINED:
 						total_damage += 2

@@ -511,10 +511,10 @@ func activate_turn_end_passives():
 				main.player.trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 				main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 				main.sound_manager.play_sound(DAMAGE_LIGHT)
-				main.enemy.take_damage(1)
-				main.total_damage_dealt += 1
-				create_floating_label(1,"DAMAGE","ENEMY")
-			await get_tree().create_timer(0.1, true).timeout
+				main.enemy.take_damage(2)
+				main.total_damage_dealt += 2
+				create_floating_label(2,"DAMAGE","ENEMY")
+			await get_tree().create_timer(0.1).timeout
 	if has_dazzle:
 		await get_tree().create_timer(0.6, true).timeout
 	if main.enemy.coin == 0:
@@ -532,9 +532,9 @@ func activate_turn_end_passives():
 					main.player.trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(DAMAGE_LIGHT)
-					main.enemy.take_damage(1)
-					main.total_damage_dealt += 1
-					create_floating_label(1,"DAMAGE","ENEMY")
+					main.enemy.take_damage(2)
+					main.total_damage_dealt += 2
+					create_floating_label(2,"DAMAGE","ENEMY")
 				keeper_coin_calculation()
 				await get_tree().create_timer(0.1, true).timeout
 		await get_tree().create_timer(0.6, true).timeout
@@ -558,9 +558,9 @@ func activate_turn_end_passives():
 					main.player.trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(DAMAGE_LIGHT)
-					main.enemy.take_damage(1)
-					main.total_damage_dealt += 1
-					create_floating_label(1,"DAMAGE","ENEMY")
+					main.enemy.take_damage(2)
+					main.total_damage_dealt += 2
+					create_floating_label(2,"DAMAGE","ENEMY")
 				if main.player.has_coin_snipe:
 					main.player.trigger_temp_passive("coin_snipe","COIN SNIPE")
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
@@ -578,9 +578,9 @@ func activate_turn_end_passives():
 					main.player.trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(DAMAGE_LIGHT)
-					main.enemy.take_damage(1)
-					main.total_damage_dealt += 1
-					create_floating_label(1,"DAMAGE","ENEMY")
+					main.enemy.take_damage(2)
+					main.total_damage_dealt += 2
+					create_floating_label(2,"DAMAGE","ENEMY")
 				if main.player.has_coin_snipe:
 					main.player.trigger_temp_passive("coin_snipe","COIN SNIPE")
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
@@ -617,9 +617,9 @@ func activate_turn_end_passives():
 					main.player.trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(DAMAGE_LIGHT)
-					main.enemy.take_damage(1)
-					main.total_damage_dealt += 1
-					create_floating_label(1,"DAMAGE","ENEMY")
+					main.enemy.take_damage(2)
+					main.total_damage_dealt += 2
+					create_floating_label(2,"DAMAGE","ENEMY")
 				keeper_coin_calculation()
 				await get_tree().create_timer(0.1, true).timeout
 		await get_tree().create_timer(0.6, true).timeout
@@ -639,10 +639,10 @@ func activate_turn_end_passives():
 					main.player.trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(DAMAGE_LIGHT)
-					main.enemy.take_damage(1)
-					main.total_damage_dealt += 1
-					create_floating_label(1,"DAMAGE","ENEMY")
-				await get_tree().create_timer(0.1, true).timeout
+					main.enemy.take_damage(2)
+					main.total_damage_dealt += 2
+					create_floating_label(2,"DAMAGE","ENEMY")
+				await get_tree().create_timer(0.1).timeout
 			if moon_moon_count == 0: break
 		
 		if moon_moon_count > 0:
@@ -658,10 +658,10 @@ func activate_turn_end_passives():
 						main.player.trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 						main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 						main.sound_manager.play_sound(DAMAGE_LIGHT)
-						main.enemy.take_damage(1)
-						main.total_damage_dealt += 1
-						create_floating_label(1,"DAMAGE","ENEMY")
-					await get_tree().create_timer(0.1, true).timeout
+						main.enemy.take_damage(2)
+						main.total_damage_dealt += 2
+						create_floating_label(2,"DAMAGE","ENEMY")
+					await get_tree().create_timer(0.1).timeout
 				if moon_moon_count == 0: break
 		keeper_coin_calculation()
 		await get_tree().create_timer(0.6, true).timeout
@@ -682,10 +682,10 @@ func activate_turn_end_passives():
 					main.player.trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(DAMAGE_LIGHT)
-					main.enemy.take_damage(1)
-					main.total_damage_dealt += 1
-					create_floating_label(1,"DAMAGE","ENEMY")
-				await get_tree().create_timer(0.1, true).timeout
+					main.enemy.take_damage(2)
+					main.total_damage_dealt += 2
+					create_floating_label(2,"DAMAGE","ENEMY")
+				await get_tree().create_timer(0.1).timeout
 			if sun_sun_count == 0: break
 				
 		#PRIORITY 2: UNSHINED GOLD COINS
@@ -701,10 +701,10 @@ func activate_turn_end_passives():
 						main.player.trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 						main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 						main.sound_manager.play_sound(DAMAGE_LIGHT)
-						main.enemy.take_damage(1)
-						main.total_damage_dealt += 1
-						create_floating_label(1,"DAMAGE","ENEMY")
-					await get_tree().create_timer(0.1, true).timeout
+						main.enemy.take_damage(2)
+						main.total_damage_dealt += 2
+						create_floating_label(2,"DAMAGE","ENEMY")
+					await get_tree().create_timer(0.1).timeout
 				if sun_sun_count == 0: break
 		
 		#PRIORITY 3: SHINED GOLD COINS
@@ -720,10 +720,10 @@ func activate_turn_end_passives():
 						main.player.trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 						main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 						main.sound_manager.play_sound(DAMAGE_LIGHT)
-						main.enemy.take_damage(1)
-						main.total_damage_dealt += 1
-						create_floating_label(1,"DAMAGE","ENEMY")
-					await get_tree().create_timer(0.1, true).timeout
+						main.enemy.take_damage(2)
+						main.total_damage_dealt += 2
+						create_floating_label(2,"DAMAGE","ENEMY")
+					await get_tree().create_timer(0.1).timeout
 				if sun_sun_count == 0: break
 		keeper_coin_calculation()
 		await get_tree().create_timer(0.6, true).timeout
@@ -815,10 +815,10 @@ func end_turn():
 		main.add_child(latest_pair_left_coin)
 		if main.player.has_deposit:
 			main.player.trigger_temp_passive("deposit","DEPOSIT")
-			if randi_range(1,10) == 1:
+			if randi_range(1,5) == 1:
 				latest_pair_left_coin.is_stamped = true
 			create_floating_label(1,"GAIN","PLAYER")
-			gain += 1
+			main.player.gain += 2
 		if main.player.has_coin_snipe:
 			main.player.trigger_temp_passive("coin_snipe","COIN SNIPE")
 			main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
@@ -838,10 +838,10 @@ func end_turn():
 		main.player.current_reserve += 2
 		if main.player.has_deposit:
 			main.player.trigger_temp_passive("deposit","DEPOSIT")
-			if randi_range(1,10) == 1:
+			if randi_range(1,5) == 1:
 				latest_pair_right_coin.is_stamped = true
 			create_floating_label(1,"GAIN","PLAYER")
-			gain += 1
+			main.player.gain += 2
 		if main.player.has_coin_snipe:
 			main.player.trigger_temp_passive("coin_snipe","COIN SNIPE")
 			main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)

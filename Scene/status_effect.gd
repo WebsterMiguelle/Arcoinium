@@ -183,7 +183,7 @@ func update_desc(stack):
 	},
 		
 	22: {"name": "FULLY PAID",
-	"desc": "If an ally was SETTLEs all their DEBT, gain a Turn.",
+	"desc": "If an ally SETTLEs all their DEBT, gain a Turn.",
 	"color": "#f2aa00"
 	},
 	23:{"name": "FOCUSED",

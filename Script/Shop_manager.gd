@@ -37,7 +37,7 @@ var all_cards = [
 	{"id": 2, "name": "Wish Bone", "rank": "B", "desc": "+20% SILVER Flip Rate."},
 	{"id": 3, "name": "Golden Clover", "rank": "B", "desc": "+10% GOLD Flip Rate."},
 	{"id": 4, "name": "Keeper's Scroll", "rank": "B", "desc": "I shall accompany you. When you receive Damage, I gain a Turn and will flip 1 STAMPED COPPER MOON-SUN Pair. Max Coin Flip increases by 2 each succeeding turn."},
-	{"id": 5, "name": "Flip Sequence", "rank": "B", "desc": "Flip the Last Coin played to its other side. For each Flip/Upgrade that occurred during End Turn Sequence, Deal 1 DAMAGE."},
+	{"id": 5, "name": "Flip Sequence", "rank": "B", "desc": "Flip the Last Coin played to its other side. For each Flip/Upgrade that occurred during End Turn Sequence, Deal 2 DAMAGE."},
 	{"id": 6, "name": "Seal of Approval", "rank": "B", "desc": "The first 2 Coins placed on the Arcane Circle become STAMPED. At the end of the turn, Remove all STAMP from Played Coins and Upgrade them."},
 	{"id": 7, "name": "Value Increase", "rank": "B", "desc": "Upgrade all RESERVED Coins next turn. Upgrading Beyond Gold applies SHINE instead."},
 	{"id": 8, "name": "Lending Charge", "rank": "B", "desc": "SUN-MOON Pairs apply 3 DEBT. If all played Pairs are SUN-MOON, apply double DEBT."},
@@ -51,7 +51,7 @@ var all_cards = [
 	{"id": 15, "name": "Passive Income", "rank": "A", "desc": "Generate RESERVED DAZZLED Coins equal to 10% of Enemy Damage taken."},
 	{"id": 16, "name": "Magic Trick", "rank": "A", "desc": "If you played 8+ Coins, the 1st Coin Pair generates copies of itself into the 2nd, 3rd, and 4th Pair at the end of the turn."},
 	{"id": 17, "name": "Tax Evasion", "rank": "A", "desc": "When DEBT is applied to you, halve it, return the removed DEBT to the Enemy, and deal DAMAGE equal to the returned DEBT."},
-	{"id": 18, "name": "Payback", "rank": "A", "desc": "After taking Heavy Damage 4 times, cleanse all Debuffs and generate 12 SHINED SILVER SUN Coins next turn. Reset the counter afterwards."},
+	{"id": 18, "name": "Payback", "rank": "A", "desc": "After taking Heavy Damage, generate 8 SHINED COPPER SUN COINs."},
 	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "Loan Shark accompanies you. For each Enemy Coin Flip, Loan Shark detonates 2% of their DEBT as DAMAGE. Each Enemy Coin Flip has a chance equal to their current DEBT (up to 100%) to become DAZZLED."},
 	{"id": 20, "name": "Spare Change", "rank": "A", "desc": "Re-Flipping retrieves all RESERVED Coins. Retrieving a STAMPED Coin restores 1 Re-Flip."},
 	{"id": 21, "name": "Coin Barrage", "rank": "A", "desc": "+20% Silver Flip Rate. Every time you Flip 10 SILVER/GOLD Coins in a turn, deal 10 Damage."},
@@ -61,7 +61,7 @@ var all_cards = [
 	{"id": 24, "name": "Bankrupt", "rank": "S", "desc": "Your Coin Bar will only flip VOIDED Coins. For each VOIDED Coin Played/Cleansed, apply 2 DEBT to Self/Enemy. Execute the enemy if their DEBT is higher than their Coins."},
 	{"id": 25, "name": "All In", "rank": "S", "desc": "If the Arcane Circle is empty at End Turn, automatically Flip 20 SILVER Coins with a 50% Chance of being STAMPED. Each Statused Coin flipped this way deals 3 DAMAGE."},
 	{"id": 26, "name": "Withdraw", "rank": "B", "desc": "Removing a RESERVED Coin deals 1 DAMAGE. Statused Coins deal 3 DAMAGE instead."},
-	{"id": 27, "name": "Deposit", "rank": "A", "desc": "Max Reserve +4. RESERVING a Coin applies 1 GAIN with a 10% Chance to be STAMPED."},
+	{"id": 27, "name": "Deposit", "rank": "A", "desc": "Max Reserve +2. RESERVING a Coin applies 2 GAIN with a 20% Chance to be STAMPED."},
 	{"id": 28, "name": "Dividend", "rank": "A", "desc": "Each RESERVED Coin has a 30% chance to generate a copy of itself next turn."},
 	{"id": 29, "name": "Cash Out", "rank": "S", "desc": "If there are 4 or more RESERVED Coins at the end of a Player or Enemy Turn, gain an EXTRA TURN. During Extra Turns, you can only Re-Flip and cannot gain additional Extra Turns."}
 ];
@@ -94,6 +94,8 @@ func show_shop_async(player):
 	
 	while not shop_done:
 		await get_tree().process_frame
+		if main.is_game_over:
+			return
 		
 func draw_cards(from_pool: Array, amount: int) -> Array:
 	var result = []
@@ -309,7 +311,7 @@ func apply_item(card_id):
 		27:
 			print("A-Rank: Deposit")
 			main.player.has_deposit = true
-			main.player.max_reserve += 4
+			main.player.max_reserve += 2
 		28:
 			print("A-Rank: Dividend")
 			main.player.has_dividend = true

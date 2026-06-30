@@ -621,6 +621,9 @@ func coin_calculation():
 	return [total_damage,total_gain,total_debt,total_thrift, total_spend, shined_sun_boost, shined_moon_boost, void_count]
 
 func reserve(is_generated = false, pickpocketed = false, dazzled = false):
+	if !is_generated and coin == 1:
+		return
+	
 	main.overall_reserved_coins += 1
 	print("RESERVE")
 	main.sound_manager.play_sound(COIN_FLIP)
@@ -720,10 +723,10 @@ func reserve(is_generated = false, pickpocketed = false, dazzled = false):
 		
 	if has_deposit:
 		trigger_temp_passive("deposit","DEPOSIT")
-		if randi_range(1,10) == 1:
+		if randi_range(1,5) == 1:
 			c.is_stamped = true
 		create_floating_label(1,"GAIN","PLAYER")
-		gain += 1
+		gain += 2
 		
 	main.add_child(c)
 
@@ -747,6 +750,9 @@ func reserve(is_generated = false, pickpocketed = false, dazzled = false):
 				main.tally_end_turn()
 				tally = false
 				return
+	if coin == 1:
+		toggle_button(main.reserve_button,true)
+		toggle_button(main.flip_button,true)
 
 func flip():
 	
@@ -786,6 +792,12 @@ func flip():
 			if dazzle_chance == 1:
 				c.add_status(CoinStatus.DAZZLED)
 		c.add_to_group("reserved coins")
+		if has_deposit:
+			trigger_temp_passive("deposit","DEPOSIT")
+			if randi_range(1,5) == 1:
+				c.is_stamped = true
+			create_floating_label(1,"GAIN","PLAYER")
+			gain += 2
 	else:
 		c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
 		if starstruck:
@@ -831,9 +843,9 @@ func flip():
 			trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 			main.particle_manager.spawn_particle(DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 			main.sound_manager.play_sound(GAIN_EFFECT)
-			main.enemy.take_damage(1)
-			main.total_damage_dealt += 1
-			create_floating_label(1,"DAMAGE","ENEMY")
+			main.enemy.take_damage(2)
+			main.total_damage_dealt += 2
+			create_floating_label(2,"DAMAGE","ENEMY")
 
 
 	if c.base_value > 2:
@@ -1352,10 +1364,10 @@ func end_turn():
 		main.add_child(latest_pair_left_coin)
 		if has_deposit:
 			trigger_temp_passive("deposit","DEPOSIT")
-			if randi_range(1,10) == 1:
+			if randi_range(1,5) == 1:
 				latest_pair_left_coin.is_stamped = true
 			create_floating_label(1,"GAIN","PLAYER")
-			gain += 1
+			gain += 2
 		
 		if has_coin_snipe:
 			trigger_temp_passive("coin_snipe","COIN SNIPE")
@@ -1376,10 +1388,10 @@ func end_turn():
 		current_reserve += 2
 		if has_deposit:
 			trigger_temp_passive("deposit","DEPOSIT")
-			if randi_range(1,10) == 1:
+			if randi_range(1,5) == 1:
 				latest_pair_right_coin.is_stamped = true
 			create_floating_label(1,"GAIN","PLAYER")
-			gain += 1
+			gain += 2
 	
 		if has_coin_snipe:
 			trigger_temp_passive("coin_snipe","COIN SNIPE")
@@ -1548,7 +1560,7 @@ func activate_player_turn_start_passives():
 	#PAYBACK
 	if has_payback and payback_used and payback_coins != 0:
 		trigger_temp_passive("payback","PAYBACK")
-		payback_coins = 12
+		payback_coins = 8
 		main.sound_manager.play_sound(THRIFT)
 		main.endTurn_button.disabled = true
 		toggle_button(main.re_flip_button,true)
@@ -1569,10 +1581,10 @@ func activate_player_turn_start_passives():
 				c.add_to_group("reserved coins")
 				if has_deposit:
 					trigger_temp_passive("deposit","DEPOSIT")
-					if randi_range(1,10) == 1:
+					if randi_range(1,2) == 1:
 						c.is_stamped = true
 					create_floating_label(1,"GAIN","PLAYER")
-					gain += 1
+					gain += 2
 					
 			else:
 				c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
@@ -1581,7 +1593,6 @@ func activate_player_turn_start_passives():
 			if current_played_coin <= 2 and has_advanced_planning:
 				c.is_stamped = true
 			#Guaranteed Silver Flips
-			c.upgrade_to_silver()
 			c.add_status(CoinStatus.SHINED)
 			main.add_child(c);
 			
@@ -1641,9 +1652,9 @@ func activate_player_turn_end_passives():
 				trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 				main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 				main.sound_manager.play_sound(DAMAGE_LIGHT)
-				main.enemy.take_damage(1)
-				main.total_damage_dealt += 1
-				create_floating_label(1,"DAMAGE","ENEMY")
+				main.enemy.take_damage(2)
+				main.total_damage_dealt += 2
+				create_floating_label(2,"DAMAGE","ENEMY")
 			await get_tree().create_timer(0.1).timeout
 	if has_dazzle:
 		await get_tree().create_timer(0.6).timeout
@@ -1683,9 +1694,9 @@ func activate_player_turn_end_passives():
 		main.sound_manager.play_sound(COIN_FLIP)
 		main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 		main.sound_manager.play_sound(DAMAGE_LIGHT)
-		main.enemy.take_damage(1)
-		main.total_damage_dealt += 1
-		create_floating_label(1,"DAMAGE","ENEMY")
+		main.enemy.take_damage(2)
+		main.total_damage_dealt += 2
+		create_floating_label(2,"DAMAGE","ENEMY")
 		coin_calculation()
 		await get_tree().create_timer(0.6).timeout
 		if main.enemy.coin == 0:
@@ -1709,9 +1720,9 @@ func activate_player_turn_end_passives():
 					trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(DAMAGE_LIGHT)
-					main.enemy.take_damage(1)
-					main.total_damage_dealt += 1
-					create_floating_label(1,"DAMAGE","ENEMY")
+					main.enemy.take_damage(2)
+					main.total_damage_dealt += 2
+					create_floating_label(2,"DAMAGE","ENEMY")
 				if has_coin_snipe:
 					trigger_temp_passive("coin_snipe","COIN SNIPE")
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
@@ -1729,9 +1740,9 @@ func activate_player_turn_end_passives():
 					trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(DAMAGE_LIGHT)
-					main.enemy.take_damage(1)
-					main.total_damage_dealt += 1
-					create_floating_label(1,"DAMAGE","ENEMY")
+					main.enemy.take_damage(2)
+					main.total_damage_dealt += 2
+					create_floating_label(2,"DAMAGE","ENEMY")
 				if has_coin_snipe:
 					trigger_temp_passive("coin_snipe","COIN SNIPE")
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
@@ -1769,9 +1780,9 @@ func activate_player_turn_end_passives():
 					trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(DAMAGE_LIGHT)
-					main.enemy.take_damage(1)
-					main.total_damage_dealt += 1
-					create_floating_label(1,"DAMAGE","ENEMY")
+					main.enemy.take_damage(2)
+					main.total_damage_dealt += 2
+					create_floating_label(2,"DAMAGE","ENEMY")
 				coin_calculation()
 				await get_tree().create_timer(0.1).timeout
 		await get_tree().create_timer(0.6).timeout
@@ -1791,9 +1802,9 @@ func activate_player_turn_end_passives():
 					trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(DAMAGE_LIGHT)
-					main.enemy.take_damage(1)
-					main.total_damage_dealt += 1
-					create_floating_label(1,"DAMAGE","ENEMY")
+					main.enemy.take_damage(2)
+					main.total_damage_dealt += 2
+					create_floating_label(2,"DAMAGE","ENEMY")
 				await get_tree().create_timer(0.1).timeout
 			if moon_moon_count == 0: break
 		
@@ -1810,9 +1821,9 @@ func activate_player_turn_end_passives():
 						trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 						main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 						main.sound_manager.play_sound(DAMAGE_LIGHT)
-						main.enemy.take_damage(1)
-						main.total_damage_dealt += 1
-						create_floating_label(1,"DAMAGE","ENEMY")
+						main.enemy.take_damage(2)
+						main.total_damage_dealt += 2
+						create_floating_label(2,"DAMAGE","ENEMY")
 					await get_tree().create_timer(0.1).timeout
 				if moon_moon_count == 0: break
 		coin_calculation()
@@ -1834,9 +1845,9 @@ func activate_player_turn_end_passives():
 					trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(DAMAGE_LIGHT)
-					main.enemy.take_damage(1)
-					main.total_damage_dealt += 1
-					create_floating_label(1,"DAMAGE","ENEMY")
+					main.enemy.take_damage(2)
+					main.total_damage_dealt += 2
+					create_floating_label(2,"DAMAGE","ENEMY")
 				await get_tree().create_timer(0.1).timeout
 			if sun_sun_count == 0: break
 				
@@ -1853,9 +1864,9 @@ func activate_player_turn_end_passives():
 						trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 						main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 						main.sound_manager.play_sound(DAMAGE_LIGHT)
-						main.enemy.take_damage(1)
-						main.total_damage_dealt += 1
-						create_floating_label(1,"DAMAGE","ENEMY")
+						main.enemy.take_damage(2)
+						main.total_damage_dealt += 2
+						create_floating_label(2,"DAMAGE","ENEMY")
 					await get_tree().create_timer(0.1).timeout
 				if sun_sun_count == 0: break
 		
@@ -1872,9 +1883,9 @@ func activate_player_turn_end_passives():
 						trigger_temp_passive("impromptu_flip","FLIP SEQUENCE")
 						main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 						main.sound_manager.play_sound(DAMAGE_LIGHT)
-						main.enemy.take_damage(1)
-						main.total_damage_dealt += 1
-						create_floating_label(1,"DAMAGE","ENEMY")
+						main.enemy.take_damage(2)
+						main.total_damage_dealt += 2
+						create_floating_label(2,"DAMAGE","ENEMY")
 					await get_tree().create_timer(0.1).timeout
 				if sun_sun_count == 0: break
 		coin_calculation()
@@ -1907,7 +1918,7 @@ func extra_turn():
 	toggle_button(main.reserve_button,true)
 	toggle_button(main.endTurn_button,false)
 	
-func toggle_button(btn: BaseButton, make_disabled: bool) -> void:
+func toggle_button(btn, make_disabled: bool) -> void:
 	btn.disabled = make_disabled
 	
 	if make_disabled:

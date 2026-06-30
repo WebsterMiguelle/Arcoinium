@@ -7,11 +7,13 @@ var is_paused: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:	
+	sfx_player.bus = "SFX"
 	sfx_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	sfx_player.play()
 	playback = sfx_player.get_stream_playback()
 	
 	if bgm_player:
+		bgm_player.bus = "BGM"
 		bgm_player.process_mode = Node.PROCESS_MODE_ALWAYS
 
 

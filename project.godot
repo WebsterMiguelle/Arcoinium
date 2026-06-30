@@ -24,6 +24,7 @@ buses/default_bus_layout="uid://dapxyh33exxxc"
 SceneTransition="*uid://dtv64xe1i5jfr"
 PlayerSingleton="*uid://okw61psq4rl4"
 PauseManager="*uid://lj55ln6c6yqi"
+GameSettings="*uid://qbw8yhw1a5ni"
 
 [display]
 
@@ -32,8 +33,8 @@ window/stretch/mode="viewport"
 
 [global_group]
 
-point_light=""
 particle_manager=""
+point_light=""
 
 [gui]
 

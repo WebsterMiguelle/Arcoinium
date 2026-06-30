@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c7ppyupuuc7tu"
-path="res://.godot/imported/Passive_Icons.png-2329854b357c4ce15168a06f3531b75c.ctex"
+uid="uid://c5gnsbgjlhxq8"
+path="res://.godot/imported/shelfsprite.png-31a37fa66b2feec931cc848291714fb4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Passive_Icons.png"
-dest_files=["res://.godot/imported/Passive_Icons.png-2329854b357c4ce15168a06f3531b75c.ctex"]
+source_file="res://Assets/shelfsprite.png"
+dest_files=["res://.godot/imported/shelfsprite.png-31a37fa66b2feec931cc848291714fb4.ctex"]
 
 [params]
 

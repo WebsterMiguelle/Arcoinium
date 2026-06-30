@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c7ppyupuuc7tu"
-path="res://.godot/imported/Passive_Icons.png-2329854b357c4ce15168a06f3531b75c.ctex"
+uid="uid://sabqjf666id4"
+path="res://.godot/imported/reserve_area_outside.png-b6b333a3c2b5f805633863b474941949.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Passive_Icons.png"
-dest_files=["res://.godot/imported/Passive_Icons.png-2329854b357c4ce15168a06f3531b75c.ctex"]
+source_file="res://Assets/reserve_area_outside.png"
+dest_files=["res://.godot/imported/reserve_area_outside.png-b6b333a3c2b5f805633863b474941949.ctex"]
 
 [params]
 

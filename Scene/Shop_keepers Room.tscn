@@ -8,6 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://dhl4j3m1ok2d2" path="res://Assets/ShopkeeperHand1.png" id="6_at7dl"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="7_vits8"]
 [ext_resource type="Texture2D" uid="uid://bqa81o3psvkcl" path="res://Assets/ShopkeeperHand2.png" id="7_y1smu"]
+[ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="9_2gtc7"]
+[ext_resource type="StyleBox" uid="uid://bhflgrh4jdv5m" path="res://Assets/SavedTexture/PressedButtonTexture.tres" id="10_x4hr6"]
 
 [sub_resource type="Gradient" id="Gradient_75buv"]
 offsets = PackedFloat32Array(0, 0.22742476)
@@ -152,7 +154,9 @@ offset_top = 477.0
 offset_right = 180.0
 offset_bottom = 522.0
 theme_override_font_sizes/font_size = 35
-theme_override_styles/normal = SubResource("StyleBoxFlat_2gtc7")
+theme_override_styles/normal = ExtResource("9_2gtc7")
+theme_override_styles/pressed = ExtResource("10_x4hr6")
+theme_override_styles/hover = ExtResource("9_2gtc7")
 action_mode = 0
 text = "BACK"
 

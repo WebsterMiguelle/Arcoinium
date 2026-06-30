@@ -17,8 +17,13 @@ const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
 # NEW: Reference the new text box you just made!
 @onready var descriptions: Label = $Background/Descriptions
 
+
 var player_ref
 var shop_done := false
+var refresh_count := 0
+var purchased_ids := []
+var current_cards := []
+var card_nodes := []
 
 var purchase_count = 0
 
@@ -61,8 +66,11 @@ var all_cards = [
 	{"id": 29, "name": "Cash Out", "rank": "S", "desc": "If there are 4 or more RESERVED Coins at the end of a Player or Enemy Turn, gain an EXTRA TURN. During Extra Turns, you can only Re-Flip and cannot gain additional Extra Turns."}
 ];
 
+@warning_ignore("shadowed_variable")
 func show_shop_async(player):
-	
+	refresh_count = 0
+	purchased_ids = []
+	current_cards = []
 	carpet.modulate.a = 0
 	shop_keeper.modulate.a = 0
 	await main.sound_manager.play_sound(SHOP_BELL)
@@ -98,53 +106,81 @@ func draw_cards(from_pool: Array, amount: int) -> Array:
 	return result
 
 func generate_shop():
-	for child in container.get_children():
-		child.queue_free()
+	current_cards = []
 		
 	var pool = all_cards.duplicate()
 	pool = pool.filter(func(card):
-		return not is_card_owned(card["id"])
+		return not is_card_owned(card["id"]) 
 	)
 	
 	var b_pool = pool.filter(func(c): return c["rank"] == "B")
 	var a_pool = pool.filter(func(c): return c["rank"] == "A")
 	var s_pool = pool.filter(func(c): return c["rank"] == "S")
 	
-	var selected_cards = []
-	selected_cards += draw_cards(b_pool, 2)
-	selected_cards += draw_cards(a_pool, 4)
-	selected_cards += draw_cards(s_pool, 2)
-
-	for data in selected_cards:
-		var card = Shop_card.instantiate()
 	
-		card.card_id = data["id"]
-		card.card_name = data["name"]
-		card.card_rank = data["rank"]
+	current_cards += draw_cards(b_pool, 2)
+	current_cards += draw_cards(a_pool, 4)
+	current_cards += draw_cards(s_pool, 2)
 		
-		# NEW: Hand the description to the shop card!
-		card.card_desc = data.get("desc", "")
-		
-		var base_price = 10
-		match card.card_rank:
-			"S": base_price = 30
-			"A": base_price = 20
-			"B": base_price = 10
-			
+	build_full_grid()
+	
+	
+func create_card_node(data: Dictionary) -> Node:
+	var card = Shop_card.instantiate()
+	
+	card.card_id = data["id"]
+	card.card_name = data["name"]
+	card.card_rank = data["rank"]
+	card.card_desc = data.get("desc", "")
+	
+	var base_price = 10
+	match card.card_rank:
+		"S": base_price = 30
+		"A": base_price = 20
+		"B": base_price = 10
+	base_price += refresh_count * 5
+	
+	if main.player.greed:
+		base_price += refresh_count * 10
+	else:
+		base_price += refresh_count * 5
+	
+	card.price = base_price
+	if main.player.greed:
+		card.price = int(card.price * 1.5)
+	card.stock = 1
+	
+	card.card_bought.connect(_on_card_bought.bind(card))
+	card.card_hovered.connect(_on_card_hovered)
+	card.card_unhovered.connect(_on_card_unhovered)
+	card.setup(main)
+	return card
 
-		card.price = base_price
-		if main.player.greed:
-			card.price = int(base_price * 1.5)
-		card.stock = 1
-		
-		card.card_bought.connect(_on_card_bought.bind(card))
-		
-		# NEW: Listen for the hover signals!
-		card.card_hovered.connect(_on_card_hovered)
-		card.card_unhovered.connect(_on_card_unhovered)
-		card.setup(main)
+func mark_purchased(card) -> void:
+	card.disabled = true
+	card.modulate = Color(0.5, 0.5, 0.5)
+
+func animate_card_appear(card) -> void:
+	card.scale = Vector2(0.6, 0.6)
+	card.modulate.a = 0.0
+	var tw = create_tween()
+	tw.set_parallel(true)
+	tw.tween_property(card, "scale", Vector2(1, 1), 0.25)\
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_property(card, "modulate:a", 1.0, 0.2)
+
+func build_full_grid() -> void:
+	for child in container.get_children():
+		child.queue_free()
+	card_nodes = []
+	
+	for data in current_cards:
+		var card = create_card_node(data)
 		container.add_child(card)
-
+		card_nodes.append(card)
+		if purchased_ids.has(data["id"]):
+			mark_purchased(card)
+		
 # NEW: Update the label when hovered
 func _on_card_hovered(description_text: String) -> void:
 	if is_instance_valid(main.player_info_menu):
@@ -162,6 +198,7 @@ func _on_card_bought(card_id, price, card):
 	if player_ref.coin >= price:
 		purchase_count += 1
 		player_ref.coin -= price
+		purchased_ids.append(card_id)
 		apply_item(card_id)
 		emit_signal("item_purchased", card_id, price)
 		card.disabled = true
@@ -377,3 +414,41 @@ func is_card_owned(card_id: int) -> bool:
 			return main.player.has_cash_out
 		_:
 			return false
+
+
+func _on_refresh_pressed() -> void:
+	refresh_count += 1
+	var shown_ids = current_cards.map(func(c): return c["id"])
+	var pool = all_cards.duplicate()
+	pool = pool.filter(func(card):
+		return not is_card_owned(card["id"]) \
+			and not purchased_ids.has(card["id"]) \
+			and not shown_ids.has(card["id"])
+	)
+	var b_pool = pool.filter(func(c): return c["rank"] == "B")
+	var a_pool = pool.filter(func(c): return c["rank"] == "A")
+	var s_pool = pool.filter(func(c): return c["rank"] == "S")
+	
+	for i in range(current_cards.size()):
+		var data = current_cards[i]
+		if purchased_ids.has(data["id"]):
+			continue  
+		
+		var replacement = null
+		match data["rank"]:
+			"B": replacement = draw_cards(b_pool, 1)
+			"A": replacement = draw_cards(a_pool, 1)
+			"S": replacement = draw_cards(s_pool, 1)
+		
+		if replacement and replacement.size() > 0:
+			current_cards[i] = replacement[0]
+			var old_node = card_nodes[i]
+			var slot_index = old_node.get_index()  
+			old_node.queue_free()
+			
+			var new_card = create_card_node(current_cards[i])
+			container.add_child(new_card)
+			container.move_child(new_card, slot_index)
+			card_nodes[i] = new_card
+			
+			animate_card_appear(new_card)

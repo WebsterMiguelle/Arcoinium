@@ -100,6 +100,7 @@ func _on_advance_mode_mouse_exited() -> void:
 
 func _on_advance_mode_pressed() -> void:
 	SceneTransition.tutorial_advance_mode = true
+	SceneTransition.tutorial_from_startup = false
 	SceneTransition.load_scene("res://Scene/tutorial_main.tscn")
 
 func _on_basic_mode_mouse_entered() -> void:
@@ -123,6 +124,7 @@ func _on_basic_mode_mouse_exited() -> void:
 
 func _on_basic_mode_pressed() -> void:
 	SceneTransition.tutorial_advance_mode = false
+	SceneTransition.tutorial_from_startup = false
 	SceneTransition.load_scene("res://Scene/tutorial_main.tscn")
 
 func _on_archive_button_pressed() -> void:

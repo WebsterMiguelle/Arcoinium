@@ -54,9 +54,7 @@ const LINES = {
 		"Re-Flip, bend the odds to your will.",
 		"You may only Re-Flip a certain times per turn..." ],
 	"sk_endturn": [
-		"Bold! You end your turn.",
-		"Now your coins clash against mine.",
-		"Pray they hold." ],
+		"Cast your Coin Spell. Now you end your turn."],
 	"sk_reserve": [
 		"Ah, the Reserve.\n A cunning move.",
 		"Reserved coins returns directly to the Circle\nnext turn.",
@@ -76,6 +74,8 @@ const LINES = {
 		"...You have bested me.",
 		"The lesson is complete, Coin Caster.",
 		"Go. The real world awaits you." ],
+	"sk_to_advance": [
+		"One more round, and then you may go."],
 	"sk_defeat": [
 		"Hmph. You still have much to learn.",
 		"Return when you are ready, Caster." ],

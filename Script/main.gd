@@ -312,7 +312,7 @@ func _ready():
 	dusk_particles.emitting = true
 	dawn_particles.emitting = false
 	
-	spin_reserve_rug(5.0)
+	spin_reserve_rug(20.0)
 	
 	await get_tree().create_timer(0.4).timeout
 	await _play_fake_coin_intro()
@@ -1528,10 +1528,10 @@ func boss_dramatic_slowdown() -> void:
 	for i in range(20):
 		sound_manager.play_sound(CRITICAL)
 		particle_manager.spawn_particle(SPEND_EXPLOSION_PARTICLE,enemy_portrait.global_position)
-		particle_manager.spawn_particle(GAIN_EFFECT_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,600)))
-		particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,600)))
-		particle_manager.spawn_particle(SPEND_DAMAGE_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,600)))
-		particle_manager.spawn_particle(INFLATION_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,600)))
+		particle_manager.spawn_particle(GAIN_EFFECT_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,1000)))
+		particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,1000)))
+		particle_manager.spawn_particle(SPEND_DAMAGE_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,1000)))
+		particle_manager.spawn_particle(INFLATION_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,1000)))
 		particle_manager.spawn_particle(COIN_BARRAGE_PARTICLE,enemy_portrait.global_position)
 		await get_tree().create_timer(0.2).timeout
 		camera_2d.add_trauma(2.0)

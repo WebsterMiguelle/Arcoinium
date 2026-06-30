@@ -421,7 +421,7 @@ func setup(m,enemy):
 			else:
 				has_radiant = true
 				max_coin = 999
-				coin = 750
+				coin = 600
 				max_playable_coins = 16
 				silver_flip_rate = 0
 				gold_flip_rate = 1
@@ -1217,16 +1217,9 @@ func end_enemy_turn():
 
 
 	# 5. Player 'Payback' Revive Check
-	if main.player.has_payback and heavy_hit_count == 4: 
+	if main.player.has_payback and heavy_hit_count == 1: 
 		main.player.payback_used = true
 		main.player.payback_coins = 8
-		main.player.debt = 0
-		main.player.spend = 0
-		main.player.thrift = 0
-		main.player.lock = false
-		main.player.slow = false
-		main.player.starstruck = false
-		main.player.tally = 0
 		heavy_hit_count = 0
 	# -- Post-Turn Enemy Visuals (Stances & Vignettes) --
 	if main.player.coin > 0 and coin > 0:

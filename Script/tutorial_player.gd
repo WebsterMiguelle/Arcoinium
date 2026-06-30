@@ -528,6 +528,9 @@ func coin_calculation():
 	return [total_damage,total_gain,total_debt,total_thrift, total_spend, shined_sun_boost, shined_moon_boost, void_count]
 
 func reserve(is_generated = false, pickpocketed = false, dazzled = false):
+	if !is_generated and (coin == 1 or current_reserve >= max_reserve):
+		return
+	
 	main.overall_reserved_coins += 1
 	print("RESERVE")
 	main.sound_manager.play_sound(COIN_FLIP)
@@ -654,7 +657,9 @@ func reserve(is_generated = false, pickpocketed = false, dazzled = false):
 				main.tally_end_turn()
 				tally = false
 				return
-
+	if coin == 1:
+		toggle_button(main.reserve_button,true)
+		toggle_button(main.flip_button,true)
 func flip():
 	
 	var is_deck_full = false
@@ -1647,7 +1652,7 @@ func activate_player_turn_end_passives():
 	
 
 	
-func toggle_button(btn: Button, make_disabled: bool) -> void:
+func toggle_button(btn, make_disabled: bool) -> void:
 	btn.disabled = make_disabled
 	
 	if make_disabled:

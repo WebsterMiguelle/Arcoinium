@@ -3,6 +3,7 @@ extends CanvasLayer
 @onready var color_rect: ColorRect = $ColorRect
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 var tutorial_advance_mode: bool = false
+var tutorial_from_startup: bool = false
 
 func _ready():
 	color_rect.visible = true 

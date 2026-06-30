@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="4_u7v7i"]
 [ext_resource type="Texture2D" uid="uid://eeepgts0tvpj" path="res://Assets/Passive_Icons.png" id="7_6i7er"]
 [ext_resource type="Texture2D" uid="uid://dms5d0v8hxacy" path="res://Assets/EndScrollTextSeparator.png" id="7_o7e4t"]
+[ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="9_o7e4t"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c1vsh"]
 bg_color = Color(0.50487506, 0.20082715, 0.10022793, 1)
@@ -152,6 +153,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
 theme_override_fonts/font = ExtResource("3_c1vsh")
 theme_override_font_sizes/font_size = 43
+theme_override_styles/normal = ExtResource("9_o7e4t")
 text = "Profile"
 flat = true
 

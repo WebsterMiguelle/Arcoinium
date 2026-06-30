@@ -10,7 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="7_qjnbp"]
 [ext_resource type="FontFile" uid="uid://cmvd7gycedmwg" path="res://Assets/Fonts/GothicByte.ttf" id="8_bnefy"]
 [ext_resource type="Texture2D" uid="uid://dms5d0v8hxacy" path="res://Assets/EndScrollTextSeparator.png" id="10_4dvkt"]
+[ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="11_bdxfd"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="12_4dvkt"]
+[ext_resource type="StyleBox" uid="uid://bhflgrh4jdv5m" path="res://Assets/SavedTexture/PressedButtonTexture.tres" id="12_bdxfd"]
 
 [sub_resource type="Gradient" id="Gradient_75buv"]
 offsets = PackedFloat32Array(0, 0.22742476)
@@ -236,8 +238,10 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
 theme_override_fonts/font = ExtResource("12_4dvkt")
 theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = ExtResource("11_bdxfd")
+theme_override_styles/pressed = ExtResource("12_bdxfd")
+theme_override_styles/hover = ExtResource("11_bdxfd")
 text = "Main Menu"
-flat = true
 
 [node name="TryAgain" type="Button" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer" unique_id=872656919]
 custom_minimum_size = Vector2(1.585, 3.325)
@@ -245,8 +249,10 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
 theme_override_fonts/font = ExtResource("12_4dvkt")
 theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = ExtResource("11_bdxfd")
+theme_override_styles/pressed = ExtResource("12_bdxfd")
+theme_override_styles/hover = ExtResource("11_bdxfd")
 text = "Try Again"
-flat = true
 
 [node name="RightPanel" type="PanelContainer" parent="UILayer/HBoxContainer" unique_id=283692974]
 layout_mode = 2

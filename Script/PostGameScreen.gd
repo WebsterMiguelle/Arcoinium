@@ -410,11 +410,12 @@ func setup(stats: Dictionary, player_won: bool, title_text: String, killer_text:
 	# THE FOOLPROOF PASSIVE LOOP
 	# ==========================================
 	for key in PASSIVE_DATA.keys():
-		# Check the player node directly! If they have it, spawn it.
 		if player_node.get(key) == true:
 			var data = PASSIVE_DATA[key]
 			var icon = PASSIVE_ICON.instantiate()
 			passives_grid.add_child(icon)
+		
+		
 			
 			if icon.has_method("setup"):
 				icon.setup(data["name"], data["desc"])

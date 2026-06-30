@@ -4,7 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://ctr0wbykggnh2" path="res://Assets/Detailed_Scroll_1-Sheet.png" id="2_3jht6"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="2_mej11"]
 [ext_resource type="Texture2D" uid="uid://eeepgts0tvpj" path="res://Assets/Passive_Icons.png" id="3_kid0q"]
+[ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="5_1161a"]
 [ext_resource type="Texture2D" uid="uid://c5gnsbgjlhxq8" path="res://Assets/shelfsprite.png" id="5_onjbu"]
+[ext_resource type="StyleBox" uid="uid://bhflgrh4jdv5m" path="res://Assets/SavedTexture/PressedButtonTexture.tres" id="6_4v5iy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kid0q"]
 atlas = ExtResource("2_3jht6")
@@ -509,14 +511,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7wwl"]
-bg_color = Color(0.7354271, 0.34582272, 0.2644478, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(0.92202306, 0.7475207, 0.31284854, 1)
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1161a"]
 
 [node name="Passive Archive" type="ColorRect" unique_id=11482961]
@@ -589,15 +583,17 @@ horizontal_alignment = 3
 autowrap_mode = 2
 
 [node name="Back" type="Button" parent="." unique_id=888056726]
-custom_minimum_size = Vector2(150, 50)
+custom_minimum_size = Vector2(100, 50)
 layout_mode = 0
 offset_left = 26.0
 offset_top = 23.0
-offset_right = 176.0
-offset_bottom = 73.0
+offset_right = 126.0
+offset_bottom = 87.0
 theme_override_fonts/font = ExtResource("2_mej11")
-theme_override_font_sizes/font_size = 55
-theme_override_styles/normal = SubResource("StyleBoxFlat_a7wwl")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = ExtResource("5_1161a")
+theme_override_styles/pressed = ExtResource("6_4v5iy")
+theme_override_styles/hover = ExtResource("5_1161a")
 text = "Back"
 
 [node name="B-RANK" type="Button" parent="." unique_id=2063861164]
@@ -609,6 +605,9 @@ offset_right = 180.0
 offset_bottom = 189.0
 theme_override_fonts/font = ExtResource("2_mej11")
 theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = ExtResource("5_1161a")
+theme_override_styles/pressed = ExtResource("6_4v5iy")
+theme_override_styles/hover = ExtResource("5_1161a")
 text = "B - RANK"
 
 [node name="A-RANK" type="Button" parent="." unique_id=951600385]
@@ -620,6 +619,9 @@ offset_right = 180.0
 offset_bottom = 267.0
 theme_override_fonts/font = ExtResource("2_mej11")
 theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = ExtResource("5_1161a")
+theme_override_styles/pressed = ExtResource("6_4v5iy")
+theme_override_styles/hover = ExtResource("5_1161a")
 text = "A - RANK"
 
 [node name="S-RANK" type="Button" parent="." unique_id=1590904088]
@@ -631,6 +633,9 @@ offset_right = 180.0
 offset_bottom = 342.0
 theme_override_fonts/font = ExtResource("2_mej11")
 theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = ExtResource("5_1161a")
+theme_override_styles/pressed = ExtResource("6_4v5iy")
+theme_override_styles/hover = ExtResource("5_1161a")
 text = "S - RANK"
 
 [node name="Frame" type="TextureRect" parent="." unique_id=1844933160]

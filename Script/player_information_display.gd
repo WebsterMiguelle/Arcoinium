@@ -259,27 +259,18 @@ func populate_passives(player: Node) -> void:
 	for key in active_passive_keys:
 		var icon_instance = PASSIVE_BAR_ICON.instantiate()
 		passives_container.add_child(icon_instance)
-		
 		var data = PASSIVE_DATA[key]
-		
 		icon_instance.setup(data["name"], data["desc"]) 
 		
 		icon_instance.mouse_entered.connect(show_passive_details.bind(data["name"], data["desc"]))
 		
 		
 func show_passive_details(p_name: String, p_desc: String) -> void:
-	# 1. Set the text
 	passive_name.text = p_name
 	passive_desc.text = p_desc
-	# 2. Reset the font size to your maximum/default size (e.g., 16)
 	var current_font_size = 24 
 	passive_desc.add_theme_font_size_override("font_size", current_font_size)
-	
-	# 3. Force Godot to calculate the new text dimensions
 	passive_desc.reset_size()
-	
-	# 4. While the text is wider than our box, shrink it!
-	# (We stop at 8 so it doesn't become microscopic)
 	while passive_desc.get_minimum_size().x > passive_desc.size.x and current_font_size > 10:
 		current_font_size -= 1
 		passive_desc.add_theme_font_size_override("font_size", current_font_size)
@@ -301,7 +292,7 @@ func populate_stats(player:Node) -> void:
 	
 	coins.text = stats_text
 	
-		# ==========================================
+	# ==========================================
 	# 3. POPULATE STATUS EFFECTS
 	# ==========================================
 	

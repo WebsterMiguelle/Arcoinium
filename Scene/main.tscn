@@ -56,9 +56,10 @@
 [ext_resource type="Texture2D" uid="uid://fl7tmytwihia" path="res://Assets/mapIconBoss.png" id="40_1bveb"]
 [ext_resource type="SpriteFrames" uid="uid://byl24vhte2iq4" path="res://Assets/Enemiy Portraits.tres" id="42_txj2b"]
 [ext_resource type="Texture2D" uid="uid://b63ntktw5tw4q" path="res://Assets/mapBackgroundRevamped.png" id="46_xgc63"]
-[ext_resource type="Texture2D" uid="uid://c2kfvnraituiu" path="res://Assets/reserve_area_middle.png" id="47_3drsm"]
+[ext_resource type="PackedScene" uid="uid://cysrv10cvv8al" path="res://Scene/Piggy.tscn" id="47_jmo7v"]
+[ext_resource type="Texture2D" uid="uid://ddfkw25yq0pf4" path="res://Assets/reserve_area.png" id="47_3drsm"]
 [ext_resource type="Texture2D" uid="uid://ccnxjfwwlc64x" path="res://Assets/miniCoinCasterRevamped-Sheet.png" id="47_w8oc3"]
-[ext_resource type="Texture2D" uid="uid://sabqjf666id4" path="res://Assets/reserve_area_outside.png" id="48_xj0l1"]
+[ext_resource type="SpriteFrames" uid="uid://dafl661xkwq8o" path="res://Assets/PassivesIcons.tres" id="48_3drsm"]
 [ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="49_5qrjd"]
 [ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="49_jmo7v"]
 [ext_resource type="Texture2D" uid="uid://dms5d0v8hxacy" path="res://Assets/EndScrollTextSeparator.png" id="50_f3bax"]
@@ -767,126 +768,6 @@ animations = [{
 gradient = SubResource("Gradient_f043x")
 fill = 1
 fill_from = Vector2(0.47350428, 0.45299146)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_hswqw"]
-atlas = ExtResource("9_w8oc3")
-region = Rect2(0, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_7r1k4"]
-atlas = ExtResource("9_w8oc3")
-region = Rect2(8, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_14upm"]
-atlas = ExtResource("9_w8oc3")
-region = Rect2(16, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rstpb"]
-atlas = ExtResource("9_w8oc3")
-region = Rect2(24, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qjhim"]
-atlas = ExtResource("9_w8oc3")
-region = Rect2(32, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_hy0p5"]
-atlas = ExtResource("9_w8oc3")
-region = Rect2(40, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_auua8"]
-atlas = ExtResource("9_w8oc3")
-region = Rect2(48, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_warkp"]
-atlas = ExtResource("9_w8oc3")
-region = Rect2(56, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ot2t7"]
-atlas = ExtResource("9_w8oc3")
-region = Rect2(0, 8, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ffek6"]
-atlas = ExtResource("9_w8oc3")
-region = Rect2(8, 8, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0jwfx"]
-atlas = ExtResource("9_w8oc3")
-region = Rect2(16, 8, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vpba5"]
-atlas = ExtResource("9_w8oc3")
-region = Rect2(24, 8, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_dav7s"]
-atlas = ExtResource("9_w8oc3")
-region = Rect2(32, 8, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_but7c"]
-atlas = ExtResource("9_w8oc3")
-region = Rect2(40, 8, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_dq2lh"]
-atlas = ExtResource("9_w8oc3")
-region = Rect2(48, 8, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_opku3"]
-atlas = ExtResource("9_w8oc3")
-region = Rect2(56, 8, 8, 8)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_qdodi"]
-animations = [{
-"frames": [{
-"duration": 5.0,
-"texture": SubResource("AtlasTexture_hswqw")
-}, {
-"duration": 5.0,
-"texture": SubResource("AtlasTexture_7r1k4")
-}, {
-"duration": 5.0,
-"texture": SubResource("AtlasTexture_14upm")
-}, {
-"duration": 5.0,
-"texture": SubResource("AtlasTexture_rstpb")
-}, {
-"duration": 5.0,
-"texture": SubResource("AtlasTexture_qjhim")
-}, {
-"duration": 5.0,
-"texture": SubResource("AtlasTexture_hy0p5")
-}, {
-"duration": 5.0,
-"texture": SubResource("AtlasTexture_auua8")
-}, {
-"duration": 5.0,
-"texture": SubResource("AtlasTexture_warkp")
-}, {
-"duration": 5.0,
-"texture": SubResource("AtlasTexture_ot2t7")
-}, {
-"duration": 5.0,
-"texture": SubResource("AtlasTexture_ffek6")
-}, {
-"duration": 5.0,
-"texture": SubResource("AtlasTexture_0jwfx")
-}, {
-"duration": 5.0,
-"texture": SubResource("AtlasTexture_vpba5")
-}, {
-"duration": 5.0,
-"texture": SubResource("AtlasTexture_dav7s")
-}, {
-"duration": 5.0,
-"texture": SubResource("AtlasTexture_but7c")
-}, {
-"duration": 5.0,
-"texture": SubResource("AtlasTexture_dq2lh")
-}, {
-"duration": 5.0,
-"texture": SubResource("AtlasTexture_opku3")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
 
 [sub_resource type="Gradient" id="Gradient_mlc74"]
 offsets = PackedFloat32Array(0.010080645, 0.030864198, 0.69753087)
@@ -2087,31 +1968,12 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Player Reserve Rug" type="TextureRect" parent="Player" unique_id=1081132533]
-modulate = Color(1, 0.43137255, 1, 1)
 offset_left = 1013.0
 offset_top = 328.0
 offset_right = 1191.0
 offset_bottom = 506.0
 rotation = 1.5707964
 texture = ExtResource("47_3drsm")
-
-[node name="OutsideTexture" type="TextureRect" parent="Player/Player Reserve Rug" unique_id=1827802911]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(89, 89)
-texture = ExtResource("48_xj0l1")
-
-[node name="RunesInReserveRug" type="AnimatedSprite2D" parent="Player/Player Reserve Rug" unique_id=2087048745]
-position = Vector2(89, 88.999985)
-rotation = -1.5707964
-scale = Vector2(2.5, 2.5)
-sprite_frames = SubResource("SpriteFrames_qdodi")
-autoplay = "default"
-frame_progress = 0.37594712
 
 [node name="Player Lock Particles" type="GPUParticles2D" parent="Player" unique_id=1470998698]
 position = Vector2(941, 388)
@@ -2121,10 +1983,10 @@ process_material = SubResource("ParticleProcessMaterial_4lqwv")
 
 [node name="Player Lock" type="Label" parent="Player" unique_id=1723631615]
 top_level = true
-offset_left = 855.0
-offset_top = 398.0
-offset_right = 990.0
-offset_bottom = 435.0
+offset_left = 856.0
+offset_top = 401.0
+offset_right = 991.0
+offset_bottom = 438.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4

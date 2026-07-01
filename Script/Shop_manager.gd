@@ -206,6 +206,8 @@ func _on_card_bought(card_id, price, card):
 		card.disabled = true
 		card.modulate = Color(0.5, 0.5, 0.5)
 		
+		if purchase_count >= 8:
+			main.player.toggle_button(refresh_button,true)
 		# NEW: Clear the description text when they buy it
 		if descriptions:
 			descriptions.text = ""

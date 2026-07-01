@@ -393,7 +393,7 @@ func _input(event):
 		toggle_pause()
 		
 func _unhandled_input(event: InputEvent) -> void:
-	if !event.is_action_pressed("ui_cancel"): # ESC key
+	if !from_startup and !event.is_action_pressed("ui_cancel"): # ESC key
 		return
 	#if current_turn != Turn.PLAYER:
 	#	return
@@ -851,7 +851,7 @@ func trigger_game_over(player_won: bool):
 			SceneTransition.tutorial_advance_mode = true
 			SceneTransition.reload_scene()
 		else:
-			SceneTransition.load_scene("res://Scene/Main_Menu.tscn")
+			SceneTransition.load_scene("res://Scene/SplashScreen.tscn")
 	else:
 		SceneTransition.load_scene("res://Scene/Shop_keepers Room.tscn")
 	
@@ -886,7 +886,7 @@ func handle_victory_flow():
 	player.gain_coin()
 	sound_manager.play_sound(VICTORY)
 	turn_calculation_box.exit()
-	if from_startup:
+	if from_startup and !advance_mode:
 		_say("sk_to_advance")
 	else:
 		_say("sk_victory")

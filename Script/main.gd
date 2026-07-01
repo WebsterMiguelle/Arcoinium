@@ -5,6 +5,11 @@ enum Turn {
 	ENEMY,
 	KEEPER
 }
+
+signal start_journey
+@onready var start_run: CanvasLayer = $StartRun
+
+
 const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
 const GAME_OVER_WALL_CLOSE = preload("uid://dcogb5vig426m")
 const GAME_OVER_WALL = preload("uid://cen1jkl1h44jj")
@@ -344,8 +349,8 @@ func _ready():
 	if not endTurn_button.pressed.is_connected(_on_endturn_pressed):
 		endTurn_button.pressed.connect(_on_endturn_pressed)
 	if not re_flip_button.pressed.is_connected(_on_re_flip_pressed):
-		re_flip_button.pressed.connect(_on_re_flip_pressed)      
-	battle_start()
+		re_flip_button.pressed.connect(_on_re_flip_pressed) 
+
 	
 func _unhandled_input(event: InputEvent) -> void:
 	if is_boss_defeated and is_game_over:
@@ -556,6 +561,7 @@ func show_turn_ui(text):
 	print("=============================UI DONE")
 	
 func _on_end_run_pressed():
+	start_run.visible = false
 	card_manager.visible = false
 	shop_manager.visible = false
 	player_health_label.text = "0"
@@ -874,6 +880,9 @@ func trigger_game_over(player_won: bool):
 			else:
 				title_text = "LOST IN TWILIGHT"
 				killer_text = "Twilight Sage Wins"
+		_:
+				title_text = "RUN ABANDONED"
+				killer_text = "Your fear of the upcoming journey is inevitable."
 
 	is_surrender = false
 	
@@ -890,6 +899,8 @@ func trigger_game_over(player_won: bool):
 	game_over_instance.setup(stats, player_won, title_text, killer_text, player)
 	await get_tree().create_timer(1.4, true).timeout
 	sound_manager.play_sound(DAMAGE_MODERATE)
+	await get_tree().create_timer(1.0, true).timeout
+	boss_defeat_transition.visible = false
 	
 func check_defeat():
 	if player.coin <= 0:
@@ -1554,7 +1565,6 @@ func boss_dramatic_slowdown() -> void:
 	Engine.time_scale = 0.3 
 	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.tween_property(boss_defeat_transition,"self_modulate",Color.WHITE,2)
-	boss_defeat_transition.visible = false
 	await get_tree().create_timer(3.0, true, false, true).timeout 
 	Engine.time_scale = 1.0
 
@@ -1637,3 +1647,21 @@ func spin_reserve_rug(duration_per_spin: float) -> void:
 	tween.tween_property(reserve_outside_texture, "rotation_degrees", 360.0, duration_per_spin)\
 		.as_relative()\
 		.set_trans(Tween.TRANS_LINEAR)
+
+
+func _on_start_journey_pressed() -> void:
+	var screen_height = get_viewport_rect().size.y 
+	sound_manager.stop_music()
+	sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)
+	var dramatic_pause = start_run.create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
+	dramatic_pause.tween_interval(1.0)
+	await dramatic_pause.finished
+
+	
+	var slide_out = progression_map.create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
+	slide_out.tween_property(start_run, "offset:y", -screen_height, 0.8).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN)
+	await slide_out.finished
+
+	progression_map.visible = false
+	battle_start()
+	

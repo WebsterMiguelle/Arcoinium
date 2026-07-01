@@ -333,9 +333,9 @@ func reset_stats():
 	#B-Rank
 	has_wishbone = false
 	has_golden_clover = false
-	has_solar_coin = false
-	has_lunar_coin = false
-	has_merchant_scroll = false
+	has_solar_coin = false #Note: This is SOLAR BLESSING
+	has_lunar_coin = false #Note: This is LUNAR BLESSING
+	has_merchant_scroll = false #Note: This is KEEPER'S SCROLL
 	has_impromptu_flip = false  #Note: This is FLIP SEQUENCE
 	has_advanced_planning = false #Note: This is SEAL OF APPROVAL
 
@@ -362,7 +362,7 @@ func reset_stats():
 	has_active_income = false #Note: This is FULLY PAID
 	has_pocket_money = false
 	has_passive_income = false
-	has_simple_interest = false
+	has_simple_interest = false #Note: This is FULL MOON
 
 	#DEBTOR PASSIVES
 
@@ -658,8 +658,6 @@ func reserve(is_generated = false, pickpocketed = false, dazzled = false):
 		var stamped_chance = randi_range(0,3)
 		if stamped_chance == 1:
 			c.is_stamped = true
-	if current_reserve > max_reserve:
-		gain += 3
 	if sealed and flip_clicks % 2 == 1:
 		c.is_stamped = true
 	

@@ -954,6 +954,7 @@ func end_turn():
 			shake_power += 0.5
 			main.sound_manager.play_sound(DEBT)
 			create_floating_label(turn_debt,"DEBT","ENEMY")
+			main.enemy.debt += turn_debt
 			
 	main.enemy.thrift += turn_thrift
 	main.enemy.spend += turn_spend

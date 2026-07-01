@@ -7,6 +7,7 @@ var _playing = false
 signal dialogue_finished
 const LINE_DURATION = 2.0
 const CHARS_PER_SECOND = 30.0
+@onready var shopkeeper: TextureRect = $CanvasLayer/Shopkeeper
 
 var yes_base_y: float
 var no_base_y: float
@@ -27,14 +28,21 @@ const LINES = {
 }
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	await get_tree().create_timer(1.0).timeout
 	play("welcome")
+	var fade_tween = create_tween()
+	fade_tween.tween_property(shopkeeper,"self_modulate",Color.WHITE,1.0)
 	await get_tree().process_frame 
 	yes_label.visible = false
 	no_label.visible = false
 	if is_instance_valid(yes_button) and is_instance_valid(no_button):
-		yes_base_y = yes_button.position.y
-		no_base_y = no_button.position.y
-
+		yes_base_y = 500
+		no_base_y = 500
+	await dialogue_finished
+	var tween = create_tween().set_parallel(true)
+	tween.tween_property(yes_button, "position:y", 500, 1).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(no_button, "position:y", 500, 1).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
@@ -110,9 +118,14 @@ func _on_no_button_mouse_exited() -> void:
 
 func _on_no_button_pressed() -> void:
 	play("no")
+	yes_base_y = 1000
+	no_base_y = 1000
+	var tween = create_tween().set_parallel(true)
+	tween.tween_property(yes_button, "position:y", 1000, 1).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(no_button, "position:y", 1000, 1).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	
 	await dialogue_finished
-	await get_tree().create_timer(1.0).timeout
-	SceneTransition.load_scene("res://Scene/Main_Menu.tscn")
+	SceneTransition.load_scene("res://Scene/SplashScreen.tscn")
 
 
 
@@ -131,6 +144,12 @@ func _on_yes_button_mouse_exited() -> void:
 
 func _on_yes_button_pressed() -> void:
 	play("yes")
+	yes_base_y = 1000
+	no_base_y = 1000
+	var tween = create_tween().set_parallel(true)
+	tween.tween_property(yes_button, "position:y", 1000, 1).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(no_button, "position:y", 1000, 1).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	
 	await dialogue_finished
 	SceneTransition.tutorial_advance_mode = false
 	SceneTransition.tutorial_from_startup = true

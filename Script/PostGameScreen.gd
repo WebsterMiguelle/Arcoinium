@@ -369,7 +369,9 @@ func play_slam_animation() -> void:
 	right_edge.visible = true
 	left_edge.visible = true
 	left_door.position.x = -left_door_width - 160
+	left_door.position.y = 0
 	right_door.position.x = screen_width + 160
+	right_door.position.y = 0
 	
 	var tween = create_tween()
 	
@@ -377,17 +379,12 @@ func play_slam_animation() -> void:
 	# PHASE 1: THE DOORS SLAM INWARD
 	# ==========================================
 	tween.set_parallel(true) 
-	var left_target = half_screen - left_door_width 
 	
-	tween.tween_property(left_door, "position:x", left_target, 2.5)\
+	tween.tween_property(left_door, "position:x", 0, 2.5)\
 		.set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
-		
 	
-	var right_target = half_screen
-	
-	tween.tween_property(right_door, "position:x", right_target, 2.5)\
+	tween.tween_property(right_door, "position:x", 555, 2.5)\
 		.set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
-
 	# ==========================================
 	# PHASE 2: THE IMPACT PAUSE
 	# ==========================================
@@ -396,13 +393,7 @@ func play_slam_animation() -> void:
 	tween.tween_callback(func():
 		left_edge.visible = false
 		right_edge.visible = false
-		
-		# Snap them perfectly flush the exact millisecond the jagged edges vanish!
-		# This completely hides the seam without causing a draw-order overlap.
-		left_door.position.x = half_screen - left_door_width
-		right_door.position.x = half_screen
 	)
-	
 	tween.tween_interval(0.4) 
 	
 	# ==========================================
@@ -502,7 +493,6 @@ func animate_counting_stat(label: Label, prefix: String, target_value: int, dela
 	tween.tween_property(label, "scale", Vector2(1.0, 1.0), 0.4)\
 		.set_delay(delay).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		
-	# The count up animation takes 0.8 seconds
 	tween.tween_method(
 		func(current_val: int): label.text = prefix + str(current_val),
 		0, target_value, 0.8 
@@ -511,7 +501,7 @@ func animate_counting_stat(label: Label, prefix: String, target_value: int, dela
 # ==========================================
 # DATA HANDOFF (Called from main.gd)
 # ==========================================
-# Change the last argument to 'player_node: Node'
+
 func setup(stats: Dictionary, player_won: bool, title_text: String, killer_text: String, player_node: Node) -> void:
 	player = player_node
 	end_result.text = title_text
@@ -519,8 +509,8 @@ func setup(stats: Dictionary, player_won: bool, title_text: String, killer_text:
 	run_time.text = "Run Time: " + str(round(stats["run_time"]))
 	await get_tree().process_frame
 	
-	shrink_text_to_fit(end_result, 48, 20)
-	shrink_text_to_fit(mini_message, 24, 12)
+	shrink_text_to_fit(end_result, 70, 20 )
+	shrink_text_to_fit(mini_message, 25, 15)
 	
 	stat_sequence = [
 		{"label": remaining_coins, "prefix": "Remaining Coins: ", "val": stats["remaining_coins"]},
@@ -584,7 +574,7 @@ func shrink_text_to_fit(label: Label, max_font_size: int, min_font_size: int) ->
 	
 	# While the text is physically wider than its allowed box, shrink it!
 	while label.get_minimum_size().x > label.size.x and current_font_size > min_font_size:
-		current_font_size -= 1
+		current_font_size -= 5
 		label.add_theme_font_size_override("font_size", current_font_size)
 		label.reset_size()
 

@@ -1540,6 +1540,7 @@ func boss_dramatic_slowdown() -> void:
 	sound_manager.play_sound(BOSS_DEFEATED)
 	boss_defeat_transition.self_modulate = Color("#ffffff00")
 	boss_defeat_transition.visible = true
+	boss_defeat_transition.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	for i in range(20):
 		sound_manager.play_sound(CRITICAL)
 		particle_manager.spawn_particle(SPEND_EXPLOSION_PARTICLE,enemy_portrait.global_position)
@@ -1553,6 +1554,7 @@ func boss_dramatic_slowdown() -> void:
 	Engine.time_scale = 0.3 
 	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_BOUND)
 	tween.tween_property(boss_defeat_transition,"self_modulate",Color.WHITE,2)
+	boss_defeat_transition.visible = false
 	await get_tree().create_timer(3.0, true, false, true).timeout 
 	Engine.time_scale = 1.0
 

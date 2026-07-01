@@ -2,6 +2,13 @@
 
 [ext_resource type="Script" uid="uid://b81y1v87st1oc" path="res://Scene/coin_add_particles.gd" id="1_fftk1"]
 
+[sub_resource type="Curve" id="Curve_hijrn"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_xcmvv"]
+curve = SubResource("Curve_hijrn")
+
 [sub_resource type="Curve" id="Curve_fftk1"]
 _limits = [0.0, 3.0, 0.0, 1.0]
 _data = [Vector2(0, 1.3355706), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -20,6 +27,7 @@ initial_velocity_min = 86.21
 initial_velocity_max = 185.8
 gravity = Vector3(0, 0, 0)
 scale_max = 10.0
+scale_curve = SubResource("CurveTexture_xcmvv")
 scale_over_velocity_min = 404.9
 scale_over_velocity_max = 718.38995
 scale_over_velocity_curve = SubResource("CurveTexture_hijrn")

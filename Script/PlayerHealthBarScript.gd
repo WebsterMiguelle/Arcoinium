@@ -6,19 +6,58 @@ extends Button
 var lifted_slot: Control = null
 var lift_amount: float = -8.0 
 var active_tween: Tween
+@onready var bar_background: Sprite2D = $Sprite2D
+@onready var bar_foreground: Sprite2D = $Sprite2D2
+
+#VOIDED COINBAR
+var debt_color = "#8301f9"
+@onready var void_tendrils: Sprite2D = $"Void Tendrils"
+@onready var void_light: PointLight2D = $"Void Light"
+@onready var void_particles: GPUParticles2D = $"Void Particles"
+
+
+var is_button_disabled: bool = false:
+	set(value):
+		is_button_disabled = value
+		disabled = value 
+		
+		if is_button_disabled:
+			modulate = Color(0.5, 0.5, 0.5, 1.0)
+			if lifted_slot:
+				var t = create_tween()
+				t.tween_property(lifted_slot, "position:y", 0, 0.1)
+				lifted_slot = null
+		else:
+			modulate = Color(1.0, 1.0, 1.0, 1.0)
+# ---------------------
 
 func _ready() -> void:
 	self.mouse_entered.connect(_on_mouse_hovered)
 	self.mouse_exited.connect(_on_mouse_exited)
 	
 	if player_node:
-		# Connect the signal
 		player_node.hp_changed.connect(_update_visuals)
-		# Set initial state
 		_update_visuals(player_node.coin)
 
+func change_to_void():
+	
+	bar_background.self_modulate = Color(debt_color)
+	bar_foreground.self_modulate = Color(debt_color)
+	void_tendrils.visible = true 
+	void_light.visible = true
+	void_particles.visible = true
+	var slots = coin_bar.get_children()
+	for i in range(slots.size()):
+		var sprite = slots[i].get_child(0) as AnimatedSprite2D
+		if player_node.has_pay_down:
+			sprite.self_modulate = Color.BLACK
+		else:
+			sprite.self_modulate = Color.WHITE
+
 func _pressed() -> void:
-	print("PRESSED")
+	if disabled: return # Safety check
+	
+	
 	if lifted_slot:
 		var slot = lifted_slot
 		lifted_slot = null 
@@ -31,7 +70,6 @@ func _pressed() -> void:
 		active_tween.tween_property(slot, "position:y", -20.0, 0.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		active_tween.parallel().tween_property(slot, "modulate:a", 0.0, 0.25).set_ease(Tween.EASE_IN)
 		sprite.play("Flipped Sun to Sun") 
-		
 		
 		await sprite.animation_finished
 		
@@ -55,6 +93,8 @@ func _update_visuals(current_hp: int) -> void:
 				slots[i].visible = false
 
 func _on_mouse_hovered() -> void:
+	if disabled: return # Do not lift if disabled!
+	
 	var v_slots = coin_bar.get_children().filter(func(c): return c.visible)
 	if v_slots.size() > 0 and lifted_slot == null:
 		lifted_slot = v_slots[-1]
@@ -66,7 +106,3 @@ func _on_mouse_exited() -> void:
 		var t = create_tween()
 		t.tween_property(lifted_slot, "position:y", 0, 0.1)
 		lifted_slot = null
-
-
-func _on_pressed() -> void:
-	pass # Replace with function body.

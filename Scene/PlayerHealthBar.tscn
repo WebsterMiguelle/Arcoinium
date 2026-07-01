@@ -1,7 +1,9 @@
-[gd_scene format=3 uid="uid://b01fk6f1pan7q"]
+[gd_scene format=3 uid="uid://vnsb1sd0yalg"]
 
 [ext_resource type="Script" uid="uid://deiq0ju8easi5" path="res://Script/PlayerHealthBarScript.gd" id="1_y2g15"]
+[ext_resource type="Texture2D" uid="uid://bivk5jj1h0vgt" path="res://Assets/CoinBarBackGround.png" id="2_h7tr3"]
 [ext_resource type="Texture2D" uid="uid://brn3ihcjo08pk" path="res://Assets/Coins/sun_to_moon_coin-Sheet.png" id="2_y2g15"]
+[ext_resource type="Texture2D" uid="uid://bgska0mwhsa2s" path="res://Assets/CoinBarForeGround.png" id="4_penru"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yapa2"]
 atlas = ExtResource("2_y2g15")
@@ -99,13 +101,48 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Curve" id="Curve_h7tr3"]
+_data = [Vector2(0.037914693, 0), 0.0, 0.0, 0, 0, Vector2(0.5023697, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_penru"]
+curve = SubResource("Curve_h7tr3")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6ml2w"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(21.925, 10.71, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+spread = 0.0
+initial_velocity_min = 5.0
+initial_velocity_max = 20.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.099999994
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_penru")
+
+[sub_resource type="Gradient" id="Gradient_h7tr3"]
+offsets = PackedFloat32Array(0.20386267, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_penru"]
+gradient = SubResource("Gradient_h7tr3")
+fill = 1
+fill_from = Vector2(0.32991454, 0.5589744)
+fill_to = Vector2(0.8837607, 0.37777779)
+
 [node name="PlayerHealthBar" type="Button" unique_id=2050842484]
 self_modulate = Color(1, 1, 1, 0)
 offset_top = -8.0
 offset_right = 92.0
 offset_bottom = 8.0
+scale = Vector2(0.9, 0.9)
 size_flags_vertical = 0
 script = ExtResource("1_y2g15")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=987890631]
+position = Vector2(46, 8)
+texture = ExtResource("2_h7tr3")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=644932713]
 layout_mode = 0
@@ -313,5 +350,40 @@ mouse_filter = 2
 position = Vector2(8, 8)
 sprite_frames = SubResource("SpriteFrames_yw3x7")
 animation = &"Sun_Static"
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=2103610611]
+position = Vector2(46, 8)
+texture = ExtResource("4_penru")
+
+[node name="Void Particles" type="GPUParticles2D" parent="." unique_id=778550615]
+visible = false
+position = Vector2(12.222222, 7.777778)
+amount = 72
+lifetime = 4.0
+process_material = SubResource("ParticleProcessMaterial_6ml2w")
+
+[node name="Void Light" type="PointLight2D" parent="." unique_id=1066045393]
+visible = false
+z_index = -5
+position = Vector2(41.11112, 4.0000024)
+scale = Vector2(1.8055557, 0.84722215)
+color = Color(0.81421643, 0.0005371392, 0.817145, 1)
+energy = 0.5
+range_z_max = 5
+texture = SubResource("GradientTexture2D_penru")
+
+[node name="Void Tendrils" type="Sprite2D" parent="." unique_id=1643760939]
+visible = false
+self_modulate = Color(0.257792, 0.00077062147, 0.4608047, 1)
+position = Vector2(20, 4.4444447)
+scale = Vector2(0.41666672, 0.9629629)
+texture = ExtResource("4_penru")
+
+[node name="Void Tendrils2" type="Sprite2D" parent="Void Tendrils" unique_id=1558463620]
+self_modulate = Color(0.22037649, 0.00040011093, 0.34642443, 1)
+position = Vector2(117.1019, 6.2820015)
+rotation = -3.1415925
+scale = Vector2(1.5740614, 0.4467529)
+texture = ExtResource("4_penru")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

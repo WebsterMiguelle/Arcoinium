@@ -1,0 +1,258 @@
+[gd_scene format=3 uid="uid://e4np211g5nk1"]
+
+[ext_resource type="Script" uid="uid://b4imnvw44duvd" path="res://Script/archive.gd" id="1_3bfgx"]
+[ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="2_sy8nj"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="3_c1vsh"]
+[ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="3_dfqxb"]
+[ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="3_pugqh"]
+[ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="3_sy8nj"]
+[ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="4_u7v7i"]
+[ext_resource type="Texture2D" uid="uid://eeepgts0tvpj" path="res://Assets/Passive_Icons.png" id="7_6i7er"]
+[ext_resource type="Texture2D" uid="uid://dms5d0v8hxacy" path="res://Assets/EndScrollTextSeparator.png" id="7_o7e4t"]
+[ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="9_o7e4t"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c1vsh"]
+bg_color = Color(0.50487506, 0.20082715, 0.10022793, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.9764706, 0.5058824, 0.0627451, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u7v7i"]
+texture = ExtResource("3_dfqxb")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pugqh"]
+atlas = ExtResource("3_sy8nj")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c1vsh"]
+atlas = ExtResource("3_sy8nj")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dfqxb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pugqh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c1vsh")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o7e4t"]
+texture = ExtResource("3_dfqxb")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5yd8"]
+atlas = ExtResource("7_6i7er")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ft4kv"]
+texture = ExtResource("3_dfqxb")
+
+[node name="Archive" type="ColorRect" unique_id=1725265110]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12298488, 0.12298488, 0.12298488, 1)
+script = ExtResource("1_3bfgx")
+
+[node name="Title Label" type="Label" parent="." unique_id=738909891]
+custom_minimum_size = Vector2(600, 100)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 1.0
+offset_top = 33.0
+offset_right = 1.0
+offset_bottom = 133.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_sy8nj")
+theme_override_font_sizes/font_size = 100
+text = "ARCHIVE"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="Back" type="Button" parent="." unique_id=66145436]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 0
+offset_left = 49.0
+offset_top = 58.0
+offset_right = 199.0
+offset_bottom = 108.0
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_c1vsh")
+text = "Back"
+
+[node name="Profile Archive" type="PanelContainer" parent="." unique_id=1508899290]
+custom_minimum_size = Vector2(230, 280)
+layout_mode = 0
+offset_left = 128.0
+offset_top = 192.0
+offset_right = 384.0
+offset_bottom = 512.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_u7v7i")
+
+[node name="MarginContainer" type="MarginContainer" parent="Profile Archive" unique_id=937019708]
+custom_minimum_size = Vector2(230, 280)
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Profile Archive/MarginContainer" unique_id=2046517573]
+layout_mode = 2
+theme_override_constants/separation = -9
+
+[node name="MarginContainer" type="MarginContainer" parent="Profile Archive/MarginContainer/VBoxContainer" unique_id=108772044]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 9
+theme_override_constants/margin_right = 10
+
+[node name="TextureRect" type="TextureRect" parent="Profile Archive/MarginContainer/VBoxContainer/MarginContainer" unique_id=121100561]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+texture = ExtResource("4_u7v7i")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Profile Archive/MarginContainer/VBoxContainer" unique_id=1701610643]
+position = Vector2(113.00001, 113)
+scale = Vector2(2.0000002, 1.8750001)
+sprite_frames = SubResource("SpriteFrames_dfqxb")
+autoplay = "default"
+
+[node name="TextureRect" type="TextureRect" parent="Profile Archive/MarginContainer/VBoxContainer/AnimatedSprite2D" unique_id=635581762]
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("3_pugqh")
+metadata/_edit_lock_ = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="Profile Archive/MarginContainer/VBoxContainer" unique_id=808723422]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 164
+theme_override_constants/margin_right = 10
+
+[node name="TextureRect" type="TextureRect" parent="Profile Archive/MarginContainer/VBoxContainer/MarginContainer2" unique_id=1064351261]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+texture = ExtResource("7_o7e4t")
+
+[node name="Info Button" type="Button" parent="Profile Archive/MarginContainer/VBoxContainer" unique_id=1666818700]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_c1vsh")
+theme_override_font_sizes/font_size = 43
+theme_override_styles/normal = ExtResource("9_o7e4t")
+text = "Profile"
+flat = true
+
+[node name="Passive Archive" type="PanelContainer" parent="." unique_id=1549407896]
+custom_minimum_size = Vector2(230, 280)
+layout_mode = 0
+offset_left = 448.0
+offset_top = 192.0
+offset_right = 704.0
+offset_bottom = 512.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_o7e4t")
+
+[node name="MarginContainer" type="MarginContainer" parent="Passive Archive" unique_id=1784759174]
+custom_minimum_size = Vector2(230, 280)
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 35
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Passive Archive/MarginContainer" unique_id=153624026]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="MarginContainer3" type="MarginContainer" parent="Passive Archive/MarginContainer/VBoxContainer" unique_id=286026095]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = -11
+theme_override_constants/margin_right = 10
+
+[node name="TextureRect" type="TextureRect" parent="Passive Archive/MarginContainer/VBoxContainer/MarginContainer3" unique_id=1905461409]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+texture = ExtResource("4_u7v7i")
+
+[node name="MarginContainer" type="MarginContainer" parent="Passive Archive/MarginContainer/VBoxContainer" unique_id=219766215]
+layout_mode = 2
+theme_override_constants/margin_left = 35
+theme_override_constants/margin_right = 35
+
+[node name="AnimatedSprite2D" type="TextureRect" parent="Passive Archive/MarginContainer/VBoxContainer/MarginContainer" unique_id=1870504873]
+custom_minimum_size = Vector2(100, 130)
+layout_mode = 2
+texture = SubResource("AtlasTexture_u5yd8")
+
+[node name="MarginContainer4" type="MarginContainer" parent="Passive Archive/MarginContainer/VBoxContainer" unique_id=1553736361]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 11
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = -14
+
+[node name="TextureRect" type="TextureRect" parent="Passive Archive/MarginContainer/VBoxContainer/MarginContainer4" unique_id=1158085161]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+texture = ExtResource("7_o7e4t")
+
+[node name="Passive Button" type="Button" parent="Passive Archive/MarginContainer/VBoxContainer" unique_id=1539128938]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_c1vsh")
+theme_override_font_sizes/font_size = 43
+text = "Passives"
+flat = true
+
+[node name="Status_Spell Archive" type="PanelContainer" parent="." unique_id=1669654949]
+custom_minimum_size = Vector2(230, 280)
+layout_mode = 0
+offset_left = 768.0
+offset_top = 192.0
+offset_right = 1024.0
+offset_bottom = 512.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_ft4kv")
+
+[node name="MarginContainer" type="MarginContainer" parent="Status_Spell Archive" unique_id=1191684608]
+custom_minimum_size = Vector2(230, 280)
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Status_Spell Archive/MarginContainer" unique_id=708168136]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="AnimatedSprite2D" type="TextureRect" parent="Status_Spell Archive/MarginContainer/VBoxContainer" unique_id=350853377]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+texture = ExtResource("3_pugqh")
+
+[node name="Spell_Status Button" type="Button" parent="Status_Spell Archive/MarginContainer/VBoxContainer" unique_id=1638295244]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_c1vsh")
+text = "Spell and Status"
+
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Profile Archive/MarginContainer/VBoxContainer/Info Button" to="." method="_on_info_button_pressed"]
+[connection signal="pressed" from="Passive Archive/MarginContainer/VBoxContainer/Passive Button" to="." method="_on_passive_button_pressed"]
+[connection signal="pressed" from="Status_Spell Archive/MarginContainer/VBoxContainer/Spell_Status Button" to="." method="_on_spell_status_button_pressed"]

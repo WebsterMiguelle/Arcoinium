@@ -1,0 +1,413 @@
+[gd_scene format=3 uid="uid://1lqiy1lfcalo"]
+
+[ext_resource type="Script" uid="uid://bte7pihi3plon" path="res://Script/enemy_information_display.gd" id="1_1mh3q"]
+[ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="2_cobfp"]
+[ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="3_db5qw"]
+[ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="4_3u16l"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="4_d80n4"]
+[ext_resource type="Texture2D" uid="uid://r5gatuytbe0t" path="res://Assets/taxCollector.png" id="5_wsnhc"]
+[ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="6_ce71m"]
+[ext_resource type="Texture2D" uid="uid://dfw0gb82xbava" path="res://Assets/portraitBackground.png" id="7_48a0o"]
+[ext_resource type="Texture2D" uid="uid://cjjj3ulqgawva" path="res://Assets/apprenticeMage.png" id="8_hqtl8"]
+[ext_resource type="Texture2D" uid="uid://bikjuk8fgo6p2" path="res://Assets/moonCaster-Sheet.png" id="9_4c3qr"]
+[ext_resource type="Texture2D" uid="uid://di37676qo0yu4" path="res://Assets/sunCaster-Recovered-Sheet.png" id="10_gf2hv"]
+[ext_resource type="Texture2D" uid="uid://csb6cbe5uwx3c" path="res://Assets/thrifter.png" id="11_aoc38"]
+[ext_resource type="Texture2D" uid="uid://dprlqvclal2j" path="res://Assets/trader.png" id="12_w7yfx"]
+[ext_resource type="Texture2D" uid="uid://bgomk7rj834wr" path="res://Assets/twilightSage.png" id="13_ce71m"]
+[ext_resource type="Texture2D" uid="uid://c5kws41vksxsb" path="res://Assets/twilightSageDawn.png" id="13_ydu7v"]
+[ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="14_48a0o"]
+[ext_resource type="Texture2D" uid="uid://odbplao5e2m8" path="res://Assets/twilightSageDusk.png" id="14_vo5uk"]
+[ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="17_ce71m"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5krdm"]
+texture = ExtResource("2_cobfp")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h5i8s"]
+atlas = ExtResource("8_hqtl8")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w8oc3"]
+atlas = ExtResource("6_ce71m")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oywcm"]
+atlas = ExtResource("5_wsnhc")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hjai8"]
+atlas = ExtResource("12_w7yfx")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ekncj"]
+atlas = ExtResource("11_aoc38")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f043x"]
+atlas = ExtResource("4_3u16l")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dvq1j"]
+atlas = ExtResource("10_gf2hv")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yoaul"]
+atlas = ExtResource("9_4c3qr")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_48a0o"]
+atlas = ExtResource("13_ce71m")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hqtl8"]
+atlas = ExtResource("14_48a0o")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xw8bv"]
+atlas = ExtResource("7_48a0o")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8bkap"]
+atlas = ExtResource("13_ydu7v")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b0nqf"]
+atlas = ExtResource("13_ydu7v")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ot48q"]
+atlas = ExtResource("14_vo5uk")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2uk8d"]
+atlas = ExtResource("14_vo5uk")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wsnhc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h5i8s")
+}],
+"loop": true,
+"name": &"0",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w8oc3")
+}],
+"loop": true,
+"name": &"1",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oywcm")
+}],
+"loop": true,
+"name": &"2",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hjai8")
+}],
+"loop": true,
+"name": &"3",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ekncj")
+}],
+"loop": true,
+"name": &"4",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f043x")
+}],
+"loop": true,
+"name": &"5",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dvq1j")
+}],
+"loop": true,
+"name": &"6",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yoaul")
+}],
+"loop": true,
+"name": &"7",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_48a0o")
+}],
+"loop": true,
+"name": &"8",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hqtl8")
+}],
+"loop": true,
+"name": &"9",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xw8bv")
+}],
+"loop": true,
+"name": &"Default",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8bkap")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b0nqf")
+}],
+"loop": true,
+"name": &"TWILIGHT_SAGE_DAWN",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ot48q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2uk8d")
+}],
+"loop": true,
+"name": &"TWILIGHT_SAGE_DUSK",
+"speed": 2.0
+}]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tx20m"]
+texture = ExtResource("2_cobfp")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_70qsu"]
+texture = ExtResource("2_cobfp")
+
+[node name="EnemyInformationDisplay" type="HBoxContainer" unique_id=2082350649]
+z_index = 10
+custom_minimum_size = Vector2(1080, 400)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -517.0
+offset_top = -272.0
+offset_right = 563.0
+offset_bottom = 335.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.9716186, 0.91292155)
+mouse_filter = 2
+theme_override_constants/separation = 10
+script = ExtResource("1_1mh3q")
+
+[node name="ProfilePanel" type="PanelContainer" parent="." unique_id=401102771]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_5krdm")
+
+[node name="MarginContainer" type="MarginContainer" parent="ProfilePanel" unique_id=77883903]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 44
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 44
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ProfilePanel/MarginContainer" unique_id=1181417655]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="EnemyName" type="Label" parent="ProfilePanel/MarginContainer/VBoxContainer" unique_id=517925706]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("3_db5qw")
+theme_override_font_sizes/font_size = 44
+text = "Enemy Name:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ProfilePanel/MarginContainer/VBoxContainer" unique_id=1065934268]
+layout_mode = 2
+
+[node name="EnemyStats2" type="Label" parent="ProfilePanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=50603910]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("4_d80n4")
+theme_override_font_sizes/font_size = 20
+text = "                   
+"
+vertical_alignment = 1
+
+[node name="Portrait" type="AnimatedSprite2D" parent="ProfilePanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=558119538]
+position = Vector2(58.74578, 57.16304)
+scale = Vector2(1.5518564, 1.5518577)
+sprite_frames = SubResource("SpriteFrames_wsnhc")
+animation = &"9"
+
+[node name="EnemyStats" type="Label" parent="ProfilePanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1862259072]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("4_d80n4")
+theme_override_font_sizes/font_size = 20
+text = "
+Coins:
+Silver Flip Rate:
+Gold Flip Rate:
+Max Flip:
+"
+vertical_alignment = 1
+
+[node name="Border" type="TextureRect" parent="ProfilePanel/MarginContainer/VBoxContainer" unique_id=822315800]
+self_modulate = Color(0.84313726, 0.5137255, 0, 0.54901963)
+layout_mode = 2
+texture = ExtResource("17_ce71m")
+
+[node name="Story" type="Label" parent="ProfilePanel/MarginContainer/VBoxContainer" unique_id=2064010057]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6914245, 0.40217978, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("3_db5qw")
+theme_override_font_sizes/font_size = 40
+text = "Story"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="ProfilePanel/MarginContainer/VBoxContainer" unique_id=1351307598]
+layout_mode = 2
+
+[node name="EnemyLore" type="Label" parent="ProfilePanel/MarginContainer/VBoxContainer" unique_id=1420735796]
+custom_minimum_size = Vector2(120, 250)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.37047872, 0.24111545, 0.11159564, 1)
+theme_override_colors/font_outline_color = Color(1, 0.7750678, 0.5875791, 1)
+theme_override_constants/line_spacing = 2
+theme_override_constants/shadow_offset_y = 6
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("4_d80n4")
+theme_override_font_sizes/font_size = 28
+text = "Mages in training. They say there is a chance for an apprentice mage to take over their masters' repertoire. But being taken in is already a telling sign that it's all they will ever be."
+horizontal_alignment = 1
+autowrap_mode = 2
+clip_text = true
+
+[node name="Border2" type="TextureRect" parent="ProfilePanel/MarginContainer/VBoxContainer" unique_id=277860571]
+self_modulate = Color(0.84313726, 0.5137255, 0, 0.54901963)
+layout_mode = 2
+texture = ExtResource("17_ce71m")
+
+[node name="StatusEffectsPanel" type="PanelContainer" parent="." unique_id=710897952]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_tx20m")
+
+[node name="MarginContainer" type="MarginContainer" parent="StatusEffectsPanel" unique_id=1235637992]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 44
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 44
+
+[node name="StatusContainer" type="VFlowContainer" parent="StatusEffectsPanel/MarginContainer" unique_id=2069118079]
+layout_mode = 2
+
+[node name="StatusEffects" type="Label" parent="StatusEffectsPanel/MarginContainer/StatusContainer" unique_id=133481273]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("3_db5qw")
+theme_override_font_sizes/font_size = 46
+text = "Status Effects"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EnemyMechanics" type="PanelContainer" parent="." unique_id=1386994785]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_70qsu")
+
+[node name="MarginContainer" type="MarginContainer" parent="EnemyMechanics" unique_id=863420057]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 44
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 44
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EnemyMechanics/MarginContainer" unique_id=459575857]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 37
+
+[node name="Ability" type="Label" parent="EnemyMechanics/MarginContainer/VBoxContainer" unique_id=968639581]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("3_db5qw")
+theme_override_font_sizes/font_size = 46
+text = "Ability"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EnemyAbility" type="Label" parent="EnemyMechanics/MarginContainer/VBoxContainer" unique_id=2086748791]
+custom_minimum_size = Vector2(120, 150)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("4_d80n4")
+theme_override_font_sizes/font_size = 20
+text = "Insert Enemy Ability here"
+autowrap_mode = 2
+clip_text = true
+
+[node name="Tip" type="Label" parent="EnemyMechanics/MarginContainer/VBoxContainer" unique_id=1237834155]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("3_db5qw")
+theme_override_font_sizes/font_size = 36
+text = "Tip!"
+
+[node name="PlayerTip" type="Label" parent="EnemyMechanics/MarginContainer/VBoxContainer" unique_id=527254046]
+custom_minimum_size = Vector2(120, 150)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("4_d80n4")
+theme_override_font_sizes/font_size = 18
+text = "Insert Enemy Tips here xzhczhxcjzhcjzhcjzxhczjchzjxchzjxhczjhczjxhczjxchj"
+autowrap_mode = 2
+clip_text = true

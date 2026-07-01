@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://dwpakh5cjl3k5"]
+
+[ext_resource type="Script" uid="uid://b81y1v87st1oc" path="res://Scene/coin_add_particles.gd" id="1_pstc1"]
+
+[sub_resource type="Curve" id="Curve_tvmmp"]
+_limits = [-200.0, 200.0, 0.0, 1.0]
+_data = [Vector2(0.09774436, -200), 0.0, 0.0, 0, 0, Vector2(0.6766917, 110.51456), 0.0, 0.0, 0, 0, Vector2(1, -200), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_vxcnt"]
+curve = SubResource("Curve_tvmmp")
+
+[sub_resource type="Curve" id="Curve_2413c"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.49624062, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_tvmmp"]
+curve = SubResource("Curve_2413c")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2413c"]
+particle_flag_disable_z = true
+velocity_pivot = Vector3(0, -20, 0)
+direction = Vector3(1, -30, 0)
+spread = 180.0
+initial_velocity_min = 202.25
+initial_velocity_max = 323.03998
+gravity = Vector3(0, 0, 0)
+linear_accel_curve = SubResource("CurveTexture_vxcnt")
+scale_min = 0.0
+scale_max = 22.35
+scale_curve = SubResource("CurveTexture_tvmmp")
+color = Color(0, 0, 0, 0.91764706)
+
+[node name="VoidAddedParticle" type="Node2D" unique_id=257060510]
+
+[node name="VoidAddedParticles" type="GPUParticles2D" parent="." unique_id=881501940]
+position = Vector2(-82, 77)
+emitting = false
+amount = 64
+lifetime = 2.17
+one_shot = true
+explosiveness = 0.86
+process_material = SubResource("ParticleProcessMaterial_2413c")
+script = ExtResource("1_pstc1")

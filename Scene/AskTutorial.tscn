@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://chp1m7pi4dfml"]
+
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="1_se41k"]
+[ext_resource type="Script" uid="uid://dju5ojgigx2xw" path="res://Scene/ask_tutorial.gd" id="1_tddot"]
+[ext_resource type="Texture2D" uid="uid://34cb8tl8113c" path="res://Assets/tutorialScreenShopkeeperNoHands.png" id="3_k0vpi"]
+[ext_resource type="Texture2D" uid="uid://dhl4j3m1ok2d2" path="res://Assets/ShopkeeperHand1.png" id="4_kiink"]
+[ext_resource type="Texture2D" uid="uid://bqa81o3psvkcl" path="res://Assets/ShopkeeperHand2.png" id="5_efpnt"]
+[ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="5_kiink"]
+
+[sub_resource type="Gradient" id="Gradient_x8fwb"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ilsvc"]
+gradient = SubResource("Gradient_x8fwb")
+
+[sub_resource type="Theme" id="Theme_bsr34"]
+
+[node name="AskTutorial" type="Node2D" unique_id=1085329073]
+script = ExtResource("1_tddot")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1654445054]
+
+[node name="Background" type="TextureRect" parent="CanvasLayer" unique_id=171852504]
+offset_right = 1167.0
+offset_bottom = 664.0
+texture = SubResource("GradientTexture2D_ilsvc")
+
+[node name="Dialogue" type="Label" parent="CanvasLayer" unique_id=794570553]
+offset_left = 11.0
+offset_top = 10.0
+offset_right = 2289.0
+offset_bottom = 511.0
+scale = Vector2(0.5, 0.5)
+theme_override_fonts/font = ExtResource("1_se41k")
+theme_override_font_sizes/font_size = 130
+text = "Greetings Coin Caster. 
+Would you like to 
+learn the combat basics?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Shopkeeper" type="TextureRect" parent="CanvasLayer" unique_id=2096516196]
+offset_left = 107.0
+offset_top = 194.0
+offset_right = 1070.4689
+offset_bottom = 690.0
+texture = ExtResource("3_k0vpi")
+
+[node name="YesButton" type="TextureButton" parent="CanvasLayer" unique_id=1889043566]
+offset_left = 358.0
+offset_top = 511.0
+offset_right = 566.0
+offset_bottom = 703.0
+theme = SubResource("Theme_bsr34")
+texture_normal = ExtResource("4_kiink")
+stretch_mode = 0
+
+[node name="Yes" type="Label" parent="CanvasLayer/YesButton" unique_id=368640445]
+layout_mode = 0
+offset_left = 41.0
+offset_top = -45.0
+offset_right = 222.0
+offset_bottom = -4.0
+theme_override_fonts/font = ExtResource("5_kiink")
+theme_override_font_sizes/font_size = 50
+text = "Yes"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NoButton" type="TextureButton" parent="CanvasLayer" unique_id=766055237]
+offset_left = 627.0
+offset_top = 523.0
+offset_right = 827.0
+offset_bottom = 707.0
+texture_normal = ExtResource("5_efpnt")
+stretch_mode = 0
+
+[node name="No" type="Label" parent="CanvasLayer/NoButton" unique_id=755139487]
+layout_mode = 0
+offset_left = -40.0
+offset_top = -47.0
+offset_right = 204.0
+offset_bottom = -6.0
+theme_override_fonts/font = ExtResource("5_kiink")
+theme_override_font_sizes/font_size = 50
+text = "No"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="mouse_entered" from="CanvasLayer/YesButton" to="." method="_on_yes_button_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/YesButton" to="." method="_on_yes_button_mouse_exited"]
+[connection signal="pressed" from="CanvasLayer/YesButton" to="." method="_on_yes_button_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/NoButton" to="." method="_on_no_button_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/NoButton" to="." method="_on_no_button_mouse_exited"]
+[connection signal="pressed" from="CanvasLayer/NoButton" to="." method="_on_no_button_pressed"]

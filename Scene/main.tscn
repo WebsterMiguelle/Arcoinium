@@ -3,243 +3,355 @@
 [ext_resource type="Script" uid="uid://qxyeds7oh4s7" path="res://Script/main.gd" id="1_h2yge"]
 [ext_resource type="Texture2D" uid="uid://bvtpq810pp6la" path="res://Assets/New Background.png" id="1_mxd2g"]
 [ext_resource type="Script" uid="uid://bunbms60cogmi" path="res://Script/player.gd" id="2_1bvp3"]
+[ext_resource type="Script" uid="uid://d28knusqb3dv" path="res://Scene/camera_2d.gd" id="3_f043x"]
 [ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="3_hspdg"]
 [ext_resource type="Script" uid="uid://dedsjnmo4366e" path="res://Script/enemy.gd" id="3_lquwl"]
 [ext_resource type="PackedScene" uid="uid://cjumn24wf84ma" path="res://Scene/Coin Deck.tscn" id="4_2wwxx"]
-[ext_resource type="AudioStream" uid="uid://cfv556d3jos2i" path="res://BGM/Twilight Zone (Exploration).wav" id="4_6njx3"]
-[ext_resource type="AudioStream" uid="uid://0ld5vkxyd8pm" path="res://BGM/Twilight Zone (Combat).wav" id="5_0y2cb"]
-[ext_resource type="PackedScene" uid="uid://b01fk6f1pan7q" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
+[ext_resource type="Texture2D" uid="uid://bivk5jj1h0vgt" path="res://Assets/CoinBarBackGround.png" id="4_4lqwv"]
+[ext_resource type="PackedScene" uid="uid://vnsb1sd0yalg" path="res://Scene/PlayerHealthBar.tscn" id="5_1xcnr"]
 [ext_resource type="Script" uid="uid://deakh0hwd6qoh" path="res://Scene/CardManager.gd" id="5_3amdw"]
+[ext_resource type="Texture2D" uid="uid://cna4umj0n4yt" path="res://Assets/Blocking coin deck1.png" id="5_gejqg"]
 [ext_resource type="Script" uid="uid://bh8ned1dqg5l3" path="res://Script/Shop_manager.gd" id="6_1xcnr"]
 [ext_resource type="PackedScene" uid="uid://dbj4jt3y4yqdx" path="res://Scene/EnemyHealthBar.tscn" id="6_c2iwn"]
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="6_mxd2g"]
+[ext_resource type="Texture2D" uid="uid://bgska0mwhsa2s" path="res://Assets/CoinBarForeGround.png" id="6_oywcm"]
 [ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="7_0sxm5"]
 [ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="7_3pt4j"]
+[ext_resource type="Texture2D" uid="uid://c7ppyupuuc7tu" path="res://Assets/Passive_Icons.png" id="7_5rsq1"]
+[ext_resource type="Material" uid="uid://cxjkyhc8r5fge" path="res://Assets/Particles/debt.tres" id="7_cr44a"]
 [ext_resource type="Script" uid="uid://byrcn8pelxayw" path="res://Script/coin_deck.gd" id="7_ow1sv"]
 [ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="9_jbas8"]
+[ext_resource type="Texture2D" uid="uid://bf3hv0qyt1kio" path="res://Assets/8-bitrunes.png" id="9_w8oc3"]
 [ext_resource type="Texture2D" uid="uid://r5gatuytbe0t" path="res://Assets/taxCollector.png" id="10_p4j74"]
 [ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="11_hiice"]
 [ext_resource type="Texture2D" uid="uid://dfw0gb82xbava" path="res://Assets/portraitBackground.png" id="12_pqe63"]
 [ext_resource type="Texture2D" uid="uid://cjjj3ulqgawva" path="res://Assets/apprenticeMage.png" id="12_sor6r"]
-[ext_resource type="Script" uid="uid://ka64sstswrwl" path="res://Script/game_over_ui.gd" id="13_0y2cb"]
 [ext_resource type="Texture2D" uid="uid://bikjuk8fgo6p2" path="res://Assets/moonCaster-Sheet.png" id="13_pqe63"]
 [ext_resource type="Texture2D" uid="uid://di37676qo0yu4" path="res://Assets/sunCaster-Recovered-Sheet.png" id="14_aam5o"]
 [ext_resource type="Script" uid="uid://cbrncrbtg7emf" path="res://Script/pause_menu.gd" id="14_hspdg"]
-[ext_resource type="Texture2D" uid="uid://ce2isyeu1yhmy" path="res://Assets/thrifter.png" id="15_nyb1q"]
+[ext_resource type="Texture2D" uid="uid://csb6cbe5uwx3c" path="res://Assets/thrifter.png" id="15_nyb1q"]
 [ext_resource type="Script" uid="uid://c4nmeg7fuu34n" path="res://Script/passive_manager.gd" id="16_6njx3"]
 [ext_resource type="Texture2D" uid="uid://dprlqvclal2j" path="res://Assets/trader.png" id="16_xw8bv"]
 [ext_resource type="Script" uid="uid://cjx7ln7nt56ad" path="res://Scene/particle_manager.gd" id="17_2ix4a"]
-[ext_resource type="Texture2D" uid="uid://c5kws41vksxsb" path="res://Assets/twilightSageDawn.png" id="18_aam5o"]
-[ext_resource type="Texture2D" uid="uid://odbplao5e2m8" path="res://Assets/twilightSageDusk.png" id="19_nyb1q"]
+[ext_resource type="Texture2D" uid="uid://b16kddlletwt1" path="res://Assets/ReserveButton.png" id="20_5l0y8"]
+[ext_resource type="Texture2D" uid="uid://ctr0wbykggnh2" path="res://Assets/Detailed_Scroll_1-Sheet.png" id="22_7sh50"]
+[ext_resource type="Texture2D" uid="uid://b0ex51pplf24g" path="res://Assets/CoinDeck3.png" id="23_hjai8"]
+[ext_resource type="Texture2D" uid="uid://bj5nyxg8bmc1k" path="res://Assets/backgroundBanner.png" id="23_tbp1y"]
+[ext_resource type="Texture2D" uid="uid://bgomk7rj834wr" path="res://Assets/twilightSage.png" id="25_h5i8s"]
+[ext_resource type="Script" uid="uid://cxmghjg3j6upn" path="res://Scene/turn_calculation_box.gd" id="26_2uk8d"]
 [ext_resource type="Texture2D" uid="uid://c1oyqjdr6wop8" path="res://Assets/animated_reflipbutton-Sheet.png" id="26_wimqa"]
 [ext_resource type="FontFile" uid="uid://drm3kueev5jxy" path="res://Assets/Fonts/OXYGENE1.TTF" id="27_t372l"]
-[ext_resource type="Texture2D" uid="uid://0of51v86402w" path="res://Assets/mapBackground.png" id="34_2oiod"]
-[ext_resource type="Texture2D" uid="uid://bj5nyxg8bmc1k" path="res://Assets/backgroundBanner.png" id="35_8bkap"]
+[ext_resource type="Texture2D" uid="uid://dxhd5hgo3tcw" path="res://Assets/enemy_notif.tres" id="29_n7vvl"]
+[ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="30_tcekk"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="36_1bveb"]
 [ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="36_b0nqf"]
 [ext_resource type="Texture2D" uid="uid://bvlc07v3u1brg" path="res://Assets/mapIconEnemy.png" id="37_2uk8d"]
+[ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="37_885bo"]
 [ext_resource type="Texture2D" uid="uid://2mfylmq5p56b" path="res://Assets/miniCoinCaster-Sheet.png" id="37_ot48q"]
 [ext_resource type="Texture2D" uid="uid://ba7v6aaoo0irq" path="res://Assets/mapIconElite.png" id="38_cr44a"]
+[ext_resource type="Script" uid="uid://bdpljan2t1woi" path="res://Scene/Shopkeeper.gd" id="38_ekncj"]
+[ext_resource type="Texture2D" uid="uid://bmkxblxwtg47d" path="res://Assets/Rug.png" id="38_f043x"]
+[ext_resource type="Texture2D" uid="uid://i87qe2c8t8ss" path="res://Assets/loan shark jump-Sheet.png" id="38_jmo7v"]
 [ext_resource type="Texture2D" uid="uid://4aebywoijoue" path="res://Assets/mapIconShop.png" id="39_tcekk"]
 [ext_resource type="Texture2D" uid="uid://fl7tmytwihia" path="res://Assets/mapIconBoss.png" id="40_1bveb"]
+[ext_resource type="SpriteFrames" uid="uid://byl24vhte2iq4" path="res://Assets/Enemiy Portraits.tres" id="42_txj2b"]
+[ext_resource type="Texture2D" uid="uid://b63ntktw5tw4q" path="res://Assets/mapBackgroundRevamped.png" id="46_xgc63"]
+[ext_resource type="Texture2D" uid="uid://c2kfvnraituiu" path="res://Assets/reserve_area_middle.png" id="47_3drsm"]
+[ext_resource type="PackedScene" uid="uid://cysrv10cvv8al" path="res://Scene/Piggy.tscn" id="47_jmo7v"]
+[ext_resource type="Texture2D" uid="uid://ccnxjfwwlc64x" path="res://Assets/miniCoinCasterRevamped-Sheet.png" id="47_w8oc3"]
+[ext_resource type="SpriteFrames" uid="uid://dafl661xkwq8o" path="res://Assets/PassivesIcons.tres" id="48_3drsm"]
+[ext_resource type="Texture2D" uid="uid://sabqjf666id4" path="res://Assets/reserve_area_outside.png" id="48_xj0l1"]
+[ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="49_5qrjd"]
+[ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="49_jmo7v"]
+[ext_resource type="Texture2D" uid="uid://dms5d0v8hxacy" path="res://Assets/EndScrollTextSeparator.png" id="50_f3bax"]
+[ext_resource type="Texture2D" uid="uid://6n3h5cem1yuu" path="res://Assets/mapSignRevamped.png" id="50_w8oc3"]
+[ext_resource type="Texture2D" uid="uid://bvg1hmi6pjwfb" path="res://Assets/Coins/sun_flip_upright.png" id="51_ekncj"]
+[ext_resource type="Texture2D" uid="uid://cpm417gdi8hph" path="res://Assets/shopMaster-Sheet.png" id="52_5l0y8"]
+[ext_resource type="PackedScene" uid="uid://ca5q424cckfd0" path="res://Scene/KeeperHealthBar.tscn" id="60_txj2b"]
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]
 
-[sub_resource type="AudioStreamSynchronized" id="AudioStreamSynchronized_2ix4a"]
-stream_count = 2
-stream_0/stream = ExtResource("4_6njx3")
-stream_0/volume = 0.0
-stream_1/stream = ExtResource("5_0y2cb")
-stream_1/volume = 0.0
+[sub_resource type="AudioStream" id="AudioStream_ot48q"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_f043x"]
-atlas = ExtResource("6_mxd2g")
-region = Rect2(0, 0, 64, 64)
+[sub_resource type="Gradient" id="Gradient_3drsm"]
+offsets = PackedFloat32Array(0.2811159, 0.6630901, 1)
+colors = PackedColorArray(1, 0.7473072, 0.4506637, 0.4509804, 0.96390635, 0.6826068, 1.1551381e-06, 0.2627451, 1, 1, 1, 0)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_5qrjd"]
-atlas = ExtResource("6_mxd2g")
-region = Rect2(64, 0, 64, 64)
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2uk8d"]
+gradient = SubResource("Gradient_3drsm")
+fill = 1
+fill_from = Vector2(0.48376068, 0.50427353)
+fill_to = Vector2(0.8735043, 0.24102564)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_5rsq1"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_nmrdw"]
+atlas = ExtResource("22_7sh50")
+region = Rect2(0, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nt512"]
+atlas = ExtResource("22_7sh50")
+region = Rect2(48, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_70hni"]
+atlas = ExtResource("22_7sh50")
+region = Rect2(96, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5gtfx"]
+atlas = ExtResource("22_7sh50")
+region = Rect2(144, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cnm7f"]
+atlas = ExtResource("22_7sh50")
+region = Rect2(192, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ny5t"]
+atlas = ExtResource("22_7sh50")
+region = Rect2(192, 0, 48, 80)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6ny5t"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_f043x")
+"texture": SubResource("AtlasTexture_nmrdw")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_5qrjd")
+"texture": SubResource("AtlasTexture_nt512")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_70hni")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5gtfx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cnm7f")
 }],
 "loop": true,
 "name": &"default",
-"speed": 1.0
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ny5t")
+}],
+"loop": true,
+"name": &"open",
+"speed": 5.0
 }]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_wimqa"]
-atlas = ExtResource("9_jbas8")
-region = Rect2(0, 0, 64, 64)
+[sub_resource type="Gradient" id="Gradient_f3bax"]
+offsets = PackedFloat32Array(0.36235955, 0.5702247)
+colors = PackedColorArray(1, 0.9913152, 0.9847979, 1, 0.71453226, 0.08470813, 4.813075e-07, 1)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_t372l"]
-atlas = ExtResource("10_p4j74")
-region = Rect2(0, 0, 64, 64)
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xj0l1"]
+gradient = SubResource("Gradient_f3bax")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_uctnp"]
-atlas = ExtResource("11_hiice")
-region = Rect2(0, 0, 64, 64)
+[sub_resource type="Curve" id="Curve_txj2b"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_xw8bv"]
-atlas = ExtResource("12_pqe63")
-region = Rect2(0, 0, 64, 64)
+[sub_resource type="CurveTexture" id="CurveTexture_jodah"]
+curve = SubResource("Curve_txj2b")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_m37ut"]
-atlas = ExtResource("12_sor6r")
-region = Rect2(0, 0, 64, 64)
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3drsm"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(0, 0, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, -1, 0)
+spread = 180.0
+flatness = 1.0
+initial_velocity_min = 87.869995
+initial_velocity_max = 116.35
+gravity = Vector3(0, 0, 0)
+scale_max = 10.0
+scale_curve = SubResource("CurveTexture_jodah")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color = Color(0.9609011, 0.22721359, 3.85046e-07, 1)
+color_ramp = SubResource("GradientTexture1D_xj0l1")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_yoaul"]
-atlas = ExtResource("13_pqe63")
-region = Rect2(0, 0, 64, 64)
+[sub_resource type="Gradient" id="Gradient_txj2b"]
+offsets = PackedFloat32Array(0, 0.3286517)
+colors = PackedColorArray(1, 0.9913152, 0.9847979, 1, 0.99999994, 0.82013106, 0.4443707, 1)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mepbf"]
-atlas = ExtResource("13_pqe63")
-region = Rect2(64, 0, 64, 64)
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_tke4u"]
+gradient = SubResource("Gradient_txj2b")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_dvq1j"]
-atlas = ExtResource("14_aam5o")
-region = Rect2(0, 0, 64, 64)
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_jmo7v"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(0, 0, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, -1, 0)
+spread = 180.0
+flatness = 1.0
+initial_velocity_min = 15.29
+initial_velocity_max = 47.2
+gravity = Vector3(0, 0, 0)
+scale_min = 5.0
+scale_max = 20.0
+scale_curve = SubResource("CurveTexture_jodah")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color = Color(0.9999998, 0.57773465, 0.15203348, 1)
+color_ramp = SubResource("GradientTexture1D_tke4u")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_50v0s"]
-atlas = ExtResource("14_aam5o")
-region = Rect2(64, 0, 64, 64)
+[sub_resource type="Gradient" id="Gradient_hjai8"]
+offsets = PackedFloat32Array(0, 0.502809)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mu7ye"]
-atlas = ExtResource("15_nyb1q")
-region = Rect2(0, 0, 64, 64)
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ryobp"]
+gradient = SubResource("Gradient_hjai8")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_2oiod"]
-atlas = ExtResource("16_xw8bv")
-region = Rect2(0, 0, 64, 64)
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ekncj"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(20, 19.725, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, -1, 0)
+spread = 0.0
+flatness = 1.0
+initial_velocity_min = 27.13
+initial_velocity_max = 73.799995
+gravity = Vector3(0, 0, 0)
+scale_min = 5.0
+scale_max = 15.0
+scale_curve = SubResource("CurveTexture_jodah")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color = Color(1, 0.8989062, 0.6749122, 1)
+color_ramp = SubResource("GradientTexture1D_ryobp")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_8bkap"]
-atlas = ExtResource("18_aam5o")
-region = Rect2(0, 0, 64, 64)
+[sub_resource type="Gradient" id="Gradient_ekncj"]
+offsets = PackedFloat32Array(0, 0.76123595)
+colors = PackedColorArray(0.6221689, 0.0035491616, 0.9346336, 1, 0.36156392, 1.2995303e-06, 0.22613236, 1)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_b0nqf"]
-atlas = ExtResource("18_aam5o")
-region = Rect2(64, 0, 64, 64)
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_e0ffi"]
+gradient = SubResource("Gradient_ekncj")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ot48q"]
-atlas = ExtResource("19_nyb1q")
-region = Rect2(0, 0, 64, 64)
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_f3bax"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(10, 19.725, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, -1, 0)
+spread = 0.0
+flatness = 1.0
+initial_velocity_max = 31.25
+gravity = Vector3(0, 0, 0)
+scale_min = 5.0
+scale_max = 10.0
+scale_curve = SubResource("CurveTexture_jodah")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color = Color(0.92849284, 0.471942, 1, 1)
+color_ramp = SubResource("GradientTexture1D_e0ffi")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_2uk8d"]
-atlas = ExtResource("19_nyb1q")
-region = Rect2(64, 0, 64, 64)
+[sub_resource type="Gradient" id="Gradient_jmo7v"]
+offsets = PackedFloat32Array(0, 0.76123595)
+colors = PackedColorArray(0.21714604, 0.46206403, 0.6978507, 1, 0.06823159, 4.813075e-07, 0.74061835, 0.40392157)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_8bkap"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_wimqa")
-}],
-"loop": true,
-"name": &"ARISTOCRAT",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_t372l")
-}],
-"loop": true,
-"name": &"COLLECTOR",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_uctnp")
-}],
-"loop": true,
-"name": &"DWARF",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xw8bv")
-}],
-"loop": true,
-"name": &"Default",
-"speed": 1.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_m37ut")
-}],
-"loop": true,
-"name": &"MAGE",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_yoaul")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_mepbf")
-}],
-"loop": true,
-"name": &"MOON_CASTER",
-"speed": 1.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_dvq1j")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_50v0s")
-}],
-"loop": true,
-"name": &"SUN_CASTER",
-"speed": 1.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_mu7ye")
-}],
-"loop": true,
-"name": &"THRIFTER",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_2oiod")
-}],
-"loop": true,
-"name": &"TRADER",
-"speed": 5.0
-}, {
-"frames": [],
-"loop": true,
-"name": &"TWILIGHT_SAGE",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_8bkap")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_b0nqf")
-}],
-"loop": true,
-"name": &"TWILIGHT_SAGE_DAWN",
-"speed": 1.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ot48q")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_2uk8d")
-}],
-"loop": true,
-"name": &"TWILIGHT_SAGE_DUSK",
-"speed": 1.0
-}]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7n7pe"]
+gradient = SubResource("Gradient_jmo7v")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5l0y8"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(30, 19.725, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, -1, 0)
+spread = 0.0
+flatness = 1.0
+initial_velocity_max = 31.25
+gravity = Vector3(0, 0, 0)
+scale_min = 5.0
+scale_max = 15.0
+scale_curve = SubResource("CurveTexture_jodah")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color_ramp = SubResource("GradientTexture1D_7n7pe")
+
+[sub_resource type="Gradient" id="Gradient_xj0l1"]
+offsets = PackedFloat32Array(0, 0.76123595)
+colors = PackedColorArray(0.5936804, 0.38009787, 0, 1, 1, 1, 1, 0.40392157)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fnsx1"]
+gradient = SubResource("Gradient_xj0l1")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tke4u"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(30, 19.725, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, -1, 0)
+spread = 0.0
+flatness = 1.0
+initial_velocity_max = 31.25
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_max = 0.79999995
+scale_curve = SubResource("CurveTexture_jodah")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color = Color(0.9577182, 0.9577182, 0.9577181, 1)
+color_ramp = SubResource("GradientTexture1D_fnsx1")
+
+[sub_resource type="Gradient" id="Gradient_yceo7"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xj0l1"]
+gradient = SubResource("Gradient_yceo7")
+fill = 1
+fill_from = Vector2(0.4871795, 0.4940171)
+fill_to = Vector2(0.8905983, 0.45641026)
+
+[sub_resource type="Gradient" id="Gradient_tcekk"]
+offsets = PackedFloat32Array(0.41107383, 0.57214767)
+colors = PackedColorArray(0.53781253, 0, 0.17483732, 0.69411767, 0.903585, 0.76905644, 1.1551381e-06, 0.5921569)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1bveb"]
+gradient = SubResource("Gradient_tcekk")
+
+[sub_resource type="Curve" id="Curve_jmo7v"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_f3bax"]
+curve = SubResource("Curve_jmo7v")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5qrjd"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(26.73, 44.435, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(100, 0, 0)
+spread = 29.663
+initial_velocity_max = 40.0
+gravity = Vector3(250, 0, 0)
+scale_min = 0.0
+scale_max = 35.28
+scale_curve = SubResource("CurveTexture_f3bax")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color = Color(0.9990863, 0.5328238, 0.47796938, 1)
+color_ramp = SubResource("GradientTexture1D_1bveb")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_n7vvl"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(26.73, 44.435, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(-100, 0, 0)
+spread = 29.663
+initial_velocity_max = 40.0
+gravity = Vector3(-250, 0, 0)
+scale_min = 0.0
+scale_max = 35.28
+scale_curve = SubResource("CurveTexture_f3bax")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color = Color(0.99995714, 0.5935204, 0.54001546, 1)
+color_ramp = SubResource("GradientTexture1D_1bveb")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cr44a"]
 atlas = ExtResource("26_wimqa")
@@ -277,12 +389,717 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="Gradient" id="Gradient_75buv"]
+[sub_resource type="Gradient" id="Gradient_885bo"]
+offsets = PackedFloat32Array(0, 0.57214767)
+colors = PackedColorArray(0, 0.2686157, 0.571543, 0.69411767, 0.82152957, 0.7144253, 1, 0.5921569)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_f043x"]
+gradient = SubResource("Gradient_885bo")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gejqg"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(26.73, 44.435, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, 1, 0)
+spread = 113.841
+initial_velocity_max = 40.0
+gravity = Vector3(0, 20, 0)
+scale_min = 0.0
+scale_max = 35.28
+scale_curve = SubResource("CurveTexture_f3bax")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color = Color(0.51674455, 0.736904, 1, 1)
+color_ramp = SubResource("GradientTexture1D_f043x")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fnsx1"]
+atlas = ExtResource("9_jbas8")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ryobp"]
+atlas = ExtResource("6_mxd2g")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nykhw"]
+atlas = ExtResource("10_p4j74")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yceo7"]
+atlas = ExtResource("11_hiice")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7n7pe"]
+atlas = ExtResource("12_sor6r")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qsoii"]
+atlas = ExtResource("13_pqe63")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e0ffi"]
+atlas = ExtResource("37_885bo")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yc5rd"]
+atlas = ExtResource("14_aam5o")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j6oml"]
+atlas = ExtResource("15_nyb1q")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o1clg"]
+atlas = ExtResource("16_xw8bv")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jjxnp"]
+atlas = ExtResource("25_h5i8s")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7n7pe"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fnsx1")
+}],
+"loop": true,
+"name": &"ARISTOCRAT",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ryobp")
+}],
+"loop": true,
+"name": &"COIN_CASTER",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nykhw")
+}],
+"loop": true,
+"name": &"COLLECTOR",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yceo7")
+}],
+"loop": true,
+"name": &"DWARF",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7n7pe")
+}],
+"loop": true,
+"name": &"MAGE",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qsoii")
+}],
+"loop": true,
+"name": &"MOON_CASTER",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e0ffi")
+}],
+"loop": true,
+"name": &"SHOPKEEPER",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yc5rd")
+}],
+"loop": true,
+"name": &"SUN_CASTER",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j6oml")
+}],
+"loop": true,
+"name": &"THRIFTER",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o1clg")
+}],
+"loop": true,
+"name": &"TRADER",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jjxnp")
+}],
+"loop": true,
+"name": &"TWILIGHT_SAGE",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ekncj"]
+atlas = ExtResource("38_jmo7v")
+region = Rect2(0, 0, 128, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jmo7v"]
+atlas = ExtResource("38_jmo7v")
+region = Rect2(128, 0, 128, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8givg"]
+atlas = ExtResource("38_jmo7v")
+region = Rect2(256, 0, 128, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kuoxi"]
+atlas = ExtResource("38_jmo7v")
+region = Rect2(384, 0, 128, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xe8p7"]
+atlas = ExtResource("38_jmo7v")
+region = Rect2(512, 0, 128, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qjbsa"]
+atlas = ExtResource("38_jmo7v")
+region = Rect2(640, 0, 128, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_05ayq"]
+atlas = ExtResource("38_jmo7v")
+region = Rect2(768, 0, 128, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hswqw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ekncj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jmo7v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8givg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kuoxi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xe8p7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qjbsa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_05ayq")
+}],
+"loop": false,
+"name": &"default",
+"speed": 7.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_e0ffi"]
+offsets = PackedFloat32Array(0, 0.38412017, 0.7017167, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.96121526, 1, 1, 1, 0.3497854, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7n7pe"]
+gradient = SubResource("Gradient_e0ffi")
+fill = 1
+fill_from = Vector2(0.4974359, 0.4940171)
+fill_to = Vector2(0.7948718, 0.20683761)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nnpy2"]
+atlas = ExtResource("52_5l0y8")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qdodi"]
+atlas = ExtResource("52_5l0y8")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ba4vs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nnpy2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qdodi")
+}],
+"loop": true,
+"name": &"default",
+"speed": 2.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_cr44a"]
+offsets = PackedFloat32Array(0.010080645, 0.6955645)
+colors = PackedColorArray(0.16214979, 2.1273792e-05, 0.69055605, 0.77254903, 0.89411765, 0.93333334, 1, 0.21960784)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_tcekk"]
+gradient = SubResource("Gradient_cr44a")
+
+[sub_resource type="Curve" id="Curve_2uk8d"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_cr44a"]
+curve = SubResource("Curve_2uk8d")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_885bo"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(26.73, 30.82, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, 1, 0)
+spread = 0.0
+flatness = 1.0
+initial_velocity_min = 27.13
+initial_velocity_max = 73.799995
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_max = 35.28
+scale_curve = SubResource("CurveTexture_cr44a")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color = Color(0.2430309, 0.40047237, 1, 1)
+color_ramp = SubResource("GradientTexture1D_tcekk")
+
+[sub_resource type="Gradient" id="Gradient_2uk8d"]
+offsets = PackedFloat32Array(0.010080645, 0.39717743, 0.7641129)
+colors = PackedColorArray(0.22701073, 0.00023892104, 0.6670008, 1, 0.6925222, 0.00045724213, 0.7140592, 1, 1, 1, 1, 0.53333336)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_cr44a"]
+gradient = SubResource("Gradient_2uk8d")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tcekk"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(26.73, 30.82, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, 1, 0)
+spread = 0.0
+flatness = 1.0
+initial_velocity_min = 27.13
+initial_velocity_max = 73.799995
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_max = 35.28
+scale_curve = SubResource("CurveTexture_cr44a")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color = Color(0.7682126, 0.0005047953, 0.7783489, 1)
+color_ramp = SubResource("GradientTexture1D_cr44a")
+
+[sub_resource type="Gradient" id="Gradient_n7vvl"]
+offsets = PackedFloat32Array(0.010080645, 0.19959678, 0.34879032)
+colors = PackedColorArray(0.371789, 0.19114667, 0, 1, 0.80151576, 0.57284474, 7.70092e-07, 1, 1, 1, 1, 0.53333336)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mlc74"]
+gradient = SubResource("Gradient_n7vvl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_f043x"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(10.815, 11.115, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, 0, 0)
+spread = 180.0
+flatness = 1.0
+initial_velocity_min = 23.41
+initial_velocity_max = 54.42
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_max = 15.9
+scale_curve = SubResource("CurveTexture_cr44a")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color = Color(0.9999996, 0.9053559, 0.81244224, 1)
+color_ramp = SubResource("GradientTexture1D_mlc74")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1bveb"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(26.73, 30.82, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, -1, 0)
+spread = 0.0
+flatness = 1.0
+initial_velocity_min = 27.13
+initial_velocity_max = 73.799995
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_max = 35.28
+scale_curve = SubResource("CurveTexture_cr44a")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color = Color(0.2430309, 0.40047237, 1, 1)
+color_ramp = SubResource("GradientTexture1D_tcekk")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5qrjd"]
+atlas = ExtResource("6_mxd2g")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5rsq1"]
+atlas = ExtResource("6_mxd2g")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5rsq1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5qrjd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5rsq1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 2.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_f043x"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5qrjd"]
+gradient = SubResource("Gradient_f043x")
+fill = 1
+fill_from = Vector2(0.47350428, 0.45299146)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_14upm"]
+atlas = ExtResource("9_w8oc3")
+region = Rect2(16, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rstpb"]
+atlas = ExtResource("9_w8oc3")
+region = Rect2(24, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qjhim"]
+atlas = ExtResource("9_w8oc3")
+region = Rect2(32, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hy0p5"]
+atlas = ExtResource("9_w8oc3")
+region = Rect2(40, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_auua8"]
+atlas = ExtResource("9_w8oc3")
+region = Rect2(48, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_warkp"]
+atlas = ExtResource("9_w8oc3")
+region = Rect2(56, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ot2t7"]
+atlas = ExtResource("9_w8oc3")
+region = Rect2(0, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ffek6"]
+atlas = ExtResource("9_w8oc3")
+region = Rect2(8, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0jwfx"]
+atlas = ExtResource("9_w8oc3")
+region = Rect2(16, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vpba5"]
+atlas = ExtResource("9_w8oc3")
+region = Rect2(24, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dav7s"]
+atlas = ExtResource("9_w8oc3")
+region = Rect2(32, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_but7c"]
+atlas = ExtResource("9_w8oc3")
+region = Rect2(40, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dq2lh"]
+atlas = ExtResource("9_w8oc3")
+region = Rect2(48, 8, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_opku3"]
+atlas = ExtResource("9_w8oc3")
+region = Rect2(56, 8, 8, 8)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qdodi"]
+animations = [{
+"frames": [{
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_14upm")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_rstpb")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_qjhim")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_hy0p5")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_auua8")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_warkp")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_ot2t7")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_ffek6")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_0jwfx")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_vpba5")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_dav7s")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_but7c")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_dq2lh")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_opku3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_mlc74"]
+offsets = PackedFloat32Array(0.010080645, 0.030864198, 0.69753087)
+colors = PackedColorArray(0.1839853, 0.1969496, 0.18004388, 1, 1, 1, 1, 1, 1, 1, 1, 0.53333336)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_885bo"]
+gradient = SubResource("Gradient_mlc74")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4lqwv"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(3.155, -1.935, 0)
+emission_shape_scale = Vector3(6.81, 1.45, 1)
+emission_shape = 1
+emission_sphere_radius = 10.32
+direction = Vector3(0, 1, 0)
+spread = 0.0
+initial_velocity_min = 11.509999
+initial_velocity_max = 60.039997
+gravity = Vector3(0, 20, 0)
+scale_min = 0.0
+scale_max = 15.9
+scale_curve = SubResource("CurveTexture_cr44a")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color_ramp = SubResource("GradientTexture1D_885bo")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cr44a"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(10.815, 11.115, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, 0, 0)
+spread = 180.0
+flatness = 1.0
+initial_velocity_min = 23.41
+initial_velocity_max = 54.42
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_max = 15.9
+scale_curve = SubResource("CurveTexture_cr44a")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color = Color(0.9999996, 0.9053559, 0.81244224, 1)
+color_ramp = SubResource("GradientTexture1D_mlc74")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f3bax"]
+atlas = ExtResource("7_5rsq1")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5l0y8"]
+atlas = ExtResource("7_5rsq1")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3drsm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f3bax")
+}],
+"loop": true,
+"name": &"Lunar Blessing",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5l0y8")
+}],
+"loop": true,
+"name": &"Solar Blessing",
+"speed": 5.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_4lqwv"]
+offsets = PackedFloat32Array(0, 0.537037, 1)
+colors = PackedColorArray(0.91427547, 0.23553646, 3.85046e-07, 0.73333335, 0.8834769, 0.5486359, 7.70092e-07, 0.41169596, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_gejqg"]
+gradient = SubResource("Gradient_4lqwv")
+fill = 1
+fill_from = Vector2(0.5232558, 0.48139533)
+fill_to = Vector2(0.7930232, 0.30930233)
+
+[sub_resource type="Gradient" id="Gradient_oywcm"]
+offsets = PackedFloat32Array(0.21851853, 0.537037, 0.9074074)
+colors = PackedColorArray(0.2983726, 0.34945783, 0.8161493, 0.73333335, 0.3951713, 0.52781093, 0.8900136, 0.41169596, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xgc63"]
+gradient = SubResource("Gradient_oywcm")
+fill = 1
+fill_from = Vector2(0.5232558, 0.48139533)
+fill_to = Vector2(0.8534884, 0.35581395)
+
+[sub_resource type="Gradient" id="Gradient_7n7pe"]
+offsets = PackedFloat32Array(0, 0.29828325, 0.80042917, 0.99785405)
+colors = PackedColorArray(1, 1, 1, 0.8627451, 0.5568628, 0.5568628, 0.5568628, 0, 0.7121502, 0.7121502, 0.7121502, 0.3023295, 1, 1, 1, 0.8627451)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fnsx1"]
+gradient = SubResource("Gradient_7n7pe")
+fill_from = Vector2(0.4871795, 0.8905983)
+fill_to = Vector2(0.46324787, 0.11111111)
+
+[sub_resource type="Gradient" id="Gradient_ryobp"]
+offsets = PackedFloat32Array(0, 0.5)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_e0ffi"]
+gradient = SubResource("Gradient_ryobp")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hswqw"]
+atlas = ExtResource("52_5l0y8")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7r1k4"]
+atlas = ExtResource("52_5l0y8")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gejqg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hswqw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7r1k4")
+}],
+"loop": true,
+"name": &"default",
+"speed": 2.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ba4vs"]
+atlas = ExtResource("51_ekncj")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yxqnd"]
+atlas = ExtResource("51_ekncj")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_063jv"]
+atlas = ExtResource("51_ekncj")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hrq8p"]
+atlas = ExtResource("51_ekncj")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8givg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ba4vs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yxqnd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_063jv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hrq8p")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3drsm"]
+atlas = ExtResource("47_w8oc3")
+region = Rect2(85, 153, 85, 51)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xj0l1"]
+atlas = ExtResource("47_w8oc3")
+region = Rect2(595, 153, 85, 51)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jodah"]
+atlas = ExtResource("37_ot48q")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tke4u"]
+atlas = ExtResource("37_ot48q")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_f043x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3drsm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xj0l1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jodah")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tke4u")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 2.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_qsoii"]
+offsets = PackedFloat32Array(0, 0.44849786, 0.99785405)
+colors = PackedColorArray(1, 1, 1, 0.8627451, 0.5568628, 0.5568628, 0.5568628, 0, 1, 1, 1, 0.8627451)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_yc5rd"]
+gradient = SubResource("Gradient_qsoii")
+fill_from = Vector2(0.48034188, 0.8051282)
+fill_to = Vector2(0.50769234, 0.13504274)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5l0y8"]
+texture = ExtResource("49_5qrjd")
+
+[sub_resource type="Gradient" id="Gradient_fnsx1"]
 offsets = PackedFloat32Array(0, 0.22742476)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_c2iwn"]
-gradient = SubResource("Gradient_75buv")
+gradient = SubResource("Gradient_fnsx1")
 width = 512
 height = 512
 use_hdr = true
@@ -292,52 +1109,281 @@ metadata/_snap_enabled = true
 
 [sub_resource type="CurveXYZTexture" id="CurveXYZTexture_6njx3"]
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0y2cb"]
+[sub_resource type="Curve" id="Curve_mlc74"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.16532259, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_885bo"]
+curve = SubResource("Curve_mlc74")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5rsq1"]
 particle_flag_disable_z = true
 emission_shape_offset = Vector3(-59.555, 0, 0)
-emission_shape_scale = Vector3(5.42, 0.19, 1)
+emission_shape_scale = Vector3(5.055, 2.895, 1)
 emission_shape = 1
 emission_sphere_radius = 128.0
+spread = 0.0
+flatness = 1.0
+initial_velocity_max = 8.849999
 angular_velocity_min = 8.2799835
 angular_velocity_max = 229.08998
 directional_velocity_min = -227.40001
 directional_velocity_max = 61.67998
 directional_velocity_curve = SubResource("CurveXYZTexture_6njx3")
-gravity = Vector3(0, -98, 0)
+gravity = Vector3(0, -50, 0)
 scale_min = 0.0
 scale_max = 6.1299996
-color = Color(1, 1, 0.2901961, 1)
+scale_curve = SubResource("CurveTexture_885bo")
+color = Color(1, 1, 1, 0.8627451)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mlc74"]
-atlas = ExtResource("37_ot48q")
-region = Rect2(0, 0, 32, 32)
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mlc74"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(-59.555, 0, 0)
+emission_shape_scale = Vector3(5.055, 2.895, 1)
+emission_shape = 1
+emission_sphere_radius = 128.0
+direction = Vector3(-1, 0, 0)
+spread = 0.0
+initial_velocity_min = 214.29
+initial_velocity_max = 466.18
+angular_velocity_min = 8.2799835
+angular_velocity_max = 229.08998
+directional_velocity_min = -227.40001
+directional_velocity_max = 61.67998
+directional_velocity_curve = SubResource("CurveXYZTexture_6njx3")
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_max = 6.1299996
+scale_curve = SubResource("CurveTexture_885bo")
+color = Color(1, 1, 1, 0.8627451)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_885bo"]
-atlas = ExtResource("37_ot48q")
-region = Rect2(32, 0, 32, 32)
+[sub_resource type="Curve" id="Curve_hjai8"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.29383886, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_f043x"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_mlc74")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_885bo")
-}],
-"loop": true,
-"name": &"default",
-"speed": 1.0
-}]
+[sub_resource type="CurveTexture" id="CurveTexture_txj2b"]
+curve = SubResource("Curve_hjai8")
+
+[sub_resource type="Gradient" id="Gradient_5l0y8"]
+offsets = PackedFloat32Array(0, 0.53651685)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3drsm"]
+gradient = SubResource("Gradient_5l0y8")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xj0l1"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(195.34, 397.955, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(-1, 0, 0)
+spread = 0.0
+initial_velocity_min = 47.87
+initial_velocity_max = 68.54
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_max = 10.0
+color = Color(1, 1, 1, 0.31764707)
+color_ramp = SubResource("GradientTexture1D_3drsm")
+alpha_curve = SubResource("CurveTexture_txj2b")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_oywcm"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(40.99, 53.18, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, 1, 0)
+spread = 113.841
+initial_velocity_max = 1.54
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_max = 35.28
+scale_curve = SubResource("CurveTexture_f3bax")
+scale_over_velocity_min = 107.84
+scale_over_velocity_max = 196.06999
+color = Color(0.51674455, 0.736904, 1, 1)
+color_ramp = SubResource("GradientTexture1D_f043x")
+
+[sub_resource type="Gradient" id="Gradient_5qrjd"]
+offsets = PackedFloat32Array(0, 0.5493274)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5rsq1"]
+gradient = SubResource("Gradient_5qrjd")
+fill = 1
+fill_from = Vector2(0.50427353, 0.48034188)
+
+[sub_resource type="Gradient" id="Gradient_5rsq1"]
+offsets = PackedFloat32Array(0, 0.23390558, 0.71030045, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.08744395, 0.08744395, 0.08744395, 0.91255605, 0, 0, 0, 0.030899167, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4lqwv"]
+gradient = SubResource("Gradient_5rsq1")
+fill = 1
+fill_from = Vector2(0.4905983, 0.47350428)
+fill_to = Vector2(0, 0.47350428)
+
+[sub_resource type="Gradient" id="Gradient_jodah"]
+offsets = PackedFloat32Array(0, 0.29828325, 0.80042917, 0.99785405)
+colors = PackedColorArray(1, 1, 1, 0.8627451, 0.5568628, 0.5568628, 0.5568628, 0, 0.7121502, 0.7121502, 0.7121502, 0.3023295, 1, 1, 1, 0.8627451)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tke4u"]
+gradient = SubResource("Gradient_jodah")
+fill_from = Vector2(0.4871795, 0.8905983)
+fill_to = Vector2(0.46324787, 0.11111111)
+
+[sub_resource type="Gradient" id="Gradient_tke4u"]
+offsets = PackedFloat32Array(0, 0.36695278, 0.611588, 0.99785405)
+colors = PackedColorArray(1, 0.13333334, 0.70980394, 0.3019608, 0.5568628, 0.5568628, 0.5568628, 0, 0.7121502, 0.7121502, 0.7121502, 0.3023295, 1, 0.61960787, 0.4117647, 0.47843137)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ryobp"]
+gradient = SubResource("Gradient_tke4u")
+fill_from = Vector2(0.7606838, 0.757265)
+fill_to = Vector2(0.4051282, 0.2888889)
+
+[sub_resource type="Gradient" id="Gradient_nykhw"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_j6oml"]
+gradient = SubResource("Gradient_nykhw")
 
 [node name="Main" type="TextureRect" unique_id=975709238]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 1.777832
+offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_mxd2g")
 script = ExtResource("1_h2yge")
+
+[node name="Shop Area" type="TextureRect" parent="." unique_id=892579619]
+self_modulate = Color(0.9135926, 0.46693486, 0.3253121, 1)
+layout_mode = 0
+offset_left = -38.78247
+offset_top = -22.0
+offset_right = 1184.6898
+offset_bottom = 668.0
+texture = ExtResource("12_pqe63")
+
+[node name="Rug" type="TextureRect" parent="Shop Area" unique_id=644125513]
+self_modulate = Color(0.9512226, 0.5415794, 0, 1)
+layout_mode = 0
+offset_left = -604.2175
+offset_top = 98.0
+offset_right = 1840.7825
+offset_bottom = 579.73254
+texture = ExtResource("38_f043x")
+
+[node name="Fields Area" type="TextureRect" parent="." unique_id=145891107]
+process_mode = 3
+visible = false
+modulate = Color(0.89324856, 0.69551384, 0.56989586, 1)
+layout_mode = 0
+offset_left = -70.47363
+offset_top = -41.0
+offset_right = 1243.0
+offset_bottom = 693.0
+texture = ExtResource("49_5qrjd")
+
+[node name="Rug" type="TextureRect" parent="Fields Area" unique_id=1625683152]
+self_modulate = Color(0.9853478, 0.90444106, 0.90809566, 0.7882353)
+layout_mode = 0
+offset_left = 427.47363
+offset_top = 35.0
+offset_right = 864.47363
+offset_bottom = 690.0
+texture = ExtResource("38_f043x")
+
+[node name="TextureRect" type="TextureRect" parent="Fields Area" unique_id=2035390757]
+self_modulate = Color(0.8392157, 0.43137255, 0.42745098, 0.10980392)
+layout_mode = 0
+offset_left = 104.47363
+offset_top = 39.0
+offset_right = 412.47363
+offset_bottom = 692.0
+texture = ExtResource("9_w8oc3")
+
+[node name="TextureRect2" type="TextureRect" parent="Fields Area" unique_id=1801385492]
+self_modulate = Color(0.8392157, 0.43137255, 0.42745098, 0.10980392)
+layout_mode = 0
+offset_left = 864.47363
+offset_top = 39.0
+offset_right = 1247.4736
+offset_bottom = 692.0
+texture = ExtResource("9_w8oc3")
+
+[node name="Forest Area" type="TextureRect" parent="." unique_id=1423353357]
+process_mode = 3
+visible = false
+modulate = Color(0.9059041, 0.74073046, 0.9564902, 1)
+layout_mode = 0
+offset_left = -14.0
+offset_top = -10.0
+offset_right = 1167.0
+offset_bottom = 660.0
+texture = ExtResource("12_pqe63")
+
+[node name="TextureRect" type="TextureRect" parent="Forest Area" unique_id=1364514032]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 647.0
+offset_top = 517.0
+offset_right = 1347.0
+offset_bottom = 817.0
+texture = ExtResource("4_4lqwv")
+
+[node name="TextureRect2" type="TextureRect" parent="Forest Area" unique_id=556298617]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 126.0
+offset_top = 531.0
+offset_right = 826.0
+offset_bottom = 831.0
+texture = ExtResource("4_4lqwv")
+
+[node name="TextureRect3" type="TextureRect" parent="Forest Area" unique_id=1027498767]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 368.6916
+offset_top = 39.89924
+offset_right = 1067.3733
+offset_bottom = 484.84753
+rotation = 1.5707964
+texture = ExtResource("6_oywcm")
+
+[node name="TextureRect4" type="TextureRect" parent="Forest Area" unique_id=519493310]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 378.614
+offset_top = 123.411156
+offset_right = 722.5697
+offset_bottom = 476.11942
+rotation = 3.1415927
+texture = ExtResource("4_4lqwv")
+
+[node name="TextureRect5" type="TextureRect" parent="Forest Area" unique_id=697906935]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 826.4647
+offset_top = 123.411194
+offset_right = 1618.2711
+offset_bottom = 476.11945
+rotation = 3.1415927
+texture = ExtResource("4_4lqwv")
+
+[node name="stone" type="TextureRect" parent="Forest Area" unique_id=2077777001]
+layout_mode = 0
+offset_left = 373.0
+offset_top = 126.0
+offset_right = 802.0
+offset_bottom = 555.0
+texture = ExtResource("5_gejqg")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=659444321]
+position = Vector2(576, 324)
+script = ExtResource("3_f043x")
 
 [node name="SoundManager" type="Node2D" parent="." unique_id=2141723055]
 position = Vector2(576, 324)
@@ -345,19 +1391,609 @@ scale = Vector2(0.555, 0.555)
 script = ExtResource("3_hspdg")
 
 [node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1219776385]
+process_mode = 3
 stream = SubResource("AudioStreamPolyphonic_hspdg")
+bus = &"SFX"
 
 [node name="BGMPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=526912258]
-stream = SubResource("AudioStreamSynchronized_2ix4a")
-autoplay = true
+process_mode = 3
+stream = SubResource("AudioStream_ot48q")
+bus = &"BGM"
 
 [node name="CoinDeck" parent="." unique_id=955153148 instance=ExtResource("4_2wwxx")]
-position = Vector2(576.00006, 324.00003)
-scale = Vector2(0.555, 0.555)
+position = Vector2(576, 330.285)
+scale = Vector2(0.535, 0.535)
 script = ExtResource("7_ow1sv")
+
+[node name="Battle UI" type="Node" parent="." unique_id=1754841999]
+
+[node name="Turn Calculation Box" type="TextureRect" parent="Battle UI" unique_id=1091749495]
+visible = false
+offset_left = -6.0
+offset_top = 110.0
+offset_right = 399.0
+offset_bottom = 501.0
+texture = SubResource("GradientTexture2D_2uk8d")
+script = ExtResource("26_2uk8d")
+
+[node name="Turn Calculation2" type="AnimatedSprite2D" parent="Battle UI/Turn Calculation Box" unique_id=2061428436]
+self_modulate = Color(0.9999997, 0.8511332, 0.6063765, 1)
+position = Vector2(120, 199.99998)
+scale = Vector2(4.015625, 4.0156245)
+sprite_frames = SubResource("SpriteFrames_6ny5t")
+animation = &"open"
+
+[node name="TextureRect" type="TextureRect" parent="Battle UI/Turn Calculation Box/Turn Calculation2" unique_id=1626179024]
+self_modulate = Color(0, 0, 0, 1)
+offset_left = -19.199999
+offset_top = -34.185364
+offset_right = 18.965849
+offset_bottom = 3.980484
+texture = ExtResource("23_hjai8")
+expand_mode = 1
+
+[node name="Turn Calculation" type="Label" parent="Battle UI/Turn Calculation Box" unique_id=854498321]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 0
+offset_left = 210.00002
+offset_top = 94.0
+offset_right = 360.0
+offset_bottom = 264.0
+scale = Vector2(1.2137691, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("36_1bveb")
+theme_override_font_sizes/font_size = 29
+text = "DAMAGE: 20
+GAIN: 15
+DEBT: 34
+THRIFT: 4
+TALLY: 1
+CAN VOID"
+
+[node name="Sun Moon Count" type="Label" parent="Battle UI/Turn Calculation Box" unique_id=2073248223]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 0
+offset_left = 25.0
+offset_top = 201.0
+offset_right = 175.0
+offset_bottom = 241.0
+scale = Vector2(1.2137691, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("7_3pt4j")
+theme_override_font_sizes/font_size = 21
+text = "𖤓8 ☾9"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spell Decor" type="TextureRect" parent="Battle UI/Turn Calculation Box" unique_id=957011128]
+self_modulate = Color(0.46877682, 0.2151056, 0, 0.33333334)
+layout_mode = 0
+offset_left = 45.0
+offset_top = 237.0
+offset_right = 194.96684
+offset_bottom = 263.0
+texture = ExtResource("9_w8oc3")
+
+[node name="Turn Spend Particle" type="GPUParticles2D" parent="Battle UI/Turn Calculation Box" unique_id=2025819612]
+position = Vector2(121, 138)
+emitting = false
+amount = 12
+lifetime = 0.5
+explosiveness = 0.53
+process_material = SubResource("ParticleProcessMaterial_3drsm")
+
+[node name="Turn Gain Particle" type="GPUParticles2D" parent="Battle UI/Turn Calculation Box" unique_id=813342068]
+position = Vector2(122, 139)
+emitting = false
+amount = 12
+process_material = SubResource("ParticleProcessMaterial_jmo7v")
+
+[node name="Turn Damage Particle" type="GPUParticles2D" parent="Battle UI/Turn Calculation Box" unique_id=1713589941]
+position = Vector2(122, 139)
+emitting = false
+amount = 12
+process_material = SubResource("ParticleProcessMaterial_ekncj")
+
+[node name="Turn Debt Particle" type="GPUParticles2D" parent="Battle UI/Turn Calculation Box" unique_id=154900794]
+position = Vector2(122, 139)
+emitting = false
+amount = 12
+explosiveness = 0.3
+process_material = SubResource("ParticleProcessMaterial_f3bax")
+
+[node name="Turn Thrift Particle" type="GPUParticles2D" parent="Battle UI/Turn Calculation Box" unique_id=1567441834]
+position = Vector2(122, 139)
+emitting = false
+amount = 12
+process_material = SubResource("ParticleProcessMaterial_5l0y8")
+
+[node name="Turn Tally Particle" type="GPUParticles2D" parent="Battle UI/Turn Calculation Box" unique_id=1565507579]
+position = Vector2(122, 139)
+emitting = false
+amount = 6
+texture = ExtResource("49_5qrjd")
+process_material = SubResource("ParticleProcessMaterial_tke4u")
+
+[node name="Turn Spell Light" type="PointLight2D" parent="Battle UI/Turn Calculation Box" unique_id=459779385 groups=["point_light"]]
+light_mask = 0
+z_index = -5
+position = Vector2(121, 139)
+scale = Vector2(3.6187499, 3.6996188)
+range_z_max = 5
+texture = SubResource("GradientTexture2D_xj0l1")
+
+[node name="Pair Count" type="Label" parent="Battle UI/Turn Calculation Box" unique_id=52278358]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 0
+offset_left = 90.00001
+offset_top = 244.0
+offset_right = 240.0
+offset_bottom = 328.0
+scale = Vector2(1.2137691, 1)
+theme_override_colors/font_color = Color(0.8439926, 0.5731644, 0.41773322, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("7_3pt4j")
+theme_override_font_sizes/font_size = 14
+text = "
+2 𖤓 𖤓
+6 𖤓 ☾
+1 ☾ ☾"
+vertical_alignment = 1
+
+[node name="PlayerHealthBar2" parent="Battle UI" unique_id=1546897993 instance=ExtResource("5_1xcnr")]
+offset_left = 155.0
+offset_top = 554.00006
+offset_right = 247.0
+offset_bottom = 570.00006
+scale = Vector2(3.5, 3.5)
+mouse_default_cursor_shape = 2
+
+[node name="Player Info" type="Button" parent="Battle UI" unique_id=261525369]
+visible = false
+top_level = true
+offset_left = 15.0
+offset_top = 508.0
+offset_right = 139.0
+offset_bottom = 633.0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+text = "Press for Info"
+
+[node name="Reserve Button" type="TextureButton" parent="Battle UI" unique_id=623140383]
+modulate = Color(1, 0.84566724, 0.71277934, 1)
+offset_left = 570.0
+offset_top = 554.0
+offset_right = 685.0
+offset_bottom = 616.0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource("20_5l0y8")
+stretch_mode = 0
+
+[node name="Player Reserve" type="Label" parent="Battle UI/Reserve Button" unique_id=15672962]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 0
+offset_left = -31.000004
+offset_top = 12.0
+offset_right = 119.0
+offset_bottom = 57.0
+scale = Vector2(1.2137691, 1)
+theme_override_colors/font_color = Color(0.9999997, 0.9306338, 0.82846355, 1)
+theme_override_fonts/font = ExtResource("36_1bveb")
+theme_override_font_sizes/font_size = 25
+text = "RESERVE
+(0/4)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HealthLabel" type="Label" parent="Battle UI" unique_id=580605117]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 493.0
+offset_top = 244.0
+offset_right = 616.0
+offset_bottom = 284.0
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.8500227, 0.484913, 1)
+theme_override_fonts/font = ExtResource("36_b0nqf")
+theme_override_font_sizes/font_size = 40
+text = "200"
+
+[node name="Player Spend Particles" type="GPUParticles2D" parent="Battle UI" unique_id=1888397502]
+position = Vector2(161, 579)
+amount = 64
+lifetime = 2.0
+process_material = SubResource("ParticleProcessMaterial_5qrjd")
+
+[node name="Player Spend" type="Label" parent="Battle UI" unique_id=70835638]
+offset_left = 163.0
+offset_top = 571.0
+offset_right = 193.0
+offset_bottom = 596.0
+theme_override_colors/font_color = Color(1, 0.43951198, 0.40865377, 1)
+theme_override_colors/font_outline_color = Color(0.5314025, 0, 0.023994911, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 24
+text = "30"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EnemyHealthBar" parent="Battle UI" unique_id=1945687937 instance=ExtResource("6_c2iwn")]
+offset_left = 996.00006
+offset_top = 88.0
+offset_right = -46.85913
+offset_bottom = -535.2318
+scale = Vector2(3.5, 3.5)
+
+[node name="EnemyHealthLabel" type="Label" parent="Battle UI" unique_id=1016348514]
+offset_left = 597.0
+offset_top = 43.0
+offset_right = 664.0
+offset_bottom = 83.0
+theme_override_colors/font_color = Color(1, 0.8509804, 0.4862745, 1)
+theme_override_fonts/font = ExtResource("36_b0nqf")
+theme_override_font_sizes/font_size = 40
+text = "200"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Enemy Spend Particles" type="GPUParticles2D" parent="Battle UI" unique_id=862086434]
+position = Vector2(984, 74)
+amount = 64
+lifetime = 2.0
+process_material = SubResource("ParticleProcessMaterial_n7vvl")
+
+[node name="Enemy Spend" type="Label" parent="Battle UI" unique_id=1980570160]
+offset_left = 954.0
+offset_top = 44.0
+offset_right = 984.0
+offset_bottom = 69.0
+theme_override_colors/font_color = Color(1, 0.43951198, 0.40865377, 1)
+theme_override_colors/font_outline_color = Color(0.5314025, 0, 0.023994911, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 24
+text = "30"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Re-Flip" type="Button" parent="Battle UI" unique_id=1181793745]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(150, 40)
+anchors_preset = -1
+anchor_right = 0.033
+anchor_bottom = 0.048
+offset_left = 229.0
+offset_top = 389.99997
+offset_right = 340.984
+offset_bottom = 488.896
+scale = Vector2(0.8, 0.8)
+theme_override_font_sizes/font_size = 20
+text = "
+"
+
+[node name="Reflip_Sprite" type="AnimatedSprite2D" parent="Battle UI/Re-Flip" unique_id=1866738486]
+position = Vector2(79.999985, 62.499996)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_mlc74")
+frame_progress = 0.8581795
+
+[node name="Player Slow Particles" type="GPUParticles2D" parent="Battle UI/Re-Flip" unique_id=1919652378]
+position = Vector2(86.25, 66.25003)
+scale = Vector2(0.99999994, 0.99999994)
+amount = 64
+lifetime = 2.3499999999999996
+process_material = SubResource("ParticleProcessMaterial_gejqg")
+
+[node name="Reflip_Label" type="Label" parent="Battle UI/Re-Flip" unique_id=1593752798]
+layout_mode = 0
+offset_left = 57.499992
+offset_top = 26.249998
+offset_right = 97.49999
+offset_bottom = 102.25
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 75
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player Slow" type="Label" parent="Battle UI/Re-Flip" unique_id=794918294]
+top_level = true
+layout_mode = 0
+offset_left = 221.0
+offset_top = 490.0
+offset_right = 367.0
+offset_bottom = 516.0
+theme_override_colors/font_color = Color(0.48229116, 0.7700195, 1, 1)
+theme_override_colors/font_outline_color = Color(0.31, 0, 0.24283333, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 25
+text = "DROWSE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="All In" type="Label" parent="Battle UI" unique_id=1294003723]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -69.0
+offset_top = -19.0
+offset_right = 64.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.99999934, 0.7676377, 0.5469634, 1)
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 43
+text = "ALL IN"
+
+[node name="Turn UI" type="TextureRect" parent="Battle UI" unique_id=1325860084]
+visible = false
+self_modulate = Color(0.90375245, 0.79641557, 0.6302501, 1)
+z_index = 9
+offset_left = 228.0
+offset_top = 253.0
+offset_right = 922.0
+offset_bottom = 382.0
+texture = ExtResource("23_tbp1y")
+
+[node name="PortraitBG" type="TextureRect" parent="Battle UI/Turn UI" unique_id=1677963141]
+self_modulate = Color(0.9787256, 0.7227613, 0.48060763, 1)
+show_behind_parent = true
+layout_mode = 0
+offset_left = 267.0
+offset_top = -78.0
+offset_right = 432.0
+offset_bottom = 87.0
+texture = ExtResource("49_5qrjd")
+
+[node name="Turn Portrait" type="AnimatedSprite2D" parent="Battle UI/Turn UI/PortraitBG" unique_id=559790776]
+position = Vector2(81.999985, 81.999985)
+scale = Vector2(2.2500005, 2.2500005)
+sprite_frames = SubResource("SpriteFrames_7n7pe")
+animation = &"COIN_CASTER"
+
+[node name="Turn UI Label" type="Label" parent="Battle UI/Turn UI" unique_id=421358590]
+layout_mode = 0
+offset_left = 125.24904
+offset_top = 29.956394
+offset_right = 571.85223
+offset_bottom = 80.95639
+rotation = 0.05235988
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.34117648)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("30_tcekk")
+theme_override_font_sizes/font_size = 46
+text = "PLAYER TURN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Endturn" type="Button" parent="Battle UI" unique_id=1034445602]
+self_modulate = Color(1, 1, 1, 0)
+offset_left = 453.0
+offset_top = 201.0
+offset_right = 697.0
+offset_bottom = 445.0
+mouse_default_cursor_shape = 2
+
+[node name="PassiveContainer" type="VBoxContainer" parent="Battle UI" unique_id=709571412]
+custom_minimum_size = Vector2(200, 160)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -214.0
+offset_top = -421.0
+offset_right = -14.0
+offset_bottom = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+alignment = 2
+
+[node name="EnemyPassiveContainer" type="CenterContainer" parent="Battle UI" unique_id=1623025588]
+z_index = 9
+custom_minimum_size = Vector2(1000, 10)
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 122.0
+offset_bottom = 199.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="Background" type="TextureRect" parent="Battle UI/EnemyPassiveContainer" unique_id=1365114857]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(1000, 10)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("29_n7vvl")
+
+[node name="EnemyLabelNotification" type="Label" parent="Battle UI/EnemyPassiveContainer/Background" unique_id=1694276821]
+modulate = Color(1, 1, 1, 0)
+z_index = 9
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 0
+offset_left = 22.0
+offset_top = -1.0
+offset_right = 971.0
+offset_bottom = 61.0
+theme_override_fonts/font = ExtResource("36_1bveb")
+theme_override_font_sizes/font_size = 34
+horizontal_alignment = 1
+
+[node name="LoanShark" type="AnimatedSprite2D" parent="Battle UI" unique_id=40170055]
+top_level = true
+position = Vector2(574.5, 489.25)
+scale = Vector2(4.8828125, 4.8828125)
+sprite_frames = SubResource("SpriteFrames_hswqw")
+frame = 6
+frame_progress = 1.0
+
+[node name="Loan Splash" type="Marker2D" parent="Battle UI/LoanShark" unique_id=721523266]
+position = Vector2(-46.7968, 32.716797)
+
+[node name="Loan Enter" type="Marker2D" parent="Battle UI/LoanShark" unique_id=646283434]
+position = Vector2(35.57, 33.63)
+
+[node name="Shopkeeper" type="Node2D" parent="." unique_id=283991134]
+script = ExtResource("38_ekncj")
+
+[node name="Keeper Shadow" type="TextureRect" parent="Shopkeeper" unique_id=935502447]
+self_modulate = Color(0, 0, 0, 0.5882353)
+offset_left = 534.0
+offset_top = 499.0
+offset_right = 1237.0
+offset_bottom = 699.0
+texture = SubResource("GradientTexture2D_7n7pe")
+
+[node name="KeeperHealthBar" parent="Shopkeeper" unique_id=1067755888 instance=ExtResource("60_txj2b")]
+offset_left = 992.0
+offset_top = 620.0
+offset_right = 1267.2771
+offset_bottom = 707.9851
+scale = Vector2(2, 2)
+
+[node name="Keeper_Portrait" type="AnimatedSprite2D" parent="Shopkeeper" unique_id=407151142]
+position = Vector2(1077, 567)
+scale = Vector2(2.015625, 2)
+sprite_frames = SubResource("SpriteFrames_ba4vs")
+autoplay = "default"
+
+[node name="KeeperFrame" type="TextureRect" parent="Shopkeeper" unique_id=2031310097]
+offset_left = 999.0
+offset_top = 492.0
+offset_right = 1153.0
+offset_bottom = 647.0
+texture = ExtResource("7_0sxm5")
+
+[node name="Status" type="Label" parent="Shopkeeper" unique_id=226059882]
+offset_left = 731.0
+offset_top = 540.0
+offset_right = 989.0
+offset_bottom = 577.0
+theme_override_colors/font_color = Color(1, 0.83137256, 1, 1)
+theme_override_constants/outline_size = 4
+text = "FULLY PAID"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="KeeperHealthLabel" type="Label" parent="Shopkeeper" unique_id=345658930]
+offset_left = 735.0
+offset_top = 589.0
+offset_right = 800.0
+offset_bottom = 629.0
+theme_override_colors/font_color = Color(1, 0.8025643, 0.90589124, 1)
+theme_override_fonts/font = ExtResource("36_b0nqf")
+theme_override_font_sizes/font_size = 20
+text = "200"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Enemy" type="Node2D" parent="." unique_id=651932115]
+script = ExtResource("3_lquwl")
+
+[node name="Enemy Thrift Particles" type="GPUParticles2D" parent="Enemy" unique_id=1768312759]
+position = Vector2(1131, 130)
+amount = 64
+lifetime = 1.46
+process_material = SubResource("ParticleProcessMaterial_885bo")
+
+[node name="Enemy Debt Particles" type="GPUParticles2D" parent="Enemy" unique_id=1326516833]
+position = Vector2(1020, 130)
+amount = 64
+lifetime = 1.46
+process_material = SubResource("ParticleProcessMaterial_tcekk")
+
+[node name="Enemy_Portrait" type="Control" parent="Enemy" unique_id=686241934]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1016.325
+offset_top = 17.97
+offset_right = 1136.3256
+offset_bottom = 137.97021
+
+[node name="Enemy_Portrait_Sprite" type="AnimatedSprite2D" parent="Enemy/Enemy_Portrait" unique_id=1083960378]
+position = Vector2(58.674988, 58.03)
+scale = Vector2(1.9374993, 1.9375)
+sprite_frames = ExtResource("42_txj2b")
+animation = &"MAGE"
+
+[node name="EnemyFrame" type="TextureRect" parent="Enemy" unique_id=1466787434]
+offset_left = 998.0
+offset_right = 1152.0
+offset_bottom = 155.0
+texture = ExtResource("7_0sxm5")
+
+[node name="Enemy Thrift" type="Label" parent="Enemy" unique_id=1113214489]
+offset_left = 1109.0
+offset_top = 118.0
+offset_right = 1139.0
+offset_bottom = 143.0
+theme_override_colors/font_color = Color(0.22070616, 0.7757475, 0.9999998, 1)
+theme_override_colors/font_outline_color = Color(0.16238543, 5.8719515e-06, 0.73262644, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 24
+text = "30"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Enemy Gain Particles" type="GPUParticles2D" parent="Enemy" unique_id=1206722633]
+position = Vector2(1124, 28)
+amount = 24
+lifetime = 1.5
+process_material = SubResource("ParticleProcessMaterial_f043x")
+
+[node name="Enemy Gain" type="Label" parent="Enemy" unique_id=1475439462]
+offset_left = 1109.0
+offset_top = 16.0
+offset_right = 1139.0
+offset_bottom = 41.0
+theme_override_colors/font_color = Color(1, 0.75139385, 0.39092284, 1)
+theme_override_colors/font_outline_color = Color(0.3791677, 0.18496653, 4.813075e-08, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 24
+text = "30"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Enemy Debt" type="Label" parent="Enemy" unique_id=2027756836]
+offset_left = 1001.0
+offset_top = 112.0
+offset_right = 1041.0
+offset_bottom = 152.0
+theme_override_colors/font_color = Color(1, 0.47843137, 0.8352941, 1)
+theme_override_colors/font_outline_color = Color(0.31, 0, 0.24283333, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 24
+text = "30"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Player" type="Node2D" parent="." unique_id=1483072070]
 script = ExtResource("2_1bvp3")
+
+[node name="Player Thrift Particles" type="GPUParticles2D" parent="Player" unique_id=1247546421]
+position = Vector2(29, 515)
+amount = 64
+lifetime = 1.46
+process_material = SubResource("ParticleProcessMaterial_1bveb")
+
+[node name="Player Debt Particles" type="GPUParticles2D" parent="Player" unique_id=772424488]
+position = Vector2(127, 518)
+amount = 64
+lifetime = 1.46
+process_material = ExtResource("7_cr44a")
 
 [node name="Player_Portrait" type="AnimatedSprite2D" parent="Player" unique_id=1707183387]
 position = Vector2(75.5, 570.99994)
@@ -374,23 +2010,28 @@ offset_bottom = 90.0
 theme_override_font_sizes/font_size = 35
 text = "Player"
 
-[node name="Player Gain" type="Label" parent="Player" unique_id=254214022]
-offset_left = 157.0
-offset_top = 520.0
-offset_right = 217.0
-offset_bottom = 539.0
-theme_override_colors/font_color = Color(0.8862745, 0.59607846, 0, 1)
-theme_override_font_sizes/font_size = 18
-text = "GAIN:"
+[node name="Dazzled Effect" type="TextureRect" parent="Player" unique_id=1263654676]
+self_modulate = Color(1, 0.6313726, 0.99607843, 0.19607843)
+offset_left = 14.0
+offset_top = 509.0
+offset_right = 138.0
+offset_bottom = 633.0
+texture = SubResource("GradientTexture2D_5qrjd")
 
-[node name="Player Debt" type="Label" parent="Player" unique_id=2068659444]
-offset_left = 221.0
-offset_top = 522.0
-offset_right = 287.0
-offset_bottom = 541.0
-theme_override_colors/font_color = Color(0.54901963, 0, 0.42745098, 1)
-theme_override_font_sizes/font_size = 18
-text = "DEBT: 67"
+[node name="Player Star Struck" type="Label" parent="Player/Dazzled Effect" unique_id=1916728157]
+top_level = true
+layout_mode = 0
+offset_left = 19.0
+offset_top = 591.0
+offset_right = 136.0
+offset_bottom = 611.0
+theme_override_colors/font_color = Color(1, 0.7299065, 0.9951002, 1)
+theme_override_colors/font_outline_color = Color(0.31, 0, 0.24283333, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 19
+text = "STARSTRUCK"
+horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PlayerFrame" type="TextureRect" parent="Player" unique_id=152420565]
@@ -399,263 +2040,175 @@ offset_right = 154.0
 offset_bottom = 648.0
 texture = ExtResource("7_0sxm5")
 
-[node name="Enemy" type="Node2D" parent="." unique_id=651932115]
-script = ExtResource("3_lquwl")
-
-[node name="Enemy_Portrait" type="Control" parent="Enemy" unique_id=686241934]
-custom_minimum_size = Vector2(120, 120)
-layout_mode = 3
-anchors_preset = 0
-offset_left = 1016.325
-offset_top = 17.97
-offset_right = 1136.3256
-offset_bottom = 137.97021
-
-[node name="Enemy_Portrait_Sprite" type="AnimatedSprite2D" parent="Enemy/Enemy_Portrait" unique_id=1083960378]
-position = Vector2(58.67501, 59.03)
-scale = Vector2(1.9374993, 1.9375)
-sprite_frames = SubResource("SpriteFrames_8bkap")
-animation = &"TWILIGHT_SAGE"
-
-[node name="Enemy Gain" type="Label" parent="Enemy" unique_id=1475439462]
-offset_left = 927.0
-offset_top = 115.0
-offset_right = 987.0
-offset_bottom = 134.0
-theme_override_colors/font_color = Color(0.8881403, 0.5978696, 0, 1)
-theme_override_font_sizes/font_size = 18
-text = "GAIN: 30"
-vertical_alignment = 1
-
-[node name="Enemy Debt" type="Label" parent="Enemy" unique_id=2027756836]
-offset_left = 842.0
-offset_top = 113.0
-offset_right = 908.0
-offset_bottom = 138.0
-theme_override_colors/font_color = Color(0.55085, 2.892658e-05, 0.42899314, 1)
-theme_override_font_sizes/font_size = 18
-text = "DEBT: 30"
-vertical_alignment = 1
-
-[node name="EnemyFrame" type="TextureRect" parent="Enemy" unique_id=1466787434]
-offset_left = 998.0
-offset_right = 1152.0
-offset_bottom = 155.0
-texture = ExtResource("7_0sxm5")
-
-[node name="Battle UI" type="Node" parent="." unique_id=1754841999]
-
-[node name="PlayerHealthBar2" parent="Battle UI" unique_id=1546897993 instance=ExtResource("5_1xcnr")]
-offset_left = 146.0
-offset_top = 548.0
-offset_right = 238.0
-offset_bottom = 564.0
-scale = Vector2(4, 4)
-
-[node name="HealthLabel" type="Label" parent="Battle UI" unique_id=580605117]
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 158.0
-offset_top = 290.0
-offset_right = 281.0
-offset_bottom = 322.0
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 0.8500227, 0.484913, 1)
-theme_override_font_sizes/font_size = 22
-text = "Coins:"
-
-[node name="EnemyHealthBar" parent="Battle UI" unique_id=1945687937 instance=ExtResource("6_c2iwn")]
-offset_left = 1005.0
-offset_top = 104.0
-offset_right = 1097.0
-offset_bottom = 120.0
-scale = Vector2(4, 4)
-
-[node name="EnemyHealthLabel" type="Label" parent="Battle UI" unique_id=1016348514]
-offset_left = 868.0
-offset_top = 5.0
-offset_right = 991.0
-offset_bottom = 37.0
-theme_override_colors/font_color = Color(0.9214317, 0.6317199, 0, 1)
-theme_override_fonts/font = ExtResource("7_3pt4j")
-theme_override_font_sizes/font_size = 22
-
-[node name="Re-Flip" type="Button" parent="Battle UI" unique_id=1181793745]
-self_modulate = Color(1, 1, 1, 0)
-custom_minimum_size = Vector2(150, 40)
-anchors_preset = -1
-anchor_right = 0.033
-anchor_bottom = 0.048
-offset_left = 185.00002
-offset_top = 350.00003
-offset_right = 296.984
-offset_bottom = 441.39597
-scale = Vector2(0.8, 0.8)
-theme_override_font_sizes/font_size = 20
-text = "
-"
-
-[node name="Reflip_Sprite" type="AnimatedSprite2D" parent="Battle UI/Re-Flip" unique_id=1866738486]
-position = Vector2(79.999985, 62.499996)
-scale = Vector2(4, 4)
-sprite_frames = SubResource("SpriteFrames_mlc74")
-frame = 3
-frame_progress = 0.8581795
-
-[node name="Reflip_Label" type="Label" parent="Battle UI/Re-Flip" unique_id=1593752798]
-layout_mode = 0
-offset_left = 57.499992
-offset_top = 26.249998
-offset_right = 97.49999
-offset_bottom = 102.25
+[node name="Player Thrift" type="Label" parent="Player" unique_id=2054409732]
+offset_left = 12.0
+offset_top = 505.0
+offset_right = 46.0
+offset_bottom = 530.0
+theme_override_colors/font_color = Color(0.21960784, 0.7764706, 1, 1)
+theme_override_colors/font_outline_color = Color(0.19985744, 6.9019494e-05, 0.69473594, 1)
+theme_override_constants/outline_size = 4
 theme_override_fonts/font = ExtResource("27_t372l")
-theme_override_font_sizes/font_size = 75
+theme_override_font_sizes/font_size = 24
+text = "30"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Turn Calculation" type="Label" parent="Battle UI" unique_id=854498321]
-custom_minimum_size = Vector2(150, 40)
-offset_left = 106.93462
-offset_top = 169.0
-offset_right = 256.93463
-offset_bottom = 350.0
-scale = Vector2(1.2137691, 1)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
-text = "Turn"
-
-[node name="Turn UI" type="ColorRect" parent="Battle UI" unique_id=566011376]
-visible = false
-offset_left = -64.0
-offset_top = 276.0
-offset_right = 1232.0
-offset_bottom = 359.0
-color = Color(0, 0, 0, 0.5803922)
-
-[node name="Turn UI Label" type="Label" parent="Battle UI/Turn UI" unique_id=421358590]
-layout_mode = 0
-offset_right = 1165.0
-offset_bottom = 85.0
-theme_override_font_sizes/font_size = 30
-text = "BATTLE START"
+[node name="Player Debt" type="Label" parent="Player" unique_id=1295442632]
+offset_left = 110.0
+offset_top = 497.0
+offset_right = 150.0
+offset_bottom = 537.0
+theme_override_colors/font_color = Color(1, 0.4768706, 0.83371246, 1)
+theme_override_colors/font_outline_color = Color(0.31, 0, 0.24283333, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 24
+text = "30"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Endturn" type="Button" parent="Battle UI" unique_id=1034445602]
-self_modulate = Color(1, 1, 1, 0)
-offset_left = 453.0
-offset_top = 201.0
-offset_right = 697.0
-offset_bottom = 445.0
+[node name="Player Reserve Rug" type="TextureRect" parent="Player" unique_id=1081132533]
+modulate = Color(0.9999997, 0.80451834, 0.4314901, 1)
+offset_left = 1013.0
+offset_top = 328.0
+offset_right = 1191.0
+offset_bottom = 506.0
+rotation = 1.5707964
+texture = ExtResource("47_3drsm")
 
-[node name="EnemyLabelNotification" type="Label" parent="Battle UI" unique_id=1694276821]
-custom_minimum_size = Vector2(600, 0)
-offset_left = 273.0
-offset_top = 131.0
-offset_right = 873.0
-offset_bottom = 166.0
-theme_override_font_sizes/font_size = 25
-text = "EnemyLabel Notification"
-horizontal_alignment = 1
-
-[node name="PassiveContainer" type="VBoxContainer" parent="Battle UI" unique_id=709571412]
-custom_minimum_size = Vector2(200, 160)
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
+[node name="OutsideTexture" type="TextureRect" parent="Player/Player Reserve Rug" unique_id=1827802911]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -210.0
-offset_top = -177.0
-offset_right = -10.0
-offset_bottom = -17.0
-grow_horizontal = 0
-grow_vertical = 0
-alignment = 2
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(89, 89)
+texture = ExtResource("48_xj0l1")
 
-[node name="Game Over UI" type="CanvasLayer" parent="." unique_id=994626979]
+[node name="RunesInReserveRug" type="AnimatedSprite2D" parent="Player/Player Reserve Rug" unique_id=2087048745]
+position = Vector2(89, 88.999985)
+rotation = -1.5707964
+scale = Vector2(2.5, 2.5)
+sprite_frames = SubResource("SpriteFrames_qdodi")
+autoplay = "default"
+frame_progress = 0.37594712
+
+[node name="Player Lock Particles" type="GPUParticles2D" parent="Player" unique_id=1470998698]
+position = Vector2(941, 388)
+amount = 64
+lifetime = 5.0
+process_material = SubResource("ParticleProcessMaterial_4lqwv")
+
+[node name="Player Lock" type="Label" parent="Player" unique_id=1723631615]
+top_level = true
+offset_left = 856.0
+offset_top = 401.0
+offset_right = 991.0
+offset_bottom = 438.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 36
+text = "VOIDED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player Gain Particles" type="GPUParticles2D" parent="Player" unique_id=147503279]
+position = Vector2(31, 621)
+amount = 24
+lifetime = 1.5
+process_material = SubResource("ParticleProcessMaterial_cr44a")
+
+[node name="Player Gain" type="Label" parent="Player" unique_id=254214022]
+offset_left = 15.0
+offset_top = 611.0
+offset_right = 45.0
+offset_bottom = 636.0
+theme_override_colors/font_color = Color(1, 0.7529412, 0.39215687, 1)
+theme_override_colors/font_outline_color = Color(0.35334554, 0.22087488, 2.4065375e-07, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 24
+text = "30"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player Tally" type="TextureRect" parent="Player" unique_id=1191166538]
+self_modulate = Color(0.9047755, 0.66126776, 3.85046e-07, 1)
+top_level = true
+offset_left = 162.0
+offset_top = 501.0
+offset_right = 210.0
+offset_bottom = 549.0
+texture = ExtResource("49_5qrjd")
+
+[node name="Player Tally Count" type="Label" parent="Player/Player Tally" unique_id=1049271658]
+top_level = true
+layout_mode = 0
+offset_left = 159.0
+offset_top = 507.0
+offset_right = 216.0
+offset_bottom = 545.0
+theme_override_colors/font_color = Color(1, 1, 0.62352943, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 26
+text = "7"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Solar Blessing Icon" type="AnimatedSprite2D" parent="Player" unique_id=1498402891]
+self_modulate = Color(0.43529412, 0.1882353, 0, 0.47058824)
+position = Vector2(887.00006, 280.99997)
+scale = Vector2(1.921874, 1.921874)
+sprite_frames = SubResource("SpriteFrames_3drsm")
+animation = &"Solar Blessing"
+
+[node name="Solar Glow" type="TextureRect" parent="Player/Solar Blessing Icon" unique_id=1542688678]
 visible = false
-script = ExtResource("13_0y2cb")
+offset_left = -35.38214
+offset_top = -32.84722
+offset_right = 31.80655
+offset_bottom = 34.34147
+texture = SubResource("GradientTexture2D_gejqg")
 
-[node name="ColorRect" type="ColorRect" parent="Game Over UI" unique_id=1423685417]
-offset_left = -25.0
-offset_top = -10.0
-offset_right = 1168.0
-offset_bottom = 662.0
-color = Color(0, 0, 0, 0.7607843)
+[node name="Lunar Blessing Icon" type="AnimatedSprite2D" parent="Player" unique_id=1536334222]
+self_modulate = Color(0.09019608, 0, 0.74509805, 0.30980393)
+position = Vector2(967.00006, 280.00003)
+scale = Vector2(1.921874, 1.921874)
+sprite_frames = SubResource("SpriteFrames_3drsm")
+animation = &"Lunar Blessing"
 
-[node name="Restart" type="Button" parent="Game Over UI/ColorRect" unique_id=1995089938]
-custom_minimum_size = Vector2(200, 60)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -113.5
-offset_top = 53.0
-offset_right = 86.5
-offset_bottom = 113.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Restart"
+[node name="Lunar Glow" type="TextureRect" parent="Player/Lunar Blessing Icon" unique_id=980034410]
+visible = false
+offset_left = -35.38214
+offset_top = -32.84722
+offset_right = 31.80655
+offset_bottom = 34.34147
+texture = SubResource("GradientTexture2D_xgc63")
 
-[node name="Gameover" type="Label" parent="Game Over UI/ColorRect" unique_id=1781032691]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -149.5
-offset_top = -41.5
-offset_right = 149.5
-offset_bottom = 41.5
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 60
-text = "Gameover"
-
-[node name="EnemyLabel" type="Label" parent="Game Over UI/ColorRect" unique_id=1741001806]
-custom_minimum_size = Vector2(400, 60)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -214.5
-offset_top = -133.0
-offset_right = 185.5
-offset_bottom = -50.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 60
-text = "Slain"
-
-[node name="StatsLabel" type="Label" parent="Game Over UI/ColorRect" unique_id=387974470]
-custom_minimum_size = Vector2(300, 350)
-layout_mode = 0
-offset_left = 94.0
-offset_top = 183.0
-offset_right = 394.0
-offset_bottom = 533.0
-theme_override_font_sizes/font_size = 25
-text = "Game Statistics"
-
-[node name="GameStatLabel" type="Label" parent="Game Over UI/ColorRect" unique_id=701039209]
-layout_mode = 0
-offset_left = 50.0
-offset_top = 113.0
-offset_right = 347.0
-offset_bottom = 168.0
-theme_override_font_sizes/font_size = 40
-text = "Game Statistics"
+[node name="PassiveIncome" type="AnimatedSprite2D" parent="Player" unique_id=548672999]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+top_level = true
+position = Vector2(101, 538)
+scale = Vector2(6.015625, 6.015625)
+sprite_frames = ExtResource("48_3drsm")
+animation = &"Passive Income"
 
 [node name="CardManager" type="CanvasLayer" parent="." unique_id=806531365]
 visible = false
 script = ExtResource("5_3amdw")
+
+[node name="CardShadow" type="TextureRect" parent="CardManager" unique_id=22572765]
+self_modulate = Color(0, 0, 0, 0.49803922)
+offset_right = 1155.0
+offset_bottom = 649.0
+texture = SubResource("GradientTexture2D_fnsx1")
 
 [node name="Background" type="ColorRect" parent="CardManager" unique_id=1035884839]
 anchors_preset = 15
@@ -691,138 +2244,269 @@ layout_mode = 2
 mouse_filter = 0
 theme_override_constants/separation = 20
 
-[node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384]
-position = Vector2(576, 320)
-scale = Vector2(17.921875, 10.046875)
-color = Color(1, 0.90334755, 0.5628785, 0.61960787)
-energy = 1.05
-texture = SubResource("GradientTexture2D_c2iwn")
-texture_scale = 0.46
-
-[node name="Vignette" type="CanvasModulate" parent="." unique_id=1590582319]
-color = Color(0.6964535, 0.6192358, 0.67436445, 1)
-
-[node name="ParticleManager" type="Node2D" parent="." unique_id=2081468604]
-script = ExtResource("17_2ix4a")
-
-[node name="Battle Particles" type="GPUParticles2D" parent="ParticleManager" unique_id=1039306359]
-position = Vector2(608, 693)
-amount = 30
-lifetime = 6.92
-randomness = 0.09
-process_material = SubResource("ParticleProcessMaterial_0y2cb")
-
-[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=722870696]
-process_mode = 3
-visible = false
-script = ExtResource("14_hspdg")
-
-[node name="Panel" type="Panel" parent="PauseMenu" unique_id=1158800794]
-custom_minimum_size = Vector2(600, 500)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -250.0
-offset_right = 300.0
-offset_bottom = 250.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Resume" type="Button" parent="PauseMenu/Panel" unique_id=496970523]
-custom_minimum_size = Vector2(200, 100)
+[node name="Card_Description" type="Label" parent="CardManager/Background" unique_id=2092561966]
 layout_mode = 0
-offset_left = 200.0
-offset_top = 37.0
-offset_right = 400.0
-offset_bottom = 137.0
-text = "Resume"
+offset_left = 158.0
+offset_top = 530.0
+offset_right = 994.0
+offset_bottom = 615.0
+theme_override_fonts/font = ExtResource("30_tcekk")
+theme_override_font_sizes/font_size = 30
+text = "
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
-[node name="EndRun" type="Button" parent="PauseMenu/Panel" unique_id=1637342553]
-custom_minimum_size = Vector2(200, 100)
-layout_mode = 0
-offset_left = 204.0
-offset_top = 166.0
-offset_right = 404.0
-offset_bottom = 266.0
-text = "Endrun"
+[node name="CardManager_Header" type="Label" parent="CardManager" unique_id=1369484248]
+offset_left = 64.0
+offset_top = 43.0
+offset_right = 1088.0
+offset_bottom = 128.0
+theme_override_fonts/font = ExtResource("30_tcekk")
+theme_override_font_sizes/font_size = 52
+text = "CHOOSE 2 SCROLLS"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
-[node name="Quit" type="Button" parent="PauseMenu/Panel" unique_id=1056057779]
-custom_minimum_size = Vector2(200, 100)
-layout_mode = 0
-offset_left = 200.0
-offset_top = 305.0
-offset_right = 400.0
-offset_bottom = 405.0
-text = "Quit"
+[node name="Player_Portrait" type="AnimatedSprite2D" parent="CardManager" unique_id=2044661901]
+position = Vector2(75.5, 570.99994)
+scale = Vector2(2.015625, 2)
+sprite_frames = SubResource("SpriteFrames_5rsq1")
+autoplay = "default"
+
+[node name="Player Info Passive Screen" type="Button" parent="CardManager" unique_id=1353706742]
+modulate = Color(1, 1, 1, 0)
+show_behind_parent = true
+custom_minimum_size = Vector2(150, 150)
+offset_left = -1.0
+offset_top = 502.0
+offset_right = 149.0
+offset_bottom = 652.0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+action_mode = 0
 
 [node name="ShopManager" type="CanvasLayer" parent="." unique_id=248022412]
+layer = 5
 visible = false
 script = ExtResource("6_1xcnr")
 
 [node name="Background" type="ColorRect" parent="ShopManager" unique_id=2038950803]
+self_modulate = Color(1, 1, 1, 0.5)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.007843138, 0.007843138, 0.007843138, 0.6431373)
+color = Color(0.012920001, 0.012920001, 0.012920001, 1)
 
-[node name="CenterContainer" type="CenterContainer" parent="ShopManager/Background" unique_id=1050710308]
+[node name="Carpet" type="TextureRect" parent="ShopManager/Background" unique_id=1608078728]
+self_modulate = Color(0.6603903, 0.2423729, 5.7756904e-07, 1)
+layout_mode = 0
+offset_left = 76.0
+offset_top = 69.0
+offset_right = 944.6697
+offset_bottom = 575.0
+texture = ExtResource("38_f043x")
+
+[node name="CarpetShadow" type="TextureRect" parent="ShopManager/Background" unique_id=732128589]
+self_modulate = Color(0.95803946, 0.27036726, 0, 0.5254902)
+layout_mode = 0
+offset_left = 80.0
+offset_top = 67.0
+offset_right = 947.0
+offset_bottom = 565.0
+texture = ExtResource("12_pqe63")
+
+[node name="Decor2" type="TextureRect" parent="ShopManager/Background" unique_id=1455508599]
+self_modulate = Color(0.3870464, 0.28589675, 0.39399427, 1)
+layout_mode = 0
+offset_left = 1137.2156
+offset_top = -70.00001
+offset_right = 1684.8734
+offset_bottom = 254.52863
+rotation = 1.5707964
+texture = ExtResource("6_oywcm")
+
+[node name="Decor1" type="TextureRect" parent="ShopManager/Background" unique_id=587013930]
+self_modulate = Color(0.3870464, 0.28589675, 0.39399427, 1)
+layout_mode = 0
+offset_left = -60.0
+offset_top = 693.0
+offset_right = 487.65784
+offset_bottom = 949.2429
+rotation = 4.712389
+texture = ExtResource("6_oywcm")
+
+[node name="ShopBanner" type="TextureRect" parent="ShopManager/Background" unique_id=1089289664]
+self_modulate = Color(0.5481791, 0.207326, 0, 1)
+layout_mode = 0
+offset_left = 314.0
+offset_top = 6.0
+offset_right = 739.0
+offset_bottom = 115.0
+texture = ExtResource("23_tbp1y")
+
+[node name="Shop" type="Label" parent="ShopManager/Background/ShopBanner" unique_id=1709692202]
+layout_mode = 0
+offset_left = 39.0
+offset_top = 26.000008
+offset_right = 389.0
+offset_bottom = 81.0
+rotation = 0.06981317
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("30_tcekk")
+theme_override_font_sizes/font_size = 40
+text = "KEEPER'S REST"
+horizontal_alignment = 1
+
+[node name="Shadow" type="TextureRect" parent="ShopManager/Background" unique_id=2129375436]
+self_modulate = Color(1, 1, 1, 0.7882353)
+layout_mode = 0
+offset_left = 790.0
+offset_top = -10.0
+offset_right = 1157.3662
+offset_bottom = 662.0
+texture = SubResource("GradientTexture2D_e0ffi")
+
+[node name="Shop Keeper_Portrait" type="AnimatedSprite2D" parent="ShopManager/Background" unique_id=1326461336]
+position = Vector2(1043, 137)
+scale = Vector2(2.015625, 2)
+sprite_frames = SubResource("SpriteFrames_gejqg")
+autoplay = "default"
+
+[node name="ShopKeeper_Border" type="TextureRect" parent="ShopManager/Background/Shop Keeper_Portrait" unique_id=951122070]
+offset_left = -38.697678
+offset_top = -37.0
+offset_right = 40.18605
+offset_bottom = 42.39595
+texture = ExtResource("7_0sxm5")
+
+[node name="Descriptions" type="Label" parent="ShopManager/Background" unique_id=1569933575]
+layout_mode = 0
+offset_left = 957.0
+offset_top = 222.0
+offset_right = 1141.0
+offset_bottom = 505.0
+theme_override_fonts/font = ExtResource("7_3pt4j")
+theme_override_font_sizes/font_size = 18
+text = "For each turn, apply 8 DEBT, 4 SPEND, and 2 THRIFT. If Enemy DEBT is greater than their Current Coins at the end of their turn, perish instantly."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Back" type="Button" parent="ShopManager" unique_id=1330755300]
+offset_left = 989.0
+offset_top = 565.0
+offset_right = 1090.0
+offset_bottom = 614.0
+theme_override_font_sizes/font_size = 25
+text = "EXIT"
+icon_alignment = 1
+
+[node name="Refresh" type="Button" parent="ShopManager" unique_id=446895296]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(101, 49)
+offset_left = 989.0
+offset_top = 419.0
+offset_right = 1090.0
+offset_bottom = 516.0
+theme_override_font_sizes/font_size = 25
+text = "Refresh"
+icon_alignment = 1
+
+[node name="Refresh_Sprite" type="AnimatedSprite2D" parent="ShopManager/Refresh" unique_id=991850806]
+position = Vector2(54.999985, 49.999996)
+scale = Vector2(2.96875, 2.96875)
+sprite_frames = SubResource("SpriteFrames_mlc74")
+frame_progress = 0.8581795
+
+[node name="Refresh_Price" type="Label" parent="ShopManager/Refresh" unique_id=236180913]
+layout_mode = 0
+offset_left = 12.999992
+offset_top = 15.0
+offset_right = 103.99999
+offset_bottom = 91.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 45
+text = "$10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Keeper Shadow" type="TextureRect" parent="ShopManager" unique_id=2077444615]
+self_modulate = Color(0, 0, 0, 0.5568628)
+offset_left = -86.0
+offset_top = 336.0
+offset_right = 240.0
+offset_bottom = 755.0
+texture = SubResource("GradientTexture2D_7n7pe")
+
+[node name="Player_Portrait" type="AnimatedSprite2D" parent="ShopManager" unique_id=1353703413]
+position = Vector2(75.5, 570.99994)
+scale = Vector2(2.015625, 2)
+sprite_frames = SubResource("SpriteFrames_5rsq1")
+autoplay = "default"
+
+[node name="Current Player Coin" type="AnimatedSprite2D" parent="ShopManager" unique_id=830879512]
+position = Vector2(44, 468)
+scale = Vector2(3.187499, 3.187499)
+sprite_frames = SubResource("SpriteFrames_8givg")
+autoplay = "default"
+frame_progress = 0.2939294
+
+[node name="CoinLabel" type="Label" parent="ShopManager" unique_id=2058663755]
+custom_minimum_size = Vector2(200, 100)
+offset_left = 77.0
+offset_top = 452.0
+offset_right = 277.0
+offset_bottom = 552.0
+theme_override_colors/font_color = Color(1, 1, 0.5764706, 1)
+theme_override_fonts/font = ExtResource("36_b0nqf")
+theme_override_font_sizes/font_size = 41
+text = "200"
+
+[node name="CenterContainer" type="CenterContainer" parent="ShopManager" unique_id=1050710308]
 custom_minimum_size = Vector2(200, 300)
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -100.0
+offset_left = -138.0
 offset_top = -150.0
-offset_right = 100.0
+offset_right = 62.0
 offset_bottom = 150.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ShopManager/Background/CenterContainer" unique_id=1502406012]
+[node name="VBoxContainer" type="VBoxContainer" parent="ShopManager/CenterContainer" unique_id=1502406012]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 16
 
-[node name="CardContainer" type="GridContainer" parent="ShopManager/Background/CenterContainer/VBoxContainer" unique_id=1467760452]
+[node name="CardContainer" type="GridContainer" parent="ShopManager/CenterContainer/VBoxContainer" unique_id=1467760452]
 layout_mode = 2
-theme_override_constants/h_separation = 4
-theme_override_constants/v_separation = 4
-columns = 3
+theme_override_constants/h_separation = 60
+theme_override_constants/v_separation = 83
+columns = 4
 
-[node name="Back" type="Button" parent="ShopManager/Background" unique_id=1330755300]
-layout_mode = 0
-offset_left = 950.0
-offset_top = 561.0
-offset_right = 1115.0
-offset_bottom = 624.0
-theme_override_font_sizes/font_size = 40
-text = "Proceed"
-icon_alignment = 1
+[node name="PlayerFrame" type="TextureRect" parent="ShopManager" unique_id=1769237003]
+offset_top = 493.0
+offset_right = 154.0
+offset_bottom = 648.0
+texture = ExtResource("7_0sxm5")
 
-[node name="Shop" type="Label" parent="ShopManager/Background" unique_id=1709692202]
-layout_mode = 0
-offset_left = 510.0
-offset_top = 54.0
-offset_right = 618.0
-offset_bottom = 109.0
-theme_override_font_sizes/font_size = 40
-text = "SHOP"
-horizontal_alignment = 1
-
-[node name="CoinLabel" type="Label" parent="ShopManager/Background" unique_id=2058663755]
-custom_minimum_size = Vector2(200, 100)
-layout_mode = 0
-offset_left = 905.0
-offset_top = 40.0
-offset_right = 1105.0
-offset_bottom = 140.0
-theme_override_font_sizes/font_size = 24
+[node name="Player Info Shop Screen" type="Button" parent="ShopManager" unique_id=374949882]
+modulate = Color(1, 1, 1, 0)
+show_behind_parent = true
+custom_minimum_size = Vector2(150, 150)
+offset_left = -1.0
+offset_top = 502.0
+offset_right = 149.0
+offset_bottom = 652.0
+toggle_mode = true
+action_mode = 0
 
 [node name="PassiveManager" type="Node" parent="." unique_id=870229377]
 script = ExtResource("16_6njx3")
@@ -839,28 +2523,22 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("34_2oiod")
+texture = ExtResource("46_xgc63")
+
+[node name="Player_Sprite" type="AnimatedSprite2D" parent="Progression Map/MapBackground" unique_id=148271655]
+position = Vector2(104.56223, 439.00003)
+scale = Vector2(1.7999285, 2.0392153)
+sprite_frames = SubResource("SpriteFrames_f043x")
+autoplay = "default"
 
 [node name="Banner" type="TextureRect" parent="Progression Map/MapBackground" unique_id=1875690679]
 layout_mode = 0
-offset_left = 448.0
-offset_top = 48.0
-offset_right = 601.6
-offset_bottom = 88.0
+offset_left = -65.99999
+offset_top = -3.0517578e-05
+offset_right = 446.0
+offset_bottom = 255.99997
 scale = Vector2(2.5, 2.5)
-texture = ExtResource("35_8bkap")
-
-[node name="Banner Label" type="Label" parent="Progression Map/MapBackground/Banner" unique_id=770851896]
-self_modulate = Color(0.14509805, 0.12941177, 0.12156863, 1)
-layout_mode = 0
-offset_left = 25.599998
-offset_top = 9.599998
-offset_right = 127.6
-offset_bottom = 26.599998
-rotation = 0.09067865
-theme_override_fonts/font = ExtResource("36_b0nqf")
-text = "Twilight Zone"
-horizontal_alignment = 1
+texture = ExtResource("50_w8oc3")
 
 [node name="Enemy1" type="TextureRect" parent="Progression Map/MapBackground" unique_id=79812036]
 layout_mode = 0
@@ -928,19 +2606,368 @@ position = Vector2(832, 432)
 [node name="Boss" type="Marker2D" parent="Progression Map" unique_id=728995645]
 position = Vector2(1024, 432)
 
-[node name="Player_Sprite" type="AnimatedSprite2D" parent="Progression Map" unique_id=148271655]
-position = Vector2(96, 424)
-scale = Vector2(2, 2.5)
-sprite_frames = SubResource("SpriteFrames_f043x")
+[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=722870696]
+process_mode = 3
+layer = 5
+visible = false
+script = ExtResource("14_hspdg")
 
+[node name="CardShadow" type="TextureRect" parent="PauseMenu" unique_id=962275767]
+self_modulate = Color(0, 0, 0, 1)
+offset_right = 1155.0
+offset_bottom = 649.0
+texture = SubResource("GradientTexture2D_yc5rd")
+
+[node name="Panel" type="PanelContainer" parent="PauseMenu" unique_id=565094890]
+custom_minimum_size = Vector2(400, 100)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -243.495
+offset_top = -257.0
+offset_right = 249.50671
+offset_bottom = 275.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_5l0y8")
+
+[node name="MarginContainer" type="MarginContainer" parent="PauseMenu/Panel" unique_id=84400785]
+layout_mode = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/Panel/MarginContainer" unique_id=847292648]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=1907425889]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("36_b0nqf")
+theme_override_font_sizes/font_size = 70
+text = "PAUSED"
+horizontal_alignment = 1
+
+[node name="Border2" type="TextureRect" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=1640947839]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+texture = ExtResource("49_jmo7v")
+
+[node name="Resume" type="Button" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=496970523]
+custom_minimum_size = Vector2(200, 10)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("36_1bveb")
+theme_override_font_sizes/font_size = 64
+text = "Resume"
+flat = true
+
+[node name="EndRun" type="Button" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=1637342553]
+custom_minimum_size = Vector2(200, 10)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("36_1bveb")
+theme_override_font_sizes/font_size = 64
+text = "Surrender"
+flat = true
+
+[node name="Setting" type="Button" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=734109908]
+custom_minimum_size = Vector2(200, 10)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("36_1bveb")
+theme_override_font_sizes/font_size = 64
+text = "Settings"
+flat = true
+
+[node name="Quit" type="Button" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=1056057779]
+custom_minimum_size = Vector2(200, 10)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("36_1bveb")
+theme_override_font_sizes/font_size = 64
+text = "Main Menu"
+flat = true
+
+[node name="Border" type="TextureRect" parent="PauseMenu/Panel/MarginContainer/VBoxContainer" unique_id=1519223597]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+texture = ExtResource("50_f3bax")
+
+[node name="Piggy" parent="." unique_id=1985191984 instance=ExtResource("47_jmo7v")]
+visible = false
+z_index = 8
+position = Vector2(943.21, 259.925)
+scale = Vector2(1.921874, 1.921874)
+
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=2094775384 groups=["point_light"]]
+position = Vector2(585.00006, 316)
+scale = Vector2(17.921875, 10.046875)
+color = Color(1, 0.9019608, 0.5647059, 0.61960787)
+energy = 1.1
+texture = SubResource("GradientTexture2D_c2iwn")
+texture_scale = 0.46
+metadata/_edit_lock_ = true
+
+[node name="Vignette" type="CanvasModulate" parent="." unique_id=1590582319]
+color = Color(0.7360586, 0.6517471, 0.7562498, 1)
+metadata/_edit_lock_ = true
+
+[node name="ParticleManager" type="Node2D" parent="." unique_id=2081468604 groups=["particle_manager"]]
+script = ExtResource("17_2ix4a")
+
+[node name="Dusk Particles" type="GPUParticles2D" parent="ParticleManager" unique_id=1557261977]
+position = Vector2(637, 336)
+emitting = false
+amount = 64
+lifetime = 3.3
+process_material = SubResource("ParticleProcessMaterial_5rsq1")
+
+[node name="Dawn Particles" type="GPUParticles2D" parent="ParticleManager" unique_id=1405179961]
+position = Vector2(821, 344)
+emitting = false
+amount = 64
+lifetime = 1.82
+randomness = 0.35
+process_material = SubResource("ParticleProcessMaterial_mlc74")
+
+[node name="Mist Particles" type="GPUParticles2D" parent="ParticleManager" unique_id=1701604673]
+position = Vector2(820, 293)
+emitting = false
+amount = 24
+texture = ExtResource("6_oywcm")
+lifetime = 10.0
+process_material = SubResource("ParticleProcessMaterial_xj0l1")
+
+[node name="Drowse Effect" type="TextureRect" parent="." unique_id=1015393589]
+visible = false
+modulate = Color(1, 1, 1, 0.92941177)
+self_modulate = Color(0, 0.34901962, 0.65882355, 0)
+layout_mode = 0
+offset_left = -30.0
+offset_top = -13.0
+offset_right = 1173.4331
+offset_bottom = 660.0
+texture = ExtResource("12_pqe63")
+
+[node name="Player Slow Particles" type="GPUParticles2D" parent="Drowse Effect" unique_id=880728389]
+position = Vector2(104, 582)
+scale = Vector2(0.99999994, 0.99999994)
+amount = 64
+lifetime = 2.3499999999999996
+process_material = SubResource("ParticleProcessMaterial_oywcm")
+
+[node name="Dazzled Effect" type="TextureRect" parent="." unique_id=1304550081]
+visible = false
+self_modulate = Color(0.9843137, 0.08627451, 1, 0)
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 1150.0
+offset_bottom = 652.0
+texture = SubResource("GradientTexture2D_5qrjd")
+
+[node name="Dazzled Light" type="PointLight2D" parent="Dazzled Effect" unique_id=1167497638 groups=["point_light"]]
+position = Vector2(826.5, 68.5)
+scale = Vector2(17.671875, 2.2031252)
+color = Color(0.91764706, 0.7372549, 1, 0)
+energy = 3.28
+range_z_max = 5
+texture = SubResource("GradientTexture2D_5rsq1")
+
+[node name="Tally Effect" type="TextureRect" parent="." unique_id=1482077241]
+visible = false
+self_modulate = Color(0.9047755, 0.66126776, 3.85046e-07, 1)
+top_level = true
+z_index = 9
+layout_mode = 0
+offset_left = 859.0
+offset_top = 253.0
+offset_right = 1032.0
+offset_bottom = 424.0
+texture = ExtResource("49_5qrjd")
+
+[node name="Label" type="Label" parent="Tally Effect" unique_id=1889950644]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 10.0
+offset_right = 147.0
+offset_bottom = 55.0
+theme_override_colors/font_color = Color(0.9999997, 0.8281812, 0.28550413, 1)
+theme_override_colors/font_outline_color = Color(0.20025441, 0.08449874, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 30
+text = "TALLY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Text" type="Label" parent="Tally Effect" unique_id=642004469]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 50.0
+offset_right = 171.0
+offset_bottom = 157.0
+theme_override_colors/font_color = Color(0.9999998, 0.92214483, 0.8525816, 1)
+theme_override_colors/font_outline_color = Color(0.20025441, 0.08449874, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("36_1bveb")
+theme_override_font_sizes/font_size = 22
+text = "Your Turn Ends After:
+
+
+
+Flips / Reserve"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tally Flip Count" type="Label" parent="Tally Effect" unique_id=1679512594]
+layout_mode = 0
+offset_left = 47.0
+offset_top = 85.0
+offset_right = 128.0
+offset_bottom = 130.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.1815921, 0.08803221, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/shadow_outline_size = 0
+theme_override_fonts/font = ExtResource("27_t372l")
+theme_override_font_sizes/font_size = 39
+text = "7"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Shadow" type="TextureRect" parent="Tally Effect" unique_id=9012651]
+show_behind_parent = true
+layout_mode = 0
+offset_left = -64.1167
+offset_top = -41.0
+offset_right = 246.24945
+offset_bottom = 233.0
+texture = SubResource("GradientTexture2D_4lqwv")
+
+[node name="Extra Turn Effect" type="TextureRect" parent="." unique_id=105750928]
+visible = false
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_right = 1155.0
+offset_bottom = 649.0
+texture = SubResource("GradientTexture2D_tke4u")
+
+[node name="All In Effect" type="TextureRect" parent="." unique_id=1021368821]
+visible = false
+layout_mode = 0
+offset_right = 1155.0
+offset_bottom = 649.0
+texture = SubResource("GradientTexture2D_ryobp")
+
+[node name="Pickpocket" type="Marker2D" parent="." unique_id=1418056820]
+position = Vector2(889, 257)
+
+[node name="SpareChange" type="Marker2D" parent="." unique_id=603318236]
+position = Vector2(631, 524)
+
+[node name="SpareChangeReflip" type="Marker2D" parent="." unique_id=1063114744]
+position = Vector2(327, 519)
+
+[node name="TaxEvasion" type="Marker2D" parent="." unique_id=2049065443]
+position = Vector2(535, 336)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1025872508]
+
+[node name="Timer" type="Label" parent="CanvasLayer" unique_id=1354476235]
+custom_minimum_size = Vector2(120, 30)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -60.0
+offset_right = 60.0
+offset_bottom = 30.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.93333334, 0.7058824, 0.41960785, 1)
+theme_override_fonts/font = ExtResource("30_tcekk")
+theme_override_font_sizes/font_size = 25
+text = "00:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BossDefeatTransition" type="TextureRect" parent="." unique_id=1142108753]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+top_level = true
+z_index = 12
+layout_mode = 0
+offset_left = -69.0
+offset_top = -8.0
+offset_right = 1171.0
+offset_bottom = 693.0
+mouse_filter = 2
+mouse_behavior_recursive = 1
+texture = SubResource("GradientTexture2D_j6oml")
+
+[node name="Enemy Info" type="Button" parent="." unique_id=855080067]
+modulate = Color(1, 1, 1, 0)
+top_level = true
+layout_mode = 0
+offset_left = 1011.0
+offset_top = 13.0
+offset_right = 1141.0
+offset_bottom = 143.0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+action_mode = 0
+
+[node name="Player Info" type="Button" parent="." unique_id=2130563291]
+modulate = Color(1, 1, 1, 0)
+show_behind_parent = true
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 0
+offset_left = -1.0
+offset_top = 502.0
+offset_right = 149.0
+offset_bottom = 652.0
+tooltip_text = "
+"
+mouse_default_cursor_shape = 2
+toggle_mode = true
+action_mode = 0
+
+[node name="Keeper Info" type="Button" parent="." unique_id=1920635139]
+visible = false
+modulate = Color(1, 1, 1, 0)
+top_level = true
+layout_mode = 0
+offset_left = 1011.0
+offset_top = 502.0
+offset_right = 1141.0
+offset_bottom = 632.0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+action_mode = 0
+
+[connection signal="toggled" from="Battle UI/Player Info" to="." method="_on_player_info_toggled"]
+[connection signal="pressed" from="Battle UI/Reserve Button" to="." method="_on_reserve_button_pressed"]
 [connection signal="mouse_entered" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Re-Flip" to="." method="_on_re_flip_mouse_exited"]
 [connection signal="pressed" from="Battle UI/Re-Flip" to="." method="_on_re_flip_pressed"]
 [connection signal="mouse_entered" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_entered"]
 [connection signal="mouse_exited" from="Battle UI/Endturn" to="." method="_on_endturn_mouse_exited"]
 [connection signal="pressed" from="Battle UI/Endturn" to="." method="_on_endturn_pressed"]
-[connection signal="pressed" from="Game Over UI/ColorRect/Restart" to="." method="_on_restart_pressed"]
-[connection signal="pressed" from="PauseMenu/Panel/Resume" to="PauseMenu" method="_on_resume_pressed"]
-[connection signal="pressed" from="PauseMenu/Panel/EndRun" to="PauseMenu" method="_on_end_run_pressed"]
-[connection signal="pressed" from="PauseMenu/Panel/Quit" to="PauseMenu" method="_on_quit_pressed"]
-[connection signal="pressed" from="ShopManager/Background/Back" to="ShopManager" method="_on_back_pressed"]
+[connection signal="animation_finished" from="Battle UI/LoanShark" to="." method="_on_loan_shark_animation_finished"]
+[connection signal="toggled" from="CardManager/Player Info Passive Screen" to="." method="_on_player_info_passive_screen_toggled"]
+[connection signal="pressed" from="ShopManager/Back" to="ShopManager" method="_on_back_pressed"]
+[connection signal="mouse_entered" from="ShopManager/Refresh" to="ShopManager" method="_on_refresh_mouse_entered"]
+[connection signal="mouse_exited" from="ShopManager/Refresh" to="ShopManager" method="_on_refresh_mouse_exited"]
+[connection signal="pressed" from="ShopManager/Refresh" to="ShopManager" method="_on_refresh_pressed"]
+[connection signal="toggled" from="ShopManager/Player Info Shop Screen" to="." method="_on_player_info_shop_screen_toggled"]
+[connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/Resume" to="PauseMenu" method="_on_resume_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/EndRun" to="PauseMenu" method="_on_end_run_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/Setting" to="PauseMenu" method="_on_setting_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/MarginContainer/VBoxContainer/Quit" to="PauseMenu" method="_on_quit_pressed"]
+[connection signal="toggled" from="Enemy Info" to="." method="_on_enemy_info_toggled"]
+[connection signal="toggled" from="Player Info" to="." method="_on_player_info_toggled"]
+[connection signal="toggled" from="Keeper Info" to="." method="_on_keeper_info_toggled"]

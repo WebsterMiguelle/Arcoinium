@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://cysrv10cvv8al"]
+
+[ext_resource type="Script" uid="uid://e4qsvh0ol4b8" path="res://Scene/piggy.gd" id="1_0bask"]
+[ext_resource type="Texture2D" uid="uid://c6lh54kpp0hrd" path="res://Assets/flying piggy-Sheet.png" id="1_iqadd"]
+
+[sub_resource type="Gradient" id="Gradient_0bask"]
+colors = PackedColorArray(0, 0, 0, 0.84313726, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_qbsft"]
+gradient = SubResource("Gradient_0bask")
+fill = 1
+fill_from = Vector2(0.50085473, 0.45982906)
+fill_to = Vector2(0.83247864, 0.24102564)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pxrdb"]
+atlas = ExtResource("1_iqadd")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_esj1x"]
+atlas = ExtResource("1_iqadd")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_oqix0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pxrdb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_esj1x")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Piggy" type="Node2D" unique_id=1985191984]
+script = ExtResource("1_0bask")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=361696841]
+offset_left = -32.0
+offset_top = 33.0
+offset_right = 32.0
+offset_bottom = 46.0
+texture = SubResource("GradientTexture2D_qbsft")
+expand_mode = 1
+
+[node name="piggy" type="AnimatedSprite2D" parent="." unique_id=1054554474]
+sprite_frames = SubResource("SpriteFrames_oqix0")
+autoplay = "default"
+frame_progress = 0.6687348

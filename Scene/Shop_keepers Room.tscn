@@ -1,0 +1,183 @@
+[gd_scene format=3 uid="uid://cph07oexpeoak"]
+
+[ext_resource type="Script" uid="uid://dgaqt8yame5va" path="res://Script/shop_keepers_room.gd" id="1_rvcs7"]
+[ext_resource type="Texture2D" uid="uid://df3wtq16ab5xe" path="res://Assets/tutorialScreenBackground.png" id="2_sqeug"]
+[ext_resource type="Texture2D" uid="uid://34cb8tl8113c" path="res://Assets/tutorialScreenShopkeeperNoHands.png" id="3_c41qw"]
+[ext_resource type="Texture2D" uid="uid://bj5nyxg8bmc1k" path="res://Assets/backgroundBanner.png" id="4_c41qw"]
+[ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="5_y1smu"]
+[ext_resource type="Texture2D" uid="uid://dhl4j3m1ok2d2" path="res://Assets/ShopkeeperHand1.png" id="6_at7dl"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="7_vits8"]
+[ext_resource type="Texture2D" uid="uid://bqa81o3psvkcl" path="res://Assets/ShopkeeperHand2.png" id="7_y1smu"]
+[ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="9_2gtc7"]
+[ext_resource type="StyleBox" uid="uid://bhflgrh4jdv5m" path="res://Assets/SavedTexture/PressedButtonTexture.tres" id="10_x4hr6"]
+
+[sub_resource type="Gradient" id="Gradient_75buv"]
+offsets = PackedFloat32Array(0, 0.22742476)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vits8"]
+gradient = SubResource("Gradient_75buv")
+width = 512
+height = 512
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_jodah"]
+offsets = PackedFloat32Array(0, 0.29828325, 0.80042917, 0.99785405)
+colors = PackedColorArray(1, 1, 1, 0.8627451, 0.5568628, 0.5568628, 0.5568628, 0, 0.7121502, 0.7121502, 0.7121502, 0.3023295, 1, 1, 1, 0.8627451)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_c41qw"]
+gradient = SubResource("Gradient_jodah")
+fill_from = Vector2(0.4871795, 0.8905983)
+fill_to = Vector2(0.46324787, 0.11111111)
+
+[sub_resource type="Theme" id="Theme_c41qw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2gtc7"]
+bg_color = Color(0.44705883, 0.18039216, 0.02745098, 1)
+
+[node name="Node2D" type="ColorRect" unique_id=1328940769]
+custom_minimum_size = Vector2(1150, 650)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("1_rvcs7")
+
+[node name="Background" type="TextureRect" parent="." unique_id=67202017]
+self_modulate = Color(0.6513716, 0.4930063, 0.52717704, 1)
+layout_mode = 0
+offset_left = -76.0
+offset_top = 3.0
+offset_right = 1214.0
+offset_bottom = 649.0
+texture = ExtResource("2_sqeug")
+
+[node name="Shokeeper" type="TextureRect" parent="." unique_id=2030030711]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 114.0
+offset_right = 1097.0
+offset_bottom = 649.0
+texture = ExtResource("3_c41qw")
+
+[node name="Dialogue Area" type="Marker2D" parent="." unique_id=399608582]
+position = Vector2(100, 0)
+
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=782194638]
+position = Vector2(599, 318)
+scale = Vector2(17.921875, 10.046875)
+color = Color(1, 0.9098039, 0.42745098, 0.9411765)
+energy = 1.1
+texture = SubResource("GradientTexture2D_vits8")
+texture_scale = 0.46
+
+[node name="Vignette" type="CanvasModulate" parent="." unique_id=1361170228]
+color = Color(0.7360586, 0.6517471, 0.7562498, 1)
+
+[node name="Vignette2" type="TextureRect" parent="." unique_id=1757435299]
+self_modulate = Color(0, 0, 0, 0.5137255)
+layout_mode = 0
+offset_right = 1155.0
+offset_bottom = 649.0
+texture = SubResource("GradientTexture2D_c41qw")
+
+[node name="ShopBanner" type="TextureRect" parent="." unique_id=3951344]
+self_modulate = Color(0.6680352, 0.2588077, 0.14010984, 1)
+layout_mode = 0
+offset_left = 300.0
+offset_top = -2.0
+offset_right = 853.66974
+offset_bottom = 140.0
+texture = ExtResource("4_c41qw")
+
+[node name="Shop" type="Label" parent="ShopBanner" unique_id=1551211582]
+layout_mode = 0
+offset_left = 104.66973
+offset_top = 42.999996
+offset_right = 454.66974
+offset_bottom = 97.999985
+rotation = 0.06981317
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("5_y1smu")
+theme_override_font_sizes/font_size = 47
+text = "KEEPER'S REST"
+horizontal_alignment = 1
+
+[node name="Basic Mode" type="TextureButton" parent="." unique_id=220134687]
+layout_mode = 0
+offset_left = 319.0
+offset_top = 458.0
+offset_right = 527.0
+offset_bottom = 650.0
+theme = SubResource("Theme_c41qw")
+texture_normal = ExtResource("6_at7dl")
+stretch_mode = 0
+
+[node name="BasicModeLabel" type="Label" parent="Basic Mode" unique_id=163380612]
+layout_mode = 0
+offset_left = 57.0
+offset_top = -41.0
+offset_right = 238.0
+theme_override_fonts/font = ExtResource("7_vits8")
+theme_override_font_sizes/font_size = 50
+text = "Basic Mode"
+
+[node name="Advance Mode" type="TextureButton" parent="." unique_id=1936101693]
+layout_mode = 0
+offset_left = 619.0
+offset_top = 465.0
+offset_right = 819.0
+offset_bottom = 649.0
+texture_normal = ExtResource("7_y1smu")
+stretch_mode = 0
+
+[node name="AdvanceModeLabel" type="Label" parent="Advance Mode" unique_id=2120145839]
+layout_mode = 0
+offset_left = -27.0
+offset_top = -40.0
+offset_right = 217.0
+offset_bottom = 1.0
+theme_override_fonts/font = ExtResource("7_vits8")
+theme_override_font_sizes/font_size = 50
+text = "Advanced Mode"
+
+[node name="Back Button" type="Button" parent="." unique_id=1412783332]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 0
+offset_left = 30.0
+offset_top = 477.0
+offset_right = 180.0
+offset_bottom = 522.0
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = ExtResource("9_2gtc7")
+theme_override_styles/pressed = ExtResource("10_x4hr6")
+theme_override_styles/hover = ExtResource("9_2gtc7")
+action_mode = 0
+text = "BACK"
+
+[node name="Archive Button" type="Button" parent="." unique_id=1385593860]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 0
+offset_left = 946.0
+offset_top = 473.0
+offset_right = 1153.0
+offset_bottom = 528.0
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = SubResource("StyleBoxFlat_2gtc7")
+action_mode = 0
+text = "ARCHIVE"
+
+[connection signal="mouse_entered" from="Basic Mode" to="." method="_on_basic_mode_mouse_entered"]
+[connection signal="mouse_exited" from="Basic Mode" to="." method="_on_basic_mode_mouse_exited"]
+[connection signal="pressed" from="Basic Mode" to="." method="_on_basic_mode_pressed"]
+[connection signal="mouse_entered" from="Advance Mode" to="." method="_on_advance_mode_mouse_entered"]
+[connection signal="mouse_exited" from="Advance Mode" to="." method="_on_advance_mode_mouse_exited"]
+[connection signal="pressed" from="Advance Mode" to="." method="_on_advance_mode_pressed"]
+[connection signal="mouse_entered" from="Back Button" to="." method="_on_back_button_mouse_entered"]
+[connection signal="pressed" from="Back Button" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Archive Button" to="." method="_on_archive_button_pressed"]

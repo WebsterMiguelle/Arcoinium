@@ -15,9 +15,26 @@ run/main_scene="uid://dnnwqv3jo1tat"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[audio]
+
+buses/default_bus_layout="uid://dapxyh33exxxc"
+
 [autoload]
 
 SceneTransition="*uid://dtv64xe1i5jfr"
+PlayerSingleton="*uid://okw61psq4rl4"
+PauseManager="*uid://lj55ln6c6yqi"
+GameSettings="*uid://qbw8yhw1a5ni"
+
+[display]
+
+window/size/mode=2
+window/stretch/mode="viewport"
+
+[global_group]
+
+particle_manager=""
+point_light=""
 
 [gui]
 

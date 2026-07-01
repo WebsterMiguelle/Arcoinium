@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://dldde8yrawlpn"]
+
+[ext_resource type="Script" uid="uid://boqi0q0j687xl" path="res://Script/passive_bar_icon.gd" id="1_xkq2p"]
+[ext_resource type="SpriteFrames" uid="uid://dafl661xkwq8o" path="res://Assets/PassivesIcons.tres" id="2_a4je1"]
+
+[node name="PassiveIcon" type="Control" unique_id=1693144057]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 3
+anchor_right = 0.042000003
+anchor_bottom = 0.074
+offset_right = -48.384003
+offset_bottom = -47.952
+size_flags_horizontal = 4
+mouse_filter = 1
+script = ExtResource("1_xkq2p")
+
+[node name="Icons" type="AnimatedSprite2D" parent="." unique_id=1922908527]
+position = Vector2(24, 24)
+scale = Vector2(1.5, 1.5)
+sprite_frames = ExtResource("2_a4je1")
+animation = &"Withdraw"

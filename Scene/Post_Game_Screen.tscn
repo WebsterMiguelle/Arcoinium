@@ -1,0 +1,472 @@
+[gd_scene format=3 uid="uid://c7uk7pxxcix85"]
+
+[ext_resource type="Script" uid="uid://3th5khuabl8w" path="res://Script/PostGameScreen.gd" id="1_5tsft"]
+[ext_resource type="Texture2D" uid="uid://dphewlg2nehap" path="res://Assets/brickbackground.png" id="2_jy4eg"]
+[ext_resource type="Texture2D" uid="uid://bb4db6cd7ttu5" path="res://Assets/leftopenbrickbackground.png" id="3_2qvm5"]
+[ext_resource type="Texture2D" uid="uid://cdf6nfo07ua" path="res://Assets/rightopenbrickbackground.png" id="4_nn5qr"]
+[ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="5_jy4eg"]
+[ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="6_id72q"]
+[ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="7_bnefy"]
+[ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="7_qjnbp"]
+[ext_resource type="FontFile" uid="uid://cmvd7gycedmwg" path="res://Assets/Fonts/GothicByte.ttf" id="8_bnefy"]
+[ext_resource type="Texture2D" uid="uid://dms5d0v8hxacy" path="res://Assets/EndScrollTextSeparator.png" id="10_4dvkt"]
+[ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="11_bdxfd"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="12_4dvkt"]
+[ext_resource type="StyleBox" uid="uid://bhflgrh4jdv5m" path="res://Assets/SavedTexture/PressedButtonTexture.tres" id="12_bdxfd"]
+[ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="13_bdxfd"]
+
+[sub_resource type="Gradient" id="Gradient_75buv"]
+offsets = PackedFloat32Array(0, 0.22742476)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bnefy"]
+gradient = SubResource("Gradient_75buv")
+width = 512
+height = 512
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qjnbp"]
+texture = ExtResource("5_jy4eg")
+
+[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_bdxfd"]
+
+[sub_resource type="AudioStream" id="AudioStream_itj15"]
+
+[node name="PostGameScreen" type="Control" unique_id=1373690295]
+z_index = 12
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5tsft")
+
+[node name="Vignette" type="Node" parent="." unique_id=1512864058]
+
+[node name="Vignetter" type="PointLight2D" parent="Vignette" unique_id=1852200988]
+position = Vector2(291, 81)
+scale = Vector2(17.921875, 10.046875)
+color = Color(1, 0.9019608, 0.5647059, 0.61960787)
+energy = 1.1
+texture = SubResource("GradientTexture2D_bnefy")
+texture_scale = 0.46
+metadata/_edit_lock_ = true
+
+[node name="Vignette" type="CanvasModulate" parent="Vignette" unique_id=1169181578]
+position = Vector2(573, 356)
+color = Color(0.7360586, 0.6517471, 0.7562498, 1)
+metadata/_edit_lock_ = true
+
+[node name="RightSideBricks" type="Control" parent="." unique_id=1088233663]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 555.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Tile" type="TextureRect" parent="RightSideBricks" unique_id=1021120493]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -598.0
+offset_top = 0.9999994
+offset_right = -478.39996
+offset_bottom = -517.4
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(5, 5)
+texture = ExtResource("2_jy4eg")
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="OpenTile" type="TextureRect" parent="RightSideBricks" unique_id=2140324965]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -757.9999
+offset_top = 1.0000004
+offset_right = -725.9999
+offset_bottom = -517.39996
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(5, 5)
+texture = ExtResource("3_2qvm5")
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="LeftSideBricks" type="Control" parent="." unique_id=1165224931]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -555.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Tile" type="TextureRect" parent="LeftSideBricks" unique_id=285390513]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 116.0
+offset_bottom = -518.4
+grow_vertical = 2
+scale = Vector2(5, 5)
+texture = ExtResource("2_jy4eg")
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="OpenTile" type="TextureRect" parent="LeftSideBricks" unique_id=2077510360]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 0.061728396
+offset_left = 576.0
+offset_right = 608.0
+offset_bottom = 89.59999
+grow_vertical = 2
+scale = Vector2(5, 5)
+texture = ExtResource("4_nn5qr")
+stretch_mode = 1
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="DarkOverlay" type="ColorRect" parent="." unique_id=1792636301]
+modulate = Color(1, 1, 1, 0.627451)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="UILayer" type="Control" parent="." unique_id=53936575]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UILayer" unique_id=24724235]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="LeftPanel" type="PanelContainer" parent="UILayer/HBoxContainer" unique_id=656188626]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_qjnbp")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/HBoxContainer/LeftPanel" unique_id=1860638158]
+custom_minimum_size = Vector2(496, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 45
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_right = 45
+theme_override_constants/margin_bottom = 70
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer" unique_id=1529107101]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="EndResult" type="Label" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=1499300970]
+custom_minimum_size = Vector2(290, 75)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("6_id72q")
+theme_override_font_sizes/font_size = 70
+text = "YOU WIN"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="RunTime" type="Label" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=1504923703]
+custom_minimum_size = Vector2(281.49, 26.61)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("7_bnefy")
+theme_override_font_sizes/font_size = 36
+text = "Run Time: 15:02"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Mini_message" type="Label" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=448727867]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_constants/line_spacing = -10
+theme_override_fonts/font = ExtResource("7_bnefy")
+theme_override_font_sizes/font_size = 24
+text = "You have completed your goal... 
+For now..."
+horizontal_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=1393549144]
+layout_mode = 2
+theme_override_constants/margin_left = -5
+theme_override_constants/margin_right = -5
+
+[node name="TextureRect" type="TextureRect" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/MarginContainer2" unique_id=1671615197]
+custom_minimum_size = Vector2(0, 35.3)
+layout_mode = 2
+texture = ExtResource("7_qjnbp")
+
+[node name="PassivesGrid" type="GridContainer" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=950681572]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 2
+columns = 8
+
+[node name="MarginContainer3" type="MarginContainer" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=2051817045]
+layout_mode = 2
+theme_override_constants/margin_left = -5
+theme_override_constants/margin_right = -5
+
+[node name="Scroll End" type="TextureRect" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/MarginContainer3" unique_id=1320178549]
+custom_minimum_size = Vector2(0, 35.3)
+layout_mode = 2
+texture = ExtResource("10_4dvkt")
+
+[node name="MarginContainer4" type="MarginContainer" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer" unique_id=777119397]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/MarginContainer4" unique_id=670018188]
+layout_mode = 2
+theme_override_constants/separation = 116
+
+[node name="MainMenu" type="Button" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer" unique_id=185810542]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = ExtResource("11_bdxfd")
+theme_override_styles/pressed = ExtResource("12_bdxfd")
+theme_override_styles/hover = ExtResource("11_bdxfd")
+text = "Main Menu"
+
+[node name="TryAgain" type="Button" parent="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer" unique_id=872656919]
+custom_minimum_size = Vector2(1.585, 3.325)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = ExtResource("11_bdxfd")
+theme_override_styles/pressed = ExtResource("12_bdxfd")
+theme_override_styles/hover = ExtResource("11_bdxfd")
+text = "Try Again"
+
+[node name="RightPanel" type="PanelContainer" parent="UILayer/HBoxContainer" unique_id=283692974]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_qjnbp")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/HBoxContainer/RightPanel" unique_id=1999306132]
+layout_mode = 2
+theme_override_constants/margin_left = 130
+theme_override_constants/margin_right = 130
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer" unique_id=1612164832]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Separator" type="Control" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=124649028]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+
+[node name="StatisticsTitle" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=1331788762]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("8_bnefy")
+theme_override_font_sizes/font_size = 60
+text = "Statistics"
+horizontal_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=2092226716]
+layout_mode = 2
+theme_override_constants/margin_left = -65
+theme_override_constants/margin_right = -65
+
+[node name="ScrollStart" type="TextureRect" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer2" unique_id=1849099629]
+custom_minimum_size = Vector2(0, 35.3)
+layout_mode = 2
+texture = ExtResource("7_qjnbp")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=1962954101]
+layout_mode = 2
+theme_override_constants/margin_left = -68
+
+[node name="STATISTICS" type="VBoxContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer" unique_id=1817037017]
+layout_mode = 2
+theme_override_constants/separation = -5
+
+[node name="RemainingCoins" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=724196916]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Remaining Coins:"
+
+[node name="HighestDMG" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=406728396]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Highest DMG:"
+
+[node name="TotalDMG" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=2063730054]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Total DMG:"
+
+[node name="HighestGAIN" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=704317158]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Highest GAIN:"
+
+[node name="TotalGAIN" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=1051787290]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Total GAIN:"
+
+[node name="HighestDEBT" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=2110450892]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Highest DEBT:"
+
+[node name="TotalDEBT" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=1319611079]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Total DEBT:"
+
+[node name="EnemiesDefeated" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=362417951]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Enemies Defeated:"
+
+[node name="SunCoinsFlipped" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=816772709]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Sun Coins Flipped:"
+
+[node name="MoonCoinsFlipped" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=2134333]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Moon Coins Flipped:"
+
+[node name="TotalFlips" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=228294584]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Total Flips:"
+
+[node name="TotalReflips" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=1785475800]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Total Re-Flips:"
+
+[node name="TotalReserveCoins" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=372922674]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Total Reserve Coins:"
+
+[node name="MarginContainer3" type="MarginContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=1918130806]
+layout_mode = 2
+theme_override_constants/margin_left = -65
+theme_override_constants/margin_right = -65
+
+[node name="ScrollEnd" type="TextureRect" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer3" unique_id=1073009843]
+custom_minimum_size = Vector2(0, 35.3)
+layout_mode = 2
+texture = ExtResource("10_4dvkt")
+
+[node name="Grade" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=1002470231]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("8_bnefy")
+theme_override_font_sizes/font_size = 60
+text = "SS+"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=789596329]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("7_bnefy")
+theme_override_font_sizes/font_size = 41
+text = "Prosperity Keeper"
+horizontal_alignment = 1
+
+[node name="Greed_Stamp" type="TextureRect" parent="." unique_id=2015352417]
+visible = false
+self_modulate = Color(0.6260074, 0.13028237, 0, 1)
+layout_mode = 0
+offset_left = 475.0
+offset_top = 58.0
+offset_right = 586.1661
+offset_bottom = 168.0
+
+[node name="Label" type="Label" parent="Greed_Stamp" unique_id=1100373508]
+layout_mode = 0
+offset_left = -6.0
+offset_top = 35.0
+offset_right = 105.963936
+offset_bottom = 108.63394
+rotation = -0.28797933
+theme_override_colors/font_color = Color(0.8302656, 0.57210815, 0, 1)
+theme_override_colors/font_outline_color = Color(0.57192814, 0.26664397, 1.92523e-07, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("7_bnefy")
+theme_override_font_sizes/font_size = 34
+text = "GREED
+MODE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SoundManager" type="Node2D" parent="." unique_id=535855243]
+script = ExtResource("13_bdxfd")
+
+[node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=523042287]
+process_mode = 3
+stream = SubResource("AudioStreamPolyphonic_bdxfd")
+bus = &"SFX"
+
+[node name="BGMPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1856126836]
+process_mode = 3
+stream = SubResource("AudioStream_itj15")
+bus = &"BGM"
+
+[connection signal="pressed" from="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/MainMenu" to="." method="_on_main_menu_pressed"]
+[connection signal="pressed" from="UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/TryAgain" to="." method="_on_try_again_pressed"]

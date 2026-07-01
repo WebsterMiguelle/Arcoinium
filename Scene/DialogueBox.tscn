@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://dv278qg6j2epd"]
+
+[ext_resource type="Script" uid="uid://cp5p0q3pi07yk" path="res://Scene/dialogue_box.gd" id="1_t4nj5"]
+[ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="1_u2w1o"]
+[ext_resource type="FontFile" uid="uid://drm3kueev5jxy" path="res://Assets/Fonts/OXYGENE1.TTF" id="3_kn1bg"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="4_7gqld"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kn1bg"]
+texture = ExtResource("1_u2w1o")
+
+[node name="Dialogue" type="Node2D" unique_id=1748397687]
+self_modulate = Color(0.49743795, 0.30064097, 0.1857579, 1)
+top_level = true
+script = ExtResource("1_t4nj5")
+
+[node name="Dialogue Panel" type="PanelContainer" parent="." unique_id=1443554992]
+self_modulate = Color(0.42539775, 0.24100113, 0.10918187, 1)
+custom_minimum_size = Vector2(5.39, 0)
+offset_right = 247.0
+offset_bottom = 213.0
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxTexture_kn1bg")
+
+[node name="MarginContainer" type="MarginContainer" parent="Dialogue Panel" unique_id=858318713]
+custom_minimum_size = Vector2(1.115, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VFlowContainer" type="VFlowContainer" parent="Dialogue Panel/MarginContainer" unique_id=549708990]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Dialogue Panel/MarginContainer/VFlowContainer" unique_id=395725228]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.654902, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("3_kn1bg")
+theme_override_font_sizes/font_size = 22
+text = "SHOPKEEPER"
+
+[node name="Dialogue Info" type="Label" parent="Dialogue Panel/MarginContainer/VFlowContainer" unique_id=460021205]
+custom_minimum_size = Vector2(215.86, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
+theme_override_fonts/font = ExtResource("4_7gqld")
+theme_override_font_sizes/font_size = 28
+text = "Greetings shopkeeper. welcome to Keeper's Rest."
+vertical_alignment = 3
+autowrap_mode = 3

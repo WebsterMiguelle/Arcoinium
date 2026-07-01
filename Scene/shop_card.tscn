@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://v856cqe4ouly" path="res://Script/shop_card.gd" id="1_dvf4x"]
 [ext_resource type="Texture2D" uid="uid://ctr0wbykggnh2" path="res://Assets/Detailed_Scroll_1-Sheet.png" id="2_nn8ao"]
 [ext_resource type="Texture2D" uid="uid://eeepgts0tvpj" path="res://Assets/Passive_Icons.png" id="3_bku1w"]
+[ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="4_bku1w"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_08wl6"]
 bg_color = Color(1, 1, 1, 1)
@@ -11,6 +12,20 @@ border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nn8ao"]
+bg_color = Color(0.8745098, 0.7372549, 0.09019608, 0)
+border_width_left = 30
+border_width_top = 15
+border_width_right = 30
+border_width_bottom = 15
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(1, 1, 1, 1)
+shadow_size = 38
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8yx6l"]
 atlas = ExtResource("2_nn8ao")
@@ -187,29 +202,61 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_suegg"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_7h2xg"]
 atlas = ExtResource("3_bku1w")
-region = Rect2(192, 0, 32, 32)
+region = Rect2(160, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_81yiv"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(32, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bku1w"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(128, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ea05u"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(32, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_igsup"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(320, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_s4jp2"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_23lek"]
 atlas = ExtResource("3_bku1w")
-region = Rect2(32, 0, 32, 32)
+region = Rect2(384, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5k1i"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(352, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_o74cq"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(160, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_5k42d"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(288, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a1sy7"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(64, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m5f78"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(160, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s4jp2"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(32, 0, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_vvphm"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(0, 64, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_a1sy7"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_wa4is"]
 atlas = ExtResource("3_bku1w")
-region = Rect2(96, 64, 32, 32)
+region = Rect2(128, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4y3wg"]
 atlas = ExtResource("3_bku1w")
@@ -219,10 +266,6 @@ region = Rect2(256, 0, 32, 32)
 atlas = ExtResource("3_bku1w")
 region = Rect2(96, 32, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_m5f78"]
-atlas = ExtResource("3_bku1w")
-region = Rect2(160, 32, 32, 32)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_fllxr"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(96, 0, 32, 32)
@@ -231,21 +274,17 @@ region = Rect2(96, 0, 32, 32)
 atlas = ExtResource("3_bku1w")
 region = Rect2(192, 32, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_wa4is"]
-atlas = ExtResource("3_bku1w")
-region = Rect2(128, 0, 32, 32)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_dahd3"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(224, 32, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_81yiv"]
-atlas = ExtResource("3_bku1w")
-region = Rect2(32, 64, 32, 32)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_mnfj7"]
 atlas = ExtResource("3_bku1w")
 region = Rect2(256, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2cmf1"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(288, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7pygo"]
 atlas = ExtResource("3_bku1w")
@@ -255,21 +294,9 @@ region = Rect2(320, 32, 32, 32)
 atlas = ExtResource("3_bku1w")
 region = Rect2(128, 32, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_7h2xg"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_suegg"]
 atlas = ExtResource("3_bku1w")
-region = Rect2(64, 64, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_hq3qh"]
-atlas = ExtResource("3_bku1w")
-region = Rect2(64, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_5k42d"]
-atlas = ExtResource("3_bku1w")
-region = Rect2(288, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2cmf1"]
-atlas = ExtResource("3_bku1w")
-region = Rect2(288, 32, 32, 32)
+region = Rect2(192, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ko8ob"]
 atlas = ExtResource("3_bku1w")
@@ -279,9 +306,9 @@ region = Rect2(64, 0, 32, 32)
 atlas = ExtResource("3_bku1w")
 region = Rect2(0, 32, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ea05u"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_hq3qh"]
 atlas = ExtResource("3_bku1w")
-region = Rect2(32, 32, 32, 32)
+region = Rect2(64, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n4edy"]
 atlas = ExtResource("3_bku1w")
@@ -291,14 +318,42 @@ region = Rect2(224, 0, 32, 32)
 atlas = ExtResource("3_bku1w")
 region = Rect2(0, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_jodkd"]
+atlas = ExtResource("3_bku1w")
+region = Rect2(352, 0, 32, 32)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_u5k1i"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_suegg")
+"texture": SubResource("AtlasTexture_7h2xg")
 }],
 "loop": false,
-"name": &"Advanced Planning",
+"name": &"All In",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_81yiv")
+}],
+"loop": false,
+"name": &"Bankrupt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bku1w")
+}],
+"loop": true,
+"name": &"Cash Out",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ea05u")
+}],
+"loop": false,
+"name": &"Coin Barrage",
 "speed": 5.0
 }, {
 "frames": [{
@@ -311,10 +366,18 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_s4jp2")
+"texture": SubResource("AtlasTexture_23lek")
 }],
-"loop": false,
-"name": &"Golden Clover",
+"loop": true,
+"name": &"Deposit",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u5k1i")
+}],
+"loop": true,
+"name": &"Dividend",
 "speed": 5.0
 }, {
 "frames": [{
@@ -322,7 +385,39 @@ animations = [{
 "texture": SubResource("AtlasTexture_o74cq")
 }],
 "loop": false,
-"name": &"Impromptu Flip",
+"name": &"Flip Sequence",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5k42d")
+}],
+"loop": false,
+"name": &"Full Moon",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a1sy7")
+}],
+"loop": false,
+"name": &"Fully Paid",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m5f78")
+}],
+"loop": false,
+"name": &"Gold Rush",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s4jp2")
+}],
+"loop": false,
+"name": &"Golden Clover",
 "speed": 5.0
 }, {
 "frames": [{
@@ -335,10 +430,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_a1sy7")
+"texture": SubResource("AtlasTexture_wa4is")
 }],
 "loop": false,
-"name": &"Jar\'O Savings",
+"name": &"Keeper\'s Scroll",
 "speed": 5.0
 }, {
 "frames": [{
@@ -359,18 +454,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_m5f78")
-}],
-"loop": false,
-"name": &"Lucky Pair",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_fllxr")
 }],
 "loop": false,
-"name": &"Lunar Coin",
+"name": &"Lunar Blessing",
 "speed": 5.0
 }, {
 "frames": [{
@@ -383,14 +470,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_wa4is")
-}],
-"loop": false,
-"name": &"Merchant\'s Scroll",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_dahd3")
 }],
 "loop": false,
@@ -399,18 +478,18 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_81yiv")
-}],
-"loop": false,
-"name": &"Pay Down",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_mnfj7")
 }],
 "loop": false,
 "name": &"Payback",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2cmf1")
+}],
+"loop": false,
+"name": &"Pickpocket",
 "speed": 5.0
 }, {
 "frames": [{
@@ -431,34 +510,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_7h2xg")
+"texture": SubResource("AtlasTexture_suegg")
 }],
 "loop": false,
-"name": &"Refund",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_hq3qh")
-}],
-"loop": false,
-"name": &"Reimbursement",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5k42d")
-}],
-"loop": false,
-"name": &"Simple Interest",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_2cmf1")
-}],
-"loop": false,
-"name": &"Sleight of Hand",
+"name": &"Seal of Approval",
 "speed": 5.0
 }, {
 "frames": [{
@@ -466,7 +521,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_ko8ob")
 }],
 "loop": false,
-"name": &"Solar Coin",
+"name": &"Solar Blessing",
 "speed": 5.0
 }, {
 "frames": [{
@@ -479,10 +534,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ea05u")
+"texture": SubResource("AtlasTexture_hq3qh")
 }],
 "loop": false,
-"name": &"Triple Nickel",
+"name": &"Tax Evasion",
 "speed": 5.0
 }, {
 "frames": [{
@@ -500,6 +555,14 @@ animations = [{
 "loop": false,
 "name": &"Wish Bone",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jodkd")
+}],
+"loop": true,
+"name": &"Withdraw",
+"speed": 5.0
 }]
 
 [node name="ShopCard" type="Button" unique_id=1944982988]
@@ -509,41 +572,63 @@ offset_right = 150.0
 offset_bottom = 201.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_08wl6")
 text = "CARD"
 script = ExtResource("1_dvf4x")
 
+[node name="GlowPanel" type="Panel" parent="." unique_id=48394232]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = 4.0
+offset_right = -28.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(-5, 5)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nn8ao")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=571560191]
 position = Vector2(76, 115.5)
 scale = Vector2(3.059, 2.9375)
 sprite_frames = SubResource("SpriteFrames_23lek")
 animation = &"B"
+frame = 4
+frame_progress = 0.8559642
 
 [node name="Icon" type="AnimatedSprite2D" parent="." unique_id=1661363716]
-position = Vector2(77, 71.00001)
-scale = Vector2(2.9864998, 2.9375)
+position = Vector2(76, 71)
+scale = Vector2(3.0625002, 2.9375)
 sprite_frames = SubResource("SpriteFrames_u5k1i")
-animation = &"Pay Down"
+animation = &"Keeper\'s Scroll"
 
 [node name="Label" type="Label" parent="." unique_id=594536539]
 layout_mode = 0
 offset_left = 9.0
 offset_top = 148.0
-offset_right = 139.0
+offset_right = 277.0
 offset_bottom = 171.0
+scale = Vector2(0.5, 0.5)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_fonts/font = ExtResource("4_bku1w")
+theme_override_font_sizes/font_size = 36
 text = "Name"
 horizontal_alignment = 1
 
 [node name="StockStatus" type="Label" parent="." unique_id=1982709267]
-visible = false
 layout_mode = 0
 offset_left = 56.0
 offset_top = 186.0
 offset_right = 96.0
 offset_bottom = 203.0
+theme_override_fonts/font = ExtResource("4_bku1w")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]

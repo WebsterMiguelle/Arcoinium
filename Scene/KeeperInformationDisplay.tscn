@@ -1,0 +1,419 @@
+[gd_scene format=3 uid="uid://c8vfntelui3b7"]
+
+[ext_resource type="Script" uid="uid://c43ouycp17snl" path="res://Scene/keeper_information_display.gd" id="1_ym2cr"]
+[ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="2_n2xgf"]
+[ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="3_grs8a"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="4_07nxu"]
+[ext_resource type="Texture2D" uid="uid://cjjj3ulqgawva" path="res://Assets/apprenticeMage.png" id="5_mda0e"]
+[ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="6_41pgj"]
+[ext_resource type="Texture2D" uid="uid://r5gatuytbe0t" path="res://Assets/taxCollector.png" id="7_muu4v"]
+[ext_resource type="Texture2D" uid="uid://dprlqvclal2j" path="res://Assets/trader.png" id="8_g1fsc"]
+[ext_resource type="Texture2D" uid="uid://csb6cbe5uwx3c" path="res://Assets/thrifter.png" id="9_rjvp2"]
+[ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="10_8qye4"]
+[ext_resource type="Texture2D" uid="uid://di37676qo0yu4" path="res://Assets/sunCaster-Recovered-Sheet.png" id="11_k2iij"]
+[ext_resource type="Texture2D" uid="uid://bikjuk8fgo6p2" path="res://Assets/moonCaster-Sheet.png" id="12_yr4d2"]
+[ext_resource type="Texture2D" uid="uid://bgomk7rj834wr" path="res://Assets/twilightSage.png" id="13_bfgin"]
+[ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="14_q6sg3"]
+[ext_resource type="Texture2D" uid="uid://c5kws41vksxsb" path="res://Assets/twilightSageDawn.png" id="15_ggvnr"]
+[ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="15_n2xgf"]
+[ext_resource type="Texture2D" uid="uid://odbplao5e2m8" path="res://Assets/twilightSageDusk.png" id="16_0adtr"]
+[ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="18_bt5e5"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5krdm"]
+texture = ExtResource("2_n2xgf")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h5i8s"]
+atlas = ExtResource("5_mda0e")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w8oc3"]
+atlas = ExtResource("6_41pgj")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oywcm"]
+atlas = ExtResource("7_muu4v")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hjai8"]
+atlas = ExtResource("8_g1fsc")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ekncj"]
+atlas = ExtResource("9_rjvp2")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f043x"]
+atlas = ExtResource("10_8qye4")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dvq1j"]
+atlas = ExtResource("11_k2iij")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yoaul"]
+atlas = ExtResource("12_yr4d2")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_48a0o"]
+atlas = ExtResource("13_bfgin")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c3btn"]
+atlas = ExtResource("14_q6sg3")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_grs8a"]
+atlas = ExtResource("15_n2xgf")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8bkap"]
+atlas = ExtResource("15_ggvnr")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b0nqf"]
+atlas = ExtResource("15_ggvnr")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ot48q"]
+atlas = ExtResource("16_0adtr")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2uk8d"]
+atlas = ExtResource("16_0adtr")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_abyes"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h5i8s")
+}],
+"loop": true,
+"name": &"0",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w8oc3")
+}],
+"loop": true,
+"name": &"1",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oywcm")
+}],
+"loop": true,
+"name": &"2",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hjai8")
+}],
+"loop": true,
+"name": &"3",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ekncj")
+}],
+"loop": true,
+"name": &"4",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f043x")
+}],
+"loop": true,
+"name": &"5",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dvq1j")
+}],
+"loop": true,
+"name": &"6",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yoaul")
+}],
+"loop": true,
+"name": &"7",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_48a0o")
+}],
+"loop": true,
+"name": &"8",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c3btn")
+}],
+"loop": true,
+"name": &"Default",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_grs8a")
+}],
+"loop": true,
+"name": &"Keeper",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8bkap")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b0nqf")
+}],
+"loop": true,
+"name": &"TWILIGHT_SAGE_DAWN",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ot48q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2uk8d")
+}],
+"loop": true,
+"name": &"TWILIGHT_SAGE_DUSK",
+"speed": 2.0
+}]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tx20m"]
+texture = ExtResource("2_n2xgf")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_70qsu"]
+texture = ExtResource("2_n2xgf")
+
+[node name="PlayerInformationDisplay" type="HBoxContainer" unique_id=2082350649]
+top_level = true
+light_mask = 2
+z_index = 10
+custom_minimum_size = Vector2(1080, 500)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -540.0
+offset_top = -266.5
+offset_right = 540.0
+offset_bottom = 321.17377
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.9716186, 0.91292155)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/separation = 10
+script = ExtResource("1_ym2cr")
+
+[node name="StatsBoxPanel" type="PanelContainer" parent="." unique_id=401102771]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_5krdm")
+
+[node name="MarginContainer" type="MarginContainer" parent="StatsBoxPanel" unique_id=77883903]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 44
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 44
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StatsBoxPanel/MarginContainer" unique_id=1181417655]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="Stats" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=517925706]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("3_grs8a")
+theme_override_font_sizes/font_size = 46
+text = "Shopkeeper"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=498240268]
+layout_mode = 2
+
+[node name="Space" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=681913843]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("4_07nxu")
+theme_override_font_sizes/font_size = 20
+text = "                   
+"
+vertical_alignment = 1
+
+[node name="Portrait" type="AnimatedSprite2D" parent="StatsBoxPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=505944288]
+position = Vector2(58.74578, 57.163055)
+scale = Vector2(1.5518564, 1.5518578)
+sprite_frames = SubResource("SpriteFrames_abyes")
+animation = &"Keeper"
+
+[node name="Coins" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1862259072]
+custom_minimum_size = Vector2(157.93, 100)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("4_07nxu")
+theme_override_font_sizes/font_size = 22
+text = "Coins:
+Max Flip:
+Trust Level: "
+vertical_alignment = 1
+
+[node name="Lore" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=517329297]
+custom_minimum_size = Vector2(120, 100.985)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.49604827, 0.0055969325, 0.3878905, 1)
+theme_override_colors/font_outline_color = Color(1, 0.7538462, 0.90618324, 1)
+theme_override_constants/line_spacing = 2
+theme_override_constants/shadow_offset_y = 6
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("4_07nxu")
+theme_override_font_sizes/font_size = 24
+text = "
+As pleasant a companion as she is a business woman, but everything else about her is unknown."
+horizontal_alignment = 1
+autowrap_mode = 2
+clip_text = true
+
+[node name="Control" type="Control" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=1351307598]
+layout_mode = 2
+
+[node name="Border" type="TextureRect" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=1147635464]
+self_modulate = Color(0.8627451, 0.28627452, 1, 0.54901963)
+layout_mode = 2
+texture = ExtResource("18_bt5e5")
+
+[node name="Trust" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=2064010057]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88513875, 0.00010829419, 0.717894, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("3_grs8a")
+theme_override_font_sizes/font_size = 40
+text = "Trust"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Trust Stats" type="Label" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=1688429510]
+custom_minimum_size = Vector2(157.93, 100)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.37467828, 4.8491733e-05, 0.34150153, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("4_07nxu")
+theme_override_font_sizes/font_size = 27
+vertical_alignment = 1
+
+[node name="Border2" type="TextureRect" parent="StatsBoxPanel/MarginContainer/VBoxContainer" unique_id=1937100677]
+self_modulate = Color(0.8611931, 0.2852019, 0.99999994, 0.54901963)
+layout_mode = 2
+texture = ExtResource("18_bt5e5")
+
+[node name="StatusEffectsPanel" type="PanelContainer" parent="." unique_id=710897952]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_tx20m")
+
+[node name="MarginContainer" type="MarginContainer" parent="StatusEffectsPanel" unique_id=1235637992]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 44
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 44
+
+[node name="StatusContainer" type="VFlowContainer" parent="StatusEffectsPanel/MarginContainer" unique_id=61949361]
+layout_mode = 2
+
+[node name="StatusEffects" type="Label" parent="StatusEffectsPanel/MarginContainer/StatusContainer" unique_id=133481273]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("3_grs8a")
+theme_override_font_sizes/font_size = 46
+text = "Status Effects"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PassivesPanel" type="PanelContainer" parent="." unique_id=1386994785]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_70qsu")
+
+[node name="MarginContainer" type="MarginContainer" parent="PassivesPanel" unique_id=863420057]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 44
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 44
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PassivesPanel/MarginContainer" unique_id=459575857]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 20
+
+[node name="Passives" type="Label" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=968639581]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("3_grs8a")
+theme_override_font_sizes/font_size = 46
+text = "Passives"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=256021586]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 10
+columns = 4
+
+[node name="Passive_name" type="Label" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=1237834155]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("3_grs8a")
+theme_override_font_sizes/font_size = 36
+text = "..."
+autowrap_mode = 3
+
+[node name="Passive_desc" type="Label" parent="PassivesPanel/MarginContainer/VBoxContainer" unique_id=527254046]
+custom_minimum_size = Vector2(250, 200)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("4_07nxu")
+theme_override_font_sizes/font_size = 28
+text = "Hover over a passive to view details."
+autowrap_mode = 3
+clip_text = true

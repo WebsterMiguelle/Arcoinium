@@ -1,0 +1,1050 @@
+[gd_scene format=3 uid="uid://dx0fgogfduiq3"]
+
+[ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="1_0pgc4"]
+[ext_resource type="Texture2D" uid="uid://df3wtq16ab5xe" path="res://Assets/tutorialScreenBackground.png" id="1_6q76i"]
+[ext_resource type="Script" uid="uid://bqvc4dk3e6bkl" path="res://Script/profile.gd" id="1_ljn20"]
+[ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="2_bvju4"]
+[ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="2_huopf"]
+[ext_resource type="Texture2D" uid="uid://bmkxblxwtg47d" path="res://Assets/Rug.png" id="2_oqtqq"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="2_u43rf"]
+[ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="3_6q76i"]
+[ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="3_aul7u"]
+[ext_resource type="Texture2D" uid="uid://r5gatuytbe0t" path="res://Assets/taxCollector.png" id="3_oqtqq"]
+[ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="4_6j1ob"]
+[ext_resource type="StyleBox" uid="uid://bhflgrh4jdv5m" path="res://Assets/SavedTexture/PressedButtonTexture.tres" id="4_m7jr5"]
+[ext_resource type="Texture2D" uid="uid://cjjj3ulqgawva" path="res://Assets/apprenticeMage.png" id="5_v84rt"]
+[ext_resource type="Texture2D" uid="uid://bikjuk8fgo6p2" path="res://Assets/moonCaster-Sheet.png" id="6_u43rf"]
+[ext_resource type="Texture2D" uid="uid://di37676qo0yu4" path="res://Assets/sunCaster-Recovered-Sheet.png" id="9_6q76i"]
+[ext_resource type="Texture2D" uid="uid://csb6cbe5uwx3c" path="res://Assets/thrifter.png" id="10_m7jr5"]
+[ext_resource type="Texture2D" uid="uid://dprlqvclal2j" path="res://Assets/trader.png" id="11_vws13"]
+[ext_resource type="Texture2D" uid="uid://bgomk7rj834wr" path="res://Assets/twilightSage.png" id="12_gakhq"]
+[ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="15_u43rf"]
+[ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="15_v84rt"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="16_u43rf"]
+[ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="16_vws13"]
+[ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="17_gakhq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jwa2n"]
+atlas = ExtResource("2_huopf")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3yp3r"]
+atlas = ExtResource("2_huopf")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ok25f"]
+atlas = ExtResource("3_oqtqq")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ppd6q"]
+atlas = ExtResource("3_oqtqq")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v6b2v"]
+atlas = ExtResource("4_6j1ob")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bs341"]
+atlas = ExtResource("4_6j1ob")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tcwnh"]
+atlas = ExtResource("5_v84rt")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bgqsu"]
+atlas = ExtResource("5_v84rt")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hx68j"]
+atlas = ExtResource("6_u43rf")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yiiam"]
+atlas = ExtResource("6_u43rf")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aul7u"]
+atlas = ExtResource("1_0pgc4")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_stgyu"]
+atlas = ExtResource("1_0pgc4")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_co4jw"]
+atlas = ExtResource("9_6q76i")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7u7th"]
+atlas = ExtResource("9_6q76i")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tt0h2"]
+atlas = ExtResource("10_m7jr5")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_djf7b"]
+atlas = ExtResource("10_m7jr5")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yssvk"]
+atlas = ExtResource("11_vws13")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sc561"]
+atlas = ExtResource("11_vws13")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mxmvs"]
+atlas = ExtResource("12_gakhq")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ekthp"]
+atlas = ExtResource("12_gakhq")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2pn6l"]
+resource_local_to_scene = true
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jwa2n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3yp3r")
+}],
+"loop": true,
+"name": &"Aristocrat",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ok25f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ppd6q")
+}],
+"loop": true,
+"name": &"Collector",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v6b2v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bs341")
+}],
+"loop": true,
+"name": &"Dwarf",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_tcwnh")
+}, {
+"duration": 0.6,
+"texture": SubResource("AtlasTexture_bgqsu")
+}],
+"loop": true,
+"name": &"Mage",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hx68j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yiiam")
+}],
+"loop": true,
+"name": &"Moon_Caster",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 0.089999996,
+"texture": SubResource("AtlasTexture_aul7u")
+}, {
+"duration": 0.089999996,
+"texture": SubResource("AtlasTexture_stgyu")
+}],
+"loop": true,
+"name": &"Player",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_aul7u")
+}],
+"loop": true,
+"name": &"Shop_Keeper",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_co4jw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7u7th")
+}],
+"loop": true,
+"name": &"Sun_Caster",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tt0h2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_djf7b")
+}],
+"loop": true,
+"name": &"Thrifter",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yssvk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sc561")
+}],
+"loop": true,
+"name": &"Trader",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mxmvs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ekthp")
+}],
+"loop": true,
+"name": &"Twilight_Sage",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_75buv"]
+offsets = PackedFloat32Array(0, 0.22742476)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6q76i"]
+gradient = SubResource("Gradient_75buv")
+width = 512
+height = 512
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
+[node name="Profile" type="TextureRect" unique_id=1161497957]
+self_modulate = Color(0.3172787, 0.31727865, 0.31727865, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_6q76i")
+script = ExtResource("1_ljn20")
+
+[node name="Back" type="Button" parent="." unique_id=466042425]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 0
+offset_left = 20.0
+offset_top = 16.0
+offset_right = 120.0
+offset_bottom = 72.0
+theme_override_fonts/font = ExtResource("2_u43rf")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = ExtResource("3_6q76i")
+theme_override_styles/pressed = ExtResource("4_m7jr5")
+theme_override_styles/hover = ExtResource("3_6q76i")
+text = "Back"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=817994196]
+custom_minimum_size = Vector2(240, 500)
+layout_mode = 0
+offset_left = 29.0
+offset_top = 100.0
+offset_right = 269.0
+offset_bottom = 600.0
+
+[node name="HBoxContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=1281108640]
+layout_mode = 2
+
+[node name="Player" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=1256666923]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_u43rf")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = ExtResource("3_6q76i")
+theme_override_styles/pressed = ExtResource("4_m7jr5")
+theme_override_styles/hover = ExtResource("3_6q76i")
+text = "Player"
+
+[node name="ShopKeeper" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=1070741687]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_u43rf")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = ExtResource("3_6q76i")
+theme_override_styles/pressed = ExtResource("4_m7jr5")
+theme_override_styles/hover = ExtResource("3_6q76i")
+text = "Shop Keeper"
+
+[node name="Mage" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=25123322]
+custom_minimum_size = Vector2(220, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_u43rf")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = ExtResource("3_6q76i")
+theme_override_styles/pressed = ExtResource("4_m7jr5")
+theme_override_styles/hover = ExtResource("3_6q76i")
+text = "Mage"
+
+[node name="Dwarf" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=1895321310]
+custom_minimum_size = Vector2(220, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_u43rf")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = ExtResource("3_6q76i")
+theme_override_styles/pressed = ExtResource("4_m7jr5")
+theme_override_styles/hover = ExtResource("3_6q76i")
+text = "Dwarf"
+
+[node name="Collector" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=1024712108]
+custom_minimum_size = Vector2(220, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_u43rf")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = ExtResource("3_6q76i")
+theme_override_styles/pressed = ExtResource("4_m7jr5")
+theme_override_styles/hover = ExtResource("3_6q76i")
+text = "Collector"
+
+[node name="Trader" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=570646353]
+custom_minimum_size = Vector2(220, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_u43rf")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = ExtResource("3_6q76i")
+theme_override_styles/pressed = ExtResource("4_m7jr5")
+theme_override_styles/hover = ExtResource("3_6q76i")
+text = "Trader"
+
+[node name="Thrifter" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=862339256]
+custom_minimum_size = Vector2(220, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_u43rf")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = ExtResource("3_6q76i")
+theme_override_styles/pressed = ExtResource("4_m7jr5")
+theme_override_styles/hover = ExtResource("3_6q76i")
+text = "Thrifter"
+
+[node name="Aristocrat" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=563106069]
+custom_minimum_size = Vector2(220, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_u43rf")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = ExtResource("3_6q76i")
+theme_override_styles/pressed = ExtResource("4_m7jr5")
+theme_override_styles/hover = ExtResource("3_6q76i")
+text = "Aristocrat"
+
+[node name="Sun Caster" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=1925256930]
+custom_minimum_size = Vector2(220, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_u43rf")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = ExtResource("3_6q76i")
+theme_override_styles/pressed = ExtResource("4_m7jr5")
+theme_override_styles/hover = ExtResource("3_6q76i")
+text = "Sun Caster"
+
+[node name="Moon Caster" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=1640698227]
+custom_minimum_size = Vector2(220, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_u43rf")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = ExtResource("3_6q76i")
+theme_override_styles/pressed = ExtResource("4_m7jr5")
+theme_override_styles/hover = ExtResource("3_6q76i")
+text = "Moon Caster"
+
+[node name="Twilight Sage" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=2103634546]
+custom_minimum_size = Vector2(220, 50)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_u43rf")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = ExtResource("3_6q76i")
+theme_override_styles/pressed = ExtResource("4_m7jr5")
+theme_override_styles/hover = ExtResource("3_6q76i")
+text = "Twilight Sage"
+
+[node name="Frame" type="TextureRect" parent="." unique_id=776675147]
+self_modulate = Color(0.74205923, 0.4928102, 0.36891922, 1)
+custom_minimum_size = Vector2(800, 550)
+layout_mode = 0
+offset_left = 300.0
+offset_top = 45.0
+offset_right = 1100.0
+offset_bottom = 595.0
+texture = ExtResource("2_u43rf")
+
+[node name="Player" type="Control" parent="Frame" unique_id=1548490419]
+custom_minimum_size = Vector2(800, 550)
+anchors_preset = 0
+
+[node name="Frame" type="TextureRect" parent="Frame/Player" unique_id=327442127]
+self_modulate = Color(0.30640167, 0.12886369, 0, 1)
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 36.0
+offset_top = 40.0
+offset_right = 326.0
+offset_bottom = 330.0
+texture = ExtResource("2_u43rf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Player" unique_id=1517844460]
+position = Vector2(180, 183)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_2pn6l")
+animation = &"Player"
+
+[node name="Statisctics" type="Label" parent="Frame/Player" unique_id=1149441870]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 0
+offset_left = 415.0
+offset_top = 35.0
+offset_right = 665.0
+offset_bottom = 85.0
+theme_override_colors/font_color = Color(0.06469653, 0.06469653, 0.06469653, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("15_u43rf")
+theme_override_font_sizes/font_size = 50
+text = "Coin Caster"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Border2" type="TextureRect" parent="Frame/Player" unique_id=1948947148]
+layout_mode = 0
+offset_left = 339.0
+offset_top = 72.0
+offset_right = 738.0
+offset_bottom = 112.0
+texture = ExtResource("16_vws13")
+
+[node name="Information" type="Label" parent="Frame/Player" unique_id=1786900390]
+custom_minimum_size = Vector2(350, 150)
+layout_mode = 0
+offset_left = 362.0
+offset_top = 115.0
+offset_right = 712.0
+offset_bottom = 316.0
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("17_gakhq")
+theme_override_font_sizes/font_size = 25
+text = "Ability:
+Likes:
+Dislikes:
+Strengths:
+Weaknesses:
+"
+
+[node name="StoryLine" type="RichTextLabel" parent="Frame/Player" unique_id=1125489225]
+custom_minimum_size = Vector2(700, 200)
+layout_mode = 0
+offset_left = 70.0
+offset_top = 335.0
+offset_right = 770.0
+offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_fonts/normal_font = ExtResource("15_v84rt")
+theme_override_fonts/mono_font = ExtResource("16_u43rf")
+theme_override_font_sizes/normal_font_size = 18
+text = "	Everything changed from the moment a deal was struck with The Council and The Corruption. And with tyranny and greed running rampant, disrupting the once peaceful balance of the world, you can�t just let it continue. The life you once knew, gone with just a snap of someone�s hands.
+	No, you will not stand for something so frivolous. And although you are powerless now, your courage will lead your heart where it needs to go. 
+"
+
+[node name="Border" type="TextureRect" parent="Frame/Player" unique_id=1171535495]
+layout_mode = 0
+offset_left = 344.0
+offset_top = 283.0
+offset_right = 743.0
+offset_bottom = 323.0
+texture = ExtResource("16_vws13")
+
+[node name="ShopKeeper" type="Control" parent="Frame" unique_id=594723873]
+visible = false
+custom_minimum_size = Vector2(800, 550)
+anchors_preset = 0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/ShopKeeper" unique_id=346462340]
+position = Vector2(180, 183)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_2pn6l")
+animation = &"Shop_Keeper"
+
+[node name="TextureRect" type="TextureRect" parent="Frame/ShopKeeper" unique_id=351726156]
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 54.0
+offset_top = 58.0
+offset_right = 304.0
+offset_bottom = 308.0
+texture = ExtResource("2_bvju4")
+
+[node name="Statisctics" type="Label" parent="Frame/ShopKeeper" unique_id=130027647]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 0
+offset_left = 415.0
+offset_top = 35.0
+offset_right = 665.0
+offset_bottom = 85.0
+theme_override_font_sizes/font_size = 30
+text = "Information"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Information" type="Label" parent="Frame/ShopKeeper" unique_id=75340432]
+custom_minimum_size = Vector2(350, 200)
+layout_mode = 0
+offset_left = 362.0
+offset_top = 93.0
+offset_right = 712.0
+offset_bottom = 293.0
+text = "Info
+"
+
+[node name="StoryLine" type="RichTextLabel" parent="Frame/ShopKeeper" unique_id=140671230]
+custom_minimum_size = Vector2(700, 200)
+layout_mode = 0
+offset_left = 70.0
+offset_top = 335.0
+offset_right = 770.0
+offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
+text = "		The Story Begins as follows withing the ending."
+
+[node name="Mage" type="Control" parent="Frame" unique_id=1128176087]
+visible = false
+custom_minimum_size = Vector2(800, 550)
+anchors_preset = 0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Mage" unique_id=1906877111]
+position = Vector2(180, 183)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_2pn6l")
+animation = &"Mage"
+
+[node name="TextureRect" type="TextureRect" parent="Frame/Mage" unique_id=1044723378]
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 54.0
+offset_top = 58.0
+offset_right = 304.0
+offset_bottom = 308.0
+texture = ExtResource("2_bvju4")
+
+[node name="Statisctics" type="Label" parent="Frame/Mage" unique_id=696827610]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 0
+offset_left = 415.0
+offset_top = 35.0
+offset_right = 665.0
+offset_bottom = 85.0
+theme_override_font_sizes/font_size = 30
+text = "Information"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Information" type="Label" parent="Frame/Mage" unique_id=428552378]
+custom_minimum_size = Vector2(350, 200)
+layout_mode = 0
+offset_left = 362.0
+offset_top = 93.0
+offset_right = 712.0
+offset_bottom = 293.0
+text = "Info
+"
+
+[node name="StoryLine" type="RichTextLabel" parent="Frame/Mage" unique_id=1842237307]
+custom_minimum_size = Vector2(700, 200)
+layout_mode = 0
+offset_left = 70.0
+offset_top = 335.0
+offset_right = 770.0
+offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
+text = "		The Story Begins as follows withing the ending."
+
+[node name="Dwarf" type="Control" parent="Frame" unique_id=992429273]
+visible = false
+custom_minimum_size = Vector2(800, 550)
+anchors_preset = 0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Dwarf" unique_id=1030284064]
+position = Vector2(180, 183)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_2pn6l")
+animation = &"Dwarf"
+
+[node name="TextureRect" type="TextureRect" parent="Frame/Dwarf" unique_id=1279825570]
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 54.0
+offset_top = 58.0
+offset_right = 304.0
+offset_bottom = 308.0
+texture = ExtResource("2_bvju4")
+
+[node name="Statisctics" type="Label" parent="Frame/Dwarf" unique_id=150175525]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 0
+offset_left = 415.0
+offset_top = 35.0
+offset_right = 665.0
+offset_bottom = 85.0
+theme_override_font_sizes/font_size = 30
+text = "Information"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Information" type="Label" parent="Frame/Dwarf" unique_id=996125142]
+custom_minimum_size = Vector2(350, 200)
+layout_mode = 0
+offset_left = 362.0
+offset_top = 93.0
+offset_right = 712.0
+offset_bottom = 293.0
+text = "Info
+"
+
+[node name="StoryLine" type="RichTextLabel" parent="Frame/Dwarf" unique_id=1761249122]
+custom_minimum_size = Vector2(700, 200)
+layout_mode = 0
+offset_left = 70.0
+offset_top = 335.0
+offset_right = 770.0
+offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
+text = "		The Story Begins as follows withing the ending."
+
+[node name="Collector" type="Control" parent="Frame" unique_id=182696094]
+visible = false
+custom_minimum_size = Vector2(800, 550)
+anchors_preset = 0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Collector" unique_id=1879276987]
+position = Vector2(180, 183)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_2pn6l")
+animation = &"Collector"
+
+[node name="TextureRect" type="TextureRect" parent="Frame/Collector" unique_id=1375927829]
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 54.0
+offset_top = 58.0
+offset_right = 304.0
+offset_bottom = 308.0
+texture = ExtResource("2_bvju4")
+
+[node name="Statisctics" type="Label" parent="Frame/Collector" unique_id=1539289876]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 0
+offset_left = 415.0
+offset_top = 35.0
+offset_right = 665.0
+offset_bottom = 85.0
+theme_override_font_sizes/font_size = 30
+text = "Information"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Information" type="Label" parent="Frame/Collector" unique_id=89165466]
+custom_minimum_size = Vector2(350, 200)
+layout_mode = 0
+offset_left = 362.0
+offset_top = 93.0
+offset_right = 712.0
+offset_bottom = 293.0
+text = "Info
+"
+
+[node name="StoryLine" type="RichTextLabel" parent="Frame/Collector" unique_id=5500454]
+custom_minimum_size = Vector2(700, 200)
+layout_mode = 0
+offset_left = 70.0
+offset_top = 335.0
+offset_right = 770.0
+offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
+text = "		The Story Begins as follows withing the ending."
+
+[node name="Trader" type="Control" parent="Frame" unique_id=1650933208]
+visible = false
+custom_minimum_size = Vector2(800, 550)
+anchors_preset = 0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Trader" unique_id=110813859]
+position = Vector2(180, 183)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_2pn6l")
+animation = &"Trader"
+
+[node name="TextureRect" type="TextureRect" parent="Frame/Trader" unique_id=178354991]
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 54.0
+offset_top = 58.0
+offset_right = 304.0
+offset_bottom = 308.0
+texture = ExtResource("2_bvju4")
+
+[node name="Statisctics" type="Label" parent="Frame/Trader" unique_id=341691190]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 0
+offset_left = 415.0
+offset_top = 35.0
+offset_right = 665.0
+offset_bottom = 85.0
+theme_override_font_sizes/font_size = 30
+text = "Information"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Information" type="Label" parent="Frame/Trader" unique_id=1431664331]
+custom_minimum_size = Vector2(350, 200)
+layout_mode = 0
+offset_left = 362.0
+offset_top = 93.0
+offset_right = 712.0
+offset_bottom = 293.0
+text = "Info
+"
+
+[node name="StoryLine" type="RichTextLabel" parent="Frame/Trader" unique_id=443115642]
+custom_minimum_size = Vector2(700, 200)
+layout_mode = 0
+offset_left = 70.0
+offset_top = 335.0
+offset_right = 770.0
+offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
+text = "		The Story Begins as follows withing the ending."
+
+[node name="Thrifter" type="Control" parent="Frame" unique_id=1862465756]
+visible = false
+custom_minimum_size = Vector2(800, 550)
+anchors_preset = 0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Thrifter" unique_id=1183986448]
+position = Vector2(180, 183)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_2pn6l")
+animation = &"Thrifter"
+
+[node name="TextureRect" type="TextureRect" parent="Frame/Thrifter" unique_id=227870449]
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 54.0
+offset_top = 58.0
+offset_right = 304.0
+offset_bottom = 308.0
+texture = ExtResource("2_bvju4")
+
+[node name="Statisctics" type="Label" parent="Frame/Thrifter" unique_id=981568550]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 0
+offset_left = 415.0
+offset_top = 35.0
+offset_right = 665.0
+offset_bottom = 85.0
+theme_override_font_sizes/font_size = 30
+text = "Information"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Information" type="Label" parent="Frame/Thrifter" unique_id=1053566916]
+custom_minimum_size = Vector2(350, 200)
+layout_mode = 0
+offset_left = 362.0
+offset_top = 93.0
+offset_right = 712.0
+offset_bottom = 293.0
+text = "Info
+"
+
+[node name="StoryLine" type="RichTextLabel" parent="Frame/Thrifter" unique_id=620563342]
+custom_minimum_size = Vector2(700, 200)
+layout_mode = 0
+offset_left = 70.0
+offset_top = 335.0
+offset_right = 770.0
+offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
+text = "		The Story Begins as follows withing the ending."
+
+[node name="Aristocrat" type="Control" parent="Frame" unique_id=1654492707]
+visible = false
+custom_minimum_size = Vector2(800, 550)
+anchors_preset = 0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Aristocrat" unique_id=1415722839]
+position = Vector2(180, 183)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_2pn6l")
+animation = &"Aristocrat"
+
+[node name="TextureRect" type="TextureRect" parent="Frame/Aristocrat" unique_id=1393108143]
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 54.0
+offset_top = 58.0
+offset_right = 304.0
+offset_bottom = 308.0
+texture = ExtResource("2_bvju4")
+
+[node name="Statisctics" type="Label" parent="Frame/Aristocrat" unique_id=1004895890]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 0
+offset_left = 415.0
+offset_top = 35.0
+offset_right = 665.0
+offset_bottom = 85.0
+theme_override_font_sizes/font_size = 30
+text = "Information"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Information" type="Label" parent="Frame/Aristocrat" unique_id=1845616310]
+custom_minimum_size = Vector2(350, 200)
+layout_mode = 0
+offset_left = 362.0
+offset_top = 93.0
+offset_right = 712.0
+offset_bottom = 293.0
+text = "Info
+"
+
+[node name="StoryLine" type="RichTextLabel" parent="Frame/Aristocrat" unique_id=1130550543]
+custom_minimum_size = Vector2(700, 200)
+layout_mode = 0
+offset_left = 70.0
+offset_top = 335.0
+offset_right = 770.0
+offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
+text = "		The Story Begins as follows withing the ending."
+
+[node name="Sun_Caster" type="Control" parent="Frame" unique_id=117936494]
+visible = false
+custom_minimum_size = Vector2(800, 550)
+anchors_preset = 0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Sun_Caster" unique_id=1834715347]
+position = Vector2(180, 183)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_2pn6l")
+animation = &"Sun_Caster"
+
+[node name="TextureRect" type="TextureRect" parent="Frame/Sun_Caster" unique_id=602299493]
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 54.0
+offset_top = 58.0
+offset_right = 304.0
+offset_bottom = 308.0
+texture = ExtResource("2_bvju4")
+
+[node name="Statisctics" type="Label" parent="Frame/Sun_Caster" unique_id=1714365044]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 0
+offset_left = 415.0
+offset_top = 35.0
+offset_right = 665.0
+offset_bottom = 85.0
+theme_override_font_sizes/font_size = 30
+text = "Information"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Information" type="Label" parent="Frame/Sun_Caster" unique_id=1051311858]
+custom_minimum_size = Vector2(350, 200)
+layout_mode = 0
+offset_left = 362.0
+offset_top = 93.0
+offset_right = 712.0
+offset_bottom = 293.0
+text = "Info
+"
+
+[node name="StoryLine" type="RichTextLabel" parent="Frame/Sun_Caster" unique_id=788665257]
+custom_minimum_size = Vector2(700, 200)
+layout_mode = 0
+offset_left = 70.0
+offset_top = 335.0
+offset_right = 770.0
+offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
+text = "		The Story Begins as follows withing the ending."
+
+[node name="Moon_Caster" type="Control" parent="Frame" unique_id=172928146]
+visible = false
+custom_minimum_size = Vector2(800, 550)
+anchors_preset = 0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Moon_Caster" unique_id=1064601279]
+position = Vector2(180, 183)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_2pn6l")
+animation = &"Moon_Caster"
+
+[node name="TextureRect" type="TextureRect" parent="Frame/Moon_Caster" unique_id=1281927213]
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 54.0
+offset_top = 58.0
+offset_right = 304.0
+offset_bottom = 308.0
+texture = ExtResource("2_bvju4")
+
+[node name="Statisctics" type="Label" parent="Frame/Moon_Caster" unique_id=521152717]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 0
+offset_left = 415.0
+offset_top = 35.0
+offset_right = 665.0
+offset_bottom = 85.0
+theme_override_font_sizes/font_size = 30
+text = "Information"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Information" type="Label" parent="Frame/Moon_Caster" unique_id=351581805]
+custom_minimum_size = Vector2(350, 200)
+layout_mode = 0
+offset_left = 362.0
+offset_top = 93.0
+offset_right = 712.0
+offset_bottom = 293.0
+text = "Info
+"
+
+[node name="StoryLine" type="RichTextLabel" parent="Frame/Moon_Caster" unique_id=1944775257]
+custom_minimum_size = Vector2(700, 200)
+layout_mode = 0
+offset_left = 70.0
+offset_top = 335.0
+offset_right = 770.0
+offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
+text = "		The Story Begins as follows withing the ending."
+
+[node name="Twilight_Sage" type="Control" parent="Frame" unique_id=1661756386]
+visible = false
+custom_minimum_size = Vector2(800, 550)
+anchors_preset = 0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Twilight_Sage" unique_id=1365112513]
+position = Vector2(180, 183)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_2pn6l")
+animation = &"Twilight_Sage"
+
+[node name="TextureRect" type="TextureRect" parent="Frame/Twilight_Sage" unique_id=1595061068]
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 54.0
+offset_top = 58.0
+offset_right = 304.0
+offset_bottom = 308.0
+texture = ExtResource("2_bvju4")
+
+[node name="Statisctics" type="Label" parent="Frame/Twilight_Sage" unique_id=1936928297]
+custom_minimum_size = Vector2(250, 50)
+layout_mode = 0
+offset_left = 415.0
+offset_top = 35.0
+offset_right = 665.0
+offset_bottom = 85.0
+theme_override_font_sizes/font_size = 30
+text = "Information"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="Information" type="Label" parent="Frame/Twilight_Sage" unique_id=282960780]
+custom_minimum_size = Vector2(350, 200)
+layout_mode = 0
+offset_left = 362.0
+offset_top = 93.0
+offset_right = 712.0
+offset_bottom = 293.0
+text = "Info
+"
+
+[node name="StoryLine" type="RichTextLabel" parent="Frame/Twilight_Sage" unique_id=1385824132]
+custom_minimum_size = Vector2(700, 200)
+layout_mode = 0
+offset_left = 70.0
+offset_top = 335.0
+offset_right = 770.0
+offset_bottom = 535.0
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/normal_font_size = 18
+text = "		The Story Begins as follows withing the ending."
+
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=1706942404]
+visible = false
+position = Vector2(577, 318)
+scale = Vector2(17.921875, 10.046875)
+color = Color(1, 0.9019608, 0.5647059, 0.61960787)
+energy = 1.05
+texture = SubResource("GradientTexture2D_6q76i")
+texture_scale = 0.46
+
+[node name="Vignette" type="CanvasModulate" parent="." unique_id=54488391]
+visible = false
+color = Color(0.7411765, 0.67058825, 0.72156864, 1)
+
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="ScrollContainer/HBoxContainer/Player" to="." method="_on_player_pressed"]
+[connection signal="pressed" from="ScrollContainer/HBoxContainer/ShopKeeper" to="." method="_on_shop_keeper_pressed"]
+[connection signal="pressed" from="ScrollContainer/HBoxContainer/Mage" to="." method="_on_mage_pressed"]
+[connection signal="pressed" from="ScrollContainer/HBoxContainer/Dwarf" to="." method="_on_dwarf_pressed"]
+[connection signal="pressed" from="ScrollContainer/HBoxContainer/Collector" to="." method="_on_collector_pressed"]
+[connection signal="pressed" from="ScrollContainer/HBoxContainer/Trader" to="." method="_on_trader_pressed"]
+[connection signal="pressed" from="ScrollContainer/HBoxContainer/Thrifter" to="." method="_on_thrifter_pressed"]
+[connection signal="pressed" from="ScrollContainer/HBoxContainer/Aristocrat" to="." method="_on_aristocrat_pressed"]
+[connection signal="pressed" from="ScrollContainer/HBoxContainer/Sun Caster" to="." method="_on_sun_caster_pressed"]
+[connection signal="pressed" from="ScrollContainer/HBoxContainer/Moon Caster" to="." method="_on_moon_caster_pressed"]
+[connection signal="pressed" from="ScrollContainer/HBoxContainer/Twilight Sage" to="." method="_on_twilight_sage_pressed"]

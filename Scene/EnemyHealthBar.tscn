@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://dbj4jt3y4yqdx"]
 
 [ext_resource type="Script" uid="uid://by4cble55010b" path="res://Script/EnemyHealthBar.gd" id="1_bk38n"]
+[ext_resource type="Texture2D" uid="uid://bivk5jj1h0vgt" path="res://Assets/CoinBarBackGround.png" id="2_5o0g4"]
 [ext_resource type="Texture2D" uid="uid://brn3ihcjo08pk" path="res://Assets/Coins/sun_to_moon_coin-Sheet.png" id="2_gtmvr"]
+[ext_resource type="Texture2D" uid="uid://bgska0mwhsa2s" path="res://Assets/CoinBarForeGround.png" id="4_77ge2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yapa2"]
 atlas = ExtResource("2_gtmvr")
@@ -112,6 +114,10 @@ grow_horizontal = 2
 grow_vertical = 2
 rotation = 3.1415927
 script = ExtResource("1_bk38n")
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=531063612]
+position = Vector2(46, 7.999996)
+texture = ExtResource("2_5o0g4")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=487590414]
 layout_mode = 1
@@ -321,3 +327,7 @@ mouse_filter = 2
 position = Vector2(8, 8)
 sprite_frames = SubResource("SpriteFrames_5o0g4")
 animation = &"Sun_Static"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1085928194]
+position = Vector2(46, 7.999996)
+texture = ExtResource("4_77ge2")

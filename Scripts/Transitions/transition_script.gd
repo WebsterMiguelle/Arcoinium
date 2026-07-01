@@ -2,6 +2,8 @@ extends CanvasLayer
 
 @onready var color_rect: ColorRect = $ColorRect
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+var tutorial_advance_mode: bool = false
+var tutorial_from_startup: bool = false
 
 func _ready():
 	color_rect.visible = true 
@@ -9,6 +11,9 @@ func _ready():
 	color_rect.material.set_shader_parameter("circle_size", 1.05)
 		
 func load_scene(target_scene: String):
+	if "tutorial_main" not in target_scene:
+		tutorial_advance_mode = false
+		
 	color_rect.mouse_filter = Control.MOUSE_FILTER_STOP
 	animation_player.play("Fade")
 	await animation_player.animation_finished

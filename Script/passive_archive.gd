@@ -60,9 +60,11 @@ func _populate_cards() -> void:
 		card.card_desc = data["desc"]
 		card.custom_minimum_size = Vector2(150, 250)
 		card.setup(get_node("/root/Main"))
+		card.mouse_default_cursor_shape = 2
 		card_nodes.append({"node": card, "data": data})
 		card.pressed.connect(_on_archive_card_pressed.bind(data))
 		Card_Container.add_child(card)
+
 		
 func _on_archive_card_pressed(data: Dictionary) -> void:
 	Card_View.visible = true

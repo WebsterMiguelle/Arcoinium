@@ -3,16 +3,14 @@
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="1_0pgc4"]
 [ext_resource type="Texture2D" uid="uid://df3wtq16ab5xe" path="res://Assets/tutorialScreenBackground.png" id="1_6q76i"]
 [ext_resource type="Script" uid="uid://bqvc4dk3e6bkl" path="res://Script/profile.gd" id="1_ljn20"]
-[ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="2_bvju4"]
 [ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="2_huopf"]
-[ext_resource type="Texture2D" uid="uid://bmkxblxwtg47d" path="res://Assets/Rug.png" id="2_oqtqq"]
-[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="2_u43rf"]
 [ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="3_6q76i"]
 [ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="3_aul7u"]
 [ext_resource type="Texture2D" uid="uid://r5gatuytbe0t" path="res://Assets/taxCollector.png" id="3_oqtqq"]
 [ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="4_6j1ob"]
 [ext_resource type="StyleBox" uid="uid://bhflgrh4jdv5m" path="res://Assets/SavedTexture/PressedButtonTexture.tres" id="4_m7jr5"]
 [ext_resource type="Texture2D" uid="uid://cjjj3ulqgawva" path="res://Assets/apprenticeMage.png" id="5_v84rt"]
+[ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="6_jwa2n"]
 [ext_resource type="Texture2D" uid="uid://bikjuk8fgo6p2" path="res://Assets/moonCaster-Sheet.png" id="6_u43rf"]
 [ext_resource type="Texture2D" uid="uid://di37676qo0yu4" path="res://Assets/sunCaster-Recovered-Sheet.png" id="9_6q76i"]
 [ext_resource type="Texture2D" uid="uid://csb6cbe5uwx3c" path="res://Assets/thrifter.png" id="10_m7jr5"]
@@ -231,12 +229,12 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="Gradient" id="Gradient_75buv"]
+[sub_resource type="Gradient" id="Gradient_gakhq"]
 offsets = PackedFloat32Array(0, 0.22742476)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_6q76i"]
-gradient = SubResource("Gradient_75buv")
+gradient = SubResource("Gradient_gakhq")
 width = 512
 height = 512
 use_hdr = true
@@ -261,7 +259,8 @@ offset_left = 20.0
 offset_top = 16.0
 offset_right = 120.0
 offset_bottom = 72.0
-theme_override_fonts/font = ExtResource("2_u43rf")
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = ExtResource("3_6q76i")
 theme_override_styles/pressed = ExtResource("4_m7jr5")
@@ -282,17 +281,19 @@ layout_mode = 2
 [node name="Player" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=1256666923]
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_u43rf")
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = ExtResource("3_6q76i")
 theme_override_styles/pressed = ExtResource("4_m7jr5")
 theme_override_styles/hover = ExtResource("3_6q76i")
-text = "Player"
+text = "Coin Caster"
 
 [node name="ShopKeeper" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=1070741687]
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_u43rf")
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = ExtResource("3_6q76i")
 theme_override_styles/pressed = ExtResource("4_m7jr5")
@@ -302,7 +303,8 @@ text = "Shop Keeper"
 [node name="Mage" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=25123322]
 custom_minimum_size = Vector2(220, 50)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_u43rf")
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = ExtResource("3_6q76i")
 theme_override_styles/pressed = ExtResource("4_m7jr5")
@@ -312,7 +314,8 @@ text = "Mage"
 [node name="Dwarf" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=1895321310]
 custom_minimum_size = Vector2(220, 50)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_u43rf")
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = ExtResource("3_6q76i")
 theme_override_styles/pressed = ExtResource("4_m7jr5")
@@ -322,7 +325,8 @@ text = "Dwarf"
 [node name="Collector" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=1024712108]
 custom_minimum_size = Vector2(220, 50)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_u43rf")
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = ExtResource("3_6q76i")
 theme_override_styles/pressed = ExtResource("4_m7jr5")
@@ -332,7 +336,8 @@ text = "Collector"
 [node name="Trader" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=570646353]
 custom_minimum_size = Vector2(220, 50)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_u43rf")
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = ExtResource("3_6q76i")
 theme_override_styles/pressed = ExtResource("4_m7jr5")
@@ -342,7 +347,8 @@ text = "Trader"
 [node name="Thrifter" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=862339256]
 custom_minimum_size = Vector2(220, 50)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_u43rf")
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = ExtResource("3_6q76i")
 theme_override_styles/pressed = ExtResource("4_m7jr5")
@@ -352,7 +358,8 @@ text = "Thrifter"
 [node name="Aristocrat" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=563106069]
 custom_minimum_size = Vector2(220, 50)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_u43rf")
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = ExtResource("3_6q76i")
 theme_override_styles/pressed = ExtResource("4_m7jr5")
@@ -362,7 +369,8 @@ text = "Aristocrat"
 [node name="Sun Caster" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=1925256930]
 custom_minimum_size = Vector2(220, 50)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_u43rf")
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = ExtResource("3_6q76i")
 theme_override_styles/pressed = ExtResource("4_m7jr5")
@@ -372,7 +380,8 @@ text = "Sun Caster"
 [node name="Moon Caster" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=1640698227]
 custom_minimum_size = Vector2(220, 50)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_u43rf")
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = ExtResource("3_6q76i")
 theme_override_styles/pressed = ExtResource("4_m7jr5")
@@ -382,7 +391,8 @@ text = "Moon Caster"
 [node name="Twilight Sage" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=2103634546]
 custom_minimum_size = Vector2(220, 50)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_u43rf")
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = ExtResource("3_6q76i")
 theme_override_styles/pressed = ExtResource("4_m7jr5")
@@ -397,9 +407,10 @@ offset_left = 300.0
 offset_top = 45.0
 offset_right = 1100.0
 offset_bottom = 595.0
-texture = ExtResource("2_u43rf")
+texture = ExtResource("6_jwa2n")
 
 [node name="Player" type="Control" parent="Frame" unique_id=1548490419]
+visible = false
 custom_minimum_size = Vector2(800, 550)
 anchors_preset = 0
 
@@ -411,7 +422,7 @@ offset_left = 36.0
 offset_top = 40.0
 offset_right = 326.0
 offset_bottom = 330.0
-texture = ExtResource("2_u43rf")
+texture = ExtResource("6_jwa2n")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Player" unique_id=1517844460]
 position = Vector2(180, 183)
@@ -488,42 +499,61 @@ visible = false
 custom_minimum_size = Vector2(800, 550)
 anchors_preset = 0
 
+[node name="Frame" type="TextureRect" parent="Frame/ShopKeeper" unique_id=2074138580]
+self_modulate = Color(0.30640167, 0.12886369, 0, 1)
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 36.0
+offset_top = 40.0
+offset_right = 326.0
+offset_bottom = 330.0
+texture = ExtResource("6_jwa2n")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/ShopKeeper" unique_id=346462340]
 position = Vector2(180, 183)
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_2pn6l")
 animation = &"Shop_Keeper"
 
-[node name="TextureRect" type="TextureRect" parent="Frame/ShopKeeper" unique_id=351726156]
-custom_minimum_size = Vector2(250, 250)
-layout_mode = 0
-offset_left = 54.0
-offset_top = 58.0
-offset_right = 304.0
-offset_bottom = 308.0
-texture = ExtResource("2_bvju4")
-
-[node name="Statisctics" type="Label" parent="Frame/ShopKeeper" unique_id=130027647]
+[node name="Statisctics" type="Label" parent="Frame/ShopKeeper" unique_id=736464692]
 custom_minimum_size = Vector2(250, 50)
 layout_mode = 0
 offset_left = 415.0
 offset_top = 35.0
 offset_right = 665.0
-offset_bottom = 85.0
-theme_override_font_sizes/font_size = 30
-text = "Information"
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.06469653, 0.06469653, 0.06469653, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("15_u43rf")
+theme_override_font_sizes/font_size = 50
+text = "Shopkeeper"
 horizontal_alignment = 1
 vertical_alignment = 1
-uppercase = true
 
-[node name="Information" type="Label" parent="Frame/ShopKeeper" unique_id=75340432]
-custom_minimum_size = Vector2(350, 200)
+[node name="Border2" type="TextureRect" parent="Frame/ShopKeeper" unique_id=765887403]
+layout_mode = 0
+offset_left = 339.0
+offset_top = 72.0
+offset_right = 738.0
+offset_bottom = 112.0
+texture = ExtResource("16_vws13")
+
+[node name="Information" type="Label" parent="Frame/ShopKeeper" unique_id=568616430]
+custom_minimum_size = Vector2(350, 150)
 layout_mode = 0
 offset_left = 362.0
-offset_top = 93.0
+offset_top = 115.0
 offset_right = 712.0
-offset_bottom = 293.0
-text = "Info
+offset_bottom = 316.0
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("17_gakhq")
+theme_override_font_sizes/font_size = 25
+text = "Ability:
+Likes:
+Dislikes:
+Strengths:
+Weaknesses:
 "
 
 [node name="StoryLine" type="RichTextLabel" parent="Frame/ShopKeeper" unique_id=140671230]
@@ -537,10 +567,28 @@ theme_override_constants/outline_size = 8
 theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
+[node name="Border" type="TextureRect" parent="Frame/ShopKeeper" unique_id=2041865152]
+layout_mode = 0
+offset_left = 344.0
+offset_top = 283.0
+offset_right = 743.0
+offset_bottom = 323.0
+texture = ExtResource("16_vws13")
+
 [node name="Mage" type="Control" parent="Frame" unique_id=1128176087]
 visible = false
 custom_minimum_size = Vector2(800, 550)
 anchors_preset = 0
+
+[node name="Frame" type="TextureRect" parent="Frame/Mage" unique_id=51439507]
+self_modulate = Color(0.30640167, 0.12886369, 0, 1)
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 36.0
+offset_top = 40.0
+offset_right = 326.0
+offset_bottom = 330.0
+texture = ExtResource("6_jwa2n")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Mage" unique_id=1906877111]
 position = Vector2(180, 183)
@@ -548,36 +596,45 @@ scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_2pn6l")
 animation = &"Mage"
 
-[node name="TextureRect" type="TextureRect" parent="Frame/Mage" unique_id=1044723378]
-custom_minimum_size = Vector2(250, 250)
-layout_mode = 0
-offset_left = 54.0
-offset_top = 58.0
-offset_right = 304.0
-offset_bottom = 308.0
-texture = ExtResource("2_bvju4")
-
-[node name="Statisctics" type="Label" parent="Frame/Mage" unique_id=696827610]
+[node name="Statisctics" type="Label" parent="Frame/Mage" unique_id=1988773365]
 custom_minimum_size = Vector2(250, 50)
 layout_mode = 0
-offset_left = 415.0
+offset_left = 335.0
 offset_top = 35.0
-offset_right = 665.0
-offset_bottom = 85.0
-theme_override_font_sizes/font_size = 30
-text = "Information"
+offset_right = 763.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.06469653, 0.06469653, 0.06469653, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("15_u43rf")
+theme_override_font_sizes/font_size = 50
+text = "Apprentice Mage"
 horizontal_alignment = 1
 vertical_alignment = 1
-uppercase = true
 
-[node name="Information" type="Label" parent="Frame/Mage" unique_id=428552378]
-custom_minimum_size = Vector2(350, 200)
+[node name="Border2" type="TextureRect" parent="Frame/Mage" unique_id=342031897]
+layout_mode = 0
+offset_left = 339.0
+offset_top = 72.0
+offset_right = 738.0
+offset_bottom = 112.0
+texture = ExtResource("16_vws13")
+
+[node name="Information" type="Label" parent="Frame/Mage" unique_id=164730000]
+custom_minimum_size = Vector2(350, 150)
 layout_mode = 0
 offset_left = 362.0
-offset_top = 93.0
+offset_top = 115.0
 offset_right = 712.0
-offset_bottom = 293.0
-text = "Info
+offset_bottom = 316.0
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("17_gakhq")
+theme_override_font_sizes/font_size = 25
+text = "Ability:
+Likes:
+Dislikes:
+Strengths:
+Weaknesses:
 "
 
 [node name="StoryLine" type="RichTextLabel" parent="Frame/Mage" unique_id=1842237307]
@@ -591,10 +648,28 @@ theme_override_constants/outline_size = 8
 theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
+[node name="Border" type="TextureRect" parent="Frame/Mage" unique_id=373753668]
+layout_mode = 0
+offset_left = 344.0
+offset_top = 283.0
+offset_right = 743.0
+offset_bottom = 323.0
+texture = ExtResource("16_vws13")
+
 [node name="Dwarf" type="Control" parent="Frame" unique_id=992429273]
 visible = false
 custom_minimum_size = Vector2(800, 550)
 anchors_preset = 0
+
+[node name="Frame" type="TextureRect" parent="Frame/Dwarf" unique_id=1469613789]
+self_modulate = Color(0.30640167, 0.12886369, 0, 1)
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 36.0
+offset_top = 40.0
+offset_right = 326.0
+offset_bottom = 330.0
+texture = ExtResource("6_jwa2n")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Dwarf" unique_id=1030284064]
 position = Vector2(180, 183)
@@ -602,36 +677,45 @@ scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_2pn6l")
 animation = &"Dwarf"
 
-[node name="TextureRect" type="TextureRect" parent="Frame/Dwarf" unique_id=1279825570]
-custom_minimum_size = Vector2(250, 250)
-layout_mode = 0
-offset_left = 54.0
-offset_top = 58.0
-offset_right = 304.0
-offset_bottom = 308.0
-texture = ExtResource("2_bvju4")
-
-[node name="Statisctics" type="Label" parent="Frame/Dwarf" unique_id=150175525]
+[node name="Statisctics" type="Label" parent="Frame/Dwarf" unique_id=298009893]
 custom_minimum_size = Vector2(250, 50)
 layout_mode = 0
-offset_left = 415.0
+offset_left = 335.0
 offset_top = 35.0
-offset_right = 665.0
-offset_bottom = 85.0
-theme_override_font_sizes/font_size = 30
-text = "Information"
+offset_right = 763.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.06469653, 0.06469653, 0.06469653, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("15_u43rf")
+theme_override_font_sizes/font_size = 50
+text = "Coin Dwarf"
 horizontal_alignment = 1
 vertical_alignment = 1
-uppercase = true
 
-[node name="Information" type="Label" parent="Frame/Dwarf" unique_id=996125142]
-custom_minimum_size = Vector2(350, 200)
+[node name="Border2" type="TextureRect" parent="Frame/Dwarf" unique_id=1569607134]
+layout_mode = 0
+offset_left = 339.0
+offset_top = 72.0
+offset_right = 738.0
+offset_bottom = 112.0
+texture = ExtResource("16_vws13")
+
+[node name="Information" type="Label" parent="Frame/Dwarf" unique_id=42849977]
+custom_minimum_size = Vector2(350, 150)
 layout_mode = 0
 offset_left = 362.0
-offset_top = 93.0
+offset_top = 115.0
 offset_right = 712.0
-offset_bottom = 293.0
-text = "Info
+offset_bottom = 316.0
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("17_gakhq")
+theme_override_font_sizes/font_size = 25
+text = "Ability:
+Likes:
+Dislikes:
+Strengths:
+Weaknesses:
 "
 
 [node name="StoryLine" type="RichTextLabel" parent="Frame/Dwarf" unique_id=1761249122]
@@ -645,10 +729,28 @@ theme_override_constants/outline_size = 8
 theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
+[node name="Border" type="TextureRect" parent="Frame/Dwarf" unique_id=773608593]
+layout_mode = 0
+offset_left = 344.0
+offset_top = 283.0
+offset_right = 743.0
+offset_bottom = 323.0
+texture = ExtResource("16_vws13")
+
 [node name="Collector" type="Control" parent="Frame" unique_id=182696094]
 visible = false
 custom_minimum_size = Vector2(800, 550)
 anchors_preset = 0
+
+[node name="Frame" type="TextureRect" parent="Frame/Collector" unique_id=809473540]
+self_modulate = Color(0.30640167, 0.12886369, 0, 1)
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 36.0
+offset_top = 40.0
+offset_right = 326.0
+offset_bottom = 330.0
+texture = ExtResource("6_jwa2n")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Collector" unique_id=1879276987]
 position = Vector2(180, 183)
@@ -656,36 +758,45 @@ scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_2pn6l")
 animation = &"Collector"
 
-[node name="TextureRect" type="TextureRect" parent="Frame/Collector" unique_id=1375927829]
-custom_minimum_size = Vector2(250, 250)
-layout_mode = 0
-offset_left = 54.0
-offset_top = 58.0
-offset_right = 304.0
-offset_bottom = 308.0
-texture = ExtResource("2_bvju4")
-
-[node name="Statisctics" type="Label" parent="Frame/Collector" unique_id=1539289876]
+[node name="Statisctics" type="Label" parent="Frame/Collector" unique_id=1589256947]
 custom_minimum_size = Vector2(250, 50)
 layout_mode = 0
-offset_left = 415.0
+offset_left = 335.0
 offset_top = 35.0
-offset_right = 665.0
-offset_bottom = 85.0
-theme_override_font_sizes/font_size = 30
-text = "Information"
+offset_right = 763.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.06469653, 0.06469653, 0.06469653, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("15_u43rf")
+theme_override_font_sizes/font_size = 50
+text = "Tax Collector"
 horizontal_alignment = 1
 vertical_alignment = 1
-uppercase = true
 
-[node name="Information" type="Label" parent="Frame/Collector" unique_id=89165466]
-custom_minimum_size = Vector2(350, 200)
+[node name="Border2" type="TextureRect" parent="Frame/Collector" unique_id=266225194]
+layout_mode = 0
+offset_left = 339.0
+offset_top = 72.0
+offset_right = 738.0
+offset_bottom = 112.0
+texture = ExtResource("16_vws13")
+
+[node name="Information" type="Label" parent="Frame/Collector" unique_id=1093720170]
+custom_minimum_size = Vector2(350, 150)
 layout_mode = 0
 offset_left = 362.0
-offset_top = 93.0
+offset_top = 115.0
 offset_right = 712.0
-offset_bottom = 293.0
-text = "Info
+offset_bottom = 316.0
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("17_gakhq")
+theme_override_font_sizes/font_size = 25
+text = "Ability:
+Likes:
+Dislikes:
+Strengths:
+Weaknesses:
 "
 
 [node name="StoryLine" type="RichTextLabel" parent="Frame/Collector" unique_id=5500454]
@@ -699,10 +810,28 @@ theme_override_constants/outline_size = 8
 theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
+[node name="Border" type="TextureRect" parent="Frame/Collector" unique_id=1891687422]
+layout_mode = 0
+offset_left = 344.0
+offset_top = 283.0
+offset_right = 743.0
+offset_bottom = 323.0
+texture = ExtResource("16_vws13")
+
 [node name="Trader" type="Control" parent="Frame" unique_id=1650933208]
 visible = false
 custom_minimum_size = Vector2(800, 550)
 anchors_preset = 0
+
+[node name="Frame" type="TextureRect" parent="Frame/Trader" unique_id=1959119741]
+self_modulate = Color(0.30640167, 0.12886369, 0, 1)
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 36.0
+offset_top = 40.0
+offset_right = 326.0
+offset_bottom = 330.0
+texture = ExtResource("6_jwa2n")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Trader" unique_id=110813859]
 position = Vector2(180, 183)
@@ -710,36 +839,45 @@ scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_2pn6l")
 animation = &"Trader"
 
-[node name="TextureRect" type="TextureRect" parent="Frame/Trader" unique_id=178354991]
-custom_minimum_size = Vector2(250, 250)
-layout_mode = 0
-offset_left = 54.0
-offset_top = 58.0
-offset_right = 304.0
-offset_bottom = 308.0
-texture = ExtResource("2_bvju4")
-
-[node name="Statisctics" type="Label" parent="Frame/Trader" unique_id=341691190]
+[node name="Statisctics" type="Label" parent="Frame/Trader" unique_id=118294133]
 custom_minimum_size = Vector2(250, 50)
 layout_mode = 0
-offset_left = 415.0
+offset_left = 335.0
 offset_top = 35.0
-offset_right = 665.0
-offset_bottom = 85.0
-theme_override_font_sizes/font_size = 30
-text = "Information"
+offset_right = 763.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.06469653, 0.06469653, 0.06469653, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("15_u43rf")
+theme_override_font_sizes/font_size = 50
+text = "Trader"
 horizontal_alignment = 1
 vertical_alignment = 1
-uppercase = true
 
-[node name="Information" type="Label" parent="Frame/Trader" unique_id=1431664331]
-custom_minimum_size = Vector2(350, 200)
+[node name="Border2" type="TextureRect" parent="Frame/Trader" unique_id=1079552551]
+layout_mode = 0
+offset_left = 339.0
+offset_top = 72.0
+offset_right = 738.0
+offset_bottom = 112.0
+texture = ExtResource("16_vws13")
+
+[node name="Information" type="Label" parent="Frame/Trader" unique_id=413397759]
+custom_minimum_size = Vector2(350, 150)
 layout_mode = 0
 offset_left = 362.0
-offset_top = 93.0
+offset_top = 115.0
 offset_right = 712.0
-offset_bottom = 293.0
-text = "Info
+offset_bottom = 316.0
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("17_gakhq")
+theme_override_font_sizes/font_size = 25
+text = "Ability:
+Likes:
+Dislikes:
+Strengths:
+Weaknesses:
 "
 
 [node name="StoryLine" type="RichTextLabel" parent="Frame/Trader" unique_id=443115642]
@@ -753,10 +891,28 @@ theme_override_constants/outline_size = 8
 theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
+[node name="Border" type="TextureRect" parent="Frame/Trader" unique_id=1632957846]
+layout_mode = 0
+offset_left = 344.0
+offset_top = 283.0
+offset_right = 743.0
+offset_bottom = 323.0
+texture = ExtResource("16_vws13")
+
 [node name="Thrifter" type="Control" parent="Frame" unique_id=1862465756]
 visible = false
 custom_minimum_size = Vector2(800, 550)
 anchors_preset = 0
+
+[node name="Frame" type="TextureRect" parent="Frame/Thrifter" unique_id=2103943217]
+self_modulate = Color(0.30640167, 0.12886369, 0, 1)
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 36.0
+offset_top = 40.0
+offset_right = 326.0
+offset_bottom = 330.0
+texture = ExtResource("6_jwa2n")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Thrifter" unique_id=1183986448]
 position = Vector2(180, 183)
@@ -764,36 +920,45 @@ scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_2pn6l")
 animation = &"Thrifter"
 
-[node name="TextureRect" type="TextureRect" parent="Frame/Thrifter" unique_id=227870449]
-custom_minimum_size = Vector2(250, 250)
-layout_mode = 0
-offset_left = 54.0
-offset_top = 58.0
-offset_right = 304.0
-offset_bottom = 308.0
-texture = ExtResource("2_bvju4")
-
-[node name="Statisctics" type="Label" parent="Frame/Thrifter" unique_id=981568550]
+[node name="Statisctics" type="Label" parent="Frame/Thrifter" unique_id=509002372]
 custom_minimum_size = Vector2(250, 50)
 layout_mode = 0
-offset_left = 415.0
+offset_left = 335.0
 offset_top = 35.0
-offset_right = 665.0
-offset_bottom = 85.0
-theme_override_font_sizes/font_size = 30
-text = "Information"
+offset_right = 763.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.06469653, 0.06469653, 0.06469653, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("15_u43rf")
+theme_override_font_sizes/font_size = 50
+text = "Thrifter"
 horizontal_alignment = 1
 vertical_alignment = 1
-uppercase = true
 
-[node name="Information" type="Label" parent="Frame/Thrifter" unique_id=1053566916]
-custom_minimum_size = Vector2(350, 200)
+[node name="Border2" type="TextureRect" parent="Frame/Thrifter" unique_id=89140403]
+layout_mode = 0
+offset_left = 339.0
+offset_top = 72.0
+offset_right = 738.0
+offset_bottom = 112.0
+texture = ExtResource("16_vws13")
+
+[node name="Information" type="Label" parent="Frame/Thrifter" unique_id=310227132]
+custom_minimum_size = Vector2(350, 150)
 layout_mode = 0
 offset_left = 362.0
-offset_top = 93.0
+offset_top = 115.0
 offset_right = 712.0
-offset_bottom = 293.0
-text = "Info
+offset_bottom = 316.0
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("17_gakhq")
+theme_override_font_sizes/font_size = 25
+text = "Ability:
+Likes:
+Dislikes:
+Strengths:
+Weaknesses:
 "
 
 [node name="StoryLine" type="RichTextLabel" parent="Frame/Thrifter" unique_id=620563342]
@@ -807,10 +972,28 @@ theme_override_constants/outline_size = 8
 theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
+[node name="Border" type="TextureRect" parent="Frame/Thrifter" unique_id=1072651119]
+layout_mode = 0
+offset_left = 344.0
+offset_top = 283.0
+offset_right = 743.0
+offset_bottom = 323.0
+texture = ExtResource("16_vws13")
+
 [node name="Aristocrat" type="Control" parent="Frame" unique_id=1654492707]
 visible = false
 custom_minimum_size = Vector2(800, 550)
 anchors_preset = 0
+
+[node name="Frame" type="TextureRect" parent="Frame/Aristocrat" unique_id=1892806024]
+self_modulate = Color(0.30640167, 0.12886369, 0, 1)
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 36.0
+offset_top = 40.0
+offset_right = 326.0
+offset_bottom = 330.0
+texture = ExtResource("6_jwa2n")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Aristocrat" unique_id=1415722839]
 position = Vector2(180, 183)
@@ -818,36 +1001,45 @@ scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_2pn6l")
 animation = &"Aristocrat"
 
-[node name="TextureRect" type="TextureRect" parent="Frame/Aristocrat" unique_id=1393108143]
-custom_minimum_size = Vector2(250, 250)
-layout_mode = 0
-offset_left = 54.0
-offset_top = 58.0
-offset_right = 304.0
-offset_bottom = 308.0
-texture = ExtResource("2_bvju4")
-
-[node name="Statisctics" type="Label" parent="Frame/Aristocrat" unique_id=1004895890]
+[node name="Statisctics" type="Label" parent="Frame/Aristocrat" unique_id=589109623]
 custom_minimum_size = Vector2(250, 50)
 layout_mode = 0
-offset_left = 415.0
+offset_left = 335.0
 offset_top = 35.0
-offset_right = 665.0
-offset_bottom = 85.0
-theme_override_font_sizes/font_size = 30
-text = "Information"
+offset_right = 763.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.06469653, 0.06469653, 0.06469653, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("15_u43rf")
+theme_override_font_sizes/font_size = 50
+text = "Aristocrat"
 horizontal_alignment = 1
 vertical_alignment = 1
-uppercase = true
 
-[node name="Information" type="Label" parent="Frame/Aristocrat" unique_id=1845616310]
-custom_minimum_size = Vector2(350, 200)
+[node name="Border2" type="TextureRect" parent="Frame/Aristocrat" unique_id=51426992]
+layout_mode = 0
+offset_left = 339.0
+offset_top = 72.0
+offset_right = 738.0
+offset_bottom = 112.0
+texture = ExtResource("16_vws13")
+
+[node name="Information" type="Label" parent="Frame/Aristocrat" unique_id=2053338343]
+custom_minimum_size = Vector2(350, 150)
 layout_mode = 0
 offset_left = 362.0
-offset_top = 93.0
+offset_top = 115.0
 offset_right = 712.0
-offset_bottom = 293.0
-text = "Info
+offset_bottom = 316.0
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("17_gakhq")
+theme_override_font_sizes/font_size = 25
+text = "Ability:
+Likes:
+Dislikes:
+Strengths:
+Weaknesses:
 "
 
 [node name="StoryLine" type="RichTextLabel" parent="Frame/Aristocrat" unique_id=1130550543]
@@ -861,10 +1053,28 @@ theme_override_constants/outline_size = 8
 theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
+[node name="Border" type="TextureRect" parent="Frame/Aristocrat" unique_id=1142876063]
+layout_mode = 0
+offset_left = 344.0
+offset_top = 283.0
+offset_right = 743.0
+offset_bottom = 323.0
+texture = ExtResource("16_vws13")
+
 [node name="Sun_Caster" type="Control" parent="Frame" unique_id=117936494]
 visible = false
 custom_minimum_size = Vector2(800, 550)
 anchors_preset = 0
+
+[node name="Frame" type="TextureRect" parent="Frame/Sun_Caster" unique_id=1255971871]
+self_modulate = Color(0.30640167, 0.12886369, 0, 1)
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 36.0
+offset_top = 40.0
+offset_right = 326.0
+offset_bottom = 330.0
+texture = ExtResource("6_jwa2n")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Sun_Caster" unique_id=1834715347]
 position = Vector2(180, 183)
@@ -872,36 +1082,45 @@ scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_2pn6l")
 animation = &"Sun_Caster"
 
-[node name="TextureRect" type="TextureRect" parent="Frame/Sun_Caster" unique_id=602299493]
-custom_minimum_size = Vector2(250, 250)
-layout_mode = 0
-offset_left = 54.0
-offset_top = 58.0
-offset_right = 304.0
-offset_bottom = 308.0
-texture = ExtResource("2_bvju4")
-
-[node name="Statisctics" type="Label" parent="Frame/Sun_Caster" unique_id=1714365044]
+[node name="Statisctics" type="Label" parent="Frame/Sun_Caster" unique_id=535174581]
 custom_minimum_size = Vector2(250, 50)
 layout_mode = 0
-offset_left = 415.0
+offset_left = 335.0
 offset_top = 35.0
-offset_right = 665.0
-offset_bottom = 85.0
-theme_override_font_sizes/font_size = 30
-text = "Information"
+offset_right = 763.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.06469653, 0.06469653, 0.06469653, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("15_u43rf")
+theme_override_font_sizes/font_size = 50
+text = "Sun Caster"
 horizontal_alignment = 1
 vertical_alignment = 1
-uppercase = true
 
-[node name="Information" type="Label" parent="Frame/Sun_Caster" unique_id=1051311858]
-custom_minimum_size = Vector2(350, 200)
+[node name="Border2" type="TextureRect" parent="Frame/Sun_Caster" unique_id=1713439707]
+layout_mode = 0
+offset_left = 339.0
+offset_top = 72.0
+offset_right = 738.0
+offset_bottom = 112.0
+texture = ExtResource("16_vws13")
+
+[node name="Information" type="Label" parent="Frame/Sun_Caster" unique_id=55077816]
+custom_minimum_size = Vector2(350, 150)
 layout_mode = 0
 offset_left = 362.0
-offset_top = 93.0
+offset_top = 115.0
 offset_right = 712.0
-offset_bottom = 293.0
-text = "Info
+offset_bottom = 316.0
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("17_gakhq")
+theme_override_font_sizes/font_size = 25
+text = "Ability:
+Likes:
+Dislikes:
+Strengths:
+Weaknesses:
 "
 
 [node name="StoryLine" type="RichTextLabel" parent="Frame/Sun_Caster" unique_id=788665257]
@@ -915,10 +1134,28 @@ theme_override_constants/outline_size = 8
 theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
+[node name="Border" type="TextureRect" parent="Frame/Sun_Caster" unique_id=2145000848]
+layout_mode = 0
+offset_left = 344.0
+offset_top = 283.0
+offset_right = 743.0
+offset_bottom = 323.0
+texture = ExtResource("16_vws13")
+
 [node name="Moon_Caster" type="Control" parent="Frame" unique_id=172928146]
 visible = false
 custom_minimum_size = Vector2(800, 550)
 anchors_preset = 0
+
+[node name="Frame" type="TextureRect" parent="Frame/Moon_Caster" unique_id=1078968096]
+self_modulate = Color(0.30640167, 0.12886369, 0, 1)
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 36.0
+offset_top = 40.0
+offset_right = 326.0
+offset_bottom = 330.0
+texture = ExtResource("6_jwa2n")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Moon_Caster" unique_id=1064601279]
 position = Vector2(180, 183)
@@ -926,36 +1163,45 @@ scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_2pn6l")
 animation = &"Moon_Caster"
 
-[node name="TextureRect" type="TextureRect" parent="Frame/Moon_Caster" unique_id=1281927213]
-custom_minimum_size = Vector2(250, 250)
-layout_mode = 0
-offset_left = 54.0
-offset_top = 58.0
-offset_right = 304.0
-offset_bottom = 308.0
-texture = ExtResource("2_bvju4")
-
-[node name="Statisctics" type="Label" parent="Frame/Moon_Caster" unique_id=521152717]
+[node name="Statisctics" type="Label" parent="Frame/Moon_Caster" unique_id=1078871336]
 custom_minimum_size = Vector2(250, 50)
 layout_mode = 0
-offset_left = 415.0
+offset_left = 335.0
 offset_top = 35.0
-offset_right = 665.0
-offset_bottom = 85.0
-theme_override_font_sizes/font_size = 30
-text = "Information"
+offset_right = 763.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.06469653, 0.06469653, 0.06469653, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("15_u43rf")
+theme_override_font_sizes/font_size = 50
+text = "Moon Caster"
 horizontal_alignment = 1
 vertical_alignment = 1
-uppercase = true
 
-[node name="Information" type="Label" parent="Frame/Moon_Caster" unique_id=351581805]
-custom_minimum_size = Vector2(350, 200)
+[node name="Border2" type="TextureRect" parent="Frame/Moon_Caster" unique_id=1642536780]
+layout_mode = 0
+offset_left = 339.0
+offset_top = 72.0
+offset_right = 738.0
+offset_bottom = 112.0
+texture = ExtResource("16_vws13")
+
+[node name="Information" type="Label" parent="Frame/Moon_Caster" unique_id=297965546]
+custom_minimum_size = Vector2(350, 150)
 layout_mode = 0
 offset_left = 362.0
-offset_top = 93.0
+offset_top = 115.0
 offset_right = 712.0
-offset_bottom = 293.0
-text = "Info
+offset_bottom = 316.0
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("17_gakhq")
+theme_override_font_sizes/font_size = 25
+text = "Ability:
+Likes:
+Dislikes:
+Strengths:
+Weaknesses:
 "
 
 [node name="StoryLine" type="RichTextLabel" parent="Frame/Moon_Caster" unique_id=1944775257]
@@ -969,10 +1215,27 @@ theme_override_constants/outline_size = 8
 theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
+[node name="Border" type="TextureRect" parent="Frame/Moon_Caster" unique_id=1082677517]
+layout_mode = 0
+offset_left = 344.0
+offset_top = 283.0
+offset_right = 743.0
+offset_bottom = 323.0
+texture = ExtResource("16_vws13")
+
 [node name="Twilight_Sage" type="Control" parent="Frame" unique_id=1661756386]
-visible = false
 custom_minimum_size = Vector2(800, 550)
 anchors_preset = 0
+
+[node name="Frame" type="TextureRect" parent="Frame/Twilight_Sage" unique_id=1957239823]
+self_modulate = Color(0.30640167, 0.12886369, 0, 1)
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 36.0
+offset_top = 40.0
+offset_right = 326.0
+offset_bottom = 330.0
+texture = ExtResource("6_jwa2n")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Frame/Twilight_Sage" unique_id=1365112513]
 position = Vector2(180, 183)
@@ -980,36 +1243,45 @@ scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_2pn6l")
 animation = &"Twilight_Sage"
 
-[node name="TextureRect" type="TextureRect" parent="Frame/Twilight_Sage" unique_id=1595061068]
-custom_minimum_size = Vector2(250, 250)
-layout_mode = 0
-offset_left = 54.0
-offset_top = 58.0
-offset_right = 304.0
-offset_bottom = 308.0
-texture = ExtResource("2_bvju4")
-
-[node name="Statisctics" type="Label" parent="Frame/Twilight_Sage" unique_id=1936928297]
+[node name="Statisctics" type="Label" parent="Frame/Twilight_Sage" unique_id=1044000338]
 custom_minimum_size = Vector2(250, 50)
 layout_mode = 0
-offset_left = 415.0
+offset_left = 335.0
 offset_top = 35.0
-offset_right = 665.0
-offset_bottom = 85.0
-theme_override_font_sizes/font_size = 30
-text = "Information"
+offset_right = 763.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.06469653, 0.06469653, 0.06469653, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("15_u43rf")
+theme_override_font_sizes/font_size = 50
+text = "Twilight Sage"
 horizontal_alignment = 1
 vertical_alignment = 1
-uppercase = true
 
-[node name="Information" type="Label" parent="Frame/Twilight_Sage" unique_id=282960780]
-custom_minimum_size = Vector2(350, 200)
+[node name="Border2" type="TextureRect" parent="Frame/Twilight_Sage" unique_id=1633776902]
+layout_mode = 0
+offset_left = 339.0
+offset_top = 72.0
+offset_right = 738.0
+offset_bottom = 112.0
+texture = ExtResource("16_vws13")
+
+[node name="Information" type="Label" parent="Frame/Twilight_Sage" unique_id=1211019730]
+custom_minimum_size = Vector2(350, 150)
 layout_mode = 0
 offset_left = 362.0
-offset_top = 93.0
+offset_top = 115.0
 offset_right = 712.0
-offset_bottom = 293.0
-text = "Info
+offset_bottom = 316.0
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("17_gakhq")
+theme_override_font_sizes/font_size = 25
+text = "Ability:
+Likes:
+Dislikes:
+Strengths:
+Weaknesses:
 "
 
 [node name="StoryLine" type="RichTextLabel" parent="Frame/Twilight_Sage" unique_id=1385824132]
@@ -1023,8 +1295,15 @@ theme_override_constants/outline_size = 8
 theme_override_font_sizes/normal_font_size = 18
 text = "		The Story Begins as follows withing the ending."
 
+[node name="Border" type="TextureRect" parent="Frame/Twilight_Sage" unique_id=91604580]
+layout_mode = 0
+offset_left = 344.0
+offset_top = 283.0
+offset_right = 743.0
+offset_bottom = 323.0
+texture = ExtResource("16_vws13")
+
 [node name="Vignetter" type="PointLight2D" parent="." unique_id=1706942404]
-visible = false
 position = Vector2(577, 318)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.9019608, 0.5647059, 0.61960787)
@@ -1033,7 +1312,6 @@ texture = SubResource("GradientTexture2D_6q76i")
 texture_scale = 0.46
 
 [node name="Vignette" type="CanvasModulate" parent="." unique_id=54488391]
-visible = false
 color = Color(0.7411765, 0.67058825, 0.72156864, 1)
 
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]

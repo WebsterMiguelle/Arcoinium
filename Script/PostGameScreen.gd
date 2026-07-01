@@ -608,10 +608,10 @@ func shrink_text_to_fit(label: Label, max_font_size: int, min_font_size: int) ->
 func _on_main_menu_pressed() -> void:
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Scene/Main_Menu.tscn")
+	SceneTransition.load_scene("res://Scene/Main_Menu.tscn")
 
 
 func _on_try_again_pressed() -> void:
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	get_tree().reload_current_scene()
+	SceneTransition.reload_scene()

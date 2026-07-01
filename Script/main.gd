@@ -793,6 +793,7 @@ func trigger_game_over(player_won: bool):
 	run_timer_active = false
 	timer_label.visible = false
 	pause_menu.visible = false
+	turn_calculation_box.visible = false
 	sound_manager.play_sound(DEATH)
 	sound_manager.stop_music()
 	

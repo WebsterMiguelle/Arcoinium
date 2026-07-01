@@ -129,3 +129,11 @@ func _on_basic_mode_pressed() -> void:
 
 func _on_archive_button_pressed() -> void:
 	SceneTransition.load_scene("res://Scene/archive.tscn")
+
+
+func _on_archive_button_mouse_entered() -> void:
+	if dialogue != null and is_instance_valid(dialogue):
+		dialogue.queue_free()
+		dialogue = null
+	_spawn_dialogue()
+	_play("archive")

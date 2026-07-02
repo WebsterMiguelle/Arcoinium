@@ -28,7 +28,7 @@ func _on_end_run_pressed() -> void:
 
 func _on_quit_pressed() -> void:
 	PauseManager.pause()
-	get_tree().change_scene_to_file("res://Scene/Main_Menu.tscn")
+	SceneTransition.load_scene("res://Scene/Main_Menu.tscn")
 
 
 func _on_setting_pressed() -> void:

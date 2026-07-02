@@ -14,6 +14,7 @@
 [ext_resource type="StyleBox" uid="uid://g8acwjjmd4tf" path="res://Assets/SavedTexture/Button_Pressed.tres" id="12_6w58h"]
 [ext_resource type="StyleBox" uid="uid://cxdkfhyiiy8y4" path="res://Assets/SavedTexture/Button_Hovered.tres" id="13_4e7ry"]
 [ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="13_bdxfd"]
+[ext_resource type="Texture2D" uid="uid://cna4umj0n4yt" path="res://Assets/Blocking coin deck1.png" id="14_pl2cw"]
 
 [sub_resource type="Gradient" id="Gradient_itj15"]
 offsets = PackedFloat32Array(0, 0.22742476)
@@ -36,7 +37,6 @@ texture = ExtResource("5_jy4eg")
 [sub_resource type="AudioStream" id="AudioStream_itj15"]
 
 [node name="PostGameScreen" type="Control" unique_id=1373690295]
-visible = false
 z_index = 12
 layout_mode = 3
 anchors_preset = 15
@@ -276,8 +276,8 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_qjnbp")
 
 [node name="MarginContainer" type="MarginContainer" parent="UILayer/HBoxContainer/RightPanel" unique_id=1999306132]
 layout_mode = 2
-theme_override_constants/margin_left = 130
-theme_override_constants/margin_right = 130
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_right = 100
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer" unique_id=1612164832]
 layout_mode = 2
@@ -320,12 +320,12 @@ theme_override_fonts/font = ExtResource("12_4dvkt")
 theme_override_font_sizes/font_size = 35
 text = "Remaining Coins:"
 
-[node name="HighestDMG" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=406728396]
+[node name="Played Turns" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=152368588]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
 theme_override_fonts/font = ExtResource("12_4dvkt")
 theme_override_font_sizes/font_size = 35
-text = "Highest DMG:"
+text = "Played Turns:"
 
 [node name="TotalDMG" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=2063730054]
 layout_mode = 2
@@ -334,13 +334,6 @@ theme_override_fonts/font = ExtResource("12_4dvkt")
 theme_override_font_sizes/font_size = 35
 text = "Total DMG:"
 
-[node name="HighestGAIN" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=704317158]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
-theme_override_fonts/font = ExtResource("12_4dvkt")
-theme_override_font_sizes/font_size = 35
-text = "Highest GAIN:"
-
 [node name="TotalGAIN" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=1051787290]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
@@ -348,40 +341,12 @@ theme_override_fonts/font = ExtResource("12_4dvkt")
 theme_override_font_sizes/font_size = 35
 text = "Total GAIN:"
 
-[node name="HighestDEBT" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=2110450892]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
-theme_override_fonts/font = ExtResource("12_4dvkt")
-theme_override_font_sizes/font_size = 35
-text = "Highest DEBT:"
-
 [node name="TotalDEBT" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=1319611079]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
 theme_override_fonts/font = ExtResource("12_4dvkt")
 theme_override_font_sizes/font_size = 35
 text = "Total DEBT:"
-
-[node name="EnemiesDefeated" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=362417951]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
-theme_override_fonts/font = ExtResource("12_4dvkt")
-theme_override_font_sizes/font_size = 35
-text = "Enemies Defeated:"
-
-[node name="SunCoinsFlipped" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=816772709]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
-theme_override_fonts/font = ExtResource("12_4dvkt")
-theme_override_font_sizes/font_size = 35
-text = "Sun Coins Flipped:"
-
-[node name="MoonCoinsFlipped" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=2134333]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
-theme_override_fonts/font = ExtResource("12_4dvkt")
-theme_override_font_sizes/font_size = 35
-text = "Moon Coins Flipped:"
 
 [node name="TotalFlips" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=228294584]
 layout_mode = 2
@@ -404,6 +369,34 @@ theme_override_fonts/font = ExtResource("12_4dvkt")
 theme_override_font_sizes/font_size = 35
 text = "Total Reserve Coins:"
 
+[node name="TotalDamageTaken" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=1943546159]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Total DMG Taken:"
+
+[node name="EnemiesDefeated" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=362417951]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Enemies Defeated:"
+
+[node name="SunCoinsFlipped" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=816772709]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Sun Coins Flipped:"
+
+[node name="MoonCoinsFlipped" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS" unique_id=2134333]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("12_4dvkt")
+theme_override_font_sizes/font_size = 35
+text = "Moon Coins Flipped:"
+
 [node name="MarginContainer3" type="MarginContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=1918130806]
 layout_mode = 2
 theme_override_constants/margin_left = -65
@@ -414,21 +407,68 @@ custom_minimum_size = Vector2(0, 35.3)
 layout_mode = 2
 texture = ExtResource("10_4dvkt")
 
-[node name="Grade" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=1002470231]
+[node name="HBoxContainer" type="HBoxContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=1892739567]
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
-theme_override_fonts/font = ExtResource("8_bnefy")
-theme_override_font_sizes/font_size = 60
-text = "SS+"
-horizontal_alignment = 1
+theme_override_constants/separation = 80
 
-[node name="Title" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=789596329]
+[node name="VFlowContainer" type="VBoxContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1624429401]
+layout_mode = 2
+
+[node name="Wealth" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/HBoxContainer/VFlowContainer" unique_id=603405911]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
 theme_override_fonts/font = ExtResource("7_bnefy")
 theme_override_font_sizes/font_size = 41
+text = "Wealth"
+horizontal_alignment = 1
+
+[node name="WealthGrade" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/HBoxContainer/VFlowContainer" unique_id=1002470231]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("8_bnefy")
+theme_override_font_sizes/font_size = 60
+text = "F+"
+horizontal_alignment = 1
+
+[node name="WealthTitle" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/HBoxContainer/VFlowContainer" unique_id=789596329]
+custom_minimum_size = Vector2(150, 100)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("7_bnefy")
+theme_override_font_sizes/font_size = 32
 text = "Prosperity Keeper"
 horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="VFlowContainer2" type="VBoxContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=9846122]
+layout_mode = 2
+
+[node name="Combat" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/HBoxContainer/VFlowContainer2" unique_id=128221774]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("7_bnefy")
+theme_override_font_sizes/font_size = 41
+text = "Combat"
+horizontal_alignment = 1
+
+[node name="CombatGrade" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/HBoxContainer/VFlowContainer2" unique_id=2043759683]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("8_bnefy")
+theme_override_font_sizes/font_size = 60
+text = "S+"
+horizontal_alignment = 1
+
+[node name="CombatTitle" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/HBoxContainer/VFlowContainer2" unique_id=1615034979]
+custom_minimum_size = Vector2(150, 100)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_fonts/font = ExtResource("7_bnefy")
+theme_override_font_sizes/font_size = 32
+text = "Prosperity Keeper"
+horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="Greed_Stamp" type="TextureRect" parent="." unique_id=2015352417]
 visible = false
@@ -438,6 +478,7 @@ offset_left = 475.0
 offset_top = 58.0
 offset_right = 586.1661
 offset_bottom = 168.0
+texture = ExtResource("14_pl2cw")
 
 [node name="Label" type="Label" parent="Greed_Stamp" unique_id=1100373508]
 layout_mode = 0

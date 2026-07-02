@@ -68,8 +68,9 @@
 [ext_resource type="Texture2D" uid="uid://bvg1hmi6pjwfb" path="res://Assets/Coins/sun_flip_upright.png" id="51_ekncj"]
 [ext_resource type="Texture2D" uid="uid://cpm417gdi8hph" path="res://Assets/shopMaster-Sheet.png" id="52_5l0y8"]
 [ext_resource type="PackedScene" uid="uid://ca5q424cckfd0" path="res://Scene/KeeperHealthBar.tscn" id="60_txj2b"]
-[ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="69_e0ffi"]
-[ext_resource type="StyleBox" uid="uid://bhflgrh4jdv5m" path="res://Assets/SavedTexture/PressedButtonTexture.tres" id="70_7n7pe"]
+[ext_resource type="StyleBox" uid="uid://cxdkfhyiiy8y4" path="res://Assets/SavedTexture/Button_Hovered.tres" id="68_7n7pe"]
+[ext_resource type="StyleBox" uid="uid://bgkyr1rfshpsr" path="res://Assets/SavedTexture/Button_Default.tres" id="69_e0ffi"]
+[ext_resource type="StyleBox" uid="uid://g8acwjjmd4tf" path="res://Assets/SavedTexture/Button_Pressed.tres" id="70_7n7pe"]
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]
 
@@ -1786,6 +1787,7 @@ offset_bottom = 445.0
 mouse_default_cursor_shape = 2
 
 [node name="PassiveContainer" type="VBoxContainer" parent="Battle UI" unique_id=709571412]
+top_level = true
 custom_minimum_size = Vector2(200, 160)
 anchors_preset = 3
 anchor_left = 1.0
@@ -2406,17 +2408,21 @@ offset_left = 989.0
 offset_top = 565.0
 offset_right = 1090.0
 offset_bottom = 614.0
-theme_override_font_sizes/font_size = 25
+theme_override_fonts/font = ExtResource("30_tcekk")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = ExtResource("69_e0ffi")
+theme_override_styles/pressed = ExtResource("70_7n7pe")
+theme_override_styles/hover = ExtResource("68_7n7pe")
 text = "EXIT"
 icon_alignment = 1
 
 [node name="Refresh" type="Button" parent="ShopManager" unique_id=446895296]
 self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(101, 49)
-offset_left = 989.0
-offset_top = 419.0
-offset_right = 1090.0
-offset_bottom = 516.0
+offset_left = 24.0
+offset_top = 232.0
+offset_right = 125.0
+offset_bottom = 332.0
 theme_override_font_sizes/font_size = 25
 text = "Refresh"
 icon_alignment = 1
@@ -2519,7 +2525,6 @@ script = ExtResource("16_6njx3")
 [node name="Progression Map" type="CanvasLayer" parent="." unique_id=442417840]
 process_mode = 3
 layer = 100
-visible = false
 offset = Vector2(0, 1000)
 transform = Transform2D(1, 0, 0, 1, 0, 1000)
 
@@ -2611,6 +2616,32 @@ position = Vector2(832, 432)
 
 [node name="Boss" type="Marker2D" parent="Progression Map" unique_id=728995645]
 position = Vector2(1024, 432)
+
+[node name="Greed_Stamp" type="TextureRect" parent="Progression Map" unique_id=1062535281]
+visible = false
+self_modulate = Color(0.6260074, 0.13028237, 0, 1)
+offset_left = 43.0
+offset_top = 33.0
+offset_right = 154.16608
+offset_bottom = 143.0
+texture = ExtResource("5_gejqg")
+
+[node name="Label" type="Label" parent="Progression Map/Greed_Stamp" unique_id=575553899]
+layout_mode = 0
+offset_left = -6.0
+offset_top = 35.0
+offset_right = 105.963936
+offset_bottom = 108.63394
+rotation = -0.28797933
+theme_override_colors/font_color = Color(0.8302656, 0.57210815, 0, 1)
+theme_override_colors/font_outline_color = Color(0.57192814, 0.26664397, 1.92523e-07, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("30_tcekk")
+theme_override_font_sizes/font_size = 34
+text = "GREED
+MODE"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Piggy" parent="." unique_id=1985191984 instance=ExtResource("47_jmo7v")]
 visible = false
@@ -2971,8 +3002,34 @@ theme_override_fonts/font = ExtResource("36_1bveb")
 theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = ExtResource("69_e0ffi")
 theme_override_styles/pressed = ExtResource("70_7n7pe")
-theme_override_styles/hover = ExtResource("69_e0ffi")
+theme_override_styles/hover = ExtResource("68_7n7pe")
 text = "START JOURNEY"
+
+[node name="Greed_Stamp" type="TextureRect" parent="StartRun" unique_id=11750153]
+visible = false
+self_modulate = Color(0.6260074, 0.13028237, 0, 1)
+offset_left = 22.0
+offset_top = -973.0
+offset_right = 133.16608
+offset_bottom = -863.0
+texture = ExtResource("5_gejqg")
+
+[node name="Label" type="Label" parent="StartRun/Greed_Stamp" unique_id=2022682433]
+layout_mode = 0
+offset_left = -6.0
+offset_top = 35.0
+offset_right = 104.99999
+offset_bottom = 108.0
+rotation = -0.28797933
+theme_override_colors/font_color = Color(0.8302656, 0.57210815, 0, 1)
+theme_override_colors/font_outline_color = Color(0.57192814, 0.26664397, 1.92523e-07, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("30_tcekk")
+theme_override_font_sizes/font_size = 34
+text = "GREED
+MODE"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="PauseMenu" type="CanvasLayer" parent="." unique_id=722870696]
 process_mode = 3

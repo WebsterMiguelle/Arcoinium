@@ -465,10 +465,7 @@ func flip():
 	c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
 	if has_empowered:
 		c.upgrade_to_gold()
-	var loan_dazzle_chance = debt
-	var loan_success = randi_range(1,100)
-	if main.player.has_loan_shark and loan_success <= loan_dazzle_chance:
-		c.add_status(CoinStatus.DAZZLED)
+
 	#Silver/Gold Flip Rate
 	
 	var upgrade_chance = randf()
@@ -482,7 +479,7 @@ func flip():
 	c.add_to_group("enemy_coins")
 	main.add_child(c);
 	main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,c.global_position)
-	var loan_damage:int = ceil(debt * 0.02)
+	var loan_damage:int = ceil(debt * 0.03)
 	if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
 		var bite = LOAN_SHARK_BITE.instantiate()
 		bite.global_position = main.enemy_portrait.global_position
@@ -914,7 +911,7 @@ func end_enemy_turn():
 			main.sound_manager.play_sound(ALL_IN_STAMP)
 			main.sound_manager.play_sound(COIN_FLIP)
 			enemy_coin_calculation()
-			var loan_damage:int = ceil(debt * 0.02)
+			var loan_damage:int = ceil(debt * 0.03)
 			if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
 				var bite = LOAN_SHARK_BITE.instantiate()
 				bite.global_position = main.enemy_portrait.global_position
@@ -940,7 +937,7 @@ func end_enemy_turn():
 			var shine_chance = randi_range(0,1)
 			if shine_chance == 1:
 				main.sound_manager.play_sound(COIN_FLIP)
-				var loan_damage:int = ceil(debt * 0.02)
+				var loan_damage:int = ceil(debt * 0.03)
 				if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
 					var bite = LOAN_SHARK_BITE.instantiate()
 					bite.global_position = main.enemy_portrait.global_position
@@ -1068,6 +1065,7 @@ func end_enemy_turn():
 	# -- Final Hit Impacts & Floating Labels (The runes have arrived!) --
 	var shake_power = 0
 	if turn_damage > 0:
+		main.total_damage_taken += turn_damage
 		if main.player.has_merchant_scroll: 
 			main.shopkeeper.has_scroll_turn = true
 			main.shopkeeper.coin = main.shopkeeper.max_playable_coins
@@ -1084,7 +1082,6 @@ func end_enemy_turn():
 			main.sound_manager.play_sound(DAMAGE_MODERATE)
 			shake_power += 0.5
 		else: 
-			heavy_hit_count += 1
 			main.sound_manager.play_sound(DAMAGE_HEAVY)
 			shake_power += 1.0
 		
@@ -1135,6 +1132,7 @@ func end_enemy_turn():
 		dazzled_tween.parallel().tween_property(dazzled_light,"color", Color("#eabcff"),0.2)
 	camera_2d.add_trauma(shake_power)
 	if turn_damage >= 30:
+		heavy_hit_count += 1
 		main.sound_manager.play_sound(CRITICAL)
 		var slow_motion = create_tween()
 		slow_motion.tween_property(Engine, "time_scale", 0.1, 0)

@@ -37,7 +37,7 @@ var all_cards = [
 	{"id": 16, "name": "Magic Trick", "rank": "A", "desc": "If you played 8+ Coins, the 1st Coin Pair generates copies of itself into the 2nd, 3rd, and 4th Pair at the end of the turn."},
 	{"id": 17, "name": "Tax Evasion", "rank": "A", "desc": "When DEBT is applied to you, halve it, return the removed DEBT to the Enemy, and deal DAMAGE equal to the returned DEBT."},
 	{"id": 18, "name": "Payback", "rank": "A", "desc": "Whenever an enemy deals Heavy Damage, generate 6 SHINED GOLD SUN Coins next turn."},
-	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "Loan Shark accompanies you. For each Enemy Coin Flip, Loan Shark detonates 2% of their DEBT as DAMAGE. Each Enemy Coin Flip has a chance equal to their current DEBT (up to 100%) to become DAZZLED."},
+	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "Loan Shark accompanies you. For each Enemy Coin Flip, Loan Shark detonates 3% of their DEBT as DAMAGE."},
 	{"id": 20, "name": "Spare Change", "rank": "A", "desc": "Re-Flipping retrieves all RESERVED Coins. Retrieving a STAMPED Coin restores 1 Re-Flip."},
 	{"id": 21, "name": "Coin Barrage", "rank": "A", "desc": "+20% Silver Flip Rate. Every time you Flip 10 SILVER/GOLD Coins in a turn, deal 10 Damage."},
 
@@ -192,6 +192,7 @@ func apply_reward(card_id):
 			print("Merchant Scroll Passive")
 			main.player.has_merchant_scroll = true
 			main.shopkeeper.trust += 1
+			main.player.trigger_temp_passive("merchant_scroll","SHOPKEEPER TRUST +1")
 		5:
 			print("Impromptu Flip Passive")
 			main.player.has_impromptu_flip = true

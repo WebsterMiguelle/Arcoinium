@@ -58,7 +58,7 @@ func _ready() -> void:
 
 func update_state(player_coin):
 	# Darken the card if they can't afford it or it's sold out
-	if player_coin < price or stock <= 0:
+	if player_coin <= price or stock <= 0:
 		disabled = true
 		modulate.a = 0.5
 	else:

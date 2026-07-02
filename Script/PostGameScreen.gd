@@ -6,6 +6,7 @@ const GAME_OVER_WRITE = preload("uid://df3805cdw3r4t")
 const ALL_IN_STAMP = preload("uid://bo7ip21oxj6eq")
 @onready var sound_manager: Node2D = $SoundManager
 var player = null
+var is_game_over = false #Refers to Player Losing
 # ==========================================
 # ANIMATION & BACKGROUND NODES
 # ==========================================
@@ -36,9 +37,7 @@ var player = null
 
 @onready var stats_container: VBoxContainer = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS
 @onready var remaining_coins: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS/RemainingCoins
-@onready var highest_dmg: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS/HighestDMG
 @onready var total_dmg: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS/TotalDMG
-@onready var highest_gain: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS/HighestGAIN
 @onready var total_gain: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS/TotalGAIN
 @onready var enemies_defeated: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS/EnemiesDefeated
 @onready var sun_coins_flipped: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS/SunCoinsFlipped
@@ -46,12 +45,18 @@ var player = null
 @onready var total_flips: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS/TotalFlips
 @onready var total_reflips: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS/TotalReflips
 @onready var total_reserve_coins: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS/TotalReserveCoins
-@onready var highest_debt: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS/HighestDEBT
 @onready var total_debt: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS/TotalDEBT
 @onready var run_time: Label = $UILayer/HBoxContainer/LeftPanel/MarginContainer/VBoxContainer/RunTime
 
-@onready var grade: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/Grade
-@onready var title: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/Title
+@onready var played_turns: Label = $"UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS/Played Turns"
+@onready var total_damage_taken: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer/STATISTICS/TotalDamageTaken
+
+@onready var wealth: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/HBoxContainer/VFlowContainer/Wealth
+@onready var wealth_grade: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/HBoxContainer/VFlowContainer/WealthGrade
+@onready var wealth_title: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/HBoxContainer/VFlowContainer/WealthTitle
+@onready var combat: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/HBoxContainer/VFlowContainer2/Combat
+@onready var combat_grade: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/HBoxContainer/VFlowContainer2/CombatGrade
+@onready var combat_title: Label = $UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/HBoxContainer/VFlowContainer2/CombatTitle
 
 # ==========================================
 # DATA PRELOADS
@@ -364,6 +369,114 @@ const RUN_GRADES = [
 	}
 ]
 
+const TURN_GRADES = [
+	{
+		"min": 0,
+		"max": 15,
+		"rank": "SSS+",
+		"title": "Blitz Legend",
+		"color": "#fff26a"
+	},
+	{
+		"min": 16,
+		"max": 18,
+		"rank": "SSS-",
+		"title": "Lightning Conqueror",
+		"color": "#ffe14a"
+	},
+	{
+		"min": 19,
+		"max": 21,
+		"rank": "SS+",
+		"title": "Arcane Vanguard",
+		"color": "#ffd23c"
+	},
+	{
+		"min": 22,
+		"max": 24,
+		"rank": "SS-",
+		"title": "Battle Virtuoso",
+		"color": "#ffc03a"
+	},
+	{
+		"min": 25,
+		"max": 27,
+		"rank": "S+",
+		"title": "Stormbringer",
+		"color": "#ff9b2f"
+	},
+	{
+		"min": 28,
+		"max": 30,
+		"rank": "S-",
+		"title": "Elite Duelist",
+		"color": "#ff7d28"
+	},
+	{
+		"min": 31,
+		"max": 33,
+		"rank": "A+",
+		"title": "Veteran Fighter",
+		"color": "#ff5a3a"
+	},
+	{
+		"min": 34,
+		"max": 36,
+		"rank": "A-",
+		"title": "Battle Adept",
+		"color": "#ff4545"
+	},
+	{
+		"min": 37,
+		"max": 39,
+		"rank": "B+",
+		"title": "Seasoned Adventurer",
+		"color": "#ff5fb0"
+	},
+	{
+		"min": 40,
+		"max": 42,
+		"rank": "B-",
+		"title": "Skilled Combatant",
+		"color": "#ff79d6"
+	},
+	{
+		"min": 43,
+		"max": 45,
+		"rank": "C+",
+		"title": "Promising Challenger",
+		"color": "#d974ff"
+	},
+	{
+		"min": 46,
+		"max": 48,
+		"rank": "C-",
+		"title": "Wandering Fighter",
+		"color": "#b566ff"
+	},
+	{
+		"min": 49,
+		"max": 51,
+		"rank": "D+",
+		"title": "Novice Adventurer",
+		"color": "#69a8ff"
+	},
+	{
+		"min": 52,
+		"max": 54,
+		"rank": "D-",
+		"title": "Rookie Combatant",
+		"color": "#4b8dff"
+	},
+	{
+		"min": 55,
+		"max": INF,
+		"rank": "F",
+		"title": "Slowpoke",
+		"color": "#7f7f7f"
+	}
+]
+
 func _ready() -> void:
 	ui_layer.modulate.a = 0.0
 	ui_layer.scale = Vector2(0.8, 0.8) 
@@ -376,8 +489,12 @@ func _ready() -> void:
 		child.modulate.a = 0.0
 
 	statistics_title.modulate.a = 0.0
-	grade.modulate.a = 0.0
-	title.modulate.a = 0.0
+	wealth_grade.modulate.a = 0.0
+	wealth_title.modulate.a = 0.0
+	wealth.modulate.a = 0.0
+	combat_grade.modulate.a = 0.0
+	combat_title.modulate.a = 0.0
+	combat.modulate.a = 0.0
 	for child in stats_container.get_children():
 		child.modulate.a = 0.0
 
@@ -466,13 +583,20 @@ func play_slam_animation() -> void:
 			current_delay += stat_stagger
 			
 		# 4. Right Panel (Final Grade)
-		pop_in_single(grade, current_delay + 0.5)
-		pop_in_single(title, current_delay + 0.5)
+		pop_in_single(wealth, current_delay + 0.5)
+		pop_in_single(wealth_grade, current_delay + 0.5)
+		pop_in_single(wealth_title, current_delay + 0.5)
+		
+		pop_in_single(combat, current_delay + 0.5)
+		pop_in_single(combat_grade, current_delay + 0.5)
+		pop_in_single(combat_title, current_delay + 0.5)
+		
 	)
 # ==========================================
 # EXIT SEQUENCE
 # ==========================================
 func play_exit_animation() -> void:
+	greed_stamp.visible = false
 	get_tree().root.gui_disable_input = true
 	
 	var tween = create_tween().set_parallel(true)
@@ -572,7 +696,11 @@ func setup(stats: Dictionary, player_won: bool, title_text: String, killer_text:
 	player = player_node
 	end_result.text = title_text
 	mini_message.text = killer_text
-	run_time.text = "Run Time: " + str(round(stats["run_time"]))
+	
+	
+	var minutes = int(stats["run_time"]) / 60
+	var seconds = int(stats["run_time"]) % 60
+	run_time.text = "Run Time: " + "%02d:%02d" % [minutes, seconds]
 	await get_tree().process_frame
 	
 	shrink_text_to_fit(end_result, 70, 20 )
@@ -580,18 +708,17 @@ func setup(stats: Dictionary, player_won: bool, title_text: String, killer_text:
 	
 	stat_sequence = [
 		{"label": remaining_coins, "prefix": "Remaining Coins: ", "val": stats["remaining_coins"]},
-		{"label": highest_dmg, "prefix": "Highest DMG: ", "val": stats["highest_damage_dealt"]},
-		{"label": total_dmg, "prefix": "Overall Total DMG: ", "val": stats["overall_total_damage"]},
-		{"label": highest_gain, "prefix": "Highest GAIN: ", "val": stats["highest_gain"]},
-		{"label": total_gain, "prefix": "Overall Total GAIN: ", "val": stats["overall_total_gain"]},
-		{"label": highest_debt, "prefix": "Highest DEBT: ", "val": stats["highest_debt_applied"]},
-		{"label": total_debt, "prefix": "Overall Total DEBT: ", "val": stats["total_debt_applied"]},
-		{"label": enemies_defeated, "prefix": "Enemies Defeated: ", "val": stats["enemies_defeated"]},
-		{"label": sun_coins_flipped, "prefix": "Sun Coins Flipped: ", "val": stats["heads"]},
-		{"label": moon_coins_flipped, "prefix": "Moon Coins Flipped: ", "val": stats["tails"]},
+		{"label": played_turns, "prefix": "Turns Taken: ", "val": stats["played_turns"]},
+		{"label": total_dmg, "prefix": "Total DMG: ", "val": stats["overall_total_damage"]},
+		{"label": total_gain, "prefix": "Total GAIN: ", "val": stats["overall_total_gain"]},
+		{"label": total_debt, "prefix": "Total DEBT: ", "val": stats["total_debt_applied"]},
 		{"label": total_flips, "prefix": "Total Flips: ", "val": stats["flips"]},
 		{"label": total_reflips, "prefix": "Re-Flips: ", "val": stats["reflips"]},
-		{"label": total_reserve_coins, "prefix": "Total Reserve Coins: ", "val": stats["total_reserved_coins"]}
+		{"label": total_reserve_coins, "prefix": "Total Reserve Coins: ", "val": stats["total_reserved_coins"]},
+		{"label": total_damage_taken, "prefix": "Total Damage Taken: ", "val": stats["total_damage_taken"]},
+		{"label": enemies_defeated, "prefix": "Enemies Defeated: ", "val": stats["enemies_defeated"]},
+		{"label": sun_coins_flipped, "prefix": "Sun Coins Flipped: ", "val": stats["heads"]},
+		{"label": moon_coins_flipped, "prefix": "Moon Coins Flipped: ", "val": stats["tails"]}
 	]
 	
 	# ==========================================
@@ -618,18 +745,37 @@ func setup(stats: Dictionary, player_won: bool, title_text: String, killer_text:
 	var final_rank = final_grade.rank
 	var final_title = final_grade.title
 	
-	grade.text = str(final_rank)
-	title.text = str(final_title)
-	grade.add_theme_color_override("font_color",final_grade.color)
-	title.add_theme_color_override("font_color",final_grade.color)
+	wealth_grade.text = str(final_rank)
+	wealth_title.text = str(final_title)
+	wealth_grade.add_theme_color_override("font_color",final_grade.color)
+	wealth_title.add_theme_color_override("font_color",final_grade.color)
 	
+
+	var turn_result = get_turn_grade(stats["played_turns"])
 	
+	if is_game_over:
+		turn_result = get_turn_grade(100)
+	
+	combat_grade.text = turn_result.rank
+	combat_title.text = turn_result.title
+	combat_grade.add_theme_color_override("font_color",turn_result.color)
+	combat_title.add_theme_color_override("font_color",turn_result.color)
+	
+
 func get_run_grade(final_coins: int) -> Dictionary:
 	for grade in RUN_GRADES:
 		if final_coins >= grade.min and final_coins <= grade.max:
 			return grade
 
 	return RUN_GRADES[0]
+
+func get_turn_grade(turn_count: int) -> Dictionary:
+	for grade in TURN_GRADES:
+		if turn_count >= grade.min and turn_count <= grade.max:
+			return grade
+
+	# Fallback (should never happen)
+	return TURN_GRADES[-1]
 
 func shrink_text_to_fit(label: Label, max_font_size: int, min_font_size: int) -> void:
 	var current_font_size = max_font_size

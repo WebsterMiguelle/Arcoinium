@@ -9,6 +9,8 @@ enum Turn {
 signal start_journey
 @onready var start_run: CanvasLayer = $StartRun
 
+@onready var greed_stamp: TextureRect = $"Progression Map/Greed_Stamp"
+@onready var greed_stamp_start: TextureRect = $StartRun/Greed_Stamp
 
 const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
 const GAME_OVER_WALL_CLOSE = preload("uid://dcogb5vig426m")
@@ -285,6 +287,8 @@ var overall_highest_damage: int = 0
 var overall_total_gain: int = 0
 var overall_highest_gain: int = 0
 
+var played_turns: int = 0
+var total_damage_taken: int = 0
 var current_enemy_type
 
 var is_surrender = false
@@ -350,6 +354,10 @@ func _ready():
 		endTurn_button.pressed.connect(_on_endturn_pressed)
 	if not re_flip_button.pressed.is_connected(_on_re_flip_pressed):
 		re_flip_button.pressed.connect(_on_re_flip_pressed) 
+	
+	if player.greed:
+		greed_stamp.visible = true
+		greed_stamp_start.visible = true
 
 	
 func _unhandled_input(event: InputEvent) -> void:
@@ -576,6 +584,7 @@ func _on_end_run_pressed():
 
 	
 func start_player_turn():
+	played_turns += 1
 	endTurn_button.mouse_default_cursor_shape = 2
 	flip_button.mouse_default_cursor_shape = 2
 	reserve_button.mouse_default_cursor_shape = 2
@@ -838,7 +847,9 @@ func trigger_game_over(player_won: bool):
 	"total_reserved_coins": overall_reserved_coins,
 	"total_debt_applied": total_debt_applied,     
 	"highest_debt_applied": highest_debt_applied,
-	"run_time": run_timer
+	"run_time": run_timer,
+	"played_turns": played_turns,
+	"total_damage_taken": total_damage_taken
 }
 	#game_over_ui.show_stats(stats)
 	#game_over_ui.visible = true
@@ -896,7 +907,8 @@ func trigger_game_over(player_won: bool):
 	
 	await get_tree().create_timer(1.0, true).timeout
 	sound_manager.play_sound(GAME_OVER_WALL)
-	
+	if !player_won:
+		game_over_instance.is_game_over = true
 	game_over_instance.setup(stats, player_won, title_text, killer_text, player)
 	await get_tree().create_timer(1.4, true).timeout
 	sound_manager.play_sound(DAMAGE_MODERATE)

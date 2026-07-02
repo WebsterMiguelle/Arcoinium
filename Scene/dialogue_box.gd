@@ -23,6 +23,8 @@ const LINES = {
 "Advanced Tutorial. Learn about Passives, Coin, and Entity Status Effects!"],
 	"archive": [
 "Behind lies the shelves of knowledge. Learn about Profiles, Passives, and Coin Effects."],
+"credits": [
+"A manuscript that fell from the sky. The Creators wrote a letter of gratitude."],
 	"back_return": [
 		"Hmm..., Leaving now Coin Master?"],
 	"back_first": [

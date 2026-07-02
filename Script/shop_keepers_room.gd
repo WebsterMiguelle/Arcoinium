@@ -140,6 +140,9 @@ func _on_archive_button_pressed() -> void:
 
 
 func _on_credits_button_pressed() -> void:
+	if dialogue != null and is_instance_valid(dialogue):
+		dialogue.queue_free()
+		dialogue = null
 	credits_button.disabled = true
 	var tween_out = create_tween()
 	tween_out.tween_property(credits_button, "position:x", credits_base_x + 500, 0.4)\
@@ -157,6 +160,10 @@ func _on_credits_button_pressed() -> void:
 func _on_credits_button_mouse_entered() -> void:
 	animate_hover(credits_button, credits_base_y - lift_amount) 
 	credits_label.visible = true
+	if dialogue != null and is_instance_valid(dialogue):
+		dialogue.queue_free()
+		dialogue = null
+	_play("credits")
 
 
 func _on_credits_button_mouse_exited() -> void:

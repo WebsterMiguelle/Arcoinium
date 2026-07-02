@@ -178,7 +178,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("7_vits8")
 theme_override_font_sizes/font_size = 50
-text = "Credits"
+text = "CREDITS"
 horizontal_alignment = 1
 
 [node name="Back Button" type="Button" parent="." unique_id=1412783332]
@@ -190,9 +190,9 @@ offset_bottom = 522.0
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("7_vits8")
 theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = ExtResource("9_2gtc7")
-theme_override_styles/pressed = ExtResource("10_x4hr6")
-theme_override_styles/hover = ExtResource("9_2gtc7")
+theme_override_styles/normal = ExtResource("9_x4hr6")
+theme_override_styles/pressed = ExtResource("10_s0a5k")
+theme_override_styles/hover = ExtResource("11_5i3rw")
 action_mode = 0
 text = "BACK"
 
@@ -206,9 +206,9 @@ offset_bottom = 540.0
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("7_vits8")
 theme_override_font_sizes/font_size = 45
-theme_override_styles/normal = ExtResource("9_2gtc7")
-theme_override_styles/pressed = ExtResource("10_x4hr6")
-theme_override_styles/hover = ExtResource("9_2gtc7")
+theme_override_styles/normal = ExtResource("9_x4hr6")
+theme_override_styles/pressed = ExtResource("10_s0a5k")
+theme_override_styles/hover = ExtResource("11_5i3rw")
 action_mode = 0
 text = "ARCHIVE"
 

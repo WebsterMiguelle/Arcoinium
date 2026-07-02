@@ -1,63 +1,137 @@
 [gd_scene format=3 uid="uid://dtv64xe1i5jfr"]
 
 [ext_resource type="Script" uid="uid://b6mse83d02ev0" path="res://Scripts/Transitions/transition_script.gd" id="1_3dcwp"]
-[ext_resource type="Shader" uid="uid://bf6fnkue0brt1" path="res://Shaders/SceneTransition.gdshader" id="2_bt3j0"]
+[ext_resource type="Texture2D" uid="uid://dphewlg2nehap" path="res://Assets/brickbackground.png" id="2_dyjyo"]
+[ext_resource type="Texture2D" uid="uid://bb4db6cd7ttu5" path="res://Assets/leftopenbrickbackground.png" id="3_0l3fd"]
+[ext_resource type="Texture2D" uid="uid://cdf6nfo07ua" path="res://Assets/rightopenbrickbackground.png" id="4_tmegg"]
+[ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="5_0l3fd"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_h3y7f"]
-shader = ExtResource("2_bt3j0")
-shader_parameter/circle_size = 1.05
-shader_parameter/blur = 0.2
+[sub_resource type="Gradient" id="Gradient_dyjyo"]
+offsets = PackedFloat32Array(0.029045643, 0.7302905)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
-[sub_resource type="Animation" id="Animation_bt3j0"]
-resource_name = "Fade"
-length = 0.6
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:material:shader_parameter/circle_size")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.6),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [1.04999995231628, 0.0]
-}
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dyjyo"]
+gradient = SubResource("Gradient_dyjyo")
+width = 512
+height = 512
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 1)
+metadata/_snap_enabled = true
 
-[sub_resource type="Animation" id="Animation_h3y7f"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:material:shader_parameter/circle_size")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.05]
-}
+[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_tmegg"]
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_dyjyo"]
-_data = {
-&"Fade": SubResource("Animation_bt3j0"),
-&"RESET": SubResource("Animation_h3y7f")
-}
+[sub_resource type="AudioStream" id="AudioStream_ercon"]
 
 [node name="SceneTransition" type="CanvasLayer" unique_id=317263784]
 script = ExtResource("1_3dcwp")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=2017692778]
-material = SubResource("ShaderMaterial_h3y7f")
+[node name="Vignette" type="Node" parent="." unique_id=458012200]
+
+[node name="Vignetter" type="PointLight2D" parent="Vignette" unique_id=1396903220]
+visible = false
+position = Vector2(576, 352)
+scale = Vector2(17.921875, 10.046875)
+color = Color(1, 0.9019608, 0.5647059, 0.61960787)
+energy = 1.1
+texture = SubResource("GradientTexture2D_dyjyo")
+
+[node name="Vignette" type="CanvasModulate" parent="Vignette" unique_id=101362631]
+visible = false
+position = Vector2(576, 352)
+color = Color(0.7360586, 0.6517471, 0.7562498, 1)
+
+[node name="RightSideBricks" type="Control" parent="." unique_id=1531986385]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 555.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.0625)
+metadata/_edit_lock_ = true
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=42749920]
-root_node = NodePath("../ColorRect")
-libraries/ = SubResource("AnimationLibrary_dyjyo")
-speed_scale = 0.5
+[node name="Tile" type="TextureRect" parent="RightSideBricks" unique_id=802561049]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -598.0
+offset_top = 0.9999994
+offset_right = -478.39996
+offset_bottom = -517.4
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(5, 5)
+texture = ExtResource("2_dyjyo")
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="OpenTile" type="TextureRect" parent="RightSideBricks" unique_id=1897134658]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -757.9999
+offset_top = 1.0000004
+offset_right = -725.9999
+offset_bottom = -517.39996
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(5, 5)
+texture = ExtResource("3_0l3fd")
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="LeftSideBricks" type="Control" parent="." unique_id=1407410271]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -555.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="Tile" type="TextureRect" parent="LeftSideBricks" unique_id=601056921]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 116.0
+offset_bottom = -518.4
+grow_vertical = 2
+scale = Vector2(5, 5)
+texture = ExtResource("2_dyjyo")
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="OpenTile" type="TextureRect" parent="LeftSideBricks" unique_id=1222493083]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 0.061728396
+offset_left = 576.0
+offset_right = 608.0
+offset_bottom = 89.59999
+grow_vertical = 2
+scale = Vector2(5, 5)
+texture = ExtResource("4_tmegg")
+stretch_mode = 1
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="SoundManager" type="Node2D" parent="." unique_id=1319258890]
+script = ExtResource("5_0l3fd")
+
+[node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1011313674]
+process_mode = 3
+stream = SubResource("AudioStreamPolyphonic_tmegg")
+bus = &"SFX"
+
+[node name="BGMPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=115580035]
+process_mode = 3
+stream = SubResource("AudioStream_ercon")
+bus = &"BGM"

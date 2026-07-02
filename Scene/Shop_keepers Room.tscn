@@ -8,8 +8,10 @@
 [ext_resource type="Texture2D" uid="uid://dhl4j3m1ok2d2" path="res://Assets/ShopkeeperHand1.png" id="6_at7dl"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="7_vits8"]
 [ext_resource type="Texture2D" uid="uid://bqa81o3psvkcl" path="res://Assets/ShopkeeperHand2.png" id="7_y1smu"]
-[ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="9_2gtc7"]
-[ext_resource type="StyleBox" uid="uid://bhflgrh4jdv5m" path="res://Assets/SavedTexture/PressedButtonTexture.tres" id="10_x4hr6"]
+[ext_resource type="StyleBox" uid="uid://bgkyr1rfshpsr" path="res://Assets/SavedTexture/Button_Default.tres" id="9_x4hr6"]
+[ext_resource type="StyleBox" uid="uid://g8acwjjmd4tf" path="res://Assets/SavedTexture/Button_Pressed.tres" id="10_s0a5k"]
+[ext_resource type="StyleBox" uid="uid://cxdkfhyiiy8y4" path="res://Assets/SavedTexture/Button_Hovered.tres" id="11_5i3rw"]
+[ext_resource type="Texture2D" uid="uid://di0jcfq5ckfax" path="res://Assets/Scroll_Opening_Plain.png" id="12_s0a5k"]
 
 [sub_resource type="Gradient" id="Gradient_75buv"]
 offsets = PackedFloat32Array(0, 0.22742476)
@@ -35,8 +37,13 @@ fill_to = Vector2(0.46324787, 0.11111111)
 
 [sub_resource type="Theme" id="Theme_c41qw"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2gtc7"]
-bg_color = Color(0.44705883, 0.18039216, 0.02745098, 1)
+[sub_resource type="AtlasTexture" id="AtlasTexture_5i3rw"]
+atlas = ExtResource("12_s0a5k")
+region = Rect2(0, 0, 48, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mcivh"]
+atlas = ExtResource("12_s0a5k")
+region = Rect2(48, 0, 48, 19)
 
 [node name="Node2D" type="ColorRect" unique_id=1328940769]
 custom_minimum_size = Vector2(1150, 650)
@@ -146,29 +153,56 @@ theme_override_fonts/font = ExtResource("7_vits8")
 theme_override_font_sizes/font_size = 50
 text = "Advanced Mode"
 
-[node name="Back Button" type="Button" parent="." unique_id=1412783332]
-custom_minimum_size = Vector2(150, 45)
+[node name="Credits Button" type="TextureButton" parent="." unique_id=1572651292]
 layout_mode = 0
-offset_left = 30.0
-offset_top = 477.0
-offset_right = 180.0
-offset_bottom = 522.0
+offset_left = 784.0
+offset_top = 289.0
+offset_right = 944.0
+offset_bottom = 353.0
+texture_normal = SubResource("AtlasTexture_5i3rw")
+texture_hover = SubResource("AtlasTexture_mcivh")
+stretch_mode = 0
+
+[node name="Credits Label" type="Label" parent="Credits Button" unique_id=1954801554]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -38.0
+offset_bottom = -61.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("7_vits8")
+theme_override_font_sizes/font_size = 50
+text = "Credits"
+horizontal_alignment = 1
+
+[node name="Back Button" type="Button" parent="." unique_id=1412783332]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 32.0
+offset_right = 148.0
+offset_bottom = 96.0
+theme_override_fonts/font = ExtResource("7_vits8")
 theme_override_font_sizes/font_size = 35
-theme_override_styles/normal = ExtResource("9_2gtc7")
-theme_override_styles/pressed = ExtResource("10_x4hr6")
-theme_override_styles/hover = ExtResource("9_2gtc7")
+theme_override_styles/normal = ExtResource("9_x4hr6")
+theme_override_styles/pressed = ExtResource("10_s0a5k")
+theme_override_styles/hover = ExtResource("11_5i3rw")
 action_mode = 0
 text = "BACK"
 
 [node name="Archive Button" type="Button" parent="." unique_id=1385593860]
 custom_minimum_size = Vector2(150, 45)
 layout_mode = 0
-offset_left = 946.0
-offset_top = 473.0
-offset_right = 1153.0
-offset_bottom = 528.0
+offset_left = 896.0
+offset_top = 449.0
+offset_right = 1087.0
+offset_bottom = 510.0
+theme_override_fonts/font = ExtResource("7_vits8")
 theme_override_font_sizes/font_size = 35
-theme_override_styles/normal = SubResource("StyleBoxFlat_2gtc7")
+theme_override_styles/normal = ExtResource("9_x4hr6")
+theme_override_styles/pressed = ExtResource("10_s0a5k")
+theme_override_styles/hover = ExtResource("11_5i3rw")
 action_mode = 0
 text = "ARCHIVE"
 
@@ -178,6 +212,9 @@ text = "ARCHIVE"
 [connection signal="mouse_entered" from="Advance Mode" to="." method="_on_advance_mode_mouse_entered"]
 [connection signal="mouse_exited" from="Advance Mode" to="." method="_on_advance_mode_mouse_exited"]
 [connection signal="pressed" from="Advance Mode" to="." method="_on_advance_mode_pressed"]
+[connection signal="mouse_entered" from="Credits Button" to="." method="_on_credits_button_mouse_entered"]
+[connection signal="mouse_exited" from="Credits Button" to="." method="_on_credits_button_mouse_exited"]
+[connection signal="pressed" from="Credits Button" to="." method="_on_credits_button_pressed"]
 [connection signal="mouse_entered" from="Back Button" to="." method="_on_back_button_mouse_entered"]
 [connection signal="pressed" from="Back Button" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="Archive Button" to="." method="_on_archive_button_pressed"]

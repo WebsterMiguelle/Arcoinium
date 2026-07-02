@@ -2,11 +2,14 @@ extends ColorRect
 
 @onready var dialogue_area: Marker2D = $"Dialogue Area"
 const DIALOGUE = preload("uid://dv278qg6j2epd")
+const CREDITS_SCENE = preload("res://Scene/Credits.tscn")
 
 @onready var basic_button: TextureButton = $"Basic Mode"
 @onready var advance_button: TextureButton = $"Advance Mode"
+@onready var credits_button: TextureButton = $"Credits Button"
 @onready var basic_mode_label: Label = $"Basic Mode/BasicModeLabel"
 @onready var advance_mode_label: Label = $"Advance Mode/AdvanceModeLabel"
+@onready var credits_label: Label = $"Credits Button/Credits Label"
 
 var tutorial_advance_mode: bool = false
 var dialogue: Node2D = null
@@ -17,6 +20,8 @@ var current_mode = ""
 # Animation Variables
 var basic_base_y: float
 var advance_base_y: float
+var credits_base_y: float
+var credits_base_x: float
 var lift_amount: float = 20.0 
 
 # Called when the node enters the scene tree for the first time.
@@ -25,10 +30,13 @@ func _ready() -> void:
 	await get_tree().process_frame 
 	basic_mode_label.visible = false
 	advance_mode_label.visible = false
+	credits_label.visible = false
 	if is_instance_valid(basic_button) and is_instance_valid(advance_button):
 		basic_base_y = basic_button.position.y
 		advance_base_y = advance_button.position.y
-		
+		credits_base_y = credits_button.position.y
+	if is_instance_valid(credits_button):
+		credits_base_x = credits_button.position.x
 	_spawn_dialogue()
 	_play("welcome", DialogueBox.TailSide.LEFT)
 
@@ -129,3 +137,28 @@ func _on_basic_mode_pressed() -> void:
 
 func _on_archive_button_pressed() -> void:
 	SceneTransition.load_scene("res://Scene/archive.tscn")
+
+
+func _on_credits_button_pressed() -> void:
+	credits_button.disabled = true
+	var tween_out = create_tween()
+	tween_out.tween_property(credits_button, "position:x", credits_base_x + 500, 0.4)\
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	await tween_out.finished
+	var credits_instance = CREDITS_SCENE.instantiate()
+	add_child(credits_instance)
+	await credits_instance.tree_exited
+	var tween_in = create_tween()
+	tween_in.tween_property(credits_button, "position:x", credits_base_x, 0.4)\
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	await tween_in.finished
+	credits_button.disabled = false
+
+func _on_credits_button_mouse_entered() -> void:
+	animate_hover(credits_button, credits_base_y - lift_amount) 
+	credits_label.visible = true
+
+
+func _on_credits_button_mouse_exited() -> void:
+	animate_hover(credits_button, credits_base_y) 
+	credits_label.visible = false

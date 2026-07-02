@@ -6,18 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="3_dfqxb"]
 [ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="3_pugqh"]
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="3_sy8nj"]
+[ext_resource type="StyleBox" uid="uid://bgkyr1rfshpsr" path="res://Assets/SavedTexture/Button_Default.tres" id="4_ft4kv"]
 [ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="4_u7v7i"]
-[ext_resource type="Texture2D" uid="uid://eeepgts0tvpj" path="res://Assets/Passive_Icons.png" id="7_6i7er"]
+[ext_resource type="StyleBox" uid="uid://g8acwjjmd4tf" path="res://Assets/SavedTexture/Button_Pressed.tres" id="5_ygasj"]
+[ext_resource type="StyleBox" uid="uid://cxdkfhyiiy8y4" path="res://Assets/SavedTexture/Button_Hovered.tres" id="6_sf3cn"]
+[ext_resource type="Texture2D" uid="uid://c7ppyupuuc7tu" path="res://Assets/Passive_Icons.png" id="7_6i7er"]
 [ext_resource type="Texture2D" uid="uid://dms5d0v8hxacy" path="res://Assets/EndScrollTextSeparator.png" id="7_o7e4t"]
-[ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="9_o7e4t"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c1vsh"]
-bg_color = Color(0.50487506, 0.20082715, 0.10022793, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(0.9764706, 0.5058824, 0.0627451, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u7v7i"]
 texture = ExtResource("3_dfqxb")
@@ -80,15 +74,17 @@ horizontal_alignment = 1
 uppercase = true
 
 [node name="Back" type="Button" parent="." unique_id=66145436]
-custom_minimum_size = Vector2(150, 50)
 layout_mode = 0
-offset_left = 49.0
-offset_top = 58.0
-offset_right = 199.0
-offset_bottom = 108.0
+offset_left = 56.0
+offset_top = 32.0
+offset_right = 140.0
+offset_bottom = 96.0
+theme_override_fonts/font = ExtResource("3_c1vsh")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_c1vsh")
-text = "Back"
+theme_override_styles/normal = ExtResource("4_ft4kv")
+theme_override_styles/pressed = ExtResource("5_ygasj")
+theme_override_styles/hover = ExtResource("6_sf3cn")
+text = "BACK"
 
 [node name="Profile Archive" type="PanelContainer" parent="." unique_id=1508899290]
 custom_minimum_size = Vector2(230, 280)
@@ -153,7 +149,6 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
 theme_override_fonts/font = ExtResource("3_c1vsh")
 theme_override_font_sizes/font_size = 43
-theme_override_styles/normal = ExtResource("9_o7e4t")
 text = "Profile"
 flat = true
 

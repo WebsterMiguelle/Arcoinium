@@ -275,6 +275,6 @@ func _on_tutorial_button_pressed() -> void:
 		tutorial_bounce_tween.kill()
 	
 	tutorial_bounce_tween = create_tween()
-	tutorial_bounce_tween.tween_property(tutorial_coin,"position:y", -500.0, 0.2).as_relative().set_trans(Tween.TRANS_LINEAR)
+	tutorial_bounce_tween.tween_property(tutorial_coin,"position:y", -680.0, 0.2).as_relative().set_trans(Tween.TRANS_LINEAR)
 	tutorial_coin.play("tutorial_coin") 
 	SceneTransition.load_scene("res://Scene/Shop_keepers Room.tscn") 

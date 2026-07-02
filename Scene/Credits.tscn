@@ -1,0 +1,395 @@
+[gd_scene format=3 uid="uid://c0qbb7sy8pdut"]
+
+[ext_resource type="Texture2D" uid="uid://di0jcfq5ckfax" path="res://Assets/Scroll_Opening_Plain.png" id="1_4ofrx"]
+[ext_resource type="Script" uid="uid://gh0srurfkrce" path="res://Script/credits_script.gd" id="1_aljdg"]
+[ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="2_aljdg"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="3_s0dgc"]
+[ext_resource type="FontFile" uid="uid://drm3kueev5jxy" path="res://Assets/Fonts/OXYGENE1.TTF" id="4_kpi7w"]
+[ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="5_2byuq"]
+[ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="6_7vj1s"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aljdg"]
+atlas = ExtResource("1_4ofrx")
+region = Rect2(0, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s0dgc"]
+atlas = ExtResource("1_4ofrx")
+region = Rect2(48, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kpi7w"]
+atlas = ExtResource("1_4ofrx")
+region = Rect2(96, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2byuq"]
+atlas = ExtResource("1_4ofrx")
+region = Rect2(144, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7vj1s"]
+atlas = ExtResource("1_4ofrx")
+region = Rect2(192, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_njwao"]
+atlas = ExtResource("1_4ofrx")
+region = Rect2(240, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5lyly"]
+atlas = ExtResource("1_4ofrx")
+region = Rect2(288, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x4f54"]
+atlas = ExtResource("1_4ofrx")
+region = Rect2(336, 0, 48, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lap6e"]
+atlas = ExtResource("1_4ofrx")
+region = Rect2(384, 0, 48, 80)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_val8y"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aljdg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s0dgc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kpi7w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2byuq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7vj1s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_njwao")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5lyly")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x4f54")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lap6e")
+}],
+"loop": false,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r8mmo"]
+atlas = ExtResource("1_4ofrx")
+region = Rect2(0, 0, 48, 16)
+
+[node name="Credits" type="Control" unique_id=153844197]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_aljdg")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=534894949]
+position = Vector2(576, 1220)
+scale = Vector2(20, 30.500006)
+sprite_frames = SubResource("SpriteFrames_val8y")
+frame = 8
+frame_progress = 1.0
+
+[node name="ScrollSpritew" type="TextureRect" parent="." unique_id=204171349]
+visible = false
+layout_mode = 0
+offset_left = 96.0
+offset_top = 1.0
+offset_right = 1056.0
+offset_bottom = 488.0
+pivot_offset = Vector2(480, 240)
+texture = SubResource("AtlasTexture_r8mmo")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1593882216]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 227.0
+offset_top = 378.7661
+offset_right = -232.0
+offset_bottom = 1563.7661
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 11
+
+[node name="1" type="MarginContainer" parent="VBoxContainer" unique_id=758168249]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = -13
+
+[node name="GameTitle" type="Label" parent="VBoxContainer/1" unique_id=1932148619]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("2_aljdg")
+theme_override_font_sizes/font_size = 100
+text = "ARCOINIUM"
+horizontal_alignment = 1
+
+[node name="2" type="MarginContainer" parent="VBoxContainer" unique_id=873594289]
+layout_mode = 2
+theme_override_constants/margin_bottom = 36
+
+[node name="VersionNumber" type="Label" parent="VBoxContainer/2" unique_id=407595546]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_s0dgc")
+theme_override_font_sizes/font_size = 50
+text = "Release 1.0"
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="VBoxContainer" unique_id=1017312792]
+custom_minimum_size = Vector2(0, 141.925)
+layout_mode = 2
+
+[node name="3" type="MarginContainer" parent="VBoxContainer" unique_id=914921061]
+layout_mode = 2
+theme_override_constants/margin_bottom = 28
+
+[node name="TheDevelopers" type="Label" parent="VBoxContainer/3" unique_id=1493212170]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("4_kpi7w")
+theme_override_font_sizes/font_size = 53
+text = "THE DEVELOPERS"
+horizontal_alignment = 1
+
+[node name="4" type="CenterContainer" parent="VBoxContainer" unique_id=534370123]
+layout_mode = 2
+
+[node name="Developers" type="GridContainer" parent="VBoxContainer/4" unique_id=2101376301]
+layout_mode = 2
+theme_override_constants/h_separation = 70
+theme_override_constants/v_separation = 20
+columns = 2
+
+[node name="Allan" type="VBoxContainer" parent="VBoxContainer/4/Developers" unique_id=992983310]
+custom_minimum_size = Vector2(300, 250)
+layout_mode = 2
+theme_override_constants/separation = -1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/4/Developers/Allan" unique_id=1788710934]
+layout_mode = 2
+theme_override_constants/margin_left = 79
+theme_override_constants/margin_right = 79
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/4/Developers/Allan/MarginContainer" unique_id=7902545]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+texture = ExtResource("5_2byuq")
+
+[node name="Label" type="Label" parent="VBoxContainer/4/Developers/Allan" unique_id=437978430]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("6_7vj1s")
+theme_override_font_sizes/font_size = 57
+text = "Allan Tagle"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/4/Developers/Allan" unique_id=878907513]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_s0dgc")
+theme_override_font_sizes/font_size = 30
+text = "Lead Game Designer 
+Sound Designer"
+horizontal_alignment = 1
+
+[node name="Vincent" type="VBoxContainer" parent="VBoxContainer/4/Developers" unique_id=1715619941]
+custom_minimum_size = Vector2(300, 250)
+layout_mode = 2
+theme_override_constants/separation = -1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/4/Developers/Vincent" unique_id=141559881]
+layout_mode = 2
+theme_override_constants/margin_left = 79
+theme_override_constants/margin_right = 79
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/4/Developers/Vincent/MarginContainer" unique_id=2130232111]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+texture = ExtResource("5_2byuq")
+
+[node name="Label" type="Label" parent="VBoxContainer/4/Developers/Vincent" unique_id=870363454]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("6_7vj1s")
+theme_override_font_sizes/font_size = 57
+text = "Vincent Casuyac"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/4/Developers/Vincent" unique_id=370433843]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_s0dgc")
+theme_override_font_sizes/font_size = 30
+text = "Lead Technical Programmer"
+horizontal_alignment = 1
+
+[node name="Webster" type="VBoxContainer" parent="VBoxContainer/4/Developers" unique_id=899588697]
+custom_minimum_size = Vector2(300, 250)
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/4/Developers/Webster" unique_id=1621581289]
+layout_mode = 2
+theme_override_constants/margin_left = 79
+theme_override_constants/margin_right = 79
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/4/Developers/Webster/MarginContainer" unique_id=390607376]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+texture = ExtResource("5_2byuq")
+
+[node name="Label" type="Label" parent="VBoxContainer/4/Developers/Webster" unique_id=646528744]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("6_7vj1s")
+theme_override_font_sizes/font_size = 43
+text = "Webster Miguelle Isidor"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/4/Developers/Webster" unique_id=46442205]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_s0dgc")
+theme_override_font_sizes/font_size = 30
+text = "Creatives Lead/Arts Director"
+horizontal_alignment = 1
+
+[node name="Baubbie" type="VBoxContainer" parent="VBoxContainer/4/Developers" unique_id=577822101]
+custom_minimum_size = Vector2(300, 250)
+layout_mode = 2
+theme_override_constants/separation = -1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/4/Developers/Baubbie" unique_id=1729425042]
+layout_mode = 2
+theme_override_constants/margin_left = 79
+theme_override_constants/margin_right = 79
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/4/Developers/Baubbie/MarginContainer" unique_id=1037488686]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+texture = ExtResource("5_2byuq")
+
+[node name="Label" type="Label" parent="VBoxContainer/4/Developers/Baubbie" unique_id=304590945]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("6_7vj1s")
+theme_override_font_sizes/font_size = 55
+text = "Fe Aubrey Oledan"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/4/Developers/Baubbie" unique_id=1655921007]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_s0dgc")
+theme_override_font_sizes/font_size = 30
+text = "Concept Art/Sprite Artist"
+horizontal_alignment = 1
+
+[node name="5" type="MarginContainer" parent="VBoxContainer" unique_id=655275128]
+layout_mode = 2
+theme_override_constants/margin_bottom = 15
+
+[node name="Made With" type="Label" parent="VBoxContainer/5" unique_id=63628406]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("4_kpi7w")
+theme_override_font_sizes/font_size = 53
+text = "MADE WITH"
+horizontal_alignment = 1
+
+[node name="6" type="CenterContainer" parent="VBoxContainer" unique_id=303540417]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/6" unique_id=783393342]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/6/VBoxContainer" unique_id=1707982351]
+layout_mode = 2
+theme_override_constants/separation = 118
+
+[node name="Godot" type="Label" parent="VBoxContainer/6/VBoxContainer/HBoxContainer" unique_id=325936398]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_s0dgc")
+theme_override_font_sizes/font_size = 50
+text = "Godot Engine"
+
+[node name="Aseprite" type="Label" parent="VBoxContainer/6/VBoxContainer/HBoxContainer" unique_id=834256667]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_s0dgc")
+theme_override_font_sizes/font_size = 50
+text = "Aseprite"
+
+[node name="LMMS" type="Label" parent="VBoxContainer/6/VBoxContainer/HBoxContainer" unique_id=750934123]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_s0dgc")
+theme_override_font_sizes/font_size = 50
+text = "LMMS"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/6/VBoxContainer" unique_id=531355211]
+layout_mode = 2
+theme_override_constants/separation = 92
+alignment = 1
+
+[node name="Audacity" type="Label" parent="VBoxContainer/6/VBoxContainer/HBoxContainer2" unique_id=1602909052]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_s0dgc")
+theme_override_font_sizes/font_size = 50
+text = "Audacity"
+
+[node name="Itch" type="Label" parent="VBoxContainer/6/VBoxContainer/HBoxContainer2" unique_id=496588899]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("3_s0dgc")
+theme_override_font_sizes/font_size = 50
+text = "Itch.io"
+
+[node name="7" type="MarginContainer" parent="VBoxContainer" unique_id=746536821]
+layout_mode = 2
+theme_override_constants/margin_top = 46
+theme_override_constants/margin_bottom = 15
+
+[node name="Acknowledgements" type="Label" parent="VBoxContainer/7" unique_id=845930762]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/font = ExtResource("4_kpi7w")
+theme_override_font_sizes/font_size = 53
+text = "SPECIAL THANKS"
+horizontal_alignment = 1
+
+[node name="8" type="MarginContainer" parent="VBoxContainer" unique_id=323856472]
+layout_mode = 2
+
+[node name="Acknowledgements" type="RichTextLabel" parent="VBoxContainer/8" unique_id=451313162]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
+theme_override_fonts/normal_font = ExtResource("3_s0dgc")
+theme_override_font_sizes/normal_font_size = 45
+bbcode_enabled = true
+text = "This game almost remained a game jam project.
+
+To Mr. Nico Pinol, thank you for encouraging us to keep building Arcoinium after the competition. Your support reminded us that this project was worth finishing, and this release would not exist without that encouragement.
+
+To everyone who played our demo and beta version, thank you for your curiosity, feedback, and enthusiasm. Every conversation helped us improve the game.
+"
+fit_content = true
+horizontal_alignment = 1

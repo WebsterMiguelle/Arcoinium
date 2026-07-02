@@ -15,6 +15,7 @@ var player = null
 @onready var right_edge: TextureRect = $RightSideBricks/OpenTile
 @onready var dark_overlay: ColorRect = $DarkOverlay
 @onready var ui_layer: Control = $UILayer
+@onready var hbox: HBoxContainer = $UILayer/HBoxContainer
 
 # ==========================================
 # LEFT PANEL NODES (Result & Passives)
@@ -442,7 +443,23 @@ func play_slam_animation() -> void:
 		pop_in_single(grade, current_delay + 0.5)
 		pop_in_single(title, current_delay + 0.5)
 	)
+# ==========================================
+# EXIT SEQUENCE
+# ==========================================
+func play_exit_animation() -> void:
+	get_tree().root.gui_disable_input = true
 	
+	var tween = create_tween().set_parallel(true)
+	
+	tween.tween_property(hbox, "theme_override_constants/separation", 1500, 1)\
+		.set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+		
+	tween.tween_property(ui_layer, "modulate:a", 0.0, 0.4)\
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(dark_overlay, "modulate:a", 0.0, 0.4)\
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		
+	await tween.finished
 # ==========================================
 # ANIMATION HELPERS
 # ==========================================
@@ -497,6 +514,29 @@ func animate_counting_stat(label: Label, prefix: String, target_value: int, dela
 		func(current_val: int): label.text = prefix + str(current_val),
 		0, target_value, 0.8 
 	).set_delay(delay).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+
+func _open_doors() -> Tween:
+	var screen_width = get_viewport().get_visible_rect().size.x
+	var half_screen = screen_width / 2.0
+	var left_door_width = left_door.size.x
+	
+	# Snap the doors back apart to make room for the jagged edges!
+	left_door.position.x = half_screen - left_door_width
+	right_door.position.x = half_screen
+	
+	right_edge.visible = true
+	left_edge.visible = true
+	
+	var tween = create_tween().set_parallel(true)
+	
+	# Slide them back off screen
+	tween.tween_property(left_door, "position:x", -left_door_width - 160, 1.5)\
+		.set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	tween.tween_property(right_door, "position:x", screen_width + 160, 1.5)\
+		.set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	
+	return tween
+
 
 # ==========================================
 # DATA HANDOFF (Called from main.gd)
@@ -582,10 +622,15 @@ func shrink_text_to_fit(label: Label, max_font_size: int, min_font_size: int) ->
 func _on_main_menu_pressed() -> void:
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Scene/Main_Menu.tscn")
-
+	
+	await play_exit_animation()
+	
+	SceneTransition.change_scene_from_closed("res://Scene/Main_Menu.tscn")
 
 func _on_try_again_pressed() -> void:
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	get_tree().reload_current_scene()
+	
+	await play_exit_animation()
+	
+	SceneTransition.reload_scene_from_closed()

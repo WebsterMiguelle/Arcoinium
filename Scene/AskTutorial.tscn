@@ -13,6 +13,16 @@ colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_ilsvc"]
 gradient = SubResource("Gradient_x8fwb")
 
+[sub_resource type="Gradient" id="Gradient_kiink"]
+offsets = PackedFloat32Array(0.49346405, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_efpnt"]
+gradient = SubResource("Gradient_kiink")
+fill = 1
+fill_from = Vector2(0.49570817, 0.46995708)
+fill_to = Vector2(0.94635195, 0.08798283)
+
 [sub_resource type="Theme" id="Theme_bsr34"]
 
 [node name="AskTutorial" type="Node2D" unique_id=1085329073]
@@ -25,6 +35,19 @@ offset_right = 1167.0
 offset_bottom = 664.0
 texture = SubResource("GradientTexture2D_ilsvc")
 
+[node name="Shopkeeper" type="TextureRect" parent="CanvasLayer" unique_id=2096516196]
+self_modulate = Color(1, 1, 1, 0)
+offset_left = 107.0
+offset_top = 194.0
+offset_right = 1070.4689
+offset_bottom = 690.0
+texture = ExtResource("3_k0vpi")
+
+[node name="Shadow" type="TextureRect" parent="CanvasLayer" unique_id=1540482048]
+offset_right = 1172.0
+offset_bottom = 672.0
+texture = SubResource("GradientTexture2D_efpnt")
+
 [node name="Dialogue" type="Label" parent="CanvasLayer" unique_id=794570553]
 offset_left = 11.0
 offset_top = 10.0
@@ -33,24 +56,15 @@ offset_bottom = 511.0
 scale = Vector2(0.5, 0.5)
 theme_override_fonts/font = ExtResource("1_se41k")
 theme_override_font_sizes/font_size = 130
-text = "Greetings Coin Caster. 
-Would you like to 
-learn the combat basics?"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Shopkeeper" type="TextureRect" parent="CanvasLayer" unique_id=2096516196]
-offset_left = 107.0
-offset_top = 194.0
-offset_right = 1070.4689
-offset_bottom = 690.0
-texture = ExtResource("3_k0vpi")
-
 [node name="YesButton" type="TextureButton" parent="CanvasLayer" unique_id=1889043566]
-offset_left = 358.0
-offset_top = 511.0
-offset_right = 566.0
-offset_bottom = 703.0
+offset_left = 364.0
+offset_top = 695.0
+offset_right = 572.0
+offset_bottom = 887.0
+mouse_default_cursor_shape = 2
 theme = SubResource("Theme_bsr34")
 texture_normal = ExtResource("4_kiink")
 stretch_mode = 0
@@ -68,10 +82,11 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="NoButton" type="TextureButton" parent="CanvasLayer" unique_id=766055237]
-offset_left = 627.0
-offset_top = 523.0
-offset_right = 827.0
-offset_bottom = 707.0
+offset_left = 629.0
+offset_top = 692.0
+offset_right = 829.0
+offset_bottom = 876.0
+mouse_default_cursor_shape = 2
 texture_normal = ExtResource("5_efpnt")
 stretch_mode = 0
 

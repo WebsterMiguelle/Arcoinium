@@ -14,27 +14,19 @@ const LINES = {
 		"Chose which you want to Learn."
 		 ],
 	"basic_first": [
-		"Ah, Basic Mode! A wise choice.",
-		" I will be teaching you the Battle Basics.",
-		"Are You Ready?" ],
+			"Ah, Battle Basics. Learn how to Flip, Re-Flip, and Reserve Coins."],
 	"basic_return": [
-		"Ah, Basic Mode! A wise choice.",
-		" I will be teaching you the Battle Basics.",
-		"Are You Ready?" ],
+		"Ah, Battle Basics. Learn how to Flip, Re-Flip, and Reserve Coins."],
 	"advance_first": [
-		"Ooh, Advanced Mode! Bold choice!",
-		"I will be teaching you the Advance play.",
-		"Are You Ready?" ],
+		"Advanced Tutorial. Learn about Passives, Coin, and Entity Status Effects!"],
 	"advance_return": [
-		"Ooh, Advanced Mode! Bold choice!",
-		"I will be teaching you the Advance play.",
-		"Are You Ready?" ],
+"Advanced Tutorial. Learn about Passives, Coin, and Entity Status Effects!"],
+	"archive": [
+"Behind lies the shelves of knowledge. Learn about Profiles, Passives, and Coin Effects."],
 	"back_return": [
-		"Hmm.., Leaving now Coin Master?",
-		"Sigh..., Good luck to the RealWorld!" ],
+		"Hmm..., Leaving now Coin Master?"],
 	"back_first": [
-		"Hmm.., Leaving now Coin Master?",
-		"Sigh..., Good luck to Your Journey!" ],
+		"Good luck to Your Journey!" ],
 	"sk_battle_start": [
 		"So, you wish to learn, Coin Caster?",
 		"I won't go easy on you.",

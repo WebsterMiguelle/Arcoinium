@@ -66,46 +66,55 @@ const PASSIVE_DATA = {
 	# =======================
 	# B-RANK PASSIVES
 	# =======================
+
 	"has_solar_coin": {
 		"name": "Solar Blessing",
 		"desc": "When 8 or more SUN Coins are played this turn, all Odd Flips next turn are guaranteed SUN.",
 		"anim": "solar_blessing_anim"
 	},
+
 	"has_lunar_coin": {
 		"name": "Lunar Blessing",
 		"desc": "When 8 or more MOON Coins are played this turn, all Even Flips next turn are guaranteed MOON.",
 		"anim": "lunar_blessing_anim"
 	},
+
 	"has_wishbone": {
 		"name": "Wish Bone",
 		"desc": "+20% SILVER Flip Rate.",
 		"anim": "wishbone_anim"
 	},
+
 	"has_golden_clover": {
 		"name": "Golden Clover",
 		"desc": "+10% GOLD Flip Rate.",
 		"anim": "golden_clover_anim"
 	},
+
 	"has_merchant_scroll": {
 		"name": "Keeper's Scroll",
 		"desc": "The Shopkeeper accompanies you. When you receive Damage, she gains a Turn and flips 1 STAMPED COPPER MOON-SUN Pair. Max Coin Flip increases by 2 each succeeding turn.",
 		"anim": "keeper's_scroll_anim"
 	},
+
 	"has_impromptu_flip": {
 		"name": "Flip Sequence",
-		"desc": "Flip the Last Coin played to its other side. For each Flip/Upgrade that occurred during End Turn Sequence, Deal 1 DAMAGE.",
+		"desc": "Flip the Last Coin played to its other side. For each Flip/Upgrade that occurred during End Turn Sequence, Deal 2 DAMAGE.",
 		"anim": "flip_sequence_anim"
 	},
+
 	"has_advanced_planning": {
 		"name": "Seal of Approval",
 		"desc": "The first 2 Coins placed on the Arcane Circle become STAMPED. At the end of the turn, Remove all STAMP from Played Coins and Upgrade them.",
 		"anim": "seal_of_approval_anim"
 	},
+
 	"has_value_increase": {
 		"name": "Value Increase",
 		"desc": "Upgrade all RESERVED Coins next turn. Upgrading Beyond Gold applies SHINE instead.",
 		"anim": "value_increase_anim"
 	},
+
 	"has_lending_charge": {
 		"name": "Lending Charge",
 		"desc": "SUN-MOON Pairs apply 3 DEBT. If all played Pairs are SUN-MOON, apply double DEBT.",
@@ -114,7 +123,7 @@ const PASSIVE_DATA = {
 
 	"has_coin_snipe": {
 		"name": "Coin Snipe",
-		"desc": "Flipping a SILVER or GOLD Coin deals 1 DAMAGE. Generated Coins deal 3 DAMAGE instead.",
+		"desc": "Flipping a SILVER/GOLD Coin deals 1 DAMAGE. Generated Coins deal 3 DAMAGE instead.",
 		"anim": "coin_snipe_anim"
 	},
 
@@ -124,9 +133,19 @@ const PASSIVE_DATA = {
 		"anim": "full_moon_anim"
 	},
 
+	"has_withdraw": {
+		"name": "Withdraw",
+		"desc": "Removing a RESERVED Coin deals 1 DAMAGE. Statused Coins deal 3 DAMAGE instead.",
+		"anim": "withdraw_anim"
+	},
+
+	# =======================
+	# A-RANK PASSIVES
+	# =======================
+
 	"has_lucky_pair": {
 		"name": "Gold Rush",
-		"desc": "+10% GOLD Flip Rate. For each SUN-SUN Pair played, 1 Random Coin is Upgraded to Gold.",
+		"desc": "+10% GOLD Flip Rate. For each SUN-SUN Pair played, 1 Random Coin is Upgraded to GOLD.",
 		"anim": "gold_rush_anim"
 	},
 
@@ -154,6 +173,12 @@ const PASSIVE_DATA = {
 		"anim": "passive_income_anim"
 	},
 
+	"has_magic_trick": {
+		"name": "Magic Trick",
+		"desc": "If you played 8+ Coins, the 1st Coin Pair generates copies of itself into the 2nd, 3rd, and 4th Pair at the end of the turn.",
+		"anim": "magic_trick_anim"
+	},
+
 	"has_reimbursement": {
 		"name": "Tax Evasion",
 		"desc": "When DEBT is applied to you, halve it, return the removed DEBT to the Enemy, and deal DAMAGE equal to the returned DEBT.",
@@ -162,7 +187,7 @@ const PASSIVE_DATA = {
 
 	"has_payback": {
 		"name": "Payback",
-		"desc": "After taking Heavy Damage 4 times, cleanse all Debuffs and generate 12 SHINED SILVER SUN Coins next turn. Reset the counter afterwards.",
+		"desc": "Whenever an enemy deals Heavy Damage, generate 6 SHINED GOLD SUN Coins next turn.",
 		"anim": "payback_anim"
 	},
 
@@ -186,7 +211,7 @@ const PASSIVE_DATA = {
 
 	"has_deposit": {
 		"name": "Deposit",
-		"desc": "Max Reserve +4. RESERVING a Coin applies 1 GAIN. Statused Coins apply 3 GAIN instead.",
+		"desc": "Max Reserve +2. RESERVING a Coin applies 2 GAIN with a 20% Chance to be STAMPED.",
 		"anim": "deposit_anim"
 	},
 
@@ -199,6 +224,7 @@ const PASSIVE_DATA = {
 	# =======================
 	# S-RANK PASSIVES
 	# =======================
+
 	"has_inflation": {
 		"name": "Inflation",
 		"desc": "You Cannot Manually Reserve. Each Re-Flip has a 50% Chance for each Coin to Upgrade. Upgrading Beyond Gold consumes 1 Coin and applies SHINE. SHINE is now Stackable.",

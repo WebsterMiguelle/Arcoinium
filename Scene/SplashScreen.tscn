@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://cmkt12jtux30"]
+
+[ext_resource type="Script" uid="uid://brbey1gkj560b" path="res://Scene/splash_screen.gd" id="1_7h7f4"]
+[ext_resource type="Texture2D" uid="uid://do0vyaqo8wrp2" path="res://Scene/671456232_1535892934760210_2881234874508996824_n.jpg" id="1_dqid4"]
+
+[sub_resource type="Gradient" id="Gradient_7h7f4"]
+offsets = PackedFloat32Array(0.022875817, 0.9836601)
+colors = PackedColorArray(0.0627451, 0.0627451, 0.0627451, 1, 0.0627451, 0.0627451, 0.0627451, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mvggd"]
+gradient = SubResource("Gradient_7h7f4")
+
+[sub_resource type="Gradient" id="Gradient_utc4x"]
+offsets = PackedFloat32Array(0, 0.9836601)
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_hxx1v"]
+gradient = SubResource("Gradient_utc4x")
+fill = 1
+fill_from = Vector2(0.44849786, 0.4527897)
+fill_to = Vector2(0.8304721, 0.13090129)
+
+[node name="SplashScreen" type="Node2D" unique_id=483341752]
+script = ExtResource("1_7h7f4")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2066522736]
+
+[node name="Background" type="TextureRect" parent="CanvasLayer" unique_id=491988441]
+offset_right = 1153.0
+offset_bottom = 654.0
+texture = SubResource("GradientTexture2D_mvggd")
+
+[node name="Logo" type="TextureRect" parent="CanvasLayer" unique_id=1484405879]
+offset_left = 277.0
+offset_top = 180.0
+offset_right = 831.0
+offset_bottom = 472.0
+texture = ExtResource("1_dqid4")
+expand_mode = 1
+
+[node name="Foreground" type="TextureRect" parent="CanvasLayer" unique_id=922617300]
+offset_right = 1153.0
+offset_bottom = 654.0
+texture = SubResource("GradientTexture2D_hxx1v")

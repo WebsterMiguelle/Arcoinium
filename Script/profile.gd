@@ -49,11 +49,11 @@ func _ready() -> void:
 	_show_frame(player_frame)
 	
 	Player_Inforamtion.text = (
-		"Ability: Coin Mastery\n" +
-		"Likes: Coins\n" +
+		"Ability: Coin Magic\n" +
+		"Likes: Justice, Cats and Coins\n" +
 		"Dislikes: Greed, The Council\n" +
-		"Strengths: Perseverance, and Willpower\n" +
-		"Weaknesses: "
+		"Strengths: To keep moving forward\n" +
+		"Weaknesses: Confidence depends on Coins"
 	)
 	Player_Storyline.text = (
 		"	Everything changed from the moment a deal was struck with The Council and The Corruption. And with tyranny and greed running rampant, disrupting the once peaceful balance of the world, you can’t just let it continue. The life you once knew, gone with just a snap of someone’s hands.
@@ -61,11 +61,11 @@ func _ready() -> void:
 "
 	)
 	ShopKeeper_Inforamtion.text = (
-		"Name: Shop Keeper\n" +
-		"Coin: \n" +
-		"Age: ? \n" +
-		"Species:  \n" +
-		"Ability: ? "
+		"Ability: Flip Momentum\n" +
+		"Likes: Valuable Customers, Profitable Trades\n" +
+		"Dislikes: Greed, The Council, Stealing, Bartering\n" +
+		"Strengths: Cannot be fooled\n" +
+		"Weaknesses: Carries a painful past"
 	)
 	ShopKeeper_Storyline.text = (
 		"	A mysterious, yet comforting, figure that offers a helping hand when you need them. The Shopkeeper knows which road to take, and knows the stakes like the back of her hand. She’s almost too insightful, and you’re tempted to pry. But it isn’t worth risking the help you need.
@@ -73,11 +73,11 @@ func _ready() -> void:
 "
 	)
 	mage_Inforamtion.text = (
-		"Name: Mage \n" +
-		"Coin: \n" +
-		"Age: ? \n" +
-		"Species:  \n" +
-		"Ability: ? "
+		"Ability: Beginner Coin Magic\n" +
+		"Likes: Their Master, To be promoted\n" +
+		"Dislikes: Ill intent to their Master\n" +
+		"Strengths: Potential to surpass their Master\n" +
+		"Weaknesses: Easily manipulated"
 	)
 	mage_Storyline.text = (
 		"	Apprentice mages are mages in training, taken in by a more powerful mage as their own. Be it out of pity or the goodness of the mages’ heart, no one ever knows. They say there is a chance for an apprentice mage to take over their masters’ repertoire. But being taken in is already a telling sign that it’s all they will ever be. It is not surprising if an apprentice mage suddenly disappears, stricken with the grief of not being something more.
@@ -85,11 +85,11 @@ func _ready() -> void:
 "
 	)
 	dwarf_Inforamtion.text = (
-		"Name: Dwarf \n" +
-		"Coin: \n" +
-		"Age: ? \n" +
-		"Species:  \n" +
-		"Ability: ? "
+		"Ability: Treasure Sensing\n" +
+		"Likes: Leftover Coins and Goodies\n" +
+		"Dislikes: The Wealthy\n" +
+		"Strengths: Strong Coin Sensing Skills\n" +
+		"Weaknesses: Easily swayed by coins"
 	)
 	dwarf_Storyline.text = (
 		"	Coin dwarves are generally pleasant, unless provoked. They spend most of their days searching for coins that have been tossed out in hopes to add it to their stash.
@@ -97,11 +97,11 @@ func _ready() -> void:
 "
 	)
 	collector_Inforamtion.text = (
-		"Name: Collector \n" +
-		"Coin: \n" +
-		"Age: ? \n" +
-		"Species:  \n" +
-		"Ability: Bargain Sense"
+		"Ability: Tax Collection\n" +
+		"Likes: Illegal Tax Declarations\n" +
+		"Dislikes: Being negotiated\n" +
+		"Strengths: Oppresses anyone with DEBT\n" +
+		"Weaknesses: Superiority Complex"
 	)
 	collector_Storyline.text = (
 		"	As an extension of The Council’s reign upon the lands, Tax Collectors help with upholding their control. Balance, however they might twist it, keeps the flow of coins and therefore keeps those in power in their place.
@@ -109,11 +109,11 @@ func _ready() -> void:
 "
 	)
 	trader_Inforamtion.text = (
-		"Name: Trader \n" +
-		"Coin: \n" +
-		"Age: ? \n" +
-		"Species:  \n" +
-		"Ability: ? "
+		"Ability: 'Fair' Trade\n" +
+		"Likes: Bartering Illegal Supplies\n" +
+		"Dislikes: Being fooled\n" +
+		"Strengths: What you trade is what you get\n" +
+		"Weaknesses: Shop Inspections"
 	)
 	trader_Storyline.text = (
 		"	Traders are known for their strikingly absurd deals and are often seen coming in and out of towns. Although with the current state of affairs, their deals don’t cause too much disruption. For some, traders are their bridge to get access to things they can’t get otherwise.
@@ -121,11 +121,11 @@ func _ready() -> void:
 "
 	)
 	thrifter_Inforamtion.text = (
-		"Name: Thrifter \n" +
-		"Coin: \n" +
-		"Age: ? \n" +
-		"Species:  \n" +
-		"Ability: ? "
+		"Ability: Thrift Tactics\n" +
+		"Likes: Saving Coins, Budgetting\n" +
+		"Dislikes: Overspending\n" +
+		"Strengths: Influences Thrifty lifestyle\n" +
+		"Weaknesses: Jobless"
 	)
 	thrifter_Storyline.text = (
 		"	Known to come out of their homes when they really, really need to. Is it to save themselves knowing the current state of the world, or is it just the way that they are? No one will ever know. Either way, they are doing themselves a great favor. 
@@ -133,11 +133,11 @@ func _ready() -> void:
 "
 	)
 	aristocrat_Inforamtion.text = (
-		"Name: Aristocrat \n" +
-		"Coin: \n" +
-		"Age: ? \n" +
-		"Species:  \n" +
-		"Ability: ? "
+		"Ability: Ultimate Refund\n" +
+		"Likes: Attention, Glamour, Money\n" +
+		"Dislikes: Poor People\n" +
+		"Strengths: Can pay for anything\n" +
+		"Weaknesses: Too Much Pride"
 	)
 	aristocrat_Storyline.text = (
 		"	Aristocrats hold no significant powers except for being rich. The Council holds them close and that gives them reassurance. Whether they know they’re being used as a ploy is between them and their over-inflated ego.
@@ -145,11 +145,11 @@ func _ready() -> void:
 "
 	)
 	sun_caster_Inforamtion.text = (
-		"Name: Sun Caster \n" +
-		"Coin: \n" +
-		"Age: ? \n" +
-		"Species: ? \n" +
-		"Ability: ? "
+		"Ability: Sun Affinity\n" +
+		"Likes: SUN Coins, Daylight\n" +
+		"Dislikes: MOON Coins, Moon Caster\n" +
+		"Strengths: Powers up from SUN Coins\n" +
+		"Weaknesses: No Spells on MOON Coins"
 	)
 	sun_caster_Storyline.text = (
 		"	A powerful mage favored by the corruption of the sun. Power is a double-edged sword, and greed only deepens the cut. They think power is what they want, but once the corruption casts its eyes on you, you will no longer be who you once were.
@@ -157,11 +157,11 @@ func _ready() -> void:
 "
 	)
 	moon_caster_Inforamtion.text = (
-		"Name: Moon Caster \n" +
-		"Coin: \n" +
-		"Age: ? \n" +
-		"Species: ? \n" +
-		"Ability: ? "
+		"Ability: Moon Affinity\n" +
+		"Likes: MOON Coins, Moonlight\n" +
+		"Dislikes: SUN Coins, Sun Caster\n" +
+		"Strengths: Powers up from MOON Coins\n" +
+		"Weaknesses: No Spells on SUN Coins"
 	)
 	moon_caster_Storyline.text = (
 		"	Much like their counterparts, Moon Caster often picks fights with Sun Caster. Even though they carry the corruption within them, some of their quirks still manage to show.
@@ -169,11 +169,11 @@ Perhaps it is why the corruption took notice of the now Moon Caster – second b
 "
 	)
 	twilight_sage_Inforamtion.text = (
-		"Name: Twilight Sage \n" +
-		"Coin: \n" +
-		"Age: ? \n" +
-		"Species: ? \n" +
-		"Ability: ? "
+		"Ability: Dawn and Dusk Stance\n" +
+		"Likes: Greed, Absolute Power\n" +
+		"Dislikes: Those who opposes Greed\n" +
+		"Strengths: Can change the time of day\n" +
+		"Weaknesses: Blinded by Greed, no conscience left."
 	)
 	twilight_sage_Storyline.text = (
 		"	Having gotten the attention of both the sun and the moon’s corruption, the most powerful mage in the Twilight Zone succumbs to greed. The town watched as their most beloved mage turned into a tyrant, nothing more than a host for an ill-rooted cause.

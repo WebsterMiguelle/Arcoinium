@@ -7,6 +7,19 @@
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="6_eslk0"]
 [ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="6_uyvy5"]
 
+[sub_resource type="Gradient" id="Gradient_fnsx1"]
+offsets = PackedFloat32Array(0, 0.22742476)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_uyvy5"]
+gradient = SubResource("Gradient_fnsx1")
+width = 512
+height = 512
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uyvy5"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 border_color = Color(1, 1, 1, 1)
@@ -267,6 +280,19 @@ vertical_alignment = 1
 [node name="Camera2D" type="Camera2D" parent="." unique_id=254091799]
 position = Vector2(576, 324)
 
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=1733044612 groups=["point_light"]]
+position = Vector2(585.00006, 316)
+scale = Vector2(17.921875, 10.046875)
+color = Color(1, 0.9019608, 0.5647059, 0.61960787)
+energy = 1.1
+texture = SubResource("GradientTexture2D_uyvy5")
+texture_scale = 0.46
+metadata/_edit_lock_ = true
+
+[node name="Vignette" type="CanvasModulate" parent="." unique_id=275142581]
+color = Color(0.8047918, 0.7298082, 0.81647116, 1)
+metadata/_edit_lock_ = true
+
 [node name="Button" type="Button" parent="." unique_id=1036852794]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
@@ -282,14 +308,13 @@ grow_vertical = 2
 
 [node name="Glow" type="Panel" parent="Button" unique_id=712917737]
 layout_mode = 0
-offset_left = 48.0
-offset_top = 40.0
-offset_right = 64.0
-offset_bottom = 57.0
+offset_left = 40.0
+offset_top = 37.0
+offset_right = 56.0
+offset_bottom = 54.0
 pivot_offset = Vector2(-5, 5)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_uyvy5")
-metadata/_edit_lock_ = true
 
 [node name="Coin" type="AnimatedSprite2D" parent="Button" unique_id=1128530618]
 position = Vector2(48.000015, 48)
@@ -376,10 +401,10 @@ metadata/_edit_lock_ = true
 visible = false
 self_modulate = Color(0.86610603, 0.86610603, 0.86610603, 1)
 layout_mode = 0
-offset_left = 824.0
-offset_top = 200.0
-offset_right = 1346.0
-offset_bottom = 331.0
+offset_left = 828.0
+offset_top = 198.0
+offset_right = 1350.0
+offset_bottom = 329.0
 scale = Vector2(0.5, 0.5)
 theme_override_fonts/font = ExtResource("6_eslk0")
 theme_override_font_sizes/font_size = 63
@@ -407,26 +432,42 @@ vertical_alignment = 1
 visible = false
 self_modulate = Color(0.86610603, 0.86610603, 0.86610603, 1)
 layout_mode = 0
-offset_left = 848.0
-offset_top = 472.0
-offset_right = 1370.0
-offset_bottom = 603.0
+offset_left = 850.0
+offset_top = 436.0
+offset_right = 1388.0
+offset_bottom = 571.0
 scale = Vector2(0.5, 0.5)
+theme_override_colors/font_color = Color(0.99999994, 0.3981034, 0.124950714, 1)
 theme_override_fonts/font = ExtResource("6_eslk0")
 theme_override_font_sizes/font_size = 63
-text = "TUTORIAL MODE
+text = "KEEPER'S REST
 "
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Tutorial Details" type="Label" parent="Tutorial Label" unique_id=48662771]
+self_modulate = Color(0.86610603, 0.86610603, 0.86610603, 1)
+layout_mode = 0
+offset_left = 144.0
+offset_top = 64.0
+offset_right = 891.0
+offset_bottom = 326.0
+scale = Vector2(0.5, 0.5)
+theme_override_colors/font_color = Color(0.98928267, 0.40547687, 3.85046e-07, 1)
+theme_override_fonts/font = ExtResource("6_eslk0")
+theme_override_font_sizes/font_size = 70
+text = "- Tutorial Room
+- The Archive
+"
 
 [node name="GREED" type="Label" parent="." unique_id=715473414]
 visible = false
 self_modulate = Color(0.86610603, 0.86610603, 0.86610603, 1)
 layout_mode = 0
-offset_left = 768.0
-offset_top = 304.0
-offset_right = 1244.0
-offset_bottom = 435.0
+offset_left = 757.0
+offset_top = 300.0
+offset_right = 1233.0
+offset_bottom = 431.0
 scale = Vector2(0.5, 0.5)
 theme_override_colors/font_color = Color(0.9999998, 0.73395246, 0.10155413, 1)
 theme_override_fonts/font = ExtResource("6_eslk0")

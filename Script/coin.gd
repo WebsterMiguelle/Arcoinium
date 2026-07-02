@@ -7,6 +7,7 @@ extends Node2D
 @onready var pop_up: VFlowContainer = $"PanelContainer/MarginContainer/Pop-Up"
 const COIN_STATUS_EFFECT = preload("uid://b7frpsmw0r6p")
 
+
 enum CoinType{
 	COPPER,
 	SILVER,
@@ -29,6 +30,7 @@ var base_value:int
 var state:int # If 0, then Head, Else, then Tail
 var status:CoinStatus
 var reserved:bool
+var is_archive = false
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 func _ready() -> void:
@@ -44,6 +46,7 @@ func setup(s,pos):
 	base_value = 2
 	status = CoinStatus.NONE
 	shine_stack = 1
+
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -186,6 +189,8 @@ func pulse_glow() -> void:
 
 
 func _on_control_mouse_entered() -> void:
+	if is_archive:
+		return
 	print("Mouse In")
 	if status != CoinStatus.NONE:
 		var s = COIN_STATUS_EFFECT.instantiate()
@@ -203,6 +208,8 @@ func _on_control_mouse_entered() -> void:
 		pop_up.add_child(s)
 
 func _on_control_mouse_exited() -> void:
+	if is_archive:
+		return
 	print("Mouse Out")
 	var coin_status = get_tree().get_nodes_in_group("coin_status")
 	if coin_status.size() == 0:

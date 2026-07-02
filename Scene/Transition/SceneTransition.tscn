@@ -25,6 +25,7 @@ metadata/_snap_enabled = true
 [sub_resource type="AudioStream" id="AudioStream_ercon"]
 
 [node name="SceneTransition" type="CanvasLayer" unique_id=317263784]
+layer = 100
 script = ExtResource("1_3dcwp")
 
 [node name="Vignette" type="Node" parent="." unique_id=458012200]

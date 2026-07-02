@@ -10,6 +10,7 @@ extends Button
 @onready var icon_sprite: AnimatedSprite2D = $Icon
 @onready var icon_container = $"IconContainer"
 @export var use_coin_icon := false
+var is_spell = false
 var main
 const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
 const COIN = preload("res://Scene/coin.tscn")
@@ -34,6 +35,8 @@ func _ready():
 		icon_container.visible = false
 		icon_sprite.visible = true
 		icon_sprite.play(card_name)
+	if is_spell:
+		sprite.self_modulate = Color("#ffa883")
 
 func setup(m):
 	main = m
@@ -87,6 +90,7 @@ func show_coin_icon(name: String):
 	icon_container.add_child(c)
 	c.state = 0 # Head
 	c.type = c.CoinType.COPPER
+	c.is_archive = true
 	
 	match name:
 		"Shine":

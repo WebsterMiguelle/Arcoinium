@@ -2,16 +2,16 @@
 
 [ext_resource type="Script" uid="uid://b4imnvw44duvd" path="res://Script/archive.gd" id="1_3bfgx"]
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="2_sy8nj"]
+[ext_resource type="Texture2D" uid="uid://df3wtq16ab5xe" path="res://Assets/tutorialScreenBackground.png" id="2_u5yd8"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="3_c1vsh"]
 [ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="3_dfqxb"]
-[ext_resource type="Texture2D" uid="uid://cvly03k2t5jwq" path="res://Assets/Character Icon Frame.png" id="3_pugqh"]
 [ext_resource type="Texture2D" uid="uid://ssc7wxol7ty5" path="res://Assets/Coin_caster.png" id="3_sy8nj"]
-[ext_resource type="StyleBox" uid="uid://bgkyr1rfshpsr" path="res://Assets/SavedTexture/Button_Default.tres" id="4_ft4kv"]
 [ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="4_u7v7i"]
-[ext_resource type="StyleBox" uid="uid://g8acwjjmd4tf" path="res://Assets/SavedTexture/Button_Pressed.tres" id="5_ygasj"]
-[ext_resource type="StyleBox" uid="uid://cxdkfhyiiy8y4" path="res://Assets/SavedTexture/Button_Hovered.tres" id="6_sf3cn"]
+[ext_resource type="StyleBox" uid="uid://bhflgrh4jdv5m" path="res://Assets/SavedTexture/PressedButtonTexture.tres" id="6_ft4kv"]
 [ext_resource type="Texture2D" uid="uid://c7ppyupuuc7tu" path="res://Assets/Passive_Icons.png" id="7_6i7er"]
 [ext_resource type="Texture2D" uid="uid://dms5d0v8hxacy" path="res://Assets/EndScrollTextSeparator.png" id="7_o7e4t"]
+[ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="9_o7e4t"]
+[ext_resource type="Texture2D" uid="uid://bvlc07v3u1brg" path="res://Assets/mapIconEnemy.png" id="10_u5yd8"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u7v7i"]
 texture = ExtResource("3_dfqxb")
@@ -20,23 +20,18 @@ texture = ExtResource("3_dfqxb")
 atlas = ExtResource("3_sy8nj")
 region = Rect2(0, 0, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_c1vsh"]
-atlas = ExtResource("3_sy8nj")
-region = Rect2(64, 0, 64, 64)
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_dfqxb"]
 animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_pugqh")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_c1vsh")
 }],
 "loop": true,
 "name": &"default",
 "speed": 1.0
 }]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sf3cn"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_o7e4t"]
 texture = ExtResource("3_dfqxb")
@@ -45,8 +40,31 @@ texture = ExtResource("3_dfqxb")
 atlas = ExtResource("7_6i7er")
 region = Rect2(0, 0, 32, 32)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t0had"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yqe1r"]
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ft4kv"]
 texture = ExtResource("3_dfqxb")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_u7v7i"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ft4kv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ygasj"]
+
+[sub_resource type="Gradient" id="Gradient_ft4kv"]
+offsets = PackedFloat32Array(0, 0.22742476)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ft4kv"]
+gradient = SubResource("Gradient_ft4kv")
+width = 512
+height = 512
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
 
 [node name="Archive" type="ColorRect" unique_id=1725265110]
 anchors_preset = 15
@@ -56,6 +74,15 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.12298488, 0.12298488, 0.12298488, 1)
 script = ExtResource("1_3bfgx")
+
+[node name="Background" type="TextureRect" parent="." unique_id=526971739]
+self_modulate = Color(0.51611936, 0.3284921, 0.22726578, 1)
+layout_mode = 0
+offset_left = -76.0
+offset_top = 3.0
+offset_right = 1214.0
+offset_bottom = 649.0
+texture = ExtResource("2_u5yd8")
 
 [node name="Title Label" type="Label" parent="." unique_id=738909891]
 custom_minimum_size = Vector2(600, 100)
@@ -69,24 +96,27 @@ offset_bottom = 133.0
 grow_horizontal = 2
 theme_override_fonts/font = ExtResource("2_sy8nj")
 theme_override_font_sizes/font_size = 100
-text = "ARCHIVE"
+text = "THE ARCHIVE"
 horizontal_alignment = 1
 uppercase = true
 
 [node name="Back" type="Button" parent="." unique_id=66145436]
+custom_minimum_size = Vector2(150, 50)
 layout_mode = 0
-offset_left = 56.0
-offset_top = 32.0
-offset_right = 140.0
-offset_bottom = 96.0
+offset_left = 22.0
+offset_top = 57.0
+offset_right = 172.0
+offset_bottom = 125.0
+mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("3_c1vsh")
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("4_ft4kv")
-theme_override_styles/pressed = ExtResource("5_ygasj")
-theme_override_styles/hover = ExtResource("6_sf3cn")
+theme_override_font_sizes/font_size = 44
+theme_override_styles/normal = ExtResource("9_o7e4t")
+theme_override_styles/pressed = ExtResource("6_ft4kv")
+theme_override_styles/hover = ExtResource("9_o7e4t")
 text = "BACK"
 
 [node name="Profile Archive" type="PanelContainer" parent="." unique_id=1508899290]
+self_modulate = Color(0.8723204, 0.6615221, 0.55689543, 1)
 custom_minimum_size = Vector2(230, 280)
 layout_mode = 0
 offset_left = 128.0
@@ -104,6 +134,7 @@ theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Profile Archive/MarginContainer" unique_id=2046517573]
+custom_minimum_size = Vector2(0, -0.69)
 layout_mode = 2
 theme_override_constants/separation = -9
 
@@ -125,12 +156,13 @@ sprite_frames = SubResource("SpriteFrames_dfqxb")
 autoplay = "default"
 
 [node name="TextureRect" type="TextureRect" parent="Profile Archive/MarginContainer/VBoxContainer/AnimatedSprite2D" unique_id=635581762]
-offset_left = -40.0
-offset_top = -40.0
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("3_pugqh")
-metadata/_edit_lock_ = true
+self_modulate = Color(0.30588236, 0.12941177, 0, 1)
+show_behind_parent = true
+offset_left = -35.5
+offset_top = -38.399994
+offset_right = 36.999992
+offset_bottom = 37.33333
+texture = ExtResource("3_dfqxb")
 
 [node name="MarginContainer2" type="MarginContainer" parent="Profile Archive/MarginContainer/VBoxContainer" unique_id=808723422]
 layout_mode = 2
@@ -144,15 +176,20 @@ layout_mode = 2
 texture = ExtResource("7_o7e4t")
 
 [node name="Info Button" type="Button" parent="Profile Archive/MarginContainer/VBoxContainer" unique_id=1666818700]
-custom_minimum_size = Vector2(0, 20)
+custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
-theme_override_fonts/font = ExtResource("3_c1vsh")
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 0.7647059, 0.5686275, 1)
+theme_override_fonts/font = ExtResource("2_sy8nj")
 theme_override_font_sizes/font_size = 43
+theme_override_styles/hover = SubResource("StyleBoxEmpty_sf3cn")
 text = "Profile"
 flat = true
+autowrap_mode = 3
 
 [node name="Passive Archive" type="PanelContainer" parent="." unique_id=1549407896]
+self_modulate = Color(0.87058824, 0.6627451, 0.5568628, 1)
 custom_minimum_size = Vector2(230, 280)
 layout_mode = 0
 offset_left = 448.0
@@ -186,13 +223,14 @@ texture = ExtResource("4_u7v7i")
 
 [node name="MarginContainer" type="MarginContainer" parent="Passive Archive/MarginContainer/VBoxContainer" unique_id=219766215]
 layout_mode = 2
-theme_override_constants/margin_left = 35
+theme_override_constants/margin_left = 48
 theme_override_constants/margin_right = 35
 
 [node name="AnimatedSprite2D" type="TextureRect" parent="Passive Archive/MarginContainer/VBoxContainer/MarginContainer" unique_id=1870504873]
 custom_minimum_size = Vector2(100, 130)
 layout_mode = 2
 texture = SubResource("AtlasTexture_u5yd8")
+stretch_mode = 4
 
 [node name="MarginContainer4" type="MarginContainer" parent="Passive Archive/MarginContainer/VBoxContainer" unique_id=1553736361]
 layout_mode = 2
@@ -207,15 +245,21 @@ layout_mode = 2
 texture = ExtResource("7_o7e4t")
 
 [node name="Passive Button" type="Button" parent="Passive Archive/MarginContainer/VBoxContainer" unique_id=1539128938]
-custom_minimum_size = Vector2(0, 20)
+custom_minimum_size = Vector2(0.52, 75)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.14509805, 0.12941177, 0.12156863, 1)
-theme_override_fonts/font = ExtResource("3_c1vsh")
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 0.7647059, 0.5686275, 1)
+theme_override_fonts/font = ExtResource("2_sy8nj")
 theme_override_font_sizes/font_size = 43
+theme_override_styles/normal = SubResource("StyleBoxEmpty_t0had")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_yqe1r")
 text = "Passives"
 flat = true
+autowrap_mode = 3
 
 [node name="Status_Spell Archive" type="PanelContainer" parent="." unique_id=1669654949]
+self_modulate = Color(0.87058824, 0.6627451, 0.5568628, 1)
 custom_minimum_size = Vector2(230, 280)
 layout_mode = 0
 offset_left = 768.0
@@ -228,24 +272,71 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_ft4kv")
 custom_minimum_size = Vector2(230, 280)
 layout_mode = 2
 theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 15
+theme_override_constants/margin_top = 35
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Status_Spell Archive/MarginContainer" unique_id=708168136]
+[node name="VBoxContainer" type="VBoxContainer" parent="Status_Spell Archive/MarginContainer" unique_id=2079515468]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 6
 
-[node name="AnimatedSprite2D" type="TextureRect" parent="Status_Spell Archive/MarginContainer/VBoxContainer" unique_id=350853377]
-custom_minimum_size = Vector2(180, 180)
+[node name="MarginContainer3" type="MarginContainer" parent="Status_Spell Archive/MarginContainer/VBoxContainer" unique_id=530743466]
 layout_mode = 2
-texture = ExtResource("3_pugqh")
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = -11
+theme_override_constants/margin_right = 10
+
+[node name="TextureRect" type="TextureRect" parent="Status_Spell Archive/MarginContainer/VBoxContainer/MarginContainer3" unique_id=890835357]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+texture = ExtResource("4_u7v7i")
+
+[node name="MarginContainer" type="MarginContainer" parent="Status_Spell Archive/MarginContainer/VBoxContainer" unique_id=837236964]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_right = 35
+
+[node name="AnimatedSprite2D" type="TextureRect" parent="Status_Spell Archive/MarginContainer/VBoxContainer/MarginContainer" unique_id=578131723]
+custom_minimum_size = Vector2(100, 130)
+layout_mode = 2
+texture = ExtResource("10_u5yd8")
+stretch_mode = 4
+
+[node name="MarginContainer4" type="MarginContainer" parent="Status_Spell Archive/MarginContainer/VBoxContainer" unique_id=1376834457]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 11
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = -14
+
+[node name="TextureRect" type="TextureRect" parent="Status_Spell Archive/MarginContainer/VBoxContainer/MarginContainer4" unique_id=1127333979]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+texture = ExtResource("7_o7e4t")
 
 [node name="Spell_Status Button" type="Button" parent="Status_Spell Archive/MarginContainer/VBoxContainer" unique_id=1638295244]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_c1vsh")
-text = "Spell and Status"
+mouse_default_cursor_shape = 2
+theme_override_colors/font_hover_color = Color(1, 0.76568663, 0.56753826, 1)
+theme_override_fonts/font = ExtResource("2_sy8nj")
+theme_override_font_sizes/font_size = 43
+theme_override_styles/normal = SubResource("StyleBoxEmpty_u7v7i")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ft4kv")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_ygasj")
+text = "Coin Spells/Status"
+autowrap_mode = 3
+
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=1145359900]
+position = Vector2(599, 318)
+scale = Vector2(17.921875, 10.046875)
+color = Color(0.99999994, 0.9152856, 0.46528572, 0.9411765)
+energy = 1.1
+texture = SubResource("GradientTexture2D_ft4kv")
+texture_scale = 0.46
+
+[node name="Vignette" type="CanvasModulate" parent="." unique_id=1473978648]
+color = Color(0.7360586, 0.6517471, 0.7562498, 1)
 
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="Profile Archive/MarginContainer/VBoxContainer/Info Button" to="." method="_on_info_button_pressed"]

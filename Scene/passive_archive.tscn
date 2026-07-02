@@ -2,12 +2,13 @@
 
 [ext_resource type="Script" uid="uid://qf6cqyf1iup" path="res://Script/passive_archive.gd" id="1_xj8pw"]
 [ext_resource type="Texture2D" uid="uid://ctr0wbykggnh2" path="res://Assets/Detailed_Scroll_1-Sheet.png" id="2_3jht6"]
+[ext_resource type="Texture2D" uid="uid://df3wtq16ab5xe" path="res://Assets/tutorialScreenBackground.png" id="2_4v5iy"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="2_mej11"]
 [ext_resource type="Texture2D" uid="uid://c7ppyupuuc7tu" path="res://Assets/Passive_Icons.png" id="3_kid0q"]
-[ext_resource type="StyleBox" uid="uid://bgkyr1rfshpsr" path="res://Assets/SavedTexture/Button_Default.tres" id="5_4v5iy"]
+[ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="5_1161a"]
 [ext_resource type="Texture2D" uid="uid://c5gnsbgjlhxq8" path="res://Assets/shelfsprite.png" id="5_onjbu"]
-[ext_resource type="StyleBox" uid="uid://g8acwjjmd4tf" path="res://Assets/SavedTexture/Button_Pressed.tres" id="6_gx6ft"]
-[ext_resource type="StyleBox" uid="uid://cxdkfhyiiy8y4" path="res://Assets/SavedTexture/Button_Hovered.tres" id="7_bkln2"]
+[ext_resource type="StyleBox" uid="uid://bhflgrh4jdv5m" path="res://Assets/SavedTexture/PressedButtonTexture.tres" id="6_4v5iy"]
+[ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="6_gx6ft"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kid0q"]
 atlas = ExtResource("2_3jht6")
@@ -156,6 +157,14 @@ region = Rect2(32, 64, 32, 32)
 atlas = ExtResource("3_kid0q")
 region = Rect2(128, 64, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_i7nic"]
+atlas = ExtResource("3_kid0q")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cln0i"]
+atlas = ExtResource("3_kid0q")
+region = Rect2(320, 0, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_lmdlf"]
 atlas = ExtResource("3_kid0q")
 region = Rect2(384, 32, 32, 32)
@@ -168,9 +177,17 @@ region = Rect2(352, 32, 32, 32)
 atlas = ExtResource("3_kid0q")
 region = Rect2(160, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_htbrr"]
+atlas = ExtResource("3_kid0q")
+region = Rect2(288, 0, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_lynyv"]
 atlas = ExtResource("3_kid0q")
 region = Rect2(64, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mihye"]
+atlas = ExtResource("3_kid0q")
+region = Rect2(160, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_moqtt"]
 atlas = ExtResource("3_kid0q")
@@ -180,6 +197,10 @@ region = Rect2(32, 0, 32, 32)
 atlas = ExtResource("3_kid0q")
 region = Rect2(0, 64, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_t2e83"]
+atlas = ExtResource("3_kid0q")
+region = Rect2(128, 0, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_k443e"]
 atlas = ExtResource("3_kid0q")
 region = Rect2(256, 0, 32, 32)
@@ -188,10 +209,6 @@ region = Rect2(256, 0, 32, 32)
 atlas = ExtResource("3_kid0q")
 region = Rect2(96, 32, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mihye"]
-atlas = ExtResource("3_kid0q")
-region = Rect2(160, 32, 32, 32)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_q7l5h"]
 atlas = ExtResource("3_kid0q")
 region = Rect2(96, 0, 32, 32)
@@ -199,10 +216,6 @@ region = Rect2(96, 0, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_n1d0r"]
 atlas = ExtResource("3_kid0q")
 region = Rect2(192, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_t2e83"]
-atlas = ExtResource("3_kid0q")
-region = Rect2(128, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_503ry"]
 atlas = ExtResource("3_kid0q")
@@ -228,10 +241,6 @@ region = Rect2(128, 32, 32, 32)
 atlas = ExtResource("3_kid0q")
 region = Rect2(192, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_htbrr"]
-atlas = ExtResource("3_kid0q")
-region = Rect2(288, 0, 32, 32)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_yj8d1"]
 atlas = ExtResource("3_kid0q")
 region = Rect2(64, 0, 32, 32)
@@ -243,10 +252,6 @@ region = Rect2(0, 32, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_srrq5"]
 atlas = ExtResource("3_kid0q")
 region = Rect2(64, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_i7nic"]
-atlas = ExtResource("3_kid0q")
-region = Rect2(32, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dpa0m"]
 atlas = ExtResource("3_kid0q")
@@ -290,7 +295,18 @@ animations = [{
 "name": &"Cash Out",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i7nic")
+}],
+"loop": true,
+"name": &"Coin Barrage",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cln0i")
+}],
 "loop": true,
 "name": &"Coin Snipe",
 "speed": 5.0
@@ -321,10 +337,26 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_htbrr")
+}],
+"loop": true,
+"name": &"Full Moon",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_lynyv")
 }],
 "loop": true,
 "name": &"Fully Paid",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mihye")
+}],
+"loop": true,
+"name": &"Gold Rush",
 "speed": 5.0
 }, {
 "frames": [{
@@ -345,6 +377,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_t2e83")
+}],
+"loop": true,
+"name": &"Keeper\'s Scroll",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_k443e")
 }],
 "loop": true,
@@ -361,14 +401,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_mihye")
-}],
-"loop": true,
-"name": &"Lucky Pair",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_q7l5h")
 }],
 "loop": true,
@@ -381,14 +413,6 @@ animations = [{
 }],
 "loop": true,
 "name": &"Magic Trick",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_t2e83")
-}],
-"loop": true,
-"name": &"Merchant\'s Scroll",
 "speed": 5.0
 }, {
 "frames": [{
@@ -441,14 +465,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_htbrr")
-}],
-"loop": true,
-"name": &"Simple Interest",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_yj8d1")
 }],
 "loop": true,
@@ -469,14 +485,6 @@ animations = [{
 }],
 "loop": true,
 "name": &"Tax Evasion",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_i7nic")
-}],
-"loop": true,
-"name": &"Triple Nickel",
 "speed": 5.0
 }, {
 "frames": [{
@@ -514,6 +522,19 @@ animations = [{
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1161a"]
 
+[sub_resource type="Gradient" id="Gradient_75buv"]
+offsets = PackedFloat32Array(0, 0.22742476)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_gx6ft"]
+gradient = SubResource("Gradient_75buv")
+width = 512
+height = 512
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
 [node name="Passive Archive" type="ColorRect" unique_id=11482961]
 anchors_preset = 15
 anchor_right = 1.0
@@ -522,6 +543,15 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.25882354, 0.15294118, 0.1882353, 1)
 script = ExtResource("1_xj8pw")
+
+[node name="Background" type="TextureRect" parent="." unique_id=658803514]
+self_modulate = Color(0.4567082, 0.32803312, 0.3535556, 1)
+layout_mode = 0
+offset_left = -76.0
+offset_top = 3.0
+offset_right = 1214.0
+offset_bottom = 649.0
+texture = ExtResource("2_4v5iy")
 
 [node name="Title" type="Label" parent="." unique_id=1047878985]
 custom_minimum_size = Vector2(300, 50)
@@ -540,23 +570,24 @@ uppercase = true
 [node name="CardView" type="Control" parent="." unique_id=1399195739]
 custom_minimum_size = Vector2(200, 250)
 anchors_preset = 0
-offset_left = 898.0
+offset_left = 879.0
 offset_top = 186.0
 offset_right = 1098.0
 offset_bottom = 436.0
 
-[node name="Sprite" type="AnimatedSprite2D" parent="CardView" unique_id=1505461609]
-position = Vector2(101.99999, 164.99998)
-scale = Vector2(6, 6)
+[node name="Sprite" type="AnimatedSprite2D" parent="CardView" unique_id=787927888]
+self_modulate = Color(0.9999997, 0.885292, 0.79720116, 1)
+position = Vector2(103.49995, 163)
+scale = Vector2(6.854166, 7.0000005)
 sprite_frames = SubResource("SpriteFrames_dc0ti")
 
-[node name="Icon" type="AnimatedSprite2D" parent="CardView" unique_id=1199046717]
-position = Vector2(101.99999, 75.99999)
+[node name="Icon" type="AnimatedSprite2D" parent="CardView" unique_id=506346453]
+position = Vector2(103, 57)
 scale = Vector2(6, 6)
 sprite_frames = SubResource("SpriteFrames_dl26b")
-animation = &"Merchant\'s Scroll"
+animation = &"Withdraw"
 
-[node name="CardName" type="Label" parent="CardView" unique_id=1220422312]
+[node name="CardName" type="Label" parent="CardView" unique_id=181208794]
 custom_minimum_size = Vector2(200, 30)
 layout_mode = 0
 offset_top = 187.0
@@ -564,13 +595,13 @@ offset_right = 200.0
 offset_bottom = 204.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("2_mej11")
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("6_gx6ft")
+theme_override_font_sizes/font_size = 40
 text = "AAA"
 horizontal_alignment = 1
 vertical_alignment = 3
 
-[node name="Description" type="Label" parent="CardView" unique_id=1382883120]
+[node name="Description" type="Label" parent="CardView" unique_id=1311393905]
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 0
 offset_left = 5.0
@@ -579,8 +610,11 @@ offset_right = 205.0
 offset_bottom = 326.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = 2
+theme_override_constants/shadow_offset_x = 7
+theme_override_constants/outline_size = 1
+theme_override_constants/shadow_outline_size = 6
 theme_override_fonts/font = ExtResource("2_mej11")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 22
 text = "AAA"
 horizontal_alignment = 3
 autowrap_mode = 2
@@ -592,12 +626,13 @@ offset_left = 26.0
 offset_top = 23.0
 offset_right = 126.0
 offset_bottom = 87.0
+mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_mej11")
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = ExtResource("5_4v5iy")
-theme_override_styles/pressed = ExtResource("6_gx6ft")
-theme_override_styles/hover = ExtResource("7_bkln2")
-text = "Back"
+theme_override_styles/normal = ExtResource("5_1161a")
+theme_override_styles/pressed = ExtResource("6_4v5iy")
+theme_override_styles/hover = ExtResource("5_1161a")
+text = "BACK"
 
 [node name="B-RANK" type="Button" parent="." unique_id=2063861164]
 custom_minimum_size = Vector2(150, 50)
@@ -606,12 +641,12 @@ offset_left = 30.0
 offset_top = 139.0
 offset_right = 180.0
 offset_bottom = 189.0
+mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_mej11")
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = ExtResource("5_4v5iy")
-theme_override_styles/pressed = ExtResource("6_gx6ft")
-theme_override_styles/hover = ExtResource("7_bkln2")
-toggle_mode = true
+theme_override_styles/normal = ExtResource("5_1161a")
+theme_override_styles/pressed = ExtResource("6_4v5iy")
+theme_override_styles/hover = ExtResource("5_1161a")
 text = "B - RANK"
 
 [node name="A-RANK" type="Button" parent="." unique_id=951600385]
@@ -621,12 +656,12 @@ offset_left = 30.0
 offset_top = 217.0
 offset_right = 180.0
 offset_bottom = 267.0
+mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_mej11")
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = ExtResource("5_4v5iy")
-theme_override_styles/pressed = ExtResource("6_gx6ft")
-theme_override_styles/hover = ExtResource("7_bkln2")
-toggle_mode = true
+theme_override_styles/normal = ExtResource("5_1161a")
+theme_override_styles/pressed = ExtResource("6_4v5iy")
+theme_override_styles/hover = ExtResource("5_1161a")
 text = "A - RANK"
 
 [node name="S-RANK" type="Button" parent="." unique_id=1590904088]
@@ -636,20 +671,20 @@ offset_left = 30.0
 offset_top = 292.0
 offset_right = 180.0
 offset_bottom = 342.0
+mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_mej11")
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = ExtResource("5_4v5iy")
-theme_override_styles/pressed = ExtResource("6_gx6ft")
-theme_override_styles/hover = ExtResource("7_bkln2")
-toggle_mode = true
+theme_override_styles/normal = ExtResource("5_1161a")
+theme_override_styles/pressed = ExtResource("6_4v5iy")
+theme_override_styles/hover = ExtResource("5_1161a")
 text = "S - RANK"
 
 [node name="Frame" type="TextureRect" parent="." unique_id=1844933160]
 custom_minimum_size = Vector2(580, 500)
 layout_mode = 0
-offset_left = 169.0
+offset_left = 138.0
 offset_top = 2.0
-offset_right = 875.0
+offset_right = 844.0
 offset_bottom = 643.0
 texture = ExtResource("5_onjbu")
 
@@ -660,10 +695,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -327.0
-offset_top = -226.0
-offset_right = 281.0
-offset_bottom = 222.0
+offset_left = -367.0
+offset_top = -242.0
+offset_right = 241.0
+offset_bottom = 228.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_1161a")
@@ -677,6 +712,17 @@ theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 columns = 3
 metadata/_edit_lock_ = true
+
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=571848811]
+position = Vector2(577, 318)
+scale = Vector2(17.921875, 10.046875)
+color = Color(1, 0.9019608, 0.5647059, 0.61960787)
+energy = 1.05
+texture = SubResource("GradientTexture2D_gx6ft")
+texture_scale = 0.46
+
+[node name="Vignette" type="CanvasModulate" parent="." unique_id=214457808]
+color = Color(0.7411765, 0.67058825, 0.72156864, 1)
 
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="B-RANK" to="." method="_on_brank_pressed"]

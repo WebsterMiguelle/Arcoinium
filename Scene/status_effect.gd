@@ -62,7 +62,7 @@ var STATUS_DATA = {
 	"desc": "100% Gold Flip Rate this turn.",
 	"color": "#e5a400"},
 	17: {"name": "RADIANT",
-	"desc": "505 Chance for each Coin to be SHINED after ending the turn.",
+	"desc": "50% Chance for each Coin to be SHINED after ending the turn.",
 	"color": "#ff8d71"},
 	
 	#SHOPKEEPER
@@ -187,7 +187,7 @@ func update_desc(stack):
 	"color": "#f2aa00"
 	},
 	23:{"name": "FOCUSED",
-	"desc": "Immune to Crowd Control Debuffs.",
+	"desc": "Immune to Control Spells.",
 	"color": "#0085d1"
 	}, 
 }

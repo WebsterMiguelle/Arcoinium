@@ -162,3 +162,11 @@ func _on_credits_button_mouse_entered() -> void:
 func _on_credits_button_mouse_exited() -> void:
 	animate_hover(credits_button, credits_base_y) 
 	credits_label.visible = false
+
+
+func _on_archive_button_mouse_entered() -> void:
+	if dialogue != null and is_instance_valid(dialogue):
+		dialogue.queue_free()
+		dialogue = null
+	_spawn_dialogue()
+	_play("archive")

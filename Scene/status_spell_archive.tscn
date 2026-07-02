@@ -2,11 +2,13 @@
 
 [ext_resource type="Script" uid="uid://cdqgsasbjpq42" path="res://Script/status_spell_archive.gd" id="1_34ewj"]
 [ext_resource type="Texture2D" uid="uid://ctr0wbykggnh2" path="res://Assets/Detailed_Scroll_1-Sheet.png" id="2_24qry"]
-[ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="2_70jjv"]
+[ext_resource type="Texture2D" uid="uid://df3wtq16ab5xe" path="res://Assets/tutorialScreenBackground.png" id="2_gceok"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="2_vhq4y"]
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="3_70jjv"]
 [ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="3_gceok"]
 [ext_resource type="StyleBox" uid="uid://bhflgrh4jdv5m" path="res://Assets/SavedTexture/PressedButtonTexture.tres" id="4_hn8hw"]
+[ext_resource type="Texture2D" uid="uid://c5gnsbgjlhxq8" path="res://Assets/shelfsprite.png" id="6_vhq4y"]
+[ext_resource type="SpriteFrames" uid="uid://dafl661xkwq8o" path="res://Assets/PassivesIcons.tres" id="9_hn8hw"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wid86"]
 atlas = ExtResource("2_24qry")
@@ -23,6 +25,19 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Gradient" id="Gradient_75buv"]
+offsets = PackedFloat32Array(0, 0.22742476)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_hn8hw"]
+gradient = SubResource("Gradient_75buv")
+width = 512
+height = 512
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
 [node name="Status_Spell Archive" type="ColorRect" unique_id=1084128084]
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,33 +47,44 @@ grow_vertical = 2
 color = Color(0.12591085, 0.12591085, 0.12591082, 1)
 script = ExtResource("1_34ewj")
 
+[node name="Background" type="TextureRect" parent="." unique_id=881396847]
+self_modulate = Color(0.4930908, 0.3121703, 0.21410489, 1)
+layout_mode = 0
+offset_left = -76.0
+offset_top = 3.0
+offset_right = 1214.0
+offset_bottom = 649.0
+texture = ExtResource("2_gceok")
+
 [node name="Coin Status" type="Button" parent="." unique_id=1379363037]
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 0
-offset_left = 55.0
-offset_top = 133.0
-offset_right = 255.0
-offset_bottom = 183.0
+offset_left = 33.0
+offset_top = 134.0
+offset_right = 233.0
+offset_bottom = 187.0
+mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_vhq4y")
 theme_override_font_sizes/font_size = 25
 theme_override_styles/normal = ExtResource("3_gceok")
 theme_override_styles/pressed = ExtResource("4_hn8hw")
 theme_override_styles/hover = ExtResource("3_gceok")
-text = "Status Effects"
+text = "COIN STATUS"
 
 [node name="Entity" type="Button" parent="." unique_id=1745311677]
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 0
-offset_left = 54.0
-offset_top = 209.0
-offset_right = 254.0
-offset_bottom = 259.0
+offset_left = 32.0
+offset_top = 210.0
+offset_right = 232.0
+offset_bottom = 263.0
+mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_vhq4y")
 theme_override_font_sizes/font_size = 25
 theme_override_styles/normal = ExtResource("3_gceok")
 theme_override_styles/pressed = ExtResource("4_hn8hw")
 theme_override_styles/hover = ExtResource("3_gceok")
-text = "Entity Effect"
+text = "COIN SPELLS"
 
 [node name="Back" type="Button" parent="." unique_id=1924394241]
 custom_minimum_size = Vector2(100, 50)
@@ -67,29 +93,30 @@ offset_left = 32.0
 offset_top = 33.0
 offset_right = 132.0
 offset_bottom = 89.0
+mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_vhq4y")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = ExtResource("3_gceok")
 theme_override_styles/pressed = ExtResource("4_hn8hw")
 theme_override_styles/hover = ExtResource("3_gceok")
-text = "Back"
+text = "BACK"
 
 [node name="Frame" type="TextureRect" parent="." unique_id=723124363]
 custom_minimum_size = Vector2(400, 400)
 layout_mode = 0
-offset_left = 291.0
-offset_top = 110.0
-offset_right = 841.0
-offset_bottom = 610.0
-texture = ExtResource("2_70jjv")
+offset_left = 189.0
+offset_top = -1.0
+offset_right = 896.3
+offset_bottom = 642.0
+texture = ExtResource("6_vhq4y")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1862214172]
 custom_minimum_size = Vector2(480, 440)
 layout_mode = 0
-offset_left = 327.0
-offset_top = 144.0
-offset_right = 807.0
-offset_bottom = 584.0
+offset_left = 301.0
+offset_top = 84.0
+offset_right = 782.0
+offset_bottom = 554.0
 
 [node name="GridContainer" type="GridContainer" parent="ScrollContainer" unique_id=835719774]
 layout_mode = 2
@@ -106,50 +133,62 @@ offset_right = 1104.0
 offset_bottom = 471.0
 
 [node name="Sprite" type="AnimatedSprite2D" parent="CardView" unique_id=1068468462]
+self_modulate = Color(1, 0.65882355, 0.5137255, 1)
 position = Vector2(92, 120)
 scale = Vector2(6, 6)
 sprite_frames = SubResource("SpriteFrames_5pbod")
 
 [node name="Icon" type="Node2D" parent="CardView" unique_id=1930209707]
 
-[node name="CardName" type="Label" parent="CardView" unique_id=1828618820]
-custom_minimum_size = Vector2(200, 20)
+[node name="SpellIcon" type="AnimatedSprite2D" parent="CardView" unique_id=1349155446]
+position = Vector2(92.00002, 28.999992)
+scale = Vector2(5.9531226, 5.9531226)
+sprite_frames = ExtResource("9_hn8hw")
+animation = &"NONE"
+
+[node name="CardName" type="Label" parent="CardView" unique_id=47587638]
+custom_minimum_size = Vector2(200, 30)
 layout_mode = 0
-offset_left = -10.0
-offset_top = 134.0
-offset_right = 190.0
-offset_bottom = 176.0
+offset_left = -12.0
+offset_top = 133.0
+offset_right = 188.0
+offset_bottom = 173.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_70jjv")
+theme_override_font_sizes/font_size = 40
 text = "AAA"
 horizontal_alignment = 1
 vertical_alignment = 3
 
-[node name="Description" type="Label" parent="CardView" unique_id=2078480707]
-custom_minimum_size = Vector2(200, 100)
+[node name="Description" type="Label" parent="CardView" unique_id=696132883]
+custom_minimum_size = Vector2(200, 137.715)
 layout_mode = 0
 offset_left = -7.0
-offset_top = 185.0
+offset_top = 172.0
 offset_right = 193.0
-offset_bottom = 285.0
+offset_bottom = 272.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
+theme_override_constants/line_spacing = 2
+theme_override_constants/shadow_offset_x = 7
+theme_override_constants/outline_size = 1
+theme_override_constants/shadow_outline_size = 6
+theme_override_fonts/font = ExtResource("2_vhq4y")
+theme_override_font_sizes/font_size = 22
 text = "AAA"
-horizontal_alignment = 3
-vertical_alignment = 3
+autowrap_mode = 2
 
-[node name="Title" type="Label" parent="." unique_id=1994822205]
-custom_minimum_size = Vector2(600, 100)
-layout_mode = 0
-offset_left = 275.0
-offset_top = 4.0
-offset_right = 891.0
-offset_bottom = 114.0
-theme_override_fonts/font = ExtResource("3_70jjv")
-theme_override_font_sizes/font_size = 90
-text = "Status and Spell"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=235474018]
+position = Vector2(523, 321)
+scale = Vector2(17.921875, 10.046875)
+color = Color(0.99999994, 0.9152856, 0.46528572, 0.9411765)
+energy = 1.1
+texture = SubResource("GradientTexture2D_hn8hw")
+texture_scale = 0.46
+
+[node name="Vignette" type="CanvasModulate" parent="." unique_id=614030109]
+position = Vector2(-76, 3)
+color = Color(0.7360586, 0.6517471, 0.7562498, 1)
 
 [connection signal="pressed" from="Coin Status" to="." method="_on_coin_status_pressed"]
 [connection signal="pressed" from="Entity" to="." method="_on_entity_pressed"]

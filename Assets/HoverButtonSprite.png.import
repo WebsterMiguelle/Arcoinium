@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ct2xxrdar55c8"
-path="res://.godot/imported/ButtonSprite.png-c432e0c7f71a99adfa0ad5de58836325.ctex"
+uid="uid://f8kisooabj1h"
+path="res://.godot/imported/HoverButtonSprite.png-cc55ff4c023a653945593bb5183b71f7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/ButtonSprite.png"
-dest_files=["res://.godot/imported/ButtonSprite.png-c432e0c7f71a99adfa0ad5de58836325.ctex"]
+source_file="res://Assets/HoverButtonSprite.png"
+dest_files=["res://.godot/imported/HoverButtonSprite.png-cc55ff4c023a653945593bb5183b71f7.ctex"]
 
 [params]
 

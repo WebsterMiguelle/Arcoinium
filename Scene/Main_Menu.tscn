@@ -296,7 +296,7 @@ position = Vector2(48.000015, 48)
 rotation = 1.5707964
 scale = Vector2(5.972351, 6.026663)
 sprite_frames = SubResource("SpriteFrames_i4xaw")
-animation = &"coin_flip_up"
+animation = &"coin_flipping"
 metadata/_edit_lock_ = true
 
 [node name="Tutorial" type="Button" parent="." unique_id=2050805658]
@@ -328,7 +328,7 @@ position = Vector2(48, 48.000004)
 rotation = 1.5707964
 scale = Vector2(6.008556, 5.954246)
 sprite_frames = SubResource("SpriteFrames_i4xaw")
-animation = &"gold_coin_flip"
+animation = &"coin_flipping"
 metadata/_edit_lock_ = true
 
 [node name="SoundManager" type="Node2D" parent="." unique_id=1880931932]

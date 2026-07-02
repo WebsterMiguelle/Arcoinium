@@ -265,7 +265,7 @@ theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = ExtResource("3_6q76i")
 theme_override_styles/pressed = ExtResource("4_m7jr5")
 theme_override_styles/hover = ExtResource("3_6q76i")
-text = "Back"
+text = "BACK"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=817994196]
 custom_minimum_size = Vector2(240, 500)

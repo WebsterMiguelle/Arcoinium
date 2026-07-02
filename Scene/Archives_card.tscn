@@ -221,6 +221,7 @@ autowrap_mode = 3
 position = Vector2(73, 73)
 scale = Vector2(3, 3)
 sprite_frames = ExtResource("4_m5yap")
+animation = &"Radiant"
 
 [node name="IconContainer" type="Node2D" parent="." unique_id=1681592906]
 position = Vector2(73, 73)

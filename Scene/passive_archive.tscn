@@ -576,7 +576,7 @@ offset_right = 1098.0
 offset_bottom = 436.0
 
 [node name="Sprite" type="AnimatedSprite2D" parent="CardView" unique_id=787927888]
-self_modulate = Color(1, 0.705928, 0.46365917, 1)
+self_modulate = Color(0.9999997, 0.885292, 0.79720116, 1)
 position = Vector2(103.49995, 163)
 scale = Vector2(6.854166, 7.0000005)
 sprite_frames = SubResource("SpriteFrames_dc0ti")
@@ -632,7 +632,7 @@ theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = ExtResource("5_1161a")
 theme_override_styles/pressed = ExtResource("6_4v5iy")
 theme_override_styles/hover = ExtResource("5_1161a")
-text = "Back"
+text = "BACK"
 
 [node name="B-RANK" type="Button" parent="." unique_id=2063861164]
 custom_minimum_size = Vector2(150, 50)
@@ -698,7 +698,7 @@ anchor_bottom = 0.5
 offset_left = -367.0
 offset_top = -242.0
 offset_right = 241.0
-offset_bottom = 222.0
+offset_bottom = 228.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_1161a")

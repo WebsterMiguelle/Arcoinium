@@ -1002,7 +1002,6 @@ func start_turn():
 				if current_played_coin == max_playable_coins: is_deck_full = true
 				if is_deck_full:
 					pos = main.coin_deck.get_reserve_slot()
-					current_reserve += 1
 				else:
 					current_reserve -= 1
 					current_played_coin += 1

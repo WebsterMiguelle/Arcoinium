@@ -42,10 +42,10 @@
 [ext_resource type="Texture2D" uid="uid://cpm417gdi8hph" path="res://Assets/shopMaster-Sheet.png" id="36_t47jc"]
 [ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="39_2uys4"]
 [ext_resource type="Texture2D" uid="uid://c2kfvnraituiu" path="res://Assets/reserve_area_middle.png" id="41_0rhr1"]
-[ext_resource type="Texture2D" uid="uid://sabqjf666id4" path="res://Assets/reserve_area_outside.png" id="42_xgpyk"]
-[ext_resource type="Texture2D" uid="uid://b16kddlletwt1" path="res://Assets/ReserveButton.png" id="43_va4xf"]
 [ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="42_elt7x"]
+[ext_resource type="Texture2D" uid="uid://sabqjf666id4" path="res://Assets/reserve_area_outside.png" id="42_xgpyk"]
 [ext_resource type="Texture2D" uid="uid://dms5d0v8hxacy" path="res://Assets/EndScrollTextSeparator.png" id="43_0rhr1"]
+[ext_resource type="Texture2D" uid="uid://b16kddlletwt1" path="res://Assets/ReserveButton.png" id="43_va4xf"]
 [ext_resource type="Script" uid="uid://cjx7ln7nt56ad" path="res://Scene/particle_manager.gd" id="48_xef3h"]
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_hspdg"]

@@ -482,6 +482,7 @@ func _ready() -> void:
 	ui_layer.scale = Vector2(0.8, 0.8) 
 	ui_layer.pivot_offset = ui_layer.size / 2 
 	dark_overlay.modulate.a = 0.0
+	GameSettings.apply_lights_to_group()
 	
 	for child in left_vbox.get_children():
 		child.modulate.a = 0.0

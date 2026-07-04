@@ -48,7 +48,7 @@ script = ExtResource("1_5tsft")
 
 [node name="Vignette" type="Node" parent="." unique_id=1512864058]
 
-[node name="Vignetter" type="PointLight2D" parent="Vignette" unique_id=1852200988]
+[node name="Vignetter" type="PointLight2D" parent="Vignette" unique_id=1852200988 groups=["point_light"]]
 position = Vector2(291, 81)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.9019608, 0.5647059, 0.61960787)

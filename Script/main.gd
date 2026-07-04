@@ -47,6 +47,7 @@ const BOSS_DEFEATED = preload("uid://pbrojuc0bit1")
 @onready var loan_enter: Marker2D = $"Battle UI/LoanShark/Loan Enter"
 
 var is_game_over = false
+var is_map_progression = false
 var is_boss_defeated = false
 
 const DEBT_EFFECT_PARTICLE = preload("uid://c52tpyupg2ynl")
@@ -361,7 +362,7 @@ func _ready():
 
 	
 func _unhandled_input(event: InputEvent) -> void:
-	if is_boss_defeated and is_game_over:
+	if is_boss_defeated or is_game_over or is_map_progression:
 		return
 	if !event.is_action_pressed("ui_cancel"): # ESC key
 		return
@@ -996,6 +997,7 @@ func progression_after_victory():
 		shopkeeper.combat_won += 1
 		if shopkeeper.combat_won == 3:
 			shopkeeper.trust += 1
+			main.player.trigger_temp_passive("merchant_scroll","SHOPKEEPER TRUST +1")
 		shopkeeper.refresh_start_of_battle_stats()
 
 	#var map = MAP_SCENE.instantiate()
@@ -1208,6 +1210,7 @@ func _on_re_flip_mouse_exited() -> void:
 	reflip_sprite.pause()
 
 func _play_progression_cutscene(from_index: int, to_index: int) -> void:
+	is_map_progression = true
 	PauseManager.pause()
 	var screen_height = get_viewport_rect().size.y 
 	
@@ -1259,6 +1262,7 @@ func _play_progression_cutscene(from_index: int, to_index: int) -> void:
 	await slide_out.finished
 
 	progression_map.visible = false
+	is_map_progression = false
 
 
 
@@ -1568,10 +1572,10 @@ func boss_dramatic_slowdown() -> void:
 	for i in range(20):
 		sound_manager.play_sound(CRITICAL)
 		particle_manager.spawn_particle(SPEND_EXPLOSION_PARTICLE,enemy_portrait.global_position)
-		particle_manager.spawn_particle(GAIN_EFFECT_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,1000)))
-		particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,1000)))
-		particle_manager.spawn_particle(SPEND_DAMAGE_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,1000)))
-		particle_manager.spawn_particle(INFLATION_PARTICLE,Vector2(randi_range(0,1000),randi_range(0,1000)))
+		particle_manager.spawn_particle(GAIN_EFFECT_PARTICLE,Vector2(randi_range(0,1500),randi_range(0,1500)))
+		particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,Vector2(randi_range(0,1500),randi_range(0,1500)))
+		particle_manager.spawn_particle(SPEND_DAMAGE_PARTICLE,Vector2(randi_range(0,1500),randi_range(0,1500)))
+		particle_manager.spawn_particle(INFLATION_PARTICLE,Vector2(randi_range(0,1500),randi_range(0,1500)))
 		particle_manager.spawn_particle(COIN_BARRAGE_PARTICLE,enemy_portrait.global_position)
 		await get_tree().create_timer(0.2, true).timeout
 		camera_2d.add_trauma(2.0)

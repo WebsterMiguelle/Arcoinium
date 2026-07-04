@@ -240,14 +240,14 @@ func setup(m,enemy):
 	match enemy:
 		Enemy.MAGE:
 			if !greed:
-				max_coin = 200
-				coin = 12
+				max_coin = 10
+				coin = 10
 				max_playable_coins = 1
 				silver_flip_rate = 0.0
 				gold_flip_rate = 0.0
 				bounty = 25
 			else:
-				max_coin = 200
+				max_coin = 30
 				coin = 30
 				max_playable_coins = 6
 				silver_flip_rate = 0.0
@@ -256,14 +256,14 @@ func setup(m,enemy):
 			type = Enemy.MAGE
 		Enemy.DWARF:
 			if !greed:
-				max_coin = 200
+				max_coin = 12
 				coin = 12
 				max_playable_coins = 2
 				silver_flip_rate = 0.0
 				gold_flip_rate = 0.0
 				bounty = 25
 			else:
-				max_coin = 999
+				max_coin = 40
 				coin = 40
 				max_playable_coins = 8
 				silver_flip_rate = 0.0
@@ -274,7 +274,7 @@ func setup(m,enemy):
 			type = Enemy.COLLECTOR
 			has_audit = true
 			if !greed:
-				max_coin = 200
+				max_coin = 50
 				coin = 50
 				max_playable_coins = 6
 				silver_flip_rate = 0.5
@@ -284,7 +284,7 @@ func setup(m,enemy):
 			else:
 				main.player.sealed = true
 				unchargable = true
-				max_coin = 100
+				max_coin = 80
 				coin = 80
 				max_playable_coins = 12
 				silver_flip_rate = 0.8
@@ -296,7 +296,7 @@ func setup(m,enemy):
 		Enemy.TRADER:
 			has_benchmark = true
 			if !greed:
-				max_coin = 200
+				max_coin = 40
 				coin = 40
 				max_playable_coins = 2
 				silver_flip_rate = 0.2
@@ -306,7 +306,7 @@ func setup(m,enemy):
 				has_fair_trade = true
 				trigger_enemy_passive("BENCHMARK: The Trader will Copy your Number of Played Coins.", 3.0)
 			else:
-				max_coin = 200
+				max_coin = 60
 				coin = 60
 				max_playable_coins = 2
 				silver_flip_rate = 0.8
@@ -317,7 +317,7 @@ func setup(m,enemy):
 				trigger_enemy_passive("GREED: The Trader will apply VOID Every turn.", 3.0)
 		Enemy.THRIFTER:
 			if !greed:
-				max_coin = 200
+				max_coin = 70
 				coin = 70
 				max_playable_coins = 8
 				silver_flip_rate = 0.5
@@ -327,8 +327,8 @@ func setup(m,enemy):
 				has_learn_to_save = true
 				main.player.has_learn_to_save = true
 			else:
-				max_coin = 120
-				coin = 120
+				max_coin = 100
+				coin = 100
 				max_playable_coins = 12
 				silver_flip_rate = 1
 				gold_flip_rate = 0.2
@@ -340,7 +340,7 @@ func setup(m,enemy):
 			if !greed:
 				settle = 100
 				max_coin = 200
-				coin = 120
+				coin = 200
 				max_playable_coins = 16
 				silver_flip_rate = 1
 				gold_flip_rate = 0
@@ -357,11 +357,11 @@ func setup(m,enemy):
 				gold_flip_rate = 1
 				bounty = 150
 				type = Enemy.ARISTOCRAT
-				debt = 180
+				debt = 200
 				trigger_enemy_passive("GREED: When The Aristocrat settled all her DEBT, Deal 500 Damage.", 4.0)
 		Enemy.SUN_CASTER:
 			if !greed:
-				max_coin = 200
+				max_coin = 120
 				coin = 120
 				max_playable_coins = 12
 				silver_flip_rate = 1
@@ -384,7 +384,7 @@ func setup(m,enemy):
 				trigger_enemy_passive("You have GUARANTEED SUN FLIPS. Avoid Playing 9 or More SUN Coins.", 5.0)
 		Enemy.MOON_CASTER:
 			if !greed:
-				max_coin = 200
+				max_coin = 120
 				coin = 120
 				max_playable_coins = 12
 				silver_flip_rate = 1
@@ -407,7 +407,7 @@ func setup(m,enemy):
 		Enemy.TWILIGHT_SAGE:
 			has_empowered = true
 			if !greed:
-				max_coin = 500
+				max_coin = 300
 				coin = 300
 				max_playable_coins = 8
 				silver_flip_rate = 1
@@ -479,7 +479,7 @@ func flip():
 	c.add_to_group("enemy_coins")
 	main.add_child(c);
 	main.particle_manager.spawn_particle(COIN_ADD_PARTICLE,c.global_position)
-	var loan_damage:int = ceil(debt * 0.03)
+	var loan_damage:int = ceil(debt * 0.02)
 	if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
 		var bite = LOAN_SHARK_BITE.instantiate()
 		bite.global_position = main.enemy_portrait.global_position
@@ -488,12 +488,16 @@ func flip():
 		add_child(bite)
 		
 		take_damage(loan_damage)
+		main.player.gain += loan_damage
+		create_floating_label(loan_damage,"GAIN","PLAYER")
+		main.total_gain += loan_damage
 		main.total_damage_dealt += loan_damage
 		create_floating_label(loan_damage,"DAMAGE","ENEMY")
 		main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
 		main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 		main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 		main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
+		debt -= loan_damage
 
 
 func enemy_coin_calculation():
@@ -862,8 +866,8 @@ func start_enemy_turn():
 	
 	main.turn_calculation.text = ""
 	
-	var flip_speed = 0.4
-	if greed: flip_speed = 0.2
+	var flip_speed = 0.3
+	if greed: flip_speed = 0.15
 	#FLIP COINS
 	if main.player.coin == 0:
 		return
@@ -911,7 +915,7 @@ func end_enemy_turn():
 			main.sound_manager.play_sound(ALL_IN_STAMP)
 			main.sound_manager.play_sound(COIN_FLIP)
 			enemy_coin_calculation()
-			var loan_damage:int = ceil(debt * 0.03)
+			var loan_damage:int = ceil(debt * 0.02)
 			if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
 				var bite = LOAN_SHARK_BITE.instantiate()
 				bite.global_position = main.enemy_portrait.global_position
@@ -920,11 +924,15 @@ func end_enemy_turn():
 				add_child(bite)
 				take_damage(loan_damage)
 				main.total_damage_dealt += loan_damage
+				main.player.gain += loan_damage
+				create_floating_label(loan_damage,"GAIN","PLAYER")
+				main.total_gain += loan_damage
 				create_floating_label(loan_damage,"DAMAGE","ENEMY")
 				main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
 				main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 				main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 				main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
+				debt -= loan_damage
 			await get_tree().create_timer(0.1,true).timeout
 	if has_dazzle:
 		await get_tree().create_timer(0.6, true).timeout
@@ -937,7 +945,7 @@ func end_enemy_turn():
 			var shine_chance = randi_range(0,1)
 			if shine_chance == 1:
 				main.sound_manager.play_sound(COIN_FLIP)
-				var loan_damage:int = ceil(debt * 0.03)
+				var loan_damage:int = ceil(debt * 0.02)
 				if coin > 0 and main.player.has_loan_shark and debt > 0 and loan_damage >= 1:
 					var bite = LOAN_SHARK_BITE.instantiate()
 					bite.global_position = main.enemy_portrait.global_position
@@ -948,10 +956,15 @@ func end_enemy_turn():
 					take_damage(loan_damage)
 					main.total_damage_dealt += loan_damage
 					create_floating_label(loan_damage,"DAMAGE","ENEMY")
+					
+					main.player.gain += loan_damage
+					create_floating_label(loan_damage,"GAIN","PLAYER")
+					main.total_gain += loan_damage
 					main.player.trigger_temp_passive("loan_shark","LOAN SHARK")
 					main.particle_manager.spawn_particle(DEBT_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
 					main.sound_manager.play_sound(PASSIVE_LOAN_SHARK)
+					debt -= loan_damage
 				c.status = CoinStatus.SHINED
 				c.initial_status = c.status
 				c.refresh_sprite()

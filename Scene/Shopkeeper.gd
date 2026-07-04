@@ -815,10 +815,11 @@ func end_turn():
 		main.add_child(latest_pair_left_coin)
 		if main.player.has_deposit:
 			main.player.trigger_temp_passive("deposit","DEPOSIT")
-			if randi_range(1,5) == 1:
+			if randi_range(1,10) == 1:
 				latest_pair_left_coin.is_stamped = true
 			create_floating_label(1,"GAIN","PLAYER")
 			main.player.gain += 2
+			main.total_gain += 2
 		if main.player.has_coin_snipe:
 			main.player.trigger_temp_passive("coin_snipe","COIN SNIPE")
 			main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
@@ -838,10 +839,11 @@ func end_turn():
 		main.player.current_reserve += 2
 		if main.player.has_deposit:
 			main.player.trigger_temp_passive("deposit","DEPOSIT")
-			if randi_range(1,5) == 1:
+			if randi_range(1,10) == 1:
 				latest_pair_right_coin.is_stamped = true
 			create_floating_label(1,"GAIN","PLAYER")
 			main.player.gain += 2
+			main.total_gain += 2
 		if main.player.has_coin_snipe:
 			main.player.trigger_temp_passive("coin_snipe","COIN SNIPE")
 			main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)

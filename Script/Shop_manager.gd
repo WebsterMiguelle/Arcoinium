@@ -55,7 +55,7 @@ var all_cards = [
 	{"id": 16, "name": "Magic Trick", "rank": "A", "desc": "If you played 8+ Coins, the 1st Coin Pair generates copies of itself into the 2nd, 3rd, and 4th Pair at the end of the turn."},
 	{"id": 17, "name": "Tax Evasion", "rank": "A", "desc": "When DEBT is applied to you, halve it, return the removed DEBT to the Enemy, and deal DAMAGE equal to the returned DEBT."},
 	{"id": 18, "name": "Payback", "rank": "A", "desc": "After taking Heavy Damage, generate 6 SHINED GOLD SUN COINs."},
-		{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "Loan Shark accompanies you. For each Enemy Coin Flip, Loan Shark detonates 3% of their DEBT as DAMAGE."},
+	{"id": 19, "name": "Loan Shark", "rank": "A", "desc": "Loan Shark accompanies you. For each Enemy Coin Flip, Loan Shark bites off 2% of their DEBT as DAMAGE and converts it to GAIN."},
 	{"id": 20, "name": "Spare Change", "rank": "A", "desc": "Re-Flipping retrieves all RESERVED Coins. Retrieving a STAMPED Coin restores 1 Re-Flip."},
 	{"id": 21, "name": "Coin Barrage", "rank": "A", "desc": "+20% Silver Flip Rate. Every time you Flip 10 SILVER/GOLD Coins in a turn, deal 10 Damage."},
 
@@ -64,7 +64,7 @@ var all_cards = [
 	{"id": 24, "name": "Bankrupt", "rank": "S", "desc": "Your Coin Bar will only flip VOIDED Coins. For each VOIDED Coin Played/Cleansed, apply 2 DEBT to Self/Enemy. Execute the enemy if their DEBT is higher than their Coins."},
 	{"id": 25, "name": "All In", "rank": "S", "desc": "If the Arcane Circle is empty at End Turn, automatically Flip 20 SILVER Coins with a 50% Chance of being STAMPED. Each Statused Coin flipped this way deals 3 DAMAGE."},
 	{"id": 26, "name": "Withdraw", "rank": "B", "desc": "Removing a RESERVED Coin deals 1 DAMAGE. Statused Coins deal 3 DAMAGE instead."},
-	{"id": 27, "name": "Deposit", "rank": "A", "desc": "Max Reserve +2. RESERVING a Coin applies 2 GAIN with a 20% Chance to be STAMPED."},
+	{"id": 27, "name": "Deposit", "rank": "A", "desc": "Max Reserve +3. RESERVING a Coin applies 2 GAIN with a 10% Chance to be STAMPED."},
 	{"id": 28, "name": "Dividend", "rank": "A", "desc": "Each RESERVED Coin has a 30% chance to generate a copy of itself next turn."},
 	{"id": 29, "name": "Cash Out", "rank": "S", "desc": "If there are 4 or more RESERVED Coins at the end of a Player or Enemy Turn, gain an EXTRA TURN. During Extra Turns, you can only Re-Flip and cannot gain additional Extra Turns."}
 ];
@@ -199,6 +199,8 @@ func _on_card_unhovered() -> void:
 func _on_card_bought(card_id, price, card):
 	if player_ref.coin >= price:
 		purchase_count += 1
+		if purchase_count == 8:
+			main.player.trigger_temp_passive("merchant_scroll","SHOPKEEPER TRUST +1")
 		player_ref.coin -= price
 		purchased_ids.append(card_id)
 		apply_item(card_id)
@@ -240,6 +242,7 @@ func apply_item(card_id):
 			print("Merchant Scroll Passive")
 			main.player.has_merchant_scroll = true
 			main.shopkeeper.trust += 1
+			main.player.trigger_temp_passive("merchant_scroll","SHOPKEEPER TRUST +1")
 		5:
 			print("Impromptu Flip Passive")
 			main.player.has_impromptu_flip = true
@@ -301,6 +304,7 @@ func apply_item(card_id):
 			print("S-Rank: Active Income")
 			main.player.has_active_income = true
 			main.shopkeeper.trust += 1
+			main.player.trigger_temp_passive("merchant_scroll","SHOPKEEPER TRUST +1")
 		24:
 			print("S-Rank: Bankrupt")
 			main.player.has_pay_down = true
@@ -313,7 +317,7 @@ func apply_item(card_id):
 		27:
 			print("A-Rank: Deposit")
 			main.player.has_deposit = true
-			main.player.max_reserve += 2
+			main.player.max_reserve += 3
 		28:
 			print("A-Rank: Dividend")
 			main.player.has_dividend = true
@@ -460,6 +464,9 @@ func _on_refresh_pressed() -> void:
 			card_nodes[i] = new_card
 			
 			animate_card_appear(new_card)
+			if main.player.coin <= new_card.price or new_card.stock <= 0:
+				new_card.disabled = true
+				new_card.modulate.a = 0.5
 
 
 func _on_refresh_mouse_entered() -> void:

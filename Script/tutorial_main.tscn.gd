@@ -130,6 +130,9 @@ var adv_passive_done = false
 var adv_flip_count  = 0       
 var adv_tier_flip_count = 0  
 
+var tutorial_complete: bool = false
+var adv_tutorial_complete: bool = false
+
 
 const DIALOGUE_BOX = preload("uid://dv278qg6j2epd")
 var dialogue: Node2D = null
@@ -484,10 +487,10 @@ func battle_start():
 	current_turn = Turn.PLAYER
 	if advance_mode: player.has_advanced_planning = true
 	
-	endTurn_button.mouse_default_cursor_shape = 8
+	endTurn_button.mouse_default_cursor_shape = 2
 	flip_button.mouse_default_cursor_shape = 2
-	reserve_button.mouse_default_cursor_shape = 8
-	re_flip_button.mouse_default_cursor_shape = 8
+	reserve_button.mouse_default_cursor_shape = 2
+	re_flip_button.mouse_default_cursor_shape = 2
 	start_player_turn()
 
 func _process(delta: float) -> void:
@@ -496,8 +499,7 @@ func _process(delta: float) -> void:
 	update_player_stacks()
 	update_enemy_stacks()
 	update_player_reflip_and_reserve()
-	if reserve_button.disabled:
-		print("Reserve button is currently disabled by code!")
+	
 
 func show_turn_ui(text):
 	sound_manager.play_sound(TURN_REVEAL)
@@ -539,14 +541,26 @@ func _on_end_run_pressed():
 
 	
 func start_player_turn():
+	if tutorial_complete or adv_tutorial_complete:
+		reserve_button.disabled = false
+		if player.coin <= 0:
+			await check_defeat()
+			return
+		current_turn = Turn.PLAYER
+		show_turn_ui("PLAYER TURN")
+		sound_manager.play_sound(TURN_PLAYER)
+		await player.start_turn()
+		_unlock_all()
+		flip_blocker.visible = false
+		reserve_button.disabled = player.current_reserve >= player.max_reserve
+		return
+	current_turn = Turn.PLAYER
 	if player.coin <= 0:
 		await check_defeat()
 		return
-	if player.player_turn_count != 1:
-		current_turn = Turn.PLAYER
+	if player.player_turn_count == 1:
 		show_turn_ui("PLAYER TURN")
 	elif advance_mode:
-		current_turn = Turn.PLAYER
 		show_turn_ui("PLAYER TURN")
 	sound_manager.play_sound(TURN_PLAYER)
 	await player.start_turn()
@@ -588,6 +602,7 @@ func start_player_turn():
 			return
 		_unlock_all()
 		flip_blocker.visible = false
+		adv_tutorial_complete = true
 		return
 	
 	if !has_encountered_flip:
@@ -620,7 +635,7 @@ func start_player_turn():
 	
 	if !has_encountered_enemy_info:
 		endTurn_button.mouse_default_cursor_shape = 8
-		reserve_button.mouse_default_cursor_shape = 8
+		reserve_button.mouse_default_cursor_shape = 2
 		re_flip_button.mouse_default_cursor_shape = 8
 		flip_button.mouse_default_cursor_shape = 8
 		player_info.visible = false
@@ -638,11 +653,12 @@ func start_player_turn():
 			await get_tree().process_frame
 		_close_current_tutorial()
 		_say("sk_player_mustdefeat")
+		tutorial_complete = true
 		_unlock_all()
 		return
 	
+	tutorial_complete = true
 	_unlock_all()
-	
 			
 func start_enemy_turn():
 	if enemy.coin <= 0:
@@ -686,6 +702,24 @@ func _on_endturn_pressed():
 	if enemy.coin <= 0 or player.coin <= 0:
 		return
 	
+	if tutorial_complete or adv_tutorial_complete:
+		_close_current_tutorial()
+		_dismiss_dialogue()
+		flip_button.visible  = true
+		flip_button.disabled = true
+		reserve_button.disabled = true
+		endTurn_button.mouse_default_cursor_shape = 8
+		reserve_button.mouse_default_cursor_shape = 2
+		re_flip_button.mouse_default_cursor_shape = 8
+		flip_button.mouse_default_cursor_shape = 8
+		await player.end_turn()
+		turn_calculation_box.exit()
+		var defeat = await check_defeat()
+		if not defeat:
+			await get_tree().create_timer(1.0, true).timeout
+			start_enemy_turn()
+		return
+	
 	if advance_mode:
 		if !adv_tutorial_started or !adv_coin_status_done:
 			player_info.visible = true
@@ -700,7 +734,7 @@ func _on_endturn_pressed():
 		flip_button.visible  = true
 		flip_button.disabled = true
 		endTurn_button.mouse_default_cursor_shape = 8
-		reserve_button.mouse_default_cursor_shape = 8
+		reserve_button.mouse_default_cursor_shape = 2
 		re_flip_button.mouse_default_cursor_shape = 8
 		flip_button.mouse_default_cursor_shape = 8
 		await player.end_turn()
@@ -770,6 +804,9 @@ func _on_flip_pressed():
 	player.flip()
 	await get_tree().process_frame
 	await check_defeat()
+	
+	if tutorial_complete or adv_tutorial_complete:
+		return
 	
 	if advance_mode:
 		if !adv_coin_status_done and total_flips >= 4:
@@ -918,6 +955,11 @@ func _on_re_flip_pressed():
 	total_reflips += 1
 	player.re_flip()
 	
+	if tutorial_complete or adv_tutorial_complete:
+		player.toggle_button(endTurn_button,true)
+		endTurn_button.disabled = false
+		endTurn_button.visible = true
+		return
 		
 	if !has_encountered_reflip:
 		endTurn_button.visible = false
@@ -1093,6 +1135,7 @@ func _on_player_info_toggled(toggled_on: bool) -> void:
 			flip_button.mouse_default_cursor_shape = 2
 		if advance_mode and player.player_turn_count != 1 and !adv_debt_done:
 			adv_debt_done = true
+			adv_tutorial_complete = true
 			player.toggle_button(flip_button,false)
 			_close_current_tutorial()
 			_unlock_all()
@@ -1150,8 +1193,14 @@ func spin_reserve_rug(duration_per_spin: float) -> void:
 
 
 func _on_reserve_button_pressed() -> void:
-	player.reserve(false)
+	if current_turn != Turn.PLAYER or game_over_triggered:
+		return
+	
+	player.reserve()
 	reserve_button.disabled = player.current_reserve >= player.max_reserve
+	
+	if tutorial_complete or adv_tutorial_complete:
+		return
 	
 	if advance_mode:
 		return
@@ -1159,7 +1208,7 @@ func _on_reserve_button_pressed() -> void:
 	if !has_encountered_reserve:
 		tutorial_reserve_count += 1
 		if tutorial_reserve_count >= 2:
-			reserve_button.mouse_default_cursor_shape = 8
+			reserve_button.mouse_default_cursor_shape = 2
 			flip_button.mouse_default_cursor_shape = 2
 			re_flip_button.mouse_default_cursor_shape = 2
 			has_encountered_reserve = true

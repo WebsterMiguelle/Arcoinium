@@ -391,10 +391,6 @@ func _ready():
 func on_enemy_radiant_fired() -> void:
 	pass
 	
-func _input(event):
-	if !from_startup and event.is_action_pressed("ui_cancel"): # ESC key
-		toggle_pause()
-		
 func _unhandled_input(event: InputEvent) -> void:
 	if !from_startup and !event.is_action_pressed("ui_cancel"): # ESC key
 		return

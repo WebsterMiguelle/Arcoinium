@@ -5,8 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://df3wtq16ab5xe" path="res://Assets/tutorialScreenBackground.png" id="2_gceok"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="2_vhq4y"]
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="3_70jjv"]
-[ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="3_gceok"]
-[ext_resource type="StyleBox" uid="uid://bhflgrh4jdv5m" path="res://Assets/SavedTexture/PressedButtonTexture.tres" id="4_hn8hw"]
 [ext_resource type="Texture2D" uid="uid://c5gnsbgjlhxq8" path="res://Assets/shelfsprite.png" id="6_vhq4y"]
 [ext_resource type="SpriteFrames" uid="uid://dafl661xkwq8o" path="res://Assets/PassivesIcons.tres" id="9_hn8hw"]
 
@@ -66,9 +64,6 @@ offset_bottom = 187.0
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_vhq4y")
 theme_override_font_sizes/font_size = 25
-theme_override_styles/normal = ExtResource("3_gceok")
-theme_override_styles/pressed = ExtResource("4_hn8hw")
-theme_override_styles/hover = ExtResource("3_gceok")
 text = "COIN STATUS"
 
 [node name="Entity" type="Button" parent="." unique_id=1745311677]
@@ -81,9 +76,6 @@ offset_bottom = 263.0
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_vhq4y")
 theme_override_font_sizes/font_size = 25
-theme_override_styles/normal = ExtResource("3_gceok")
-theme_override_styles/pressed = ExtResource("4_hn8hw")
-theme_override_styles/hover = ExtResource("3_gceok")
 text = "COIN SPELLS"
 
 [node name="Back" type="Button" parent="." unique_id=1924394241]
@@ -96,9 +88,6 @@ offset_bottom = 89.0
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_vhq4y")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("3_gceok")
-theme_override_styles/pressed = ExtResource("4_hn8hw")
-theme_override_styles/hover = ExtResource("3_gceok")
 text = "BACK"
 
 [node name="Frame" type="TextureRect" parent="." unique_id=723124363]
@@ -178,7 +167,7 @@ theme_override_font_sizes/font_size = 22
 text = "AAA"
 autowrap_mode = 2
 
-[node name="Vignetter" type="PointLight2D" parent="." unique_id=235474018]
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=235474018 groups=["point_light"]]
 position = Vector2(523, 321)
 scale = Vector2(17.921875, 10.046875)
 color = Color(0.99999994, 0.9152856, 0.46528572, 0.9411765)

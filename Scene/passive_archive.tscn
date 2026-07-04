@@ -5,9 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://df3wtq16ab5xe" path="res://Assets/tutorialScreenBackground.png" id="2_4v5iy"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="2_mej11"]
 [ext_resource type="Texture2D" uid="uid://c7ppyupuuc7tu" path="res://Assets/Passive_Icons.png" id="3_kid0q"]
-[ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="5_1161a"]
 [ext_resource type="Texture2D" uid="uid://c5gnsbgjlhxq8" path="res://Assets/shelfsprite.png" id="5_onjbu"]
-[ext_resource type="StyleBox" uid="uid://bhflgrh4jdv5m" path="res://Assets/SavedTexture/PressedButtonTexture.tres" id="6_4v5iy"]
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="6_gx6ft"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kid0q"]
@@ -629,9 +627,6 @@ offset_bottom = 87.0
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_mej11")
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = ExtResource("5_1161a")
-theme_override_styles/pressed = ExtResource("6_4v5iy")
-theme_override_styles/hover = ExtResource("5_1161a")
 text = "BACK"
 
 [node name="B-RANK" type="Button" parent="." unique_id=2063861164]
@@ -644,9 +639,6 @@ offset_bottom = 189.0
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_mej11")
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = ExtResource("5_1161a")
-theme_override_styles/pressed = ExtResource("6_4v5iy")
-theme_override_styles/hover = ExtResource("5_1161a")
 text = "B - RANK"
 
 [node name="A-RANK" type="Button" parent="." unique_id=951600385]
@@ -659,9 +651,6 @@ offset_bottom = 267.0
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_mej11")
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = ExtResource("5_1161a")
-theme_override_styles/pressed = ExtResource("6_4v5iy")
-theme_override_styles/hover = ExtResource("5_1161a")
 text = "A - RANK"
 
 [node name="S-RANK" type="Button" parent="." unique_id=1590904088]
@@ -674,9 +663,6 @@ offset_bottom = 342.0
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_mej11")
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = ExtResource("5_1161a")
-theme_override_styles/pressed = ExtResource("6_4v5iy")
-theme_override_styles/hover = ExtResource("5_1161a")
 text = "S - RANK"
 
 [node name="Frame" type="TextureRect" parent="." unique_id=1844933160]
@@ -713,7 +699,7 @@ theme_override_constants/v_separation = 10
 columns = 3
 metadata/_edit_lock_ = true
 
-[node name="Vignetter" type="PointLight2D" parent="." unique_id=571848811]
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=571848811 groups=["point_light"]]
 position = Vector2(577, 318)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.9019608, 0.5647059, 0.61960787)

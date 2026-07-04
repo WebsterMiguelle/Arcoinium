@@ -92,6 +92,8 @@ func load_scene(target_scene: String):
 	await slam_tween.finished
 	
 	get_tree().change_scene_to_file(target_scene)
+	await get_tree().process_frame
+	_sync_toggle_settings()
 	
 	var open_tween = _open_doors()
 	await open_tween.finished
@@ -106,6 +108,8 @@ func reload_scene():
 	await slam_tween.finished
 	
 	get_tree().reload_current_scene() 
+	await get_tree().process_frame
+	_sync_toggle_settings()
 	
 	var open_tween = _open_doors()
 	await open_tween.finished
@@ -132,6 +136,8 @@ func change_scene_from_closed(target_scene: String):
 	right_door.position.x = half_screen - overlap_correction
 	
 	get_tree().change_scene_to_file(target_scene)
+	await get_tree().process_frame
+	_sync_toggle_settings()
 	
 	var open_tween = _open_doors()
 	await open_tween.finished
@@ -155,8 +161,14 @@ func reload_scene_from_closed():
 	right_door.position.x = half_screen - overlap_correction
 	
 	get_tree().reload_current_scene() 
+	await get_tree().process_frame
+	_sync_toggle_settings()
 	
 	var open_tween = _open_doors()
 	await open_tween.finished
 	
 	get_tree().root.gui_disable_input = false
+	
+func _sync_toggle_settings() -> void:
+	GameSettings.apply_lights_to_group()
+	GameSettings.apply_particles_to_group()

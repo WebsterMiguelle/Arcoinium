@@ -4,11 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://df3wtq16ab5xe" path="res://Assets/tutorialScreenBackground.png" id="1_6q76i"]
 [ext_resource type="Script" uid="uid://bqvc4dk3e6bkl" path="res://Script/profile.gd" id="1_ljn20"]
 [ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="2_huopf"]
-[ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="3_6q76i"]
 [ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="3_aul7u"]
 [ext_resource type="Texture2D" uid="uid://r5gatuytbe0t" path="res://Assets/taxCollector.png" id="3_oqtqq"]
 [ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="4_6j1ob"]
-[ext_resource type="StyleBox" uid="uid://bhflgrh4jdv5m" path="res://Assets/SavedTexture/PressedButtonTexture.tres" id="4_m7jr5"]
 [ext_resource type="Texture2D" uid="uid://cjjj3ulqgawva" path="res://Assets/apprenticeMage.png" id="5_v84rt"]
 [ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="6_jwa2n"]
 [ext_resource type="Texture2D" uid="uid://bikjuk8fgo6p2" path="res://Assets/moonCaster-Sheet.png" id="6_u43rf"]
@@ -262,9 +260,6 @@ offset_bottom = 72.0
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("3_6q76i")
-theme_override_styles/pressed = ExtResource("4_m7jr5")
-theme_override_styles/hover = ExtResource("3_6q76i")
 text = "BACK"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=817994196]
@@ -284,9 +279,6 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("3_6q76i")
-theme_override_styles/pressed = ExtResource("4_m7jr5")
-theme_override_styles/hover = ExtResource("3_6q76i")
 text = "Coin Caster"
 
 [node name="ShopKeeper" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=1070741687]
@@ -295,9 +287,6 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("3_6q76i")
-theme_override_styles/pressed = ExtResource("4_m7jr5")
-theme_override_styles/hover = ExtResource("3_6q76i")
 text = "Shop Keeper"
 
 [node name="Mage" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=25123322]
@@ -306,9 +295,6 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("3_6q76i")
-theme_override_styles/pressed = ExtResource("4_m7jr5")
-theme_override_styles/hover = ExtResource("3_6q76i")
 text = "Mage"
 
 [node name="Dwarf" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=1895321310]
@@ -317,9 +303,6 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("3_6q76i")
-theme_override_styles/pressed = ExtResource("4_m7jr5")
-theme_override_styles/hover = ExtResource("3_6q76i")
 text = "Dwarf"
 
 [node name="Collector" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=1024712108]
@@ -328,9 +311,6 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("3_6q76i")
-theme_override_styles/pressed = ExtResource("4_m7jr5")
-theme_override_styles/hover = ExtResource("3_6q76i")
 text = "Collector"
 
 [node name="Trader" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=570646353]
@@ -339,9 +319,6 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("3_6q76i")
-theme_override_styles/pressed = ExtResource("4_m7jr5")
-theme_override_styles/hover = ExtResource("3_6q76i")
 text = "Trader"
 
 [node name="Thrifter" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=862339256]
@@ -350,9 +327,6 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("3_6q76i")
-theme_override_styles/pressed = ExtResource("4_m7jr5")
-theme_override_styles/hover = ExtResource("3_6q76i")
 text = "Thrifter"
 
 [node name="Aristocrat" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=563106069]
@@ -361,9 +335,6 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("3_6q76i")
-theme_override_styles/pressed = ExtResource("4_m7jr5")
-theme_override_styles/hover = ExtResource("3_6q76i")
 text = "Aristocrat"
 
 [node name="Sun Caster" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=1925256930]
@@ -372,9 +343,6 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("3_6q76i")
-theme_override_styles/pressed = ExtResource("4_m7jr5")
-theme_override_styles/hover = ExtResource("3_6q76i")
 text = "Sun Caster"
 
 [node name="Moon Caster" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=1640698227]
@@ -383,9 +351,6 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("3_6q76i")
-theme_override_styles/pressed = ExtResource("4_m7jr5")
-theme_override_styles/hover = ExtResource("3_6q76i")
 text = "Moon Caster"
 
 [node name="Twilight Sage" type="Button" parent="ScrollContainer/HBoxContainer" unique_id=2103634546]
@@ -394,9 +359,6 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("16_u43rf")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = ExtResource("3_6q76i")
-theme_override_styles/pressed = ExtResource("4_m7jr5")
-theme_override_styles/hover = ExtResource("3_6q76i")
 text = "Twilight Sage"
 
 [node name="Frame" type="TextureRect" parent="." unique_id=776675147]
@@ -1303,7 +1265,7 @@ offset_right = 743.0
 offset_bottom = 323.0
 texture = ExtResource("16_vws13")
 
-[node name="Vignetter" type="PointLight2D" parent="." unique_id=1706942404]
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=1706942404 groups=["point_light"]]
 position = Vector2(577, 318)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.9019608, 0.5647059, 0.61960787)

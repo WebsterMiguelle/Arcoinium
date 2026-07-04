@@ -10,6 +10,7 @@ func _ready() -> void:
 	$SFXSlider.value = GameSettings.sfx_volume
 	_update_particles_visual(GameSettings.particles_enabled)
 	_update_lights_visual(GameSettings.lights_enabled)
+	visibility_changed.connect(_on_visibility_changed)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 @warning_ignore("unused_parameter")
@@ -52,6 +53,11 @@ func _on_light_effect_button_up() -> void:
 	
 	
 func _update_particles_visual(_enabled: bool) -> void:
-	pass
+	$Particles.button_pressed = _enabled
 func _update_lights_visual(_enabled: bool) -> void:
-	pass
+	$LightEffect.button_pressed = _enabled
+	
+func _on_visibility_changed() -> void:
+	if visible:
+		_update_particles_visual(GameSettings.particles_enabled)
+		_update_lights_visual(GameSettings.lights_enabled)

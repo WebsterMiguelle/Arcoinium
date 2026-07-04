@@ -46,6 +46,7 @@ func _ready() -> void:
 		credits_base_x = credits_button.position.x
 	_spawn_dialogue()
 	_play("welcome", DialogueBox.TailSide.LEFT)
+	GameSettings.apply_lights_to_group()
 
 func _spawn_dialogue() -> void:
 	dialogue = DIALOGUE.instantiate()

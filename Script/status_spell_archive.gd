@@ -42,6 +42,7 @@ var all_cards = [
 ]
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	GameSettings.apply_lights_to_group()
 	Card_View.visible = false
 	_populate_cards()
 

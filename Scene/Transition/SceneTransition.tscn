@@ -30,7 +30,7 @@ script = ExtResource("1_3dcwp")
 
 [node name="Vignette" type="Node" parent="." unique_id=458012200]
 
-[node name="Vignetter" type="PointLight2D" parent="Vignette" unique_id=1396903220]
+[node name="Vignetter" type="PointLight2D" parent="Vignette" unique_id=1396903220 groups=["point_light"]]
 visible = false
 position = Vector2(576, 352)
 scale = Vector2(17.921875, 10.046875)

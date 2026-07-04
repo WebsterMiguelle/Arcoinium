@@ -60,6 +60,7 @@ var all_cards = [
 
 
 func _ready() -> void:
+	GameSettings.apply_lights_to_group()
 	Card_View.visible = false
 	_populate_cards()
 

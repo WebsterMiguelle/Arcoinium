@@ -183,7 +183,7 @@ theme_override_font_sizes/font_size = 22
 text = "AAA"
 autowrap_mode = 2
 
-[node name="Vignetter" type="PointLight2D" parent="." unique_id=235474018]
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=235474018 groups=["point_light"]]
 position = Vector2(523, 321)
 scale = Vector2(17.921875, 10.046875)
 color = Color(0.99999994, 0.9152856, 0.46528572, 0.9411765)

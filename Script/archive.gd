@@ -6,7 +6,8 @@ const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	GameSettings.apply_lights_to_group()
+	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

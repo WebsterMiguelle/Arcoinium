@@ -80,7 +80,7 @@ texture = ExtResource("3_c41qw")
 [node name="Dialogue Area" type="Marker2D" parent="." unique_id=399608582]
 position = Vector2(100, 0)
 
-[node name="Vignetter" type="PointLight2D" parent="." unique_id=782194638]
+[node name="Vignetter" type="PointLight2D" parent="." unique_id=782194638 groups=["point_light"]]
 position = Vector2(599, 318)
 scale = Vector2(17.921875, 10.046875)
 color = Color(1, 0.9098039, 0.42745098, 0.9411765)

@@ -51,7 +51,7 @@ func _on_light_effect_button_up() -> void:
 	print("Light: ", enabled)
 	
 	
-func _update_particles_visual(_enabled: bool) -> void:
-	pass
-func _update_lights_visual(_enabled: bool) -> void:
-	pass
+func _update_particles_visual(enabled: bool) -> void:
+	$Particles.button_pressed = enabled
+func _update_lights_visual(enabled: bool) -> void:
+	$LightEffect.button_pressed = enabled

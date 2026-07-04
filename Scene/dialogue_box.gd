@@ -54,7 +54,7 @@ const LINES = {
 		"Reserved coins returns directly to the Circle\nnext turn.",
 		"A true Caster plans their coins ahead." ],
 	"sk_overflow": [
-		"You Overflow your Cirle." ],
+		"Flip 16 or more Coins Caster. Overflow your Cirle." ],
 	"sk_player_winning": [
 		"Impressive... you fight well.",
 		"Do not grow arrogant, Caster." ],
@@ -65,9 +65,7 @@ const LINES = {
 		"Prove your worth. Defeat me.",
 		"With coins, cleanse\nthe greed of this world." ],
 	"sk_victory": [
-		"...You have bested me.",
-		"The lesson is complete, Coin Caster.",
-		"Go. The real world awaits you." ],
+		"The lesson is complete, Coin Caster." ],
 	"sk_to_advance": [
 		"One more round, and then you may go."],
 	"sk_defeat": [

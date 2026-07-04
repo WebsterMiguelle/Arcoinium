@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dhl4j3m1ok2d2" path="res://Assets/ShopkeeperHand1.png" id="4_kiink"]
 [ext_resource type="Texture2D" uid="uid://bqa81o3psvkcl" path="res://Assets/ShopkeeperHand2.png" id="5_efpnt"]
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="5_kiink"]
+[ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="7_efpnt"]
 
 [sub_resource type="Gradient" id="Gradient_x8fwb"]
 colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
@@ -24,6 +25,10 @@ fill_from = Vector2(0.49570817, 0.46995708)
 fill_to = Vector2(0.94635195, 0.08798283)
 
 [sub_resource type="Theme" id="Theme_bsr34"]
+
+[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_bsr34"]
+
+[sub_resource type="AudioStream" id="AudioStream_4lvf8"]
 
 [node name="AskTutorial" type="Node2D" unique_id=1085329073]
 script = ExtResource("1_tddot")
@@ -101,6 +106,19 @@ theme_override_font_sizes/font_size = 50
 text = "No"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="SoundManager" type="Node2D" parent="." unique_id=1230141355]
+position = Vector2(576, 324)
+scale = Vector2(0.555, 0.555)
+script = ExtResource("7_efpnt")
+
+[node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1540732571]
+process_mode = 3
+stream = SubResource("AudioStreamPolyphonic_bsr34")
+
+[node name="BGMPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1062822594]
+process_mode = 3
+stream = SubResource("AudioStream_4lvf8")
 
 [connection signal="mouse_entered" from="CanvasLayer/YesButton" to="." method="_on_yes_button_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/YesButton" to="." method="_on_yes_button_mouse_exited"]

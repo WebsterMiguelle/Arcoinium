@@ -251,6 +251,8 @@ animations = [{
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_eslk0"]
 
+[sub_resource type="AudioStream" id="AudioStream_uyvy5"]
+
 [node name="MainMenu" type="TextureRect" unique_id=1228951642]
 process_mode = 3
 anchors_preset = 15
@@ -363,6 +365,10 @@ script = ExtResource("6_uyvy5")
 
 [node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1088019939]
 stream = SubResource("AudioStreamPolyphonic_eslk0")
+
+[node name="BGMPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=767664031]
+process_mode = 3
+stream = SubResource("AudioStream_uyvy5")
 
 [node name="GreedButton" type="Button" parent="." unique_id=1229254374]
 self_modulate = Color(1, 1, 1, 0)

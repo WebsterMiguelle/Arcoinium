@@ -31,6 +31,10 @@ GameSettings="*uid://qbw8yhw1a5ni"
 window/size/mode=2
 window/stretch/mode="viewport"
 
+[editor]
+
+movie_writer/movie_file="D:/Godot_v4.6.1-stable_win64.exe/DSC Game Jam/Recordings/output.avi"
+
 [global_group]
 
 particle_manager=""

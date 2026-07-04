@@ -18,6 +18,7 @@ extends Node
 @onready var tutorial_label: Label = $"Tutorial Label"
 
 
+const MAIN_MENU = preload("uid://brcpr6378drlx")
 
 const COIN_FLIP = preload("uid://bmscttmxwr782")
 const PASSIVE_PASSIVE_INCOME = preload("uid://cl4xnombcshkv")
@@ -41,6 +42,7 @@ var greed_glow_tween: Tween
 var tutorial_glow_tween: Tween 
 
 func _ready() -> void:
+	sound_manager.play_music(MAIN_MENU)
 	coin.play("coin_flipping")
 	greed_coin.play("gold_coin_flip")
 	tutorial_coin.play("tutorial_coin")
@@ -110,6 +112,7 @@ func _on_button_pressed() -> void:
 	bounce_tween.tween_property(coin,"position:y", -500.0, 0.2).as_relative().set_trans(Tween.TRANS_LINEAR)
 	
 	coin.play("coin_flipping") 
+	sound_manager.stop_music()
 	SceneTransition.load_scene("res://Scene/main.tscn")
 	
 func _on_frame_changed() -> void:
@@ -183,7 +186,7 @@ func _on_greed_button_pressed() -> void:
 	
 	PlayerSingleton.greed = true
 	greed_coin.play("gold_coin_flip") 
-
+	sound_manager.stop_music()
 	SceneTransition.load_scene("res://Scene/main.tscn")
 
 func _on_greed_frame_changed() -> void:
@@ -277,4 +280,5 @@ func _on_tutorial_button_pressed() -> void:
 	tutorial_bounce_tween = create_tween()
 	tutorial_bounce_tween.tween_property(tutorial_coin,"position:y", -680.0, 0.2).as_relative().set_trans(Tween.TRANS_LINEAR)
 	tutorial_coin.play("tutorial_coin") 
+	sound_manager.stop_music()
 	SceneTransition.load_scene("res://Scene/Shop_keepers Room.tscn") 

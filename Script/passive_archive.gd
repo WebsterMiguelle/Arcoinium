@@ -7,6 +7,11 @@ extends ColorRect
 @onready var view_icon: AnimatedSprite2D = $"CardView/Icon"
 @onready var view_rank: AnimatedSprite2D = $"CardView/Sprite"
 
+
+@onready var sound_manager: Node2D = $SoundManager
+const BUTTON = preload("uid://bwn6ufooc31uy")
+const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
+
 # === NEW: Add @onready variables for your buttons ===
 # (Make sure these paths match your scene tree!)
 @onready var b_rank_btn: Button = $"B-RANK"
@@ -74,6 +79,7 @@ func _populate_cards() -> void:
 
 		
 func _on_archive_card_pressed(data: Dictionary) -> void:
+	sound_manager.play_sound(SCROLL_OPEN)
 	Card_View.visible = true
 	if view_name: view_name.text = data["name"]
 	if view_desc: view_desc.text = data["desc"]
@@ -81,16 +87,20 @@ func _on_archive_card_pressed(data: Dictionary) -> void:
 	if view_rank: view_rank.play(data["rank"])
 
 func _on_back_pressed() -> void:
+	sound_manager.play_sound(BUTTON)
 	SceneTransition.load_scene("res://Scene/archive.tscn")
 
 # === UPDATED FILTER FUNCTIONS ===
 func _on_brank_pressed() -> void:
+	sound_manager.play_sound(BUTTON)
 	_filter_by_rank("B", b_rank_btn)
 
 func _on_arank_pressed() -> void:
+	sound_manager.play_sound(BUTTON)
 	_filter_by_rank("A", a_rank_btn)
 
 func _on_srank_pressed() -> void:
+	sound_manager.play_sound(BUTTON)
 	_filter_by_rank("S", s_rank_btn)
 	
 # We now pass the pressed button into the function so we know which one to manage

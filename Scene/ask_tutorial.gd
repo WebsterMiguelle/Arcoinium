@@ -1,4 +1,7 @@
 extends Node2D
+@onready var sound_manager: Node2D = $SoundManager
+const IN_THIS_WORLD_OF_COINS = preload("uid://bkxiylr3twixl")
+const COIN_FLIP = preload("uid://bmscttmxwr782")
 
 
 @onready var label: Label = $CanvasLayer/Dialogue
@@ -29,6 +32,7 @@ const LINES = {
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	await get_tree().create_timer(1.0).timeout
+	sound_manager.play_music(IN_THIS_WORLD_OF_COINS)
 	play("welcome")
 	var fade_tween = create_tween()
 	fade_tween.tween_property(shopkeeper,"self_modulate",Color.WHITE,1.0)
@@ -117,6 +121,7 @@ func _on_no_button_mouse_exited() -> void:
 
 
 func _on_no_button_pressed() -> void:
+	sound_manager.play_sound(COIN_FLIP)
 	play("no")
 	yes_base_y = 1000
 	no_base_y = 1000
@@ -143,6 +148,7 @@ func _on_yes_button_mouse_exited() -> void:
 
 
 func _on_yes_button_pressed() -> void:
+	sound_manager.play_sound(COIN_FLIP)
 	play("yes")
 	yes_base_y = 1000
 	no_base_y = 1000

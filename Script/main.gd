@@ -5,6 +5,10 @@ enum Turn {
 	ENEMY,
 	KEEPER
 }
+const BUTTON = preload("uid://bwn6ufooc31uy")
+@onready var start_journey_button: Button = $"StartRun/Start Journey"
+
+const KEEPER_S_REST = preload("uid://bnkwnb7pyuorc")
 
 signal start_journey
 @onready var start_run: CanvasLayer = $StartRun
@@ -570,6 +574,7 @@ func show_turn_ui(text):
 	print("=============================UI DONE")
 	
 func _on_end_run_pressed():
+	sound_manager.play_sound(BUTTON)
 	start_run.visible = false
 	card_manager.visible = false
 	shop_manager.visible = false
@@ -1013,7 +1018,7 @@ func progression_after_victory():
 		current_room += 1
 		await _play_progression_cutscene(current_room - 1, current_room)
 		if current_room == 4:
-			sound_manager.play_music(SHOP)
+			sound_manager.play_music(KEEPER_S_REST)
 			await shop_manager.show_shop_async(player)
 			current_room += 1
 			sound_manager.stop_music()
@@ -1142,6 +1147,7 @@ func update_enemy_stacks():
 		enemy_spend_particles.emitting = true
 
 func _on_restart_pressed():
+	sound_manager.play_sound(BUTTON)
 	await get_tree().create_timer(0.2, true).timeout
 	get_tree().reload_current_scene()
 	
@@ -1168,6 +1174,7 @@ func proceed_to_next_enemy():
 
 
 func _on_refresh_pressed() -> void:
+	sound_manager.play_sound(COIN_REFLIP)
 	pass # Replace with function body.
 
 func _on_endturn_mouse_entered() -> void:
@@ -1667,6 +1674,8 @@ func spin_reserve_rug(duration_per_spin: float) -> void:
 
 
 func _on_start_journey_pressed() -> void:
+	start_journey_button.visible = false
+	sound_manager.play_sound(BUTTON)
 	var screen_height = get_viewport_rect().size.y 
 	sound_manager.stop_music()
 	sound_manager.play_sound(PASSIVE_PASSIVE_INCOME)

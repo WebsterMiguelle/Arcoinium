@@ -5,10 +5,11 @@
 [ext_resource type="Texture2D" uid="uid://df3wtq16ab5xe" path="res://Assets/tutorialScreenBackground.png" id="2_gceok"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="2_vhq4y"]
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="3_70jjv"]
-[ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="3_gceok"]
-[ext_resource type="StyleBox" uid="uid://bhflgrh4jdv5m" path="res://Assets/SavedTexture/PressedButtonTexture.tres" id="4_hn8hw"]
+[ext_resource type="StyleBox" uid="uid://bgkyr1rfshpsr" path="res://Assets/SavedTexture/Button_Default.tres" id="3_gceok"]
+[ext_resource type="StyleBox" uid="uid://g8acwjjmd4tf" path="res://Assets/SavedTexture/Button_Pressed.tres" id="4_hn8hw"]
 [ext_resource type="Texture2D" uid="uid://c5gnsbgjlhxq8" path="res://Assets/shelfsprite.png" id="6_vhq4y"]
 [ext_resource type="SpriteFrames" uid="uid://dafl661xkwq8o" path="res://Assets/PassivesIcons.tres" id="9_hn8hw"]
+[ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="10_nkfew"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wid86"]
 atlas = ExtResource("2_24qry")
@@ -37,6 +38,10 @@ use_hdr = true
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 metadata/_snap_enabled = true
+
+[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_vvyt1"]
+
+[sub_resource type="AudioStream" id="AudioStream_wkugc"]
 
 [node name="Status_Spell Archive" type="ColorRect" unique_id=1084128084]
 anchors_preset = 15
@@ -189,6 +194,19 @@ texture_scale = 0.46
 [node name="Vignette" type="CanvasModulate" parent="." unique_id=614030109]
 position = Vector2(-76, 3)
 color = Color(0.7360586, 0.6517471, 0.7562498, 1)
+
+[node name="SoundManager" type="Node2D" parent="." unique_id=1791519306]
+position = Vector2(576, 324)
+scale = Vector2(0.555, 0.555)
+script = ExtResource("10_nkfew")
+
+[node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=994688139]
+process_mode = 3
+stream = SubResource("AudioStreamPolyphonic_vvyt1")
+
+[node name="BGMPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1457465300]
+process_mode = 3
+stream = SubResource("AudioStream_wkugc")
 
 [connection signal="pressed" from="Coin Status" to="." method="_on_coin_status_pressed"]
 [connection signal="pressed" from="Entity" to="." method="_on_entity_pressed"]

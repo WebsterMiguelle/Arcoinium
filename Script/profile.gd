@@ -3,6 +3,9 @@ extends TextureRect
 @onready var player_frame = $"Frame/Player"
 @onready var Player_Inforamtion = $"Frame/Player/Information"
 @onready var Player_Storyline = $"Frame/Player/StoryLine"
+@onready var sound_manager: Node2D = $SoundManager
+const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
+const BUTTON = preload("uid://bwn6ufooc31uy")
 
 @onready var shop_keeper_frame = $"Frame/ShopKeeper"
 @onready var ShopKeeper_Inforamtion = $"Frame/ShopKeeper/Information"
@@ -204,28 +207,51 @@ func _show_frame(frame_to_show: Control) -> void:
 
 
 func _on_back_pressed() -> void:
+	sound_manager.play_sound(BUTTON)
 	SceneTransition.load_scene("res://Scene/archive.tscn")
 
 
 func _on_player_pressed() -> void:
+	sound_manager.play_sound(SCROLL_OPEN)
+	sound_manager.play_sound(BUTTON)
 	_show_frame(player_frame)
 func _on_shop_keeper_pressed() -> void:
+	sound_manager.play_sound(SCROLL_OPEN)
+	sound_manager.play_sound(BUTTON)
 	_show_frame(shop_keeper_frame)
 func _on_mage_pressed() -> void:
+	sound_manager.play_sound(SCROLL_OPEN)
+	sound_manager.play_sound(BUTTON)
 	_show_frame(mage_frame)
 func _on_dwarf_pressed() -> void:
+	sound_manager.play_sound(SCROLL_OPEN)
+	sound_manager.play_sound(BUTTON)
 	_show_frame(dwarf_frame)
 func _on_collector_pressed() -> void:
+	sound_manager.play_sound(SCROLL_OPEN)
+	sound_manager.play_sound(BUTTON)
 	_show_frame(collector_frame)
 func _on_trader_pressed() -> void:
+	sound_manager.play_sound(SCROLL_OPEN)
+	sound_manager.play_sound(BUTTON)
 	_show_frame(trader_frame)
 func _on_thrifter_pressed() -> void:
+	sound_manager.play_sound(SCROLL_OPEN)
+	sound_manager.play_sound(BUTTON)
 	_show_frame(thrifter_frame)
 func _on_aristocrat_pressed() -> void:
+	sound_manager.play_sound(SCROLL_OPEN)
+	sound_manager.play_sound(BUTTON)
 	_show_frame(aristocrat_frame)
 func _on_sun_caster_pressed() -> void:
+	sound_manager.play_sound(SCROLL_OPEN)
+	sound_manager.play_sound(BUTTON)
 	_show_frame(sun_caster_frame)
 func _on_moon_caster_pressed() -> void:
+	sound_manager.play_sound(SCROLL_OPEN)
+	sound_manager.play_sound(BUTTON)
 	_show_frame(moon_caster_frame)
 func _on_twilight_sage_pressed() -> void:
+	sound_manager.play_sound(SCROLL_OPEN)
+	sound_manager.play_sound(BUTTON)
 	_show_frame(twilight_sage_frame)

@@ -3,6 +3,12 @@ extends ColorRect
 @onready var dialogue_area: Marker2D = $"Dialogue Area"
 const DIALOGUE = preload("uid://dv278qg6j2epd")
 const CREDITS_SCENE = preload("res://Scene/Credits.tscn")
+@onready var sound_manager: Node2D = $SoundManager
+const KEEPER_S_REST = preload("uid://bnkwnb7pyuorc")
+const BUTTON = preload("uid://bwn6ufooc31uy")
+const COIN_FLIP = preload("uid://bmscttmxwr782")
+const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
+const SCROLL_HOVERED = preload("uid://dpcddmlbji61k")
 
 @onready var basic_button: TextureButton = $"Basic Mode"
 @onready var advance_button: TextureButton = $"Advance Mode"
@@ -27,6 +33,7 @@ var lift_amount: float = 20.0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Wait exactly one frame for Godot to arrange the UI before grabbing positions
+	sound_manager.play_music(KEEPER_S_REST)
 	await get_tree().process_frame 
 	basic_mode_label.visible = false
 	advance_mode_label.visible = false
@@ -72,6 +79,8 @@ func animate_hover(button: Control, target_y: float) -> void:
 # BUTTON LOGIC
 # ==========================================
 func _on_back_button_pressed() -> void:
+	sound_manager.stop_music()
+	sound_manager.play_sound(BUTTON)
 	SceneTransition.load_scene("res://Scene/Main_Menu.tscn") 
 
 func _on_back_button_mouse_entered() -> void:
@@ -107,6 +116,8 @@ func _on_advance_mode_mouse_exited() -> void:
 	advance_mode_label.visible = false 
 
 func _on_advance_mode_pressed() -> void:
+	sound_manager.stop_music()
+	sound_manager.play_sound(COIN_FLIP)
 	SceneTransition.tutorial_advance_mode = true
 	SceneTransition.tutorial_from_startup = false
 	SceneTransition.load_scene("res://Scene/tutorial_main.tscn")
@@ -131,15 +142,20 @@ func _on_basic_mode_mouse_exited() -> void:
 	basic_mode_label.visible = false
 
 func _on_basic_mode_pressed() -> void:
+	sound_manager.stop_music()
+	sound_manager.play_sound(COIN_FLIP)
 	SceneTransition.tutorial_advance_mode = false
 	SceneTransition.tutorial_from_startup = false
 	SceneTransition.load_scene("res://Scene/tutorial_main.tscn")
 
 func _on_archive_button_pressed() -> void:
+	sound_manager.stop_music()
+	sound_manager.play_sound(BUTTON)
 	SceneTransition.load_scene("res://Scene/archive.tscn")
 
 
 func _on_credits_button_pressed() -> void:
+	sound_manager.play_sound(SCROLL_OPEN)
 	if dialogue != null and is_instance_valid(dialogue):
 		dialogue.queue_free()
 		dialogue = null
@@ -158,6 +174,7 @@ func _on_credits_button_pressed() -> void:
 	credits_button.disabled = false
 
 func _on_credits_button_mouse_entered() -> void:
+	sound_manager.play_sound(SCROLL_HOVERED)
 	animate_hover(credits_button, credits_base_y - lift_amount) 
 	credits_label.visible = true
 	if dialogue != null and is_instance_valid(dialogue):

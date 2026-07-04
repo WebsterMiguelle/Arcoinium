@@ -818,15 +818,17 @@ metadata/_snap_enabled = true
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0y2cb"]
 particle_flag_disable_z = true
 emission_shape_offset = Vector3(-59.555, 0, 0)
-emission_shape_scale = Vector3(5.42, 0.19, 1)
+emission_shape_scale = Vector3(5.42, 3.19, 1)
 emission_shape = 1
 emission_sphere_radius = 128.0
-angular_velocity_min = 8.2799835
-angular_velocity_max = 229.08998
-directional_velocity_min = -227.40001
-directional_velocity_max = 61.67998
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 39.329998
+initial_velocity_max = 78.65
+directional_velocity_min = 1.0
+directional_velocity_max = 1.0
 directional_velocity_curve = SubResource("CurveXYZTexture_6njx3")
-gravity = Vector3(0, -98, 0)
+gravity = Vector3(0, 0, 0)
 scale_min = 0.0
 scale_max = 6.1299996
 color = Color(1, 1, 0.2901961, 1)
@@ -1436,6 +1438,7 @@ action_mode = 0
 
 [node name="Reserve Button" type="TextureButton" parent="Player" unique_id=1490629969]
 modulate = Color(1, 0.84566724, 0.71277934, 1)
+top_level = true
 z_index = 1000
 offset_left = 618.0
 offset_top = 555.0
@@ -1699,7 +1702,7 @@ color = Color(0.7411765, 0.67058825, 0.72156864, 1)
 script = ExtResource("48_xef3h")
 
 [node name="Battle Particles" type="GPUParticles2D" parent="ParticleManager" unique_id=1039306359]
-position = Vector2(608, 693)
+position = Vector2(634, 351)
 amount = 30
 lifetime = 6.92
 randomness = 0.09

@@ -9,6 +9,10 @@ extends ColorRect
 @onready var view_spell_icon: AnimatedSprite2D = $CardView/SpellIcon
 @onready var view_rank: AnimatedSprite2D = $"CardView/Sprite"
 var c = null
+@onready var sound_manager: Node2D = $SoundManager
+const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
+const BUTTON = preload("uid://bwn6ufooc31uy")
+
 
 const Effect_CARD = preload("res://Scene/Archives_card.tscn")
 const COIN = preload("res://Scene/coin.tscn")
@@ -63,6 +67,7 @@ func _populate_cards() -> void:
 		Card_Container.add_child(card)
 
 func _on_effect_card_pressed(data: Dictionary) -> void:
+	sound_manager.play_sound(SCROLL_OPEN)
 	Card_View.visible = true
 	if view_name: view_name.text = data["name"]
 	if view_desc: view_desc.text = data["desc"]
@@ -75,14 +80,17 @@ func _on_effect_card_pressed(data: Dictionary) -> void:
 	if view_rank: view_rank.play(data["rank"])
 
 func _on_back_pressed() -> void:
+	sound_manager.play_sound(BUTTON)
 	SceneTransition.load_scene("res://Scene/archive.tscn")
 
 
 func _on_entity_pressed() -> void:
+	sound_manager.play_sound(BUTTON)
 	_filter_by_type("Entity")
 
 
 func _on_coin_status_pressed() -> void:
+	sound_manager.play_sound(BUTTON)
 	_filter_by_type("Coin")
 	
 	

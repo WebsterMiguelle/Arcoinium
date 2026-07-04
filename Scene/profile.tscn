@@ -4,11 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://df3wtq16ab5xe" path="res://Assets/tutorialScreenBackground.png" id="1_6q76i"]
 [ext_resource type="Script" uid="uid://bqvc4dk3e6bkl" path="res://Script/profile.gd" id="1_ljn20"]
 [ext_resource type="Texture2D" uid="uid://bvp5ljwxaaogb" path="res://Assets/aristocrat.png" id="2_huopf"]
-[ext_resource type="StyleBox" uid="uid://bcw72me6r2f70" path="res://Assets/SavedTexture/BoxTexture.tres" id="3_6q76i"]
+[ext_resource type="StyleBox" uid="uid://bgkyr1rfshpsr" path="res://Assets/SavedTexture/Button_Default.tres" id="3_6q76i"]
 [ext_resource type="Texture2D" uid="uid://cbel5hvqtda1j" path="res://Assets/shopMaster.png" id="3_aul7u"]
 [ext_resource type="Texture2D" uid="uid://r5gatuytbe0t" path="res://Assets/taxCollector.png" id="3_oqtqq"]
 [ext_resource type="Texture2D" uid="uid://4sj03pg1760m" path="res://Assets/coinDwarf.png" id="4_6j1ob"]
-[ext_resource type="StyleBox" uid="uid://bhflgrh4jdv5m" path="res://Assets/SavedTexture/PressedButtonTexture.tres" id="4_m7jr5"]
+[ext_resource type="StyleBox" uid="uid://g8acwjjmd4tf" path="res://Assets/SavedTexture/Button_Pressed.tres" id="4_m7jr5"]
 [ext_resource type="Texture2D" uid="uid://cjjj3ulqgawva" path="res://Assets/apprenticeMage.png" id="5_v84rt"]
 [ext_resource type="Texture2D" uid="uid://vk5xc7ucpume" path="res://Assets/Scroll9x9.png" id="6_jwa2n"]
 [ext_resource type="Texture2D" uid="uid://bikjuk8fgo6p2" path="res://Assets/moonCaster-Sheet.png" id="6_u43rf"]
@@ -21,6 +21,7 @@
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="16_u43rf"]
 [ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="16_vws13"]
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="17_gakhq"]
+[ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="22_jwa2n"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jwa2n"]
 atlas = ExtResource("2_huopf")
@@ -241,6 +242,10 @@ use_hdr = true
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 metadata/_snap_enabled = true
+
+[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_3yp3r"]
+
+[sub_resource type="AudioStream" id="AudioStream_ok25f"]
 
 [node name="Profile" type="TextureRect" unique_id=1161497957]
 self_modulate = Color(0.3172787, 0.31727865, 0.31727865, 1)
@@ -1313,6 +1318,19 @@ texture_scale = 0.46
 
 [node name="Vignette" type="CanvasModulate" parent="." unique_id=54488391]
 color = Color(0.7411765, 0.67058825, 0.72156864, 1)
+
+[node name="SoundManager" type="Node2D" parent="." unique_id=1689850440]
+position = Vector2(576, 324)
+scale = Vector2(0.555, 0.555)
+script = ExtResource("22_jwa2n")
+
+[node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1158920815]
+process_mode = 3
+stream = SubResource("AudioStreamPolyphonic_3yp3r")
+
+[node name="BGMPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=735956760]
+process_mode = 3
+stream = SubResource("AudioStream_ok25f")
 
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="ScrollContainer/HBoxContainer/Player" to="." method="_on_player_pressed"]

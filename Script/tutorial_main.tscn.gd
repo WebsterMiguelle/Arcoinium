@@ -18,10 +18,12 @@ enum Enemy{
 	SHOP_KEEPER
 }
 
+
 const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
 @onready var reserve_outside_texture: TextureRect = $"Player/Player Reserve Rug/OutsideTexture"
 @onready var reserve_button: TextureButton = $"Player/Reserve Button"
 @onready var player_reserve: Label = $"Player/Reserve Button/Player Reserve"
+const BUTTON = preload("uid://bwn6ufooc31uy")
 
 
 @onready var flip_blocker: TextureRect = $FlipBlocker
@@ -35,6 +37,7 @@ var moon_caster_color = '#1a54fb'
 var dawn_stance = '#ffcda0'
 var dusk_stance = '#8dacf7'
 @onready var battle_particles: GPUParticles2D = $"ParticleManager/Battle Particles"
+const KEEPER_S_WALTZ = preload("uid://cng12nr5ss88f")
 
 @onready var player_reserve_rug: TextureRect = $"Player/Player Reserve Rug"
 @onready var vignette: CanvasModulate = $"../Vignette"
@@ -354,6 +357,7 @@ func switch_vignetter_color(to,duration):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	turn_calculation_box.exit()
 	print("Light in group: ", get_tree().get_first_node_in_group("point_light"))
 	print("Particles in group: ", get_tree().get_first_node_in_group("particle_manager"))
 	advance_mode = SceneTransition.tutorial_advance_mode
@@ -391,12 +395,11 @@ func _ready():
 func on_enemy_radiant_fired() -> void:
 	pass
 	
-func _input(event):
-	if !from_startup and event.is_action_pressed("ui_cancel"): # ESC key
-		toggle_pause()
-		
+
 func _unhandled_input(event: InputEvent) -> void:
-	if !from_startup and !event.is_action_pressed("ui_cancel"): # ESC key
+	if from_startup:
+		return
+	if !event.is_action_pressed("ui_cancel"): # ESC key
 		return
 	#if current_turn != Turn.PLAYER:
 	#	return
@@ -473,14 +476,9 @@ func battle_start():
 	flip_button.disabled = false
 	sound_manager.play_sound(BATTLE_START)
 	var bgm_rand = randi_range(0,2)
-	if current_enemy_index == 8:
-		sound_manager.play_music(TWILIGHT_SAGE)
-	elif bgm_rand == 0: 
-		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_1)
-	elif bgm_rand == 1:
-		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_2)
-	else:
-		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_3)
+	
+	sound_manager.play_music(KEEPER_S_WALTZ)
+
 		
 	#Battle Start Passives
 	player.player_turn_count = 0
@@ -533,6 +531,7 @@ func show_turn_ui(text):
 	print("=============================UI DONE")
 	
 func _on_end_run_pressed():
+	sound_manager.play_sound(BUTTON)
 	print("Main Script: Received End Run")
 	get_tree().paused = false
 	pause_menu.visible = false
@@ -558,9 +557,9 @@ func start_player_turn():
 	if player.coin <= 0:
 		await check_defeat()
 		return
-	if player.player_turn_count == 1:
-		show_turn_ui("PLAYER TURN")
-	elif advance_mode:
+	if !advance_mode and player.player_turn_count == 1:
+		pass
+	else:
 		show_turn_ui("PLAYER TURN")
 	sound_manager.play_sound(TURN_PLAYER)
 	await player.start_turn()
@@ -611,9 +610,9 @@ func start_player_turn():
 		re_flip_button.mouse_default_cursor_shape = 8
 		flip_button.mouse_default_cursor_shape = 8
 		player.toggle_button(flip_button,true)
-		#await get_tree().create_timer(2.0).timeout 
+		await get_tree().create_timer(2.0).timeout 
 		_say("sk_first_flip")
-		#await get_tree().create_timer(7.0).timeout
+		await get_tree().create_timer(7.0).timeout
 		flip_button.mouse_default_cursor_shape = 2
 		player.toggle_button(flip_button,false)
 		_show_tutorial("Coin Flipping","Press your Coin Bar to Flip 4 Coins.",player_health_bar.global_position,-100,[flip_button] )
@@ -625,7 +624,7 @@ func start_player_turn():
 		re_flip_button.mouse_default_cursor_shape = 8
 		flip_button.mouse_default_cursor_shape = 8
 		_say("sk_first_reflip")
-		#await get_tree().create_timer(3.0).timeout
+		await get_tree().create_timer(3.0).timeout
 		re_flip_button.mouse_default_cursor_shape = 2
 		re_flip_button.disabled = false
 		_show_tutorial("Re-Flip", "If there are coins on the Arcane Circle,\npress Re-Flip to flip all coins again.",re_flip_button.global_position,-100,[re_flip_button])
@@ -1064,6 +1063,7 @@ func update_enemy_stacks():
 		enemy_spend_particles.emitting = true
 
 func _on_restart_pressed():
+	sound_manager.play_sound(BUTTON)
 	game_over_triggered = false
 	await get_tree().create_timer(0.2, true).timeout
 	get_tree().reload_current_scene()

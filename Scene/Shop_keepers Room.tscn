@@ -12,6 +12,7 @@
 [ext_resource type="StyleBox" uid="uid://g8acwjjmd4tf" path="res://Assets/SavedTexture/Button_Pressed.tres" id="10_s0a5k"]
 [ext_resource type="StyleBox" uid="uid://cxdkfhyiiy8y4" path="res://Assets/SavedTexture/Button_Hovered.tres" id="11_5i3rw"]
 [ext_resource type="Texture2D" uid="uid://di0jcfq5ckfax" path="res://Assets/Scroll_Opening_Plain.png" id="12_s0a5k"]
+[ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="13_5i3rw"]
 
 [sub_resource type="Gradient" id="Gradient_2gtc7"]
 offsets = PackedFloat32Array(0, 0.22742476)
@@ -44,6 +45,10 @@ region = Rect2(0, 0, 48, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_mcivh"]
 atlas = ExtResource("12_s0a5k")
 region = Rect2(48, 0, 48, 19)
+
+[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_mcivh"]
+
+[sub_resource type="AudioStream" id="AudioStream_t51jh"]
 
 [node name="Node2D" type="ColorRect" unique_id=1328940769]
 custom_minimum_size = Vector2(1150, 650)
@@ -211,6 +216,21 @@ theme_override_styles/pressed = ExtResource("10_s0a5k")
 theme_override_styles/hover = ExtResource("11_5i3rw")
 action_mode = 0
 text = "ARCHIVE"
+
+[node name="SoundManager" type="Node2D" parent="." unique_id=1875625557]
+position = Vector2(576, 324)
+scale = Vector2(0.555, 0.555)
+script = ExtResource("13_5i3rw")
+
+[node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=720682524]
+process_mode = 3
+stream = SubResource("AudioStreamPolyphonic_mcivh")
+bus = &"SFX"
+
+[node name="BGMPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=288805651]
+process_mode = 3
+stream = SubResource("AudioStream_t51jh")
+bus = &"BGM"
 
 [connection signal="mouse_entered" from="Basic Mode" to="." method="_on_basic_mode_mouse_entered"]
 [connection signal="mouse_exited" from="Basic Mode" to="." method="_on_basic_mode_mouse_exited"]

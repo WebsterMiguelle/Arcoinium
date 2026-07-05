@@ -16,7 +16,6 @@ func _ready() -> void:
 	modulate.a = 1
 	label = temp_label
 	print("FLOATING LABEL CREATED")
-	print(label.text)
 	var tween = create_tween()
 	var target_y
 	if entity == "PLAYER":

@@ -234,13 +234,13 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_6njx3"]
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_7606m"]
 
 [sub_resource type="Curve" id="Curve_7606m"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.16532259, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="CurveTexture" id="CurveTexture_885bo"]
+[sub_resource type="CurveTexture" id="CurveTexture_1v7hq"]
 curve = SubResource("Curve_7606m")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1v7hq"]
@@ -255,11 +255,11 @@ flatness = 1.0
 initial_velocity_max = 83.03
 directional_velocity_min = 1.0
 directional_velocity_max = 1.0
-directional_velocity_curve = SubResource("CurveXYZTexture_6njx3")
+directional_velocity_curve = SubResource("CurveXYZTexture_7606m")
 gravity = Vector3(0, 0, 0)
 scale_min = 0.0
 scale_max = 6.1299996
-scale_curve = SubResource("CurveTexture_885bo")
+scale_curve = SubResource("CurveTexture_1v7hq")
 color = Color(1, 1, 0.79607844, 0.8627451)
 
 [node name="Forvideoonly" type="Node2D" unique_id=569750699]

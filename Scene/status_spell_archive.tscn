@@ -8,6 +8,7 @@
 [ext_resource type="StyleBox" uid="uid://bgkyr1rfshpsr" path="res://Assets/SavedTexture/Button_Default.tres" id="3_gceok"]
 [ext_resource type="StyleBox" uid="uid://g8acwjjmd4tf" path="res://Assets/SavedTexture/Button_Pressed.tres" id="4_hn8hw"]
 [ext_resource type="Texture2D" uid="uid://c5gnsbgjlhxq8" path="res://Assets/shelfsprite.png" id="6_vhq4y"]
+[ext_resource type="StyleBox" uid="uid://cxdkfhyiiy8y4" path="res://Assets/SavedTexture/Button_Hovered.tres" id="6_vvyt1"]
 [ext_resource type="SpriteFrames" uid="uid://dafl661xkwq8o" path="res://Assets/PassivesIcons.tres" id="9_hn8hw"]
 [ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="10_nkfew"]
 
@@ -73,7 +74,8 @@ theme_override_fonts/font = ExtResource("2_vhq4y")
 theme_override_font_sizes/font_size = 25
 theme_override_styles/normal = ExtResource("3_gceok")
 theme_override_styles/pressed = ExtResource("4_hn8hw")
-theme_override_styles/hover = ExtResource("3_gceok")
+theme_override_styles/hover = ExtResource("6_vvyt1")
+toggle_mode = true
 text = "COIN STATUS"
 
 [node name="Entity" type="Button" parent="." unique_id=1745311677]
@@ -88,7 +90,8 @@ theme_override_fonts/font = ExtResource("2_vhq4y")
 theme_override_font_sizes/font_size = 25
 theme_override_styles/normal = ExtResource("3_gceok")
 theme_override_styles/pressed = ExtResource("4_hn8hw")
-theme_override_styles/hover = ExtResource("3_gceok")
+theme_override_styles/hover = ExtResource("6_vvyt1")
+toggle_mode = true
 text = "COIN SPELLS"
 
 [node name="Back" type="Button" parent="." unique_id=1924394241]
@@ -103,7 +106,8 @@ theme_override_fonts/font = ExtResource("2_vhq4y")
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = ExtResource("3_gceok")
 theme_override_styles/pressed = ExtResource("4_hn8hw")
-theme_override_styles/hover = ExtResource("3_gceok")
+theme_override_styles/hover = ExtResource("6_vvyt1")
+toggle_mode = true
 text = "BACK"
 
 [node name="Frame" type="TextureRect" parent="." unique_id=723124363]

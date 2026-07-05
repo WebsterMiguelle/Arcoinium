@@ -42,6 +42,10 @@ content_margin_top = 5.0
 content_margin_right = 5.0
 content_margin_bottom = 5.0
 texture = ExtResource("1_dmkc7")
+texture_margin_left = 20.0
+texture_margin_top = 20.0
+texture_margin_right = 20.0
+texture_margin_bottom = 20.0
 modulate_color = Color(0.13464907, 0.1346491, 0.13464904, 1)
 
 [node name="Tutorial" type="Node2D" unique_id=1678281989]

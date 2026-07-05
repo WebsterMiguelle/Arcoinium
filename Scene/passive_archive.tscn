@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://c5gnsbgjlhxq8" path="res://Assets/shelfsprite.png" id="5_onjbu"]
 [ext_resource type="StyleBox" uid="uid://g8acwjjmd4tf" path="res://Assets/SavedTexture/Button_Pressed.tres" id="6_4v5iy"]
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="6_gx6ft"]
+[ext_resource type="StyleBox" uid="uid://cxdkfhyiiy8y4" path="res://Assets/SavedTexture/Button_Hovered.tres" id="9_5g4ow"]
 [ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="10_bkln2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kid0q"]
@@ -636,7 +637,7 @@ theme_override_fonts/font = ExtResource("2_mej11")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = ExtResource("5_1161a")
 theme_override_styles/pressed = ExtResource("6_4v5iy")
-theme_override_styles/hover = ExtResource("5_1161a")
+theme_override_styles/hover = ExtResource("9_5g4ow")
 text = "BACK"
 
 [node name="B-RANK" type="Button" parent="." unique_id=2063861164]
@@ -644,14 +645,15 @@ custom_minimum_size = Vector2(150, 50)
 layout_mode = 0
 offset_left = 30.0
 offset_top = 139.0
-offset_right = 180.0
-offset_bottom = 189.0
+offset_right = 186.0
+offset_bottom = 203.0
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_mej11")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = ExtResource("5_1161a")
 theme_override_styles/pressed = ExtResource("6_4v5iy")
-theme_override_styles/hover = ExtResource("5_1161a")
+theme_override_styles/hover = ExtResource("9_5g4ow")
+toggle_mode = true
 text = "B - RANK"
 
 [node name="A-RANK" type="Button" parent="." unique_id=951600385]
@@ -659,14 +661,15 @@ custom_minimum_size = Vector2(150, 50)
 layout_mode = 0
 offset_left = 30.0
 offset_top = 217.0
-offset_right = 180.0
-offset_bottom = 267.0
+offset_right = 186.0
+offset_bottom = 281.0
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_mej11")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = ExtResource("5_1161a")
 theme_override_styles/pressed = ExtResource("6_4v5iy")
-theme_override_styles/hover = ExtResource("5_1161a")
+theme_override_styles/hover = ExtResource("9_5g4ow")
+toggle_mode = true
 text = "A - RANK"
 
 [node name="S-RANK" type="Button" parent="." unique_id=1590904088]
@@ -674,14 +677,15 @@ custom_minimum_size = Vector2(150, 50)
 layout_mode = 0
 offset_left = 30.0
 offset_top = 292.0
-offset_right = 180.0
-offset_bottom = 342.0
+offset_right = 186.0
+offset_bottom = 356.0
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_mej11")
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = ExtResource("5_1161a")
 theme_override_styles/pressed = ExtResource("6_4v5iy")
-theme_override_styles/hover = ExtResource("5_1161a")
+theme_override_styles/hover = ExtResource("9_5g4ow")
+toggle_mode = true
 text = "S - RANK"
 
 [node name="Frame" type="TextureRect" parent="." unique_id=1844933160]

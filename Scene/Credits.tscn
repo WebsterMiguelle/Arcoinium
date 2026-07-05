@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c0qbb7sy8pdut"]
 
 [ext_resource type="Texture2D" uid="uid://di0jcfq5ckfax" path="res://Assets/Scroll_Opening_Plain.png" id="1_4ofrx"]
-[ext_resource type="Script" path="res://Script/credits_script.gd" id="1_aljdg"]
+[ext_resource type="Script" uid="uid://gh0srurfkrce" path="res://Script/credits_script.gd" id="1_aljdg"]
 [ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="2_aljdg"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="3_s0dgc"]
 [ext_resource type="FontFile" uid="uid://drm3kueev5jxy" path="res://Assets/Fonts/OXYGENE1.TTF" id="4_kpi7w"]
@@ -175,7 +175,7 @@ layout_mode = 2
 
 [node name="Developers" type="GridContainer" parent="VBoxContainer/4" unique_id=2101376301]
 layout_mode = 2
-theme_override_constants/h_separation = 70
+theme_override_constants/h_separation = -11
 theme_override_constants/v_separation = 20
 columns = 2
 
@@ -186,12 +186,11 @@ theme_override_constants/separation = -1
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/4/Developers/Allan" unique_id=1788710934]
 layout_mode = 2
-theme_override_constants/margin_left = 79
-theme_override_constants/margin_top = 0
+theme_override_constants/margin_left = 80
 theme_override_constants/margin_right = 80
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/4/Developers/Allan/MarginContainer" unique_id=7902545]
-custom_minimum_size = Vector2(128, 128)
+custom_minimum_size = Vector2(180, 180)
 layout_mode = 2
 texture = ExtResource("6_2byuq")
 expand_mode = 1
@@ -220,11 +219,11 @@ theme_override_constants/separation = -1
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/4/Developers/Vincent" unique_id=141559881]
 layout_mode = 2
-theme_override_constants/margin_left = 79
-theme_override_constants/margin_right = 79
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_right = 80
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/4/Developers/Vincent/MarginContainer" unique_id=2130232111]
-custom_minimum_size = Vector2(128, 128)
+custom_minimum_size = Vector2(180, 180)
 layout_mode = 2
 texture = ExtResource("8_7vj1s")
 
@@ -251,11 +250,11 @@ theme_override_constants/separation = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/4/Developers/Webster" unique_id=1621581289]
 layout_mode = 2
-theme_override_constants/margin_left = 79
-theme_override_constants/margin_right = 79
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_right = 80
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/4/Developers/Webster/MarginContainer" unique_id=390607376]
-custom_minimum_size = Vector2(128, 128)
+custom_minimum_size = Vector2(180, 180)
 layout_mode = 2
 texture = ExtResource("9_r8mmo")
 
@@ -278,15 +277,15 @@ horizontal_alignment = 1
 [node name="Baubbie" type="VBoxContainer" parent="VBoxContainer/4/Developers" unique_id=577822101]
 custom_minimum_size = Vector2(300, 250)
 layout_mode = 2
-theme_override_constants/separation = -1
+theme_override_constants/separation = -4
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/4/Developers/Baubbie" unique_id=1729425042]
 layout_mode = 2
-theme_override_constants/margin_left = 79
-theme_override_constants/margin_right = 79
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_right = 80
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/4/Developers/Baubbie/MarginContainer" unique_id=1037488686]
-custom_minimum_size = Vector2(128, 128)
+custom_minimum_size = Vector2(180, 180)
 layout_mode = 2
 texture = ExtResource("10_njwao")
 
@@ -305,6 +304,10 @@ theme_override_fonts/font = ExtResource("3_s0dgc")
 theme_override_font_sizes/font_size = 30
 text = "Concept Art/Sprite Artist"
 horizontal_alignment = 1
+
+[node name="Sep" type="Control" parent="VBoxContainer" unique_id=90930020]
+custom_minimum_size = Vector2(0, 26.6)
+layout_mode = 2
 
 [node name="5" type="MarginContainer" parent="VBoxContainer" unique_id=655275128]
 layout_mode = 2

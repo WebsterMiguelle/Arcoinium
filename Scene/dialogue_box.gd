@@ -28,21 +28,21 @@ const LINES = {
 	"back_return": [
 		"Hmm..., Leaving now Coin Master?"],
 	"back_first": [
-		"Good luck to Your Journey!" ],
+		"Good luck on Your Journey!" ],
 	"sk_battle_start": [
 		"So, you wish to learn, Coin Caster?",
 		"I won't go easy on you.",
 		"Let the lesson begin!" ],
 	"sk_first_flip": [
 		"Ah, your first flip!",
-		"Each coin holds a fate.",
+		"Each coin holds its own fate.",
 		"Flip 4 Coins..." ],
 	"sk_flip_progress": [
 		"Keep flipping, Caster.",
 		"The Arcane Circle hungers for more coins." ],
 	"sk_coin_spell": [
-		"Each coin carries its own magic.",
-		"Inspect your portrait, know your power." ],
+		"Two coins create a spell.",
+		"Inspect your portrait, to know your power." ],
 	"sk_first_reflip": [
 		"Fate not in your favor?",
 		"Re-Flip, bend the odds to your will.",
@@ -72,7 +72,7 @@ const LINES = {
 		"Hmph. You still have much to learn.",
 		"Return when you are ready, Caster." ],
 	"adv_welcome": [
-		"Back so soon? Before starting, I gave you a gift.\nCheck your portrait." ],
+		"Before we begin, I gave you a gift.\nCheck your portrait." ],
 	"adv_debt_intro": [
 		"Watch your numbers\nevery flip could cost you." ],
 	"adv_coin_tiers_transition": [

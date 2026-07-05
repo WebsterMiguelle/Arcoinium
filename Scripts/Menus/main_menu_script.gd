@@ -17,6 +17,13 @@ extends Node
 @onready var tutorial_glow_panel: Panel = $Tutorial/Glow2
 @onready var tutorial_label: Label = $"Tutorial Label"
 
+#Background
+@onready var darkbg: TextureRect = $darkbg
+@onready var smokebg: TextureRect = $Smokebg
+@onready var title: TextureRect = $title
+@onready var coin_caster: TextureRect = $CoinCaster
+
+@onready var unpressable_screen: ColorRect = $"Unpressable Screen"
 
 const MAIN_MENU = preload("uid://brcpr6378drlx")
 
@@ -41,12 +48,32 @@ var tutorial_bounce_tween: Tween
 var greed_glow_tween: Tween 
 var tutorial_glow_tween: Tween 
 
+@onready var original_x_smokebg = smokebg.global_position.x
+@onready var original_x_title = title.global_position.x
+@onready var original_x_coin_caster = coin_caster.global_position.x
+@onready var original_x_button = button.global_position.x
+@onready var original_x_tut_button = tutorial_button.global_position.x
+@onready var original_x_greed_button = greed_button.global_position.x
+
+@onready var screen_width = get_viewport().get_visible_rect().size.x
+
 func _ready() -> void:
 	sound_manager.play_music(MAIN_MENU)
 	coin.play("coin_flipping")
 	greed_coin.play("gold_coin_flip")
 	tutorial_coin.play("tutorial_coin")
 	fading_text()
+	
+	coin_caster.global_position.x = -screen_width
+	smokebg.global_position.x = -screen_width
+	title.global_position.x = -screen_width
+	button.global_position.x = -screen_width
+	tutorial_button.global_position.x = -screen_width
+	greed_button.global_position.x = -screen_width
+	
+	unpressable_screen.visible = true
+	
+	screen_elements_slide_in()
 	
 	# NEW: Hide the glow by default when the scene loads
 	tutorial_glow_panel.modulate.a = 0.1 
@@ -282,3 +309,17 @@ func _on_tutorial_button_pressed() -> void:
 	tutorial_coin.play("tutorial_coin") 
 	sound_manager.stop_music()
 	SceneTransition.load_scene("res://Scene/Shop_keepers Room.tscn") 
+
+func screen_elements_slide_in():  
+	print("slide in")
+	var tween = create_tween()
+
+	tween.tween_property(button, "position:x", original_x_button, 0.8).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(greed_button, "position:x", original_x_greed_button, 0.8).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(tutorial_button, "position:x", original_x_tut_button, 0.8).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(title, "position:x", original_x_title, 1.0).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(coin_caster, "position:x", original_x_coin_caster, 1.3).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(smokebg, "position:x", original_x_smokebg, 1.5).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
+
+	unpressable_screen.visible = false
+	pass

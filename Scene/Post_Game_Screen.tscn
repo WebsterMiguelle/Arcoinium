@@ -307,7 +307,7 @@ texture = ExtResource("7_qjnbp")
 
 [node name="MarginContainer" type="MarginContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=1962954101]
 layout_mode = 2
-theme_override_constants/margin_left = -68
+theme_override_constants/margin_left = -32
 
 [node name="STATISTICS" type="VBoxContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/MarginContainer" unique_id=1817037017]
 layout_mode = 2
@@ -410,7 +410,7 @@ texture = ExtResource("10_4dvkt")
 [node name="HBoxContainer" type="HBoxContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer" unique_id=1892739567]
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
-theme_override_constants/separation = 80
+theme_override_constants/separation = 30
 
 [node name="VFlowContainer" type="VBoxContainer" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1624429401]
 layout_mode = 2
@@ -427,16 +427,17 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
 theme_override_fonts/font = ExtResource("8_bnefy")
-theme_override_font_sizes/font_size = 60
+theme_override_font_sizes/font_size = 40
 text = "F+"
 horizontal_alignment = 1
 
 [node name="WealthTitle" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/HBoxContainer/VFlowContainer" unique_id=789596329]
-custom_minimum_size = Vector2(150, 100)
+custom_minimum_size = Vector2(120, 50)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_constants/line_spacing = -10
 theme_override_fonts/font = ExtResource("7_bnefy")
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 28
 text = "Prosperity Keeper"
 horizontal_alignment = 1
 autowrap_mode = 3
@@ -456,16 +457,17 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
 theme_override_fonts/font = ExtResource("8_bnefy")
-theme_override_font_sizes/font_size = 60
+theme_override_font_sizes/font_size = 40
 text = "S+"
 horizontal_alignment = 1
 
 [node name="CombatTitle" type="Label" parent="UILayer/HBoxContainer/RightPanel/MarginContainer/VBoxContainer/HBoxContainer/VFlowContainer2" unique_id=1615034979]
-custom_minimum_size = Vector2(150, 100)
+custom_minimum_size = Vector2(120, 50)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.1764706, 0.15686275, 0.14117648, 1)
+theme_override_constants/line_spacing = -10
 theme_override_fonts/font = ExtResource("7_bnefy")
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 28
 text = "Prosperity Keeper"
 horizontal_alignment = 1
 autowrap_mode = 3

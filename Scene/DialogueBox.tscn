@@ -43,11 +43,10 @@ theme_override_font_sizes/font_size = 22
 text = "SHOPKEEPER"
 
 [node name="Dialogue Info" type="Label" parent="Dialogue Panel/MarginContainer/VFlowContainer" unique_id=460021205]
-custom_minimum_size = Vector2(215.86, 0)
+custom_minimum_size = Vector2(215.86, 154.58)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.8352941, 0.827451, 0.75686276, 1)
 theme_override_fonts/font = ExtResource("4_7gqld")
 theme_override_font_sizes/font_size = 28
 text = "Greetings shopkeeper. welcome to Keeper's Rest."
-vertical_alignment = 3
 autowrap_mode = 3

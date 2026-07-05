@@ -11,7 +11,7 @@ func _ready() -> void:
 	fade_tween = create_tween()
 	fade_tween.tween_property(foreground,"self_modulate",Color.WHITE,1.0)
 	await fade_tween.finished
-	SceneTransition.load_scene("res://Scene/Main_Menu.tscn")
+	SceneTransition.load_scene_fade("res://Scene/Main_Menu.tscn")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

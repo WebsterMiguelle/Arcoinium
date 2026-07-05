@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://dms5d0v8hxacy" path="res://Assets/EndScrollTextSeparator.png" id="7_o7e4t"]
 [ext_resource type="StyleBox" uid="uid://cxdkfhyiiy8y4" path="res://Assets/SavedTexture/Button_Hovered.tres" id="7_sf3cn"]
 [ext_resource type="StyleBox" uid="uid://bgkyr1rfshpsr" path="res://Assets/SavedTexture/Button_Default.tres" id="9_o7e4t"]
-[ext_resource type="Texture2D" uid="uid://bvlc07v3u1brg" path="res://Assets/mapIconEnemy.png" id="10_u5yd8"]
+[ext_resource type="Texture2D" uid="uid://b26gbj0tgcnn" path="res://Assets/16bitcoins.png" id="13_sf3cn"]
 [ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="13_ygasj"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u7v7i"]
@@ -48,6 +48,10 @@ region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ft4kv"]
 texture = ExtResource("3_dfqxb")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t0had"]
+atlas = ExtResource("13_sf3cn")
+region = Rect2(16, 0, 16, 16)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_u7v7i"]
 
@@ -164,10 +168,12 @@ autoplay = "default"
 [node name="TextureRect" type="TextureRect" parent="Profile Archive/MarginContainer/VBoxContainer/AnimatedSprite2D" unique_id=635581762]
 self_modulate = Color(0.30588236, 0.12941177, 0, 1)
 show_behind_parent = true
-offset_left = -35.5
-offset_top = -38.399994
-offset_right = 36.999992
-offset_bottom = 37.33333
+offset_left = -32.97
+offset_top = -38.4
+offset_right = 111.03
+offset_bottom = 105.6
+scale = Vector2(0.555, 0.555)
+pivot_offset = Vector2(-12.52, 0)
 texture = ExtResource("3_dfqxb")
 
 [node name="MarginContainer2" type="MarginContainer" parent="Profile Archive/MarginContainer/VBoxContainer" unique_id=808723422]
@@ -297,15 +303,13 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 texture = ExtResource("4_u7v7i")
 
-[node name="MarginContainer" type="MarginContainer" parent="Status_Spell Archive/MarginContainer/VBoxContainer" unique_id=837236964]
+[node name="CenterContainer" type="CenterContainer" parent="Status_Spell Archive/MarginContainer/VBoxContainer" unique_id=1923034734]
 layout_mode = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_right = 35
 
-[node name="AnimatedSprite2D" type="TextureRect" parent="Status_Spell Archive/MarginContainer/VBoxContainer/MarginContainer" unique_id=578131723]
-custom_minimum_size = Vector2(100, 130)
+[node name="AnimatedSprite2D" type="TextureRect" parent="Status_Spell Archive/MarginContainer/VBoxContainer/CenterContainer" unique_id=578131723]
+custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
-texture = ExtResource("10_u5yd8")
+texture = SubResource("AtlasTexture_t0had")
 stretch_mode = 4
 
 [node name="MarginContainer4" type="MarginContainer" parent="Status_Spell Archive/MarginContainer/VBoxContainer" unique_id=1376834457]
@@ -325,6 +329,7 @@ custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_colors/font_hover_color = Color(1, 0.76568663, 0.56753826, 1)
+theme_override_constants/line_spacing = -17
 theme_override_fonts/font = ExtResource("2_sy8nj")
 theme_override_font_sizes/font_size = 43
 theme_override_styles/normal = SubResource("StyleBoxEmpty_u7v7i")

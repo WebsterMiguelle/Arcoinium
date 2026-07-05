@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b1h1nfobkbmxd"]
 
 [ext_resource type="Script" uid="uid://gxjjd05sbrcx" path="res://passsive_notification.gd" id="1_v28cp"]
+[ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="2_hrwdb"]
 
 [sub_resource type="Gradient" id="Gradient_hrwdb"]
 offsets = PackedFloat32Array(0.09398496, 1)
@@ -57,7 +58,8 @@ theme_override_constants/margin_bottom = 5
 
 [node name="Label" type="Label" parent="Background/MarginContainer" unique_id=1906907782]
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
+theme_override_fonts/font = ExtResource("2_hrwdb")
+theme_override_font_sizes/font_size = 35
 text = "Label"
 horizontal_alignment = 1
 vertical_alignment = 1

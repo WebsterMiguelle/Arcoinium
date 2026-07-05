@@ -818,8 +818,8 @@ func end_turn():
 			if randi_range(1,10) == 1:
 				latest_pair_left_coin.is_stamped = true
 			create_floating_label(1,"GAIN","PLAYER")
-			main.player.gain += 2
-			main.total_gain += 2
+			main.player.gain += 1
+			main.total_gain += 1
 		if main.player.has_coin_snipe:
 			main.player.trigger_temp_passive("coin_snipe","COIN SNIPE")
 			main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)
@@ -842,8 +842,8 @@ func end_turn():
 			if randi_range(1,10) == 1:
 				latest_pair_right_coin.is_stamped = true
 			create_floating_label(1,"GAIN","PLAYER")
-			main.player.gain += 2
-			main.total_gain += 2
+			main.player.gain += 1
+			main.total_gain += 1
 		if main.player.has_coin_snipe:
 			main.player.trigger_temp_passive("coin_snipe","COIN SNIPE")
 			main.particle_manager.spawn_particle(SINGLE_DAMAGE_PARTICLE,main.enemy_portrait.global_position)

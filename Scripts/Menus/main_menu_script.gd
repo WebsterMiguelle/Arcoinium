@@ -58,6 +58,7 @@ var tutorial_glow_tween: Tween
 @onready var original_x_greed_button = greed_button.global_position.x
 
 @onready var screen_width = get_viewport().get_visible_rect().size.x
+@onready var gpu_particles_2d: GPUParticles2D = $GPUParticles2D
 
 func _ready() -> void:
 	sound_manager.play_music(MAIN_MENU)

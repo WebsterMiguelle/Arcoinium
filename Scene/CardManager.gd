@@ -46,7 +46,7 @@ var all_cards = [
 	{"id": 24, "name": "Bankrupt", "rank": "S", "desc": "Your Coin Bar will only flip VOIDED Coins. For each VOIDED Coin Played/Cleansed, apply 2 DEBT to Self/Enemy. Execute the enemy if their DEBT is higher than their Coins."},
 	{"id": 25, "name": "All In", "rank": "S", "desc": "If the Arcane Circle is empty at End Turn, automatically Flip 20 SILVER Coins with a 50% Chance of being STAMPED. Each Statused Coin flipped this way deals 3 DAMAGE."},
 	{"id": 26, "name": "Withdraw", "rank": "B", "desc": "Removing a RESERVED Coin deals 1 DAMAGE. Statused Coins deal 3 DAMAGE instead."},
-	{"id": 27, "name": "Deposit", "rank": "A", "desc": "Max Reserve +3. RESERVING a Coin applies 2 GAIN with a 10% Chance to be STAMPED."},
+	{"id": 27, "name": "Deposit", "rank": "A", "desc": "Max Reserve +1. RESERVING a Coin applies 1 GAIN with a 10% Chance to be STAMPED."},
 	{"id": 28, "name": "Dividend", "rank": "A", "desc": "Each RESERVED Coin has a 30% chance to generate a copy of itself next turn."},
 	{"id": 29, "name": "Cash Out", "rank": "S", "desc": "If there are 4 or more RESERVED Coins at the end of a Player or Enemy Turn, gain an EXTRA TURN. During Extra Turns, you can only Re-Flip and cannot gain additional Extra Turns."}
 ];
@@ -267,7 +267,7 @@ func apply_reward(card_id):
 		27:
 			print("A-Rank: Deposit")
 			main.player.has_deposit = true
-			main.player.max_reserve += 3
+			main.player.max_reserve += 1
 		28:
 			print("A-Rank: Dividend")
 			main.player.has_dividend = true

@@ -18,7 +18,7 @@ const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
 @onready var a_rank_btn: Button = $"A-RANK"
 @onready var s_rank_btn: Button = $"S-RANK"
 
-const ARCHIVE_CARD = preload("res://Scene/Archives_card.tscn")
+const ARCHIVE_CARD = preload("uid://c0h5hn88auyo6")
 var card_nodes: Array = []
 var current_filter: String = ""
 

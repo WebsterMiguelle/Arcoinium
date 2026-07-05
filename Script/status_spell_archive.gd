@@ -14,7 +14,7 @@ const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
 const BUTTON = preload("uid://bwn6ufooc31uy")
 
 
-const Effect_CARD = preload("res://Scene/Archives_card.tscn")
+const Effect_CARD = preload("uid://c0h5hn88auyo6")
 const COIN = preload("res://Scene/coin.tscn")
 var card_nodes: Array = []
 var current_filter: String = ""

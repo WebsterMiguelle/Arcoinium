@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://50o4ytr71q14"
+path="res://.godot/imported/Misty Meadows.wav-a65b6603717343f15b4191e55a7fa68a.sample"
+
+[deps]
+
+source_file="res://BGM/Misty Meadows.wav"
+dest_files=["res://.godot/imported/Misty Meadows.wav-a65b6603717343f15b4191e55a7fa68a.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=2
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

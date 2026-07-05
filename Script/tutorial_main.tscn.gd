@@ -81,10 +81,6 @@ const EXTRA_TURN = preload("uid://yp1dxyml8rna")
 #MUSIC
 const SHOP = preload("uid://cj6gpgjo4y5s0")
 const PASSIVE_SELECTION = preload("uid://cfm3uhjitv627")
-const TWILIGHT_SAGE = preload("uid://dh7vynnxrbqwa")
-const TWILIGHT_ZONE___BATTLE_THEME_1 = preload("uid://b8go57qfww8el")
-const TWILIGHT_ZONE___BATTLE_THEME_2 = preload("uid://byxwfs5g71s5x")
-const TWILIGHT_ZONE___BATTLE_THEME_3 = preload("uid://bivy2e314q2fa")
 
 #@onready var player_portrait: ColorRect = $Player/Player_Portrait
 #@onready var enemy_portrait: ColorRect = $Enemy/Enemy_Portrait

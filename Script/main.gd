@@ -9,6 +9,9 @@ const BUTTON = preload("uid://bwn6ufooc31uy")
 @onready var start_journey_button: Button = $"StartRun/Start Journey"
 
 const KEEPER_S_REST = preload("uid://bnkwnb7pyuorc")
+const GREED = preload("uid://cb0c5agc8yiv2")
+const STARSHADE_GROVES = preload("uid://cwvykm00o58p3")
+const MISTY_MEADOWS = preload("uid://50o4ytr71q14")
 
 signal start_journey
 @onready var start_run: CanvasLayer = $StartRun
@@ -135,12 +138,7 @@ const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
 const EXTRA_TURN = preload("uid://yp1dxyml8rna")
 
 #MUSIC
-const SHOP = preload("uid://cj6gpgjo4y5s0")
 const PASSIVE_SELECTION = preload("uid://cfm3uhjitv627")
-const TWILIGHT_SAGE = preload("uid://dh7vynnxrbqwa")
-const TWILIGHT_ZONE___BATTLE_THEME_1 = preload("uid://b8go57qfww8el")
-const TWILIGHT_ZONE___BATTLE_THEME_2 = preload("uid://byxwfs5g71s5x")
-const TWILIGHT_ZONE___BATTLE_THEME_3 = preload("uid://bivy2e314q2fa")
 
 #@onready var player_portrait: ColorRect = $Player/Player_Portrait
 #@onready var enemy_portrait: ColorRect = $Enemy/Enemy_Portrait
@@ -491,15 +489,12 @@ func battle_start():
 	update_player_coin()
 	flip_button.disabled = false
 	sound_manager.play_sound(BATTLE_START)
-	var bgm_rand = randi_range(0,2)
 	if current_enemy_index == 8:
-		sound_manager.play_music(TWILIGHT_SAGE)
-	elif bgm_rand == 0: 
-		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_1)
-	elif bgm_rand == 1:
-		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_2)
+		sound_manager.play_music(GREED)
+	elif current_enemy_index > 3:
+		sound_manager.play_music(MISTY_MEADOWS)
 	else:
-		sound_manager.play_music(TWILIGHT_ZONE___BATTLE_THEME_3)
+		sound_manager.play_music(STARSHADE_GROVES)
 		
 	#Battle Start Passives
 	await player.activate_pre_battle_passives()

@@ -29,6 +29,7 @@ GameSettings="*uid://qbw8yhw1a5ni"
 [display]
 
 window/size/mode=2
+window/size/resizable=false
 window/stretch/mode="viewport"
 
 [editor]

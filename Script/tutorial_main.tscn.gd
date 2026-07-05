@@ -79,7 +79,6 @@ const COIN_ATTACK_PARTICLE = preload("uid://djmpd27qq4nn1")
 const EXTRA_TURN = preload("uid://yp1dxyml8rna")
 
 #MUSIC
-const SHOP = preload("uid://cj6gpgjo4y5s0")
 const PASSIVE_SELECTION = preload("uid://cfm3uhjitv627")
 
 #@onready var player_portrait: ColorRect = $Player/Player_Portrait

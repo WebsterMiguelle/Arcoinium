@@ -274,12 +274,18 @@ scale_over_velocity_min = 107.84
 scale_over_velocity_max = 196.06999
 color_ramp = SubResource("GradientTexture1D_7n7pe")
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_fnsx1"]
+load_path = "res://.godot/imported/Scroll9x9.png-06d6b54888e705112a3699239eb1e5ba.ctex"
+
 [sub_resource type="Gradient" id="Gradient_xj0l1"]
 offsets = PackedFloat32Array(0, 0.76123595)
 colors = PackedColorArray(0.5936804, 0.38009787, 0, 1, 1, 1, 1, 0.40392157)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_fnsx1"]
 gradient = SubResource("Gradient_xj0l1")
+
+[sub_resource type="CurveTexture" id="CurveTexture_7n7pe"]
+curve = SubResource("Curve_txj2b")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tke4u"]
 particle_flag_disable_z = true
@@ -292,8 +298,8 @@ flatness = 1.0
 initial_velocity_max = 31.25
 gravity = Vector3(0, 0, 0)
 scale_min = 0.0
-scale_max = 0.79999995
-scale_curve = SubResource("CurveTexture_jodah")
+scale_max = 0.39999998
+scale_curve = SubResource("CurveTexture_7n7pe")
 scale_over_velocity_min = 107.84
 scale_over_velocity_max = 196.06999
 color = Color(0.9577182, 0.9577182, 0.9577181, 1)
@@ -923,6 +929,9 @@ scale_over_velocity_max = 196.06999
 color = Color(0.9999996, 0.9053559, 0.81244224, 1)
 color_ramp = SubResource("GradientTexture1D_mlc74")
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7n7pe"]
+load_path = "res://.godot/imported/Scroll9x9.png-06d6b54888e705112a3699239eb1e5ba.ctex"
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_f3bax"]
 atlas = ExtResource("7_5rsq1")
 region = Rect2(96, 0, 32, 32)
@@ -1517,7 +1526,7 @@ process_material = SubResource("ParticleProcessMaterial_5l0y8")
 position = Vector2(122, 139)
 emitting = false
 amount = 6
-texture = ExtResource("49_5qrjd")
+texture = SubResource("CompressedTexture2D_fnsx1")
 process_material = SubResource("ParticleProcessMaterial_tke4u")
 
 [node name="Turn Spell Light" type="PointLight2D" parent="Battle UI/Turn Calculation Box" unique_id=459779385 groups=["point_light"]]
@@ -2147,9 +2156,10 @@ self_modulate = Color(0.9047755, 0.66126776, 3.85046e-07, 1)
 top_level = true
 offset_left = 162.0
 offset_top = 501.0
-offset_right = 210.0
-offset_bottom = 549.0
-texture = ExtResource("49_5qrjd")
+offset_right = 211.0
+offset_bottom = 548.0
+texture = SubResource("CompressedTexture2D_7n7pe")
+expand_mode = 1
 
 [node name="Player Tally Count" type="Label" parent="Player/Player Tally" unique_id=1049271658]
 top_level = true

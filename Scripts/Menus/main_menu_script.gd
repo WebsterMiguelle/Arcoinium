@@ -4,6 +4,8 @@ extends Node
 @onready var greed_button: Button = $GreedButton
 @onready var normal: Label = $NORMAL
 @onready var greed: Label = $GREED
+const SCROLL_HOVERED = preload("uid://dpcddmlbji61k")
+
 
 @onready var coin: AnimatedSprite2D = $Button/Coin
 @onready var button: Button = $Button
@@ -98,6 +100,7 @@ func _ready() -> void:
 	_greed_coin_float()
 	
 func _on_button_hovered() -> void:
+	sound_manager.play_sound(SCROLL_HOVERED)
 	normal.visible = true
 	normal_waiting = true
 	
@@ -171,6 +174,7 @@ func fading_text():
 
 	
 func _on_greed_button_hovered() -> void:
+	sound_manager.play_sound(SCROLL_HOVERED)
 	greed.visible = true
 	greed_waiting = true
 	
@@ -265,6 +269,7 @@ func _tutorial_coin_float():
 
 
 func _on_tutorial_button_hovered() -> void:
+	sound_manager.play_sound(SCROLL_HOVERED)
 	tutorial_label.visible = true
 	tutorial_waiting = true
 	

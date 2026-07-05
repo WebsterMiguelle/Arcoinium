@@ -342,6 +342,7 @@ offset_right = -280.0
 offset_bottom = -360.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_default_cursor_shape = 2
 
 [node name="Glow" type="Panel" parent="Button" unique_id=712917737]
 layout_mode = 0
@@ -373,6 +374,7 @@ offset_right = -272.0
 offset_bottom = -104.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_default_cursor_shape = 2
 
 [node name="Glow2" type="Panel" parent="Tutorial" unique_id=1169691643]
 layout_mode = 0
@@ -417,6 +419,7 @@ offset_right = -344.0
 offset_bottom = -232.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_default_cursor_shape = 2
 
 [node name="Greed Glow" type="Panel" parent="GreedButton" unique_id=1203397006]
 self_modulate = Color(0.9999998, 0.8607578, 0.4857236, 1)

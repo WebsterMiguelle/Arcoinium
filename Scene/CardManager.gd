@@ -121,6 +121,7 @@ func show_rewards():
 		previous_cards.append(c.card_id)
 	
 func show_card_selection_async():
+	card_count = 0
 	picked_cards.clear()
 	show_rewards()
 	visible = true

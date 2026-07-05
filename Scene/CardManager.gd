@@ -10,7 +10,7 @@ const CARD_SCENE = preload("res://Scene/reward_card.tscn")
 @onready var player: Node2D = $"../Player"
 
 @onready var card_description: Label = $Background/Card_Description
-
+var card_count = 0
 
 const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
 const SCROLL_HOVERED = preload("uid://dpcddmlbji61k")
@@ -152,6 +152,10 @@ func _ready():
 
 
 func _on_card_selected(card_id):
+	if card_count == 2:
+		return
+	card_count += 1
+
 	if picked_cards.has(card_id):
 		return
 	

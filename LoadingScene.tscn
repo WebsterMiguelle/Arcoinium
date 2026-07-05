@@ -1,11 +1,17 @@
-[gd_scene format=3 uid="uid://blhwsi4i5we8o"]
+[gd_scene format=3 uid="uid://hpxax22jr8n7"]
 
-[ext_resource type="Texture2D" uid="uid://dfw0gb82xbava" path="res://Assets/portraitBackground.png" id="1_dc53g"]
-[ext_resource type="Texture2D" uid="uid://bvg1hmi6pjwfb" path="res://Assets/Coins/sun_flip_upright.png" id="2_i5a16"]
-[ext_resource type="Texture2D" uid="uid://brn3ihcjo08pk" path="res://Assets/Coins/sun_to_moon_coin-Sheet.png" id="3_7606m"]
-[ext_resource type="Texture2D" uid="uid://cv4nirhofifj" path="res://Assets/mainmenuArt - title.png" id="4_7606m"]
+[ext_resource type="Script" uid="uid://d3kbkltjwsnjd" path="res://loading_scene.gd" id="1_4hl00"]
+[ext_resource type="Script" uid="uid://pgnq4jj3xq40" path="res://Script/sound_manager.gd" id="2_jjke5"]
+[ext_resource type="Texture2D" uid="uid://dfw0gb82xbava" path="res://Assets/portraitBackground.png" id="3_efniv"]
+[ext_resource type="Texture2D" uid="uid://bvg1hmi6pjwfb" path="res://Assets/Coins/sun_flip_upright.png" id="4_4nkq4"]
+[ext_resource type="Texture2D" uid="uid://brn3ihcjo08pk" path="res://Assets/Coins/sun_to_moon_coin-Sheet.png" id="5_3u80o"]
+[ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="6_ombny"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1v7hq"]
+[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_efniv"]
+
+[sub_resource type="AudioStream" id="AudioStream_5w0ic"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w5l2i"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 border_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 45
@@ -16,118 +22,118 @@ shadow_color = Color(1, 1, 1, 1)
 shadow_size = 91
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_i4xaw"]
-atlas = ExtResource("2_i5a16")
+atlas = ExtResource("4_4nkq4")
 region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4ban4"]
-atlas = ExtResource("2_i5a16")
+atlas = ExtResource("4_4nkq4")
 region = Rect2(16, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r1861"]
-atlas = ExtResource("2_i5a16")
+atlas = ExtResource("4_4nkq4")
 region = Rect2(32, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ke88y"]
-atlas = ExtResource("2_i5a16")
+atlas = ExtResource("4_4nkq4")
 region = Rect2(48, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yf7ie"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(0, 32, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uyvy5"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(16, 32, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_eslk0"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(32, 32, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p0twe"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(48, 32, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_of7ff"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(64, 32, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e60vw"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(80, 32, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_agvtg"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(96, 32, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0c733"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(112, 32, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vyihv"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(0, 16, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lngom"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(16, 16, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hlnrm"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(32, 16, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bp1oj"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(48, 16, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rbbaj"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(64, 16, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r4o7e"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(80, 16, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dam3f"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(96, 16, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yjix4"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(112, 16, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_w0euy"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ajndv"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(16, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c7ltb"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(32, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pkslc"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(48, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7jwau"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(64, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4psld"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(80, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1mm1q"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(96, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_070e8"]
-atlas = ExtResource("3_7606m")
+atlas = ExtResource("5_3u80o")
 region = Rect2(112, 0, 16, 16)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_wqa8t"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_0m0ru"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -234,16 +240,16 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_7606m"]
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_6njx3"]
 
-[sub_resource type="Curve" id="Curve_7606m"]
+[sub_resource type="Curve" id="Curve_4catc"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.16532259, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
-[sub_resource type="CurveTexture" id="CurveTexture_1v7hq"]
-curve = SubResource("Curve_7606m")
+[sub_resource type="CurveTexture" id="CurveTexture_885bo"]
+curve = SubResource("Curve_4catc")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1v7hq"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_c2eqe"]
 particle_flag_disable_z = true
 emission_shape_offset = Vector3(-59.555, 0, 0)
 emission_shape_scale = Vector3(2.745, 3.07, 1)
@@ -255,25 +261,50 @@ flatness = 1.0
 initial_velocity_max = 83.03
 directional_velocity_min = 1.0
 directional_velocity_max = 1.0
-directional_velocity_curve = SubResource("CurveXYZTexture_7606m")
+directional_velocity_curve = SubResource("CurveXYZTexture_6njx3")
 gravity = Vector3(0, 0, 0)
 scale_min = 0.0
 scale_max = 6.1299996
-scale_curve = SubResource("CurveTexture_1v7hq")
+scale_curve = SubResource("CurveTexture_885bo")
 color = Color(1, 1, 0.79607844, 0.8627451)
 
-[node name="Forvideoonly" type="Node2D" unique_id=569750699]
+[node name="LoadingScene" type="Node2D" unique_id=1516097060]
+script = ExtResource("1_4hl00")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1925109521]
+[node name="SoundManager" type="Node2D" parent="." unique_id=116660370]
+position = Vector2(576, 324)
+scale = Vector2(0.555, 0.555)
+script = ExtResource("2_jjke5")
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer" unique_id=1188968587]
+[node name="SFXPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=323931607]
+process_mode = 3
+stream = SubResource("AudioStreamPolyphonic_efniv")
+bus = &"SFX"
+
+[node name="BGMPlayer" type="AudioStreamPlayer2D" parent="SoundManager" unique_id=1540922931]
+process_mode = 3
+stream = SubResource("AudioStream_5w0ic")
+bus = &"BGM"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1864260213]
+layer = 1000
+
+[node name="Background" type="TextureRect" parent="CanvasLayer" unique_id=381900250]
 self_modulate = Color(0, 0, 0, 1)
+offset_right = 1164.0
+offset_bottom = 662.0
+texture = ExtResource("3_efniv")
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Background" unique_id=352531855]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
 offset_right = 1168.0
 offset_bottom = 686.0
-texture = ExtResource("1_dc53g")
+texture = ExtResource("3_efniv")
 
-[node name="GreedButton" type="Button" parent="CanvasLayer" unique_id=1350278454]
+[node name="GreedButton" type="Button" parent="CanvasLayer/Background" unique_id=579018705]
 self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -284,7 +315,7 @@ offset_bottom = -276.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Greed Glow" type="Panel" parent="CanvasLayer/GreedButton" unique_id=1067766765]
+[node name="Greed Glow" type="Panel" parent="CanvasLayer/Background/GreedButton" unique_id=348980179]
 self_modulate = Color(0.5633464, 0.43456906, 9.62615e-08, 1)
 layout_mode = 0
 offset_left = 40.0
@@ -293,27 +324,32 @@ offset_right = 56.0
 offset_bottom = 56.0
 pivot_offset = Vector2(-5, 5)
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_1v7hq")
+theme_override_styles/panel = SubResource("StyleBoxFlat_w5l2i")
 metadata/_edit_lock_ = true
 
-[node name="Greed Coin" type="AnimatedSprite2D" parent="CanvasLayer/GreedButton" unique_id=1941635753]
+[node name="Greed Coin" type="AnimatedSprite2D" parent="CanvasLayer/Background/GreedButton" unique_id=1168851153]
 position = Vector2(48.454514, 47.40303)
 rotation = 1.5707964
 scale = Vector2(6.050379, 6.050379)
-sprite_frames = SubResource("SpriteFrames_wqa8t")
+sprite_frames = SubResource("SpriteFrames_0m0ru")
 animation = &"gold_coin_flip"
 autoplay = "gold_coin_flip"
 metadata/_edit_lock_ = true
 
-[node name="TextureRect2" type="TextureRect" parent="CanvasLayer" unique_id=1747324705]
-offset_left = 18.0
-offset_top = 118.0
-offset_right = 774.0
-offset_bottom = 496.0
-texture = ExtResource("4_7606m")
-
-[node name="Dusk Particles" type="GPUParticles2D" parent="CanvasLayer" unique_id=1746126234]
+[node name="Dusk Particles" type="GPUParticles2D" parent="CanvasLayer/Background" unique_id=1138266813]
 position = Vector2(637, 336)
 amount = 64
 lifetime = 9.2
-process_material = SubResource("ParticleProcessMaterial_1v7hq")
+process_material = SubResource("ParticleProcessMaterial_c2eqe")
+
+[node name="loadingtext" type="Label" parent="CanvasLayer/Background" unique_id=82816269]
+layout_mode = 0
+offset_left = 255.0
+offset_top = 450.0
+offset_right = 889.0
+offset_bottom = 501.0
+theme_override_fonts/font = ExtResource("6_ombny")
+theme_override_font_sizes/font_size = 64
+text = "Loading..."
+horizontal_alignment = 1
+vertical_alignment = 1

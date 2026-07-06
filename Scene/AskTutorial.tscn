@@ -46,6 +46,7 @@ offset_left = 107.0
 offset_top = 194.0
 offset_right = 1070.4689
 offset_bottom = 690.0
+pivot_offset = Vector2(482, 284)
 texture = ExtResource("3_k0vpi")
 
 [node name="Shadow" type="TextureRect" parent="CanvasLayer" unique_id=1540482048]

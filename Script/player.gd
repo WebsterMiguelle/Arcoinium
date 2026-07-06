@@ -719,8 +719,9 @@ func reserve(is_generated = false, pickpocketed = false, dazzled = false):
 		trigger_temp_passive("deposit","DEPOSIT")
 		if randi_range(1,10) == 1:
 			c.is_stamped = true
-		create_floating_label(2,"GAIN","PLAYER")
-		gain += 2
+		create_floating_label(1,"GAIN","PLAYER")
+		gain += 1
+		main.total_gain +=1
 		
 	main.add_child(c)
 
@@ -790,8 +791,9 @@ func flip():
 			trigger_temp_passive("deposit","DEPOSIT")
 			if randi_range(1,10) == 1:
 				c.is_stamped = true
-			create_floating_label(2,"GAIN","PLAYER")
-			gain += 2
+			create_floating_label(1,"GAIN","PLAYER")
+			gain += 1
+			main.total_gain +=1
 	else:
 		c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
 		if starstruck:
@@ -1360,9 +1362,9 @@ func end_turn():
 			trigger_temp_passive("deposit","DEPOSIT")
 			if randi_range(1,10) == 1:
 				latest_pair_left_coin.is_stamped = true
-			create_floating_label(2,"GAIN","PLAYER")
-			gain += 2
-			main.total_gain += 2
+			create_floating_label(1,"GAIN","PLAYER")
+			gain += 1
+			main.total_gain += 1
 		
 		if has_coin_snipe:
 			trigger_temp_passive("coin_snipe","COIN SNIPE")
@@ -1385,9 +1387,9 @@ func end_turn():
 			trigger_temp_passive("deposit","DEPOSIT")
 			if randi_range(1,10) == 1:
 				latest_pair_right_coin.is_stamped = true
-			create_floating_label(2,"GAIN","PLAYER")
-			gain += 2
-			main.total_gain += 2
+			create_floating_label(1,"GAIN","PLAYER")
+			gain += 1
+			main.total_gain += 1
 	
 		if has_coin_snipe:
 			trigger_temp_passive("coin_snipe","COIN SNIPE")
@@ -1526,9 +1528,9 @@ func activate_pre_battle_passives():
 					trigger_temp_passive("deposit","DEPOSIT")
 					if randi_range(1,10) == 1:
 						c.is_stamped = true
-					create_floating_label(2,"GAIN","PLAYER")
-					gain += 2
-					main.total_gain += 2
+					create_floating_label(1,"GAIN","PLAYER")
+					gain += 1
+					main.total_gain += 1
 			else:
 				c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))
 				if current_played_coin <= 2 and has_advanced_planning:
@@ -1586,9 +1588,9 @@ func activate_player_turn_start_passives():
 					trigger_temp_passive("deposit","DEPOSIT")
 					if randi_range(1,10) == 1:
 						c.is_stamped = true
-					create_floating_label(2,"GAIN","PLAYER")
-					gain += 2
-					main.total_gain += 2
+					create_floating_label(1,"GAIN","PLAYER")
+					gain += 1
+					main.total_gain += 1
 					
 			else:
 				c.setup(state,main.coin_deck.get_vacant_slot(current_played_coin))

@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://brn3ihcjo08pk" path="res://Assets/Coins/sun_to_moon_coin-Sheet.png" id="2_byqvs"]
 [ext_resource type="Texture2D" uid="uid://b26gbj0tgcnn" path="res://Assets/16bitcoins.png" id="2_jea4o"]
 [ext_resource type="Script" uid="uid://bce80haxrb33g" path="res://Scene/shined.gd" id="4_hncfd"]
-[ext_resource type="Texture2D" uid="uid://cna4umj0n4yt" path="res://Assets/Blocking coin deck1.png" id="5_36o68"]
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="5_yekfk"]
+[ext_resource type="Texture2D" uid="uid://c0tkrx1os3ccm" path="res://Assets/stamped_icon.png" id="6_yekfk"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hncfd"]
 atlas = ExtResource("2_jea4o")
@@ -395,12 +395,11 @@ lifetime = 0.79
 process_material = SubResource("ParticleProcessMaterial_yekfk")
 
 [node name="STAMPED" type="TextureRect" parent="." unique_id=743894983]
-self_modulate = Color(1, 0.12941177, 0.003921569, 1)
-offset_left = 43.0
-offset_top = 5.0
-offset_right = 76.0
-offset_bottom = 38.0
-texture = ExtResource("5_36o68")
+self_modulate = Color(0.92122334, 0, 0, 1)
+offset_top = -40.0
+offset_right = 80.0
+offset_bottom = 40.0
+texture = ExtResource("6_yekfk")
 expand_mode = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1204775582]
@@ -420,9 +419,10 @@ layout_mode = 2
 
 [node name="Control" type="PanelContainer" parent="." unique_id=1286517029]
 self_modulate = Color(1, 1, 1, 0)
-offset_top = -41.0
+offset_top = -40.0
 offset_right = 80.0
-offset_bottom = 39.0
+offset_bottom = 40.0
+mouse_default_cursor_shape = 16
 
 [connection signal="mouse_entered" from="Control" to="." method="_on_control_mouse_entered"]
 [connection signal="mouse_exited" from="Control" to="." method="_on_control_mouse_exited"]

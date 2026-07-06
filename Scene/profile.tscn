@@ -17,7 +17,6 @@
 [ext_resource type="Texture2D" uid="uid://dprlqvclal2j" path="res://Assets/trader.png" id="11_vws13"]
 [ext_resource type="Texture2D" uid="uid://bgomk7rj834wr" path="res://Assets/twilightSage.png" id="12_gakhq"]
 [ext_resource type="FontFile" uid="uid://g3yx805hygq1" path="res://Assets/Fonts/PixelWarden.ttf" id="15_u43rf"]
-[ext_resource type="FontFile" uid="uid://dkuhhu62wkjgk" path="res://Assets/Pix32.ttf" id="15_v84rt"]
 [ext_resource type="FontFile" uid="uid://dcixbp31txpfs" path="res://Assets/Fonts/EXEPixelPerfect.ttf" id="16_u43rf"]
 [ext_resource type="Texture2D" uid="uid://bcn5lt13a3uuv" path="res://Assets/ScrollTextSeparator.png" id="16_vws13"]
 [ext_resource type="FontFile" uid="uid://b3lddibi6eqi3" path="res://Assets/Fonts/mini_pixel-7.ttf" id="17_gakhq"]
@@ -484,9 +483,10 @@ offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
 theme_override_constants/outline_size = 8
-theme_override_fonts/normal_font = ExtResource("15_v84rt")
+theme_override_fonts/normal_font = ExtResource("16_u43rf")
 theme_override_fonts/mono_font = ExtResource("16_u43rf")
-theme_override_font_sizes/normal_font_size = 18
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
 text = "	Everything changed from the moment a deal was struck with The Council and The Corruption. And with tyranny and greed running rampant, disrupting the once peaceful balance of the world, you can�t just let it continue. The life you once knew, gone with just a snap of someone�s hands.
 	No, you will not stand for something so frivolous. And although you are powerless now, your courage will lead your heart where it needs to go. 
 "
@@ -569,7 +569,9 @@ offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
 theme_override_constants/outline_size = 8
-theme_override_font_sizes/normal_font_size = 18
+theme_override_fonts/normal_font = ExtResource("16_u43rf")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Border" type="TextureRect" parent="Frame/ShopKeeper" unique_id=2041865152]
@@ -650,7 +652,9 @@ offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
 theme_override_constants/outline_size = 8
-theme_override_font_sizes/normal_font_size = 18
+theme_override_fonts/normal_font = ExtResource("16_u43rf")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Border" type="TextureRect" parent="Frame/Mage" unique_id=373753668]
@@ -731,7 +735,9 @@ offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
 theme_override_constants/outline_size = 8
-theme_override_font_sizes/normal_font_size = 18
+theme_override_fonts/normal_font = ExtResource("16_u43rf")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Border" type="TextureRect" parent="Frame/Dwarf" unique_id=773608593]
@@ -812,7 +818,9 @@ offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
 theme_override_constants/outline_size = 8
-theme_override_font_sizes/normal_font_size = 18
+theme_override_fonts/normal_font = ExtResource("16_u43rf")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Border" type="TextureRect" parent="Frame/Collector" unique_id=1891687422]
@@ -893,7 +901,9 @@ offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
 theme_override_constants/outline_size = 8
-theme_override_font_sizes/normal_font_size = 18
+theme_override_fonts/normal_font = ExtResource("16_u43rf")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Border" type="TextureRect" parent="Frame/Trader" unique_id=1632957846]
@@ -974,7 +984,9 @@ offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
 theme_override_constants/outline_size = 8
-theme_override_font_sizes/normal_font_size = 18
+theme_override_fonts/normal_font = ExtResource("16_u43rf")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Border" type="TextureRect" parent="Frame/Thrifter" unique_id=1072651119]
@@ -1055,7 +1067,9 @@ offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
 theme_override_constants/outline_size = 8
-theme_override_font_sizes/normal_font_size = 18
+theme_override_fonts/normal_font = ExtResource("16_u43rf")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Border" type="TextureRect" parent="Frame/Aristocrat" unique_id=1142876063]
@@ -1136,7 +1150,9 @@ offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
 theme_override_constants/outline_size = 8
-theme_override_font_sizes/normal_font_size = 18
+theme_override_fonts/normal_font = ExtResource("16_u43rf")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Border" type="TextureRect" parent="Frame/Sun_Caster" unique_id=2145000848]
@@ -1217,7 +1233,9 @@ offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
 theme_override_constants/outline_size = 8
-theme_override_font_sizes/normal_font_size = 18
+theme_override_fonts/normal_font = ExtResource("16_u43rf")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Border" type="TextureRect" parent="Frame/Moon_Caster" unique_id=1082677517]
@@ -1297,7 +1315,9 @@ offset_top = 335.0
 offset_right = 770.0
 offset_bottom = 535.0
 theme_override_constants/outline_size = 8
-theme_override_font_sizes/normal_font_size = 18
+theme_override_fonts/normal_font = ExtResource("16_u43rf")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
 text = "		The Story Begins as follows withing the ending."
 
 [node name="Border" type="TextureRect" parent="Frame/Twilight_Sage" unique_id=91604580]

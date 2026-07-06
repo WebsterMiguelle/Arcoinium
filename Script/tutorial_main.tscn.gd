@@ -882,7 +882,7 @@ func trigger_game_over(player_won: bool):
 			SceneTransition.tutorial_advance_mode = true
 			SceneTransition.reload_scene()
 		else:
-			SceneTransition.load_scene("res://Scene/SplashScreen.tscn")
+			SceneTransition.load_scene_fade("res://Scene/SplashScreen.tscn")
 	else:
 		SceneTransition.load_scene("res://Scene/Shop_keepers Room.tscn")
 	

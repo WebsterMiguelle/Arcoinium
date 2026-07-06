@@ -327,8 +327,8 @@ func setup(m,enemy):
 				has_learn_to_save = true
 				main.player.has_learn_to_save = true
 			else:
-				max_coin = 100
-				coin = 100
+				max_coin = 140
+				coin = 140
 				max_playable_coins = 12
 				silver_flip_rate = 1
 				gold_flip_rate = 0.2

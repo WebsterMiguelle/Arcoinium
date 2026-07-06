@@ -128,9 +128,11 @@ func _on_no_button_pressed() -> void:
 	var tween = create_tween().set_parallel(true)
 	tween.tween_property(yes_button, "position:y", 1000, 1).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.tween_property(no_button, "position:y", 1000, 1).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	
 	await dialogue_finished
-	SceneTransition.load_scene("res://Scene/SplashScreen.tscn")
+	var shrink = create_tween()
+	shrink.tween_property(shopkeeper,"scale", Vector2(0.7,0.7), 5)
+	
+	SceneTransition.load_scene_fade("res://Scene/SplashScreen.tscn", 1)
 
 
 

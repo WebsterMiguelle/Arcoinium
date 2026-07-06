@@ -136,3 +136,12 @@ bus = &"SFX"
 process_mode = 3
 stream = SubResource("AudioStream_ercon")
 bus = &"BGM"
+
+[node name="FadeRect" type="ColorRect" parent="." unique_id=1337397000]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

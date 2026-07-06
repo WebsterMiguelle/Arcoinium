@@ -577,9 +577,7 @@ func play_slam_animation() -> void:
 		# 3. Right Panel (Counting Stats Sequence)
 		var current_delay = left_total_finish_time + 0.2
 		var stat_stagger = 0.15
-		
 		for stat_data in stat_sequence:
-			sound_manager.play_sound(GAME_OVER_WRITE)
 			animate_counting_stat(stat_data["label"], stat_data["prefix"], stat_data["val"], current_delay)
 			current_delay += stat_stagger
 			
@@ -619,7 +617,6 @@ func stagger_pop_in(container: Control, start_delay: float = 0.0) -> float:
 	var stagger_time = 0.1
 	
 	for child in container.get_children():
-		sound_manager.play_sound(GAME_OVER_WRITE)
 		child.modulate.a = 0.0
 		child.scale = Vector2(1.5, 1.5)
 		child.pivot_offset = child.size / 2 
@@ -636,7 +633,6 @@ func stagger_pop_in(container: Control, start_delay: float = 0.0) -> float:
 	return delay
 
 func pop_in_single(node: Control, delay: float) -> void:
-	sound_manager.play_sound(GAME_OVER_WRITE)
 	node.modulate.a = 0.0
 	node.scale = Vector2(1.5, 1.5)
 	node.pivot_offset = node.size / 2 

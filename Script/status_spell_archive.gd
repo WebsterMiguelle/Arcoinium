@@ -8,6 +8,9 @@ extends ColorRect
 @onready var view_icon = $"CardView/Icon"
 @onready var view_spell_icon: AnimatedSprite2D = $CardView/SpellIcon
 @onready var view_rank: AnimatedSprite2D = $"CardView/Sprite"
+@onready var coin_status: Button = $"Coin Status"
+@onready var entity: Button = $Entity
+
 var c = null
 @onready var sound_manager: Node2D = $SoundManager
 const SCROLL_OPEN = preload("uid://ciyhsb2lowwtt")
@@ -87,20 +90,23 @@ func _on_back_pressed() -> void:
 
 func _on_entity_pressed() -> void:
 	sound_manager.play_sound(BUTTON)
-	_filter_by_type("Entity")
+	_filter_by_type("Entity", entity)
 
 
 func _on_coin_status_pressed() -> void:
 	sound_manager.play_sound(BUTTON)
-	_filter_by_type("Coin")
+	_filter_by_type("Coin", coin_status)
 	
 	
-func _filter_by_type(type: String) -> void:
+func _filter_by_type(type: String, pressed_button: Button) -> void:
 	if current_filter == type:
 		current_filter = ""
+		pressed_button.button_pressed = false
 	else:
 		current_filter = type
-
+		if pressed_button != coin_status: coin_status.button_pressed = false
+		if pressed_button != entity: entity.button_pressed = false
+		
 	for entry in card_nodes:
 		var node: Control = entry["node"]
 		var data: Dictionary = entry["data"]
